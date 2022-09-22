@@ -1,4 +1,13 @@
-export const engLocalization: any = {
+export interface ILocalization {
+    translation: {
+        student: object,
+        proctor: object,
+        admin: object,
+        shared: object
+    }
+}
+
+export const engLocalization: ILocalization = {
     translation: {
         student: {
             name: 'Username'

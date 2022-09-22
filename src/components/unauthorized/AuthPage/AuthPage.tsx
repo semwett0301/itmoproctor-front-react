@@ -1,5 +1,5 @@
 import React, {FC, useState} from 'react';
-import classes from './AuthPage.module.scss'
+import classes from './AuthPage.module.css'
 import {Card} from "@consta/uikit/Card";
 import {TextField} from "@consta/uikit/TextField";
 import notALogo from './NotALogo.png'

@@ -3,8 +3,12 @@ import { initReactI18next } from 'react-i18next';
 import {ruLocalization} from "./localizations/ruLocalization";
 import {engLocalization} from "./localizations/engLocalization";
 
+// interface IResources{
+//     ru: ILocalization,
+//     en: ILocalization
+// }
 
-const resources = {
+const resources: any = {
     ru: ruLocalization,
     en: engLocalization
 }
