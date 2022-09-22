@@ -1,14 +1,14 @@
 import React from 'react';
-import {useTranslation} from "react-i18next";
+import AuthPage from "./components/shared/AuthPage/AuthPage";
+import {Theme, presetGpnDefault} from '@consta/uikit/Theme';
 
 function App() {
 
-    const {t} = useTranslation()
-
     return (
-        <div>
-            {t('student.name')}
-        </div>
+        <Theme preset={presetGpnDefault}>
+            <AuthPage/>
+        </Theme>
+
     );
 }
 
