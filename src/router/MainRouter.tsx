@@ -9,7 +9,7 @@ const MainRouter:FC = () => {
 
         if (obj.children) {
             return (
-                <Route path={obj.path} element={obj.component} key={obj.path}>
+                <Route path={obj.path} element={<obj.component/>} key={obj.path}>
                     {
                         obj.children.map((item: any) => routeHelper(item))
                         // <Route path={obj.children[0].path} element={obj.children[0].component} key={obj.children[0].path}/>
@@ -19,7 +19,7 @@ const MainRouter:FC = () => {
         }
 
         else{
-            return <Route path={obj.path} element={obj.component} key={obj.path}/>
+            return <Route path={obj.path} element={<obj.component/>} key={obj.path}/>
         }
 
     }
