@@ -1,14 +1,14 @@
 import React from 'react';
-import AuthPage from "./components/shared/AuthPage/AuthPage";
-import {Theme, presetGpnDefault} from '@consta/uikit/Theme';
+import {Theme, presetGpnDefault, presetGpnDark} from '@consta/uikit/Theme';
+import Router from "./router/MainRouter";
+import MainRouter from "./router/MainRouter";
 
 function App() {
 
     return (
         <Theme preset={presetGpnDefault}>
-            <AuthPage/>
+            <MainRouter/>
         </Theme>
-
     );
 }
 

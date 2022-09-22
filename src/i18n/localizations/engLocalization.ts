@@ -5,7 +5,13 @@ export const engLocalization: any = {
         },
         proctor: {},
         admin: {},
-        shared: {}
+        shared: {
+            auth: {
+                login: 'Login',
+                password: 'Password',
+                signIn: 'Sign in'
+            }
+        }
     }
 
 }

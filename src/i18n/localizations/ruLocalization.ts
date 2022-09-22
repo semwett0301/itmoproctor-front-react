@@ -5,6 +5,12 @@ export const ruLocalization: any = {
         },
         proctor: {},
         admin: {},
-        shared: {}
+        shared: {
+            auth: {
+                login: 'Логин',
+                password:'Пароль',
+                signIn:'Войти'
+            }
+        }
     }
 }
