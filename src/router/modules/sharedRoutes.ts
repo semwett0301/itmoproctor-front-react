@@ -1,4 +1,4 @@
-import AuthPage from "../../components/shared/AuthPage/AuthPage";
+import AuthPage from "../../components/unauthorized/AuthPage/AuthPage";
 import NotFound from "../../components/shared/NotFound";
 import React, {FC} from "react";
 
