@@ -3,16 +3,8 @@ import {Route, Routes} from "react-router-dom";
 import {sharedRoutes} from "./modules/sharedRoutes";
 import {IRoute} from "../ts/interfaces/IRoute";
 import AuthHoc from "./hocs/AuthHoc";
-import {RoleNumbers} from "../ts/enums/RoleNumbers";
 import {unauthorizedRoutes} from "./modules/unauthorizedRoutes";
 
-const setRoles = (roles: RoleNumbers[], routes: IRoute[]): IRoute[] => {
-    routes.map(route => {
-        route.roles = roles
-    })
-
-    return routes
-}
 
 const routes = [
     ...sharedRoutes,
