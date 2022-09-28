@@ -1,32 +1,46 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC} from 'react';
 import {Route, Routes} from "react-router-dom";
-import {guestRoutes, IRoute} from "./modules/sharedRoutes";
+import {sharedRoutes} from "./modules/sharedRoutes";
+import {IRoute} from "../ts/interfaces/IRoute";
+import AuthHoc from "./hocs/AuthHoc";
+import {RoleNumbers} from "../ts/enums/RoleNumbers";
+import {unauthorizedRoutes} from "./modules/unauthorizedRoutes";
 
-const MainRouter:FC = () => {
+const setRoles = (roles: RoleNumbers[], routes: IRoute[]): IRoute[] => {
+    routes.map(route => {
+        route.roles = roles
+    })
 
-    const routeHelper = (obj:IRoute) => {
-        console.log(obj);
+    return routes
+}
+
+const routes = [
+    ...sharedRoutes,
+    ...unauthorizedRoutes
+]
+
+const MainRouter: FC = () => {
+    const routeHelper = (obj: IRoute) => {
+        const AuthComponent = <AuthHoc requiredRoles={obj.roles}>
+            <obj.component/>
+        </AuthHoc>
 
         if (obj.children) {
             return (
-                <Route path={obj.path} element={<obj.component/>} key={obj.path}>
-                    {
-                        obj.children.map((item: any) => routeHelper(item))
-                        // <Route path={obj.children[0].path} element={obj.children[0].component} key={obj.children[0].path}/>
-                    }
-                </Route>
+                    <Route path={obj.path} element={AuthComponent} key={obj.path}>
+                        {
+                            obj.children.map((item: IRoute) => routeHelper(item))
+                        }
+                    </Route>
+
             )
         }
-
-        else{
-            return <Route path={obj.path} element={<obj.component/>} key={obj.path}/>
-        }
-
+        return <Route path={obj.path} element={AuthComponent} key={obj.path}/>
     }
 
     return (
         <Routes>
-            {guestRoutes.map(elem => routeHelper(elem))}
+            {routes.map(elem => routeHelper(elem))}
         </Routes>
     )
 };

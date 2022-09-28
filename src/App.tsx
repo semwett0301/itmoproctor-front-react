@@ -1,6 +1,5 @@
 import React from 'react';
-import {Theme, presetGpnDefault, presetGpnDark} from '@consta/uikit/Theme';
-import Router from "./router/MainRouter";
+import {Theme, presetGpnDefault} from '@consta/uikit/Theme';
 import MainRouter from "./router/MainRouter";
 
 function App() {

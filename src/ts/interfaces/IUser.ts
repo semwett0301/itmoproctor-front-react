@@ -1,3 +1,5 @@
+import {RoleNumbers} from "../enums/RoleNumbers";
+
 export interface IUser{
     active: boolean,
     address: string,
@@ -11,7 +13,7 @@ export interface IUser{
     documentType: string,
     email: string,
     expert: boolean,
-    system: boolean,
+    system?: boolean,
     firstname: string,
     gender: string,
     lastname: string,
@@ -19,12 +21,12 @@ export interface IUser{
     organization: {
         _id: string,
         fullName?: string,
-        shortName: string,
+        shortName?: string,
         code: string
     },
     provider: string,
-    role: number,
+    role: RoleNumbers,
     username: string,
     _id: string,
-    __v: number
+    __v?: number
 }
