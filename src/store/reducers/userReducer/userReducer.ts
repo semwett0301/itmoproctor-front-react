@@ -1,7 +1,8 @@
-import {IUser} from "../../ts/interfaces/IUser";
-import {ProviderEnum, RoleEnum} from "../../config/authСonfig";
+import {IUser} from "../../../ts/interfaces/IUser";
+import {ProviderEnum, RoleEnum} from "../../../config/authСonfig";
+import {UserActionTypes} from "./userActionTypes";
 
-interface UserAction {
+export interface UserAction {
     type: UserActionTypes,
     payload?: object
 }
@@ -33,9 +34,6 @@ const initialState: IUser = {
     _id: ""
 }
 
-export enum UserActionTypes {
-    SET_USER = "SET_USER"
-}
 
 export const userReducer = (state: IUser = initialState, action: UserAction) => {
     switch (action.type) {
@@ -46,12 +44,5 @@ export const userReducer = (state: IUser = initialState, action: UserAction) => 
             }
         default:
             return state
-    }
-}
-
-export function setUserActionCreator(payload: IUser) : UserAction{
-    return {
-        type: UserActionTypes.SET_USER,
-        payload: payload
     }
 }
