@@ -1,9 +1,9 @@
 import {FC} from "react";
-import {RoleNumbers} from "../enums/RoleNumbers";
+import {RoleEnum} from "../../config/authСonfig";
 
 export interface IRoute {
+    id: number;
     path: string;
     component: FC;
-    roles?: RoleNumbers[];
     children?: IRoute[];
 }

@@ -1,5 +1,5 @@
 import {IUser} from "../../ts/interfaces/IUser";
-import {RoleNumbers} from "../../ts/enums/RoleNumbers";
+import {ProviderEnum, RoleEnum} from "../../config/authСonfig";
 
 interface UserAction {
     type: UserActionTypes,
@@ -27,8 +27,8 @@ const initialState: IUser = {
         _id: "",
         code: ""
     },
-    provider: "",
-    role: RoleNumbers.UNAUTHORIZED,
+    provider: ProviderEnum.OPENEDU,
+    role: RoleEnum.UNAUTHORIZED,
     username: "",
     _id: ""
 }

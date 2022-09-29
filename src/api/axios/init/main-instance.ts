@@ -1,11 +1,11 @@
 import axios from "axios";
-import axiosConfig from "../../../config/axios-config";
+import axiosOnfig from "../../../config/axiosСonfig";
 import errors, {IErrors} from "./errors";
 
 const mainInstance = axios.create({
-    baseURL: axiosConfig.baseUrl,
-    headers: axiosConfig.baseHeaders,
-    withCredentials: axiosConfig.withCredentials
+    baseURL: axiosOnfig.baseUrl,
+    headers: axiosOnfig.baseHeaders,
+    withCredentials: axiosOnfig.withCredentials
 })
 
 mainInstance.interceptors.response.use((response) => response, (error => {

@@ -1,4 +1,5 @@
-import {RoleNumbers} from "../enums/RoleNumbers";
+import {ProviderEnum, RoleEnum} from "../../config/authСonfig";
+
 
 export interface IUser{
     active: boolean,
@@ -12,7 +13,7 @@ export interface IUser{
     documentNumber: string,
     documentType: string,
     email: string,
-    expert: boolean,
+    expert?: boolean,
     system?: boolean,
     firstname: string,
     gender: string,
@@ -24,8 +25,8 @@ export interface IUser{
         shortName?: string,
         code: string
     },
-    provider: string,
-    role: RoleNumbers,
+    provider: ProviderEnum,
+    role: RoleEnum,
     username: string,
     _id: string,
     __v?: number
