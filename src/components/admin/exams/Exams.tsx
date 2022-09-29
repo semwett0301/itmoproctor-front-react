@@ -1,46 +1,97 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import cl from './exams.module.scss'
-import {Layout} from "@consta/uikit/LayoutCanary";
+import {Layout} from "@consta/uikit/Layout";
 import {Card} from "@consta/uikit/Card";
-import {Header} from "@consta/header/Header";
-import logo from "./Group_12df.svg";
-import userLogo from "./UserLogo.png"
+import logo from "../../../mockData/logos/Group_12df.svg";
+import userLogo from "../../../mockData/logos/UserLogo.png"
+import {Header, HeaderLogin, HeaderLogo, HeaderModule} from "@consta/uikit/Header";
+import {presetGpnDisplay, Theme} from "@consta/uikit/Theme";
+import {Tabs} from "@consta/uikit/Tabs";
+import {Pagination} from "@consta/uikit/Pagination";
+import NavCollapse from "./components/NavCollapse/NavCollapse";
+import ExamTable from "./components/ExamTable/ExamTable";
+import FilterField from "./components/FilterField/FilterField";
+
+type Item = string;
+
+const items: Item[] = ['Один', 'Два', 'Три'];
 
 const Exams: FC = () => {
+
+
+    const [value, setValue] = useState<Item | null>(items[0]);
+
     return (
             <Layout className={cl.wrapper} direction={"column"}>
                 <Layout>
                     <Header
-                        className={cl.header}
-                        logo={
-                            <img src={logo} alt="LOGO"/>
+                        leftSide={
+                            <>
+                                <HeaderModule>
+                                    <HeaderLogo>
+                                        <img src={logo} alt="LOGO"/>
+                                    </HeaderLogo>
+                                </HeaderModule>
+                            </>
                         }
-                        userLogined={true}
-                        userAvatar={userLogo}
-                        userName="Наруто Удзумаки"
-                        userInfo="Хокаге"
+                        rightSide={
+                            <>
+                                <HeaderModule>
+                                    <HeaderLogin
+                                        isLogged={true}
+                                        personName="Наруто Удзумаки"
+                                        personInfo="Хокаге"
+                                        personStatus="available"
+                                        personAvatarUrl={userLogo}
+                                    />
+                                </HeaderModule>
+                            </>
+                        }
                     />
                 </Layout>
-                <Layout className={cl.contentWrapper}>
-                    <Layout className={cl.card}>
-                        <Layout flex={1} className={cl.standardLayout}>
+
+                <Layout className={cl.contentWrapper} direction="row">
+                    <Theme preset={presetGpnDisplay} className={cl.standardLayout}>
+                    <Layout flex={1}>
                             <Card
-                                className={cl.card}
-                                verticalSpace={'2xl'}
-                                horizontalSpace={'2xl'}
+                                verticalSpace={'xl'}
+                                horizontalSpace={'xl'}
+                                className={cl.navbar}
                             >
-                                Ntrcn
+                                <NavCollapse/>
                             </Card>
-                        </Layout>
-                        <Layout flex={5} className={cl.standardLayout}>
-                            <Card
-                                className={cl.card}
-                                verticalSpace={'2xl'}
-                                horizontalSpace={'2xl'}
-                            >
-                                Ntrcn
+                    </Layout>
+                    </Theme>
+
+
+                    <Layout flex={10} className={cl.standardLayout} direction={"column"}>
+                        <Card
+                            className={cl.contentCard}
+                        >
+                            <Card verticalSpace={"s"} horizontalSpace={"s"} shadow={false}>
+                                <Tabs
+                                    value={value}
+                                    onChange={({ value }) => setValue(value)}
+                                    items={items}
+                                    getItemLabel={(item) => item}
+                                />
                             </Card>
-                        </Layout>
+
+                            <FilterField/>
+
+                            <Layout className={cl.fillLayout}>
+                                <div className={cl.card}>
+                                    <ExamTable/>
+                                </div>
+                            </Layout>
+
+                            <Pagination
+                                currentPage={1}
+                                totalPages={2}
+                                onChange={(item) => console.log(item)}
+                                className={cl.minLayout}
+                            />
+                        </Card>
                     </Layout>
                 </Layout>
             </Layout>
@@ -48,3 +99,4 @@ const Exams: FC = () => {
 };
 
 export default Exams;
+

@@ -1,0 +1,28 @@
+.buttonGroup {
+  width: auto !important;
+  margin-left: var(--space-s)
+}
+
+.fieldsGroup {
+  flex-grow: 1;
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.buttonGridItem {
+  width: auto;
+}
+
+.firstRow{
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.wrapper{
+  box-sizing: border-box;
+  margin: var(--space-s)
+}
+
+.searchField{
+  margin-left: var(--space-xs);
+}

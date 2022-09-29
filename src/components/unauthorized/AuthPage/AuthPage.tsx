@@ -1,8 +1,8 @@
 import React, {FC, useState} from 'react';
-import classes from './AuthPage.module.css'
+import classes from './AuthPage.module.scss'
 import {Card} from "@consta/uikit/Card";
 import {TextField} from "@consta/uikit/TextField";
-import notALogo from './NotALogo.png'
+import notALogo from '../../../mockData/logos/NotALogo.png'
 import {Button} from "@consta/uikit/Button";
 import {Select} from "@consta/uikit/Select";
 import {useTranslation} from 'react-i18next';
@@ -73,6 +73,7 @@ const AuthPage:FC = () => {
                     className={classes.card}
                 >
                     <img src={notALogo} alt="Лого заглушка" className={classes.notALogo}/>
+
                     <TextField
                         required
                         onChange={loginChange}
@@ -83,7 +84,6 @@ const AuthPage:FC = () => {
                         labelPosition="top"
                         width={"full"}
                         className={classes.customInput}
-
                     />
 
                     <TextField
@@ -113,9 +113,7 @@ const AuthPage:FC = () => {
                     value={lang}
                     onChange={({ value }) => selectChangeHandler(value)}
                 />
-
             </div>
-
         </div>
     );
 };
