@@ -1,6 +1,10 @@
 import {IUser} from "../../../ts/interfaces/IUser";
 import {UserActionTypes} from "./userActionTypes";
-import {UserAction} from "./userReducer";
+
+export interface UserAction {
+    type: UserActionTypes,
+    payload?: object
+}
 
 export function setUserActionCreator(payload: IUser) : UserAction{
     return {

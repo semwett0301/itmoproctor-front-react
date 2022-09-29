@@ -1,11 +1,7 @@
 import {IUser} from "../../../ts/interfaces/IUser";
 import {ProviderEnum, RoleEnum} from "../../../config/authСonfig";
 import {UserActionTypes} from "./userActionTypes";
-
-export interface UserAction {
-    type: UserActionTypes,
-    payload?: object
-}
+import {UserAction} from "./userActionCreators";
 
 const initialState: IUser = {
     active: false,
