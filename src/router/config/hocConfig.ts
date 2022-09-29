@@ -6,7 +6,11 @@ import {IHocConfig} from "../../ts/interfaces/IHocConfig";
 
 // Генерирование хок-конфигов в соответствии с конкретным условием (RoleEnum, boolean, etc)
 const auth: IHocConfig<RoleEnum> = {
-    hoc: AuthHoc,
+    id: 1,
+    value: {
+        id: 1,
+        hoc: AuthHoc
+    },
     data: authHocData
 }
 
