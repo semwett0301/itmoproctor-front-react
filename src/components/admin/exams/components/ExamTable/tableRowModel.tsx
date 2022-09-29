@@ -1,23 +1,29 @@
 import {TableColumn} from "@consta/uikit/Table";
-import {examTableRow} from "../../mockData/examTableData";
-// import {FC} from "react";
+import React, {ReactNode} from "react";
+import {Checkbox} from "@consta/uikit/Checkbox";
 
-// type row ={
-//     id:string,
-//     check: FC,
-//     listener: string,
-//     proctor: string,
-//     exam: string,
-//     type: string,
-//     start: string,
-//     status: string,
-//     video: FC,
-//     more: FC
-// }
+export interface ITableRow {
+    id:string,
+    check: ReactNode,
+    listener: string,
+    proctor: string,
+    exam: string,
+    type: string,
+    start: string,
+    status: string,
+    video: ReactNode,
+    more: ReactNode
+}
 
-export const columns: TableColumn<typeof examTableRow[number]>[] = [
+export const columns: TableColumn<ITableRow>[] = [
     {
-        title: '',
+        title: '№',
+        accessor: 'id',
+        align: 'center',
+        hidden: true
+    },
+    {
+        title: <Checkbox checked={true}/>,
         accessor: 'check',
         align: 'center'
     },

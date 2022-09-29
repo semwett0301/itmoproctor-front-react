@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useState} from 'react';
 import cl from './exams.module.scss'
 import {Layout} from "@consta/uikit/Layout";
 import {Card} from "@consta/uikit/Card";
@@ -51,20 +51,20 @@ const Exams: FC = () => {
                 </Layout>
 
                 <Layout className={cl.contentWrapper} direction="row">
-                    <Theme preset={presetGpnDisplay} className={cl.standardLayout}>
-                    <Layout flex={1}>
-                            <Card
-                                verticalSpace={'xl'}
-                                horizontalSpace={'xl'}
-                                className={cl.navbar}
-                            >
-                                <NavCollapse/>
-                            </Card>
+                    <Layout flex={1} className={cl.standardLayout}>
+                        <Theme preset={presetGpnDisplay} className={cl.navbar}>
+                                <Card
+                                    verticalSpace={'xl'}
+                                    horizontalSpace={'xl'}
+                                    shadow={false}
+                                    form={'square'}
+                                >
+                                    <NavCollapse/>
+                                </Card>
+                        </Theme>
                     </Layout>
-                    </Theme>
 
-
-                    <Layout flex={10} className={cl.standardLayout} direction={"column"}>
+                    <Layout flex={20} className={cl.standardLayout} direction={"column"}>
                         <Card
                             className={cl.contentCard}
                         >
