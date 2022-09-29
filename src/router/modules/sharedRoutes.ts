@@ -1,18 +1,6 @@
-import AuthPage from "../../components/unauthorized/AuthPage/AuthPage";
+import {IRoute} from "../../ts/interfaces/IRoute";
 import NotFound from "../../components/shared/NotFound";
-import {FC} from "react";
-import Exams from "../../components/admin/exams/Exams";
 
-export interface IRoute {
-    path: string;
-    component: FC;
-    children?: IRoute[];
-}
-
-export const guestRoutes:IRoute[] = [
-    {path:'admin', component: Exams},
-    {path: 'help', component: NotFound},
-    {path: '*', component: AuthPage}
+export const sharedRoutes:IRoute[] = [
+    {id: 1, path: '*', component: NotFound},
 ];
-
-

@@ -1,3 +1,6 @@
+import {ProviderEnum, RoleEnum} from "../../config/authСonfig";
+
+
 export interface IUser{
     active: boolean,
     address: string,
@@ -10,8 +13,8 @@ export interface IUser{
     documentNumber: string,
     documentType: string,
     email: string,
-    expert: boolean,
-    system: boolean,
+    expert?: boolean,
+    system?: boolean,
     firstname: string,
     gender: string,
     lastname: string,
@@ -19,12 +22,12 @@ export interface IUser{
     organization: {
         _id: string,
         fullName?: string,
-        shortName: string,
+        shortName?: string,
         code: string
     },
-    provider: string,
-    role: number,
+    provider: ProviderEnum,
+    role: RoleEnum,
     username: string,
     _id: string,
-    __v: number
+    __v?: number
 }

@@ -6,7 +6,7 @@ interface IAxiosConfig {
     withCredentials: boolean
 }
 
-const axiosConfig: IAxiosConfig = {
+const axiosOnfig: IAxiosConfig = {
     baseUrl: "http://localhost:3000",
     baseHeaders: {
         "Content-Type": "application/json",
@@ -14,4 +14,4 @@ const axiosConfig: IAxiosConfig = {
     withCredentials: true
 }
 
-export default axiosConfig
+export default axiosOnfig

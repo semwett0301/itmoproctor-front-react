@@ -6,6 +6,6 @@ import organization from "./modules/admin/organization";
 export default {
     auth: auth(mainInstance),
     profile: profile(mainInstance),
-    organization: organization(mainInstance)
+    admin_organization: organization(mainInstance)
 }
 
