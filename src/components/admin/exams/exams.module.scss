@@ -9,13 +9,10 @@
 }
 
 .standardLayout{
-  padding: 1em 0 1em 1em;
+  padding: 5px 5px 14px 14px;
   box-sizing: border-box;
   height: 100%;
   display: flex;
-
-  &:first-child{
-  }
 
   &:last-child{
     padding-right: 1em;

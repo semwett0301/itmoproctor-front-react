@@ -1,3 +1,4 @@
+import {useNavigate} from "react-router-dom";
 
 
 export const examTableRow = [
@@ -45,6 +46,5 @@ export const responseTableData = [
         type:'С',
         start:'09.09.22',
         status: 'decline',
-
     }
 ];

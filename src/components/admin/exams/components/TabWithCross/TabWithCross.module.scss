@@ -1,0 +1,21 @@
+.tab{
+  background-color: transparent;
+}
+
+.tab{
+  &:hover .crossBtn{
+    opacity: 1;
+  }
+}
+
+.crossBtn{
+  margin-left: 4px;
+  opacity: 0;
+  transition-property: opacity;
+  transition-duration: .3s;
+}
+
+.icon{
+  margin-right: 4px;
+}
+

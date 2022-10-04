@@ -1,6 +1,6 @@
 import {IRoute} from "../../ts/interfaces/IRoute";
-import NotFound from "../../components/shared/NotFound";
+import AuthPage from "../../components/unauthorized/AuthPage/AuthPage";
 
 export const sharedRoutes:IRoute[] = [
-    {id: 1, path: '*', component: NotFound},
+    {id: 1, path: '/login', component: AuthPage}
 ];
