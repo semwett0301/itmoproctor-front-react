@@ -5,7 +5,7 @@ const NotFound:FC = () => {
         <div style={{display: "flex", justifyContent: "center",
             alignItems: "center"}}>
             <h1 style={{font:"Roboto"}}>
-                Увы, потерялось
+                404 Not Found
             </h1>
         </div>
 

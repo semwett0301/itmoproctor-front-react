@@ -1,4 +1,4 @@
-export type LocationState = {
+export type LocationStateType = {
     from: {
         path: string;
     }

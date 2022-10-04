@@ -1,11 +1,18 @@
-import mainInstance from "./init/main-instance";
-import auth from "./modules/auth";
-import profile from "./modules/profile";
-import organization from "./modules/admin/organization";
+import mainInstance from "./init/mainInstance";
+import auth, {IAuthAxios} from "./modules/auth";
+import profile, {IProfileAxios} from "./modules/profile";
+import {AppDispatch} from "../../store";
+import {NavigateFunction} from "react-router-dom";
 
-export default {
-    auth: auth(mainInstance),
-    profile: profile(mainInstance),
-    admin_organization: organization(mainInstance)
+export interface IRequest {
+    auth: IAuthAxios,
+    profile: IProfileAxios
+}
+
+export function request(dispatch: AppDispatch, navigate: NavigateFunction ): IRequest {
+    return {
+        auth: auth(mainInstance(dispatch, navigate)),
+        profile: profile(mainInstance(dispatch, navigate)),
+    }
 }
 

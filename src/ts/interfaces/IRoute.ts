@@ -4,6 +4,6 @@ import {RoleEnum} from "../../config/authСonfig";
 export interface IRoute {
     id: number;
     path: string;
-    component: FC;
+    component?: FC;
     children?: IRoute[];
 }

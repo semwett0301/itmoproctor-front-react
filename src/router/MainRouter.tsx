@@ -48,7 +48,7 @@ const MainRouter: FC = () => {
     const routeHelper = (obj: IRoute) => {
         if (obj.children) {
             return (
-                <Route key={obj.id} path={obj.path} element={<obj.component/>}>
+                <Route key={obj.id} path={obj.path} element={obj.component ? <obj.component/> : ''}>
                     {
                         obj.children.map((item: IRoute) => routeHelper(item))
                     }
@@ -56,7 +56,7 @@ const MainRouter: FC = () => {
 
             )
         }
-        return <Route key={obj.id} path={obj.path} element={<obj.component/>}/>
+        return <Route key={obj.id} path={obj.path} element={obj.component ? <obj.component/> : ''}/>
     }
 
     return (
