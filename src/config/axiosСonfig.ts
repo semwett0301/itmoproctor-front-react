@@ -7,7 +7,7 @@ interface IAxiosConfig {
 }
 
 const axiosConfig: IAxiosConfig = {
-    baseUrl: "http://localhost:3000/",
+    baseUrl: "https://de-dev.itmo.ru/",
     baseHeaders: {
         "Content-Type": "application/json",
     },

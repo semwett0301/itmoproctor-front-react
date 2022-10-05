@@ -5,25 +5,39 @@ import {useRequest} from "./hooks/requestHooks";
 import {useAppDispatch, useAppSelector} from "./hooks/reduxHooks";
 import {setUserActionCreator} from "./store/reducers/userReducer/userActionCreators";
 import {userLoadedActionCreator} from "./store/reducers/userLoaded/userLoadedActionCreators";
+import {isLoadedActionCreator} from "./store/reducers/isLoading/isLoadingActionCreators";
+import Loading from "./components/shared/loading/Loading";
+
 
 function App() {
     const request = useRequest();
     const dispatch = useAppDispatch();
     const userLoaded = useAppSelector(state => state.userLoaded)
+    const isLoading = useAppSelector(state => state.isLoading)
 
     useEffect(() => {
-        if (!userLoaded) {
-            request.profile.getProfileBySession()
-                .then(r => {
-                    dispatch(setUserActionCreator(r.data))
-                })
-            dispatch(userLoadedActionCreator())
+
+        const checkSession = async () => {
+            if (!userLoaded) {
+                await request.profile.getProfileBySession()
+                    .then(r => {
+                        dispatch(setUserActionCreator(r.data))
+                    })
+                dispatch(userLoadedActionCreator())
+                dispatch(isLoadedActionCreator())
+            }
         }
-    }, [dispatch, request.profile, userLoaded])
+
+        checkSession().catch(e => console.log(e));
+    }, [])
 
     return (
         <Theme preset={presetGpnDefault}>
-            <MainRouter/>
+            {!isLoading ?
+                <MainRouter/>
+                :
+                <Loading/>
+            }
         </Theme>
     );
 }
