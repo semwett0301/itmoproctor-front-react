@@ -12,8 +12,8 @@ import Loading from "./components/shared/loading/Loading";
 function App() {
     const request = useRequest();
     const dispatch = useAppDispatch();
-    const userLoaded = useAppSelector(state => state.userLoaded)
-    const isLoading = useAppSelector(state => state.isLoading)
+    const userLoaded: boolean = useAppSelector(state => state.userLoaded)
+    const isLoading: boolean = useAppSelector(state => state.isLoading)
 
     useEffect(() => {
 

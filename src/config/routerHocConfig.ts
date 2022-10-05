@@ -1,12 +1,12 @@
-import AuthHoc from "../hocs/AuthHoc";
-import {RoleEnum} from "../../config/authСonfig";
-import {IHocConfig} from "../../ts/interfaces/IHocConfig";
-import ServiceHoc from "../hocs/ServiceHoc";
-import {sharedRoutes} from "../modules/sharedRoutes";
-import {unauthorizedRoutes} from "../modules/unauthorizedRoutes";
-import {studentRoutes} from "../modules/studentRoutes";
-import {serviceRoutes} from "../modules/serviceRoutes";
-import {adminRoutes} from "../modules/adminRoutes";
+import AuthHoc from "../router/hocs/AuthHoc";
+import {RoleEnum} from "./authСonfig";
+import {IHocConfig} from "../ts/interfaces/IHocConfig";
+import ServiceHoc from "../router/hocs/ServiceHoc";
+import {sharedRoutes} from "../router/modules/sharedRoutes";
+import {unauthorizedRoutes} from "../router/modules/unauthorizedRoutes";
+import {studentRoutes} from "../router/modules/studentRoutes";
+import {serviceRoutes} from "../router/modules/serviceRoutes";
+import {adminRoutes} from "../router/modules/adminRoutes";
 
 
 // Генерирование хок-конфигов в соответствии с конкретным условием (RoleEnum, boolean, etc)
@@ -55,9 +55,9 @@ const service: IHocConfig = {
 }
 
 // Сбор всех хок-конфигов
-const hocConfig: IHocConfig<any>[] = [
+const routerHocConfig: IHocConfig<any>[] = [
     auth,
     service
 ]
 
-export default hocConfig;
+export default routerHocConfig;
