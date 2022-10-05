@@ -1,31 +1,24 @@
-.footerGrid{
+.sideFooter{
   overflow: hidden;
 }
 
-.item{
+.link{
   text-decoration: none;
-  color: var(--color-typo-primary);
+  display: inline-block;
+  margin: 4px 1px;
+  font-size: 14px;
+}
+
+.linkContent{
+  height: 30px;
   display: flex;
-  column-gap: 0.5em;
-  position: relative;
+  flex-direction: row;
+  align-items: center;
+  color: var(--color-typo-primary);
   white-space: nowrap;
 }
 
-.icon{
-  width: var(--graphics-size-s);
-}
-
-.linkLabel{
-  position: relative;
-  transition: all 0.5s;
-}
-
-.expandLabel{
-  margin-left: 0;
-  opacity: 1;
-}
-
-.collapseLabel{
-  margin-left: 5em;
-  opacity: 0;
+.linkIcon{
+  margin-right: 14px;
+  transition: margin-left .5s;
 }

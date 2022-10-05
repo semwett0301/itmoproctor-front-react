@@ -1,0 +1,29 @@
+.standardLayout{
+  padding-right:var(--space-xs);
+  box-sizing: border-box;
+  height: 100%;
+  display: flex;
+
+  &:last-child{
+    padding-right: 0;
+  }
+}
+
+.wrapper{
+  width: 100%;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.contentWrapper{
+  box-sizing: border-box;
+  padding: var(--space-xs);
+  height: 100%;
+}
+
+.contentCard{
+  box-sizing: content-box;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}

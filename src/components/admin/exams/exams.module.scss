@@ -1,39 +1,7 @@
-.header{
-  box-shadow: 0 2px 2px var(--color-shadow-group-1), 0 2px 8px var(--color-shadow-group-2);
-  width: 100%
-}
 
 .card{
   width:100%;
   height: 100%;
-}
-
-.standardLayout{
-  padding: 5px 5px 14px 14px;
-  box-sizing: border-box;
-  height: 100%;
-  display: flex;
-
-  &:last-child{
-    padding-right: 1em;
-  }
-}
-
-.wrapper{
-  width: 100%;
-  height: 100vh;
-  box-sizing: border-box;
-}
-
-.contentWrapper{
-  height: 100%;
-}
-
-.contentCard{
-  display: flex;
-  height: 100%;
-  width: 100%;
-  flex-direction: column;
 }
 
 .fillLayout{
@@ -45,9 +13,5 @@
 }
 
 .minLayout{
-  flex: 1;
-}
-
-.navbar{
-  background-color: var(--color-bg-default);
+  margin-bottom: 200px;
 }

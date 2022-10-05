@@ -1,13 +1,11 @@
 import React, {FC, useState} from 'react';
 import {Card} from "@consta/uikit/Card";
 import cl from './Sidebar.module.scss'
-import NavCollapse from "../exams/components/NavCollapse/NavCollapse";
+import NavCollapse from "./NavCollapse/NavCollapse";
 import {Button} from "@consta/uikit/Button";
 import {IconArrowRight} from "@consta/uikit/IconArrowRight";
-
 import {classWatcher} from "../../../utils/styleClassesUtills";
-import {presetGpnDark, presetGpnDisplay, Theme, useTheme} from "@consta/uikit/Theme";
-import {useThemeVars} from "@consta/uikit/useThemeVars";
+import {useTheme} from "@consta/uikit/Theme";
 import SidebarFooter from "./SidebarFooter/SidebarFooter";
 
 const Sidebar: FC= () => {
@@ -21,15 +19,15 @@ const Sidebar: FC= () => {
                 <Button
                     className={classWatcher(expandSate, cl.sideBtnActive, cl.sideBtnCollapse, cl.sideBtn)}
                     onlyIcon={true}
-                    iconRight={IconArrowRight}
-                    iconSize='s'
+                    iconLeft={IconArrowRight}
+                    iconSize='xs'
                     form='round'
                     size='xs'
                     onClick={() => setExpandState(!expandSate)}
                 />
 
-                <NavCollapse/>
-                <SidebarFooter flag={expandSate}/>
+                <NavCollapse isOpen={expandSate}/>
+                <SidebarFooter/>
             </Card>
 
     );

@@ -1,38 +1,46 @@
 import React, {FC} from 'react';
-import {Grid, GridItem} from "@consta/uikit/Grid";
-import {Link} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import {IconRestart} from "@consta/uikit/IconRestart";
 import {IconInfo} from "@consta/uikit/IconInfo";
-import classes from './SidebarFooter.module.css'
-import {classWatcher} from "../../../../utils/styleClassesUtills";
-import {Button} from "@consta/uikit/Button";
-import {IconRevert} from "@consta/uikit/IconRevert";
+import {Card} from "@consta/uikit/Card";
+import cl from './SidebarFooter.module.scss'
+
 
 interface ISidebarProps{
-    flag: boolean
 }
 
-const SidebarFooter: FC<ISidebarProps> =({flag}) => {
+const SidebarFooter: FC<ISidebarProps> =() => {
 
     return (
-        <Grid cols={1} className={classes.footerGrid} rowGap={'m'}>
-            <GridItem row={1}>
-                <Link to={'/update'} className={classes.item}>
-                    <Button
-                        size="s"
-                        iconLeft={IconRestart}
-                        label="Обновления"
-                        onlyIcon={flag}
-                    />
-                </Link>
-            </GridItem>
+       <div className={cl.sideFooter}>
+           <NavLink to={'/update'} className={cl.link}>
+               <Card
+                   horizontalSpace='xs' //{isOpen ? 'xs' : 'm'}
+                   verticalSpace='xs'
+                   shadow={false}
+                   className={cl.linkContent}
+               >
+                   <div className={cl.linkIcon}>
+                       <IconRestart size='xs'/>
+                   </div>
+                   Обновления
+               </Card>
+           </NavLink>
 
-            <GridItem row={2}>
-                <Link to={'/info'} className={classes.item}>
-                    <Button size="s" iconLeft={IconInfo} label="О системе"/>
-                </Link>
-            </GridItem>
-        </Grid>
+           <NavLink to={'/info'} className={cl.link}>
+               <Card
+                   horizontalSpace='xs' //{isOpen ? 'xs' : 'm'}
+                   verticalSpace='xs'
+                   shadow={false}
+                   className={cl.linkContent}
+               >
+                   <div className={cl.linkIcon}>
+                       <IconInfo size='xs'/>
+                   </div>
+                   О системе
+               </Card>
+           </NavLink>
+       </div>
     );
 };
 
