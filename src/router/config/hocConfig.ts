@@ -6,6 +6,7 @@ import {sharedRoutes} from "../modules/sharedRoutes";
 import {unauthorizedRoutes} from "../modules/unauthorizedRoutes";
 import {studentRoutes} from "../modules/studentRoutes";
 import {serviceRoutes} from "../modules/serviceRoutes";
+import {adminRoutes} from "../modules/adminRoutes";
 
 
 // Генерирование хок-конфигов в соответствии с конкретным условием (RoleEnum, boolean, etc)
@@ -30,6 +31,11 @@ const auth: IHocConfig<RoleEnum> = {
             id: 3,
             condition: RoleEnum.STUDENT,
             routes: studentRoutes
+        },
+        {
+            id: 4,
+            condition: RoleEnum.ADMIN,
+            routes: adminRoutes
         }
     ]
 }
