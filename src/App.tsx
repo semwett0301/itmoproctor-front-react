@@ -24,7 +24,6 @@ function App() {
                         dispatch(setUserActionCreator(r.data))
                     })
                 dispatch(userLoadedActionCreator())
-                dispatch(isLoadedActionCreator())
             }
         }
 
