@@ -17,8 +17,8 @@ export type ICollapseItem = {
 }
 
 export const collapseItems: ICollapseItem[] = [
-    {link:'', icon: IconFolders, title: 'Экзамены'},
-    {link:'', icon: IconBag, title: 'Университеты'},
+    {link:'/exams', icon: IconFolders, title: 'Экзамены'},
+    {link:'/ll', icon: IconBag, title: 'Университеты'},
     {link:'', icon: IconLayers, title: 'Курсы'},
     {link:'', icon: IconTeam, title: 'Пользователи'},
     {link:'', icon: IconCalendar, title: 'Расписание'},

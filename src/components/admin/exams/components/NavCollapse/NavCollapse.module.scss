@@ -22,3 +22,9 @@
   color: var(--color-typo-primary);
   text-decoration: none;
 }
+
+.collapse{
+  overflow-x: hidden;
+  flex-grow: 1;
+  flex-shrink: 0;
+}

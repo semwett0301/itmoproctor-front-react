@@ -2,7 +2,10 @@ import {TableColumn} from "@consta/uikit/Table";
 import React, {ReactNode} from "react";
 import {Checkbox} from "@consta/uikit/Checkbox";
 
-export interface ITableRow {
+
+
+
+export interface ITableColumns {
     id:string,
     check: ReactNode,
     listener: string,
@@ -15,7 +18,7 @@ export interface ITableRow {
     more: ReactNode
 }
 
-export const columns: TableColumn<ITableRow>[] = [
+export const columns: TableColumn<ITableColumns>[] = [
     {
         title: '№',
         accessor: 'id',
@@ -45,7 +48,7 @@ export const columns: TableColumn<ITableRow>[] = [
     {
         title: 'Тип',
         accessor:'type',
-        align:"left"
+        align:"center"
     },
     {
         title: 'Начало',

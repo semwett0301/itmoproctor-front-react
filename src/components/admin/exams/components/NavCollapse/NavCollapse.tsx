@@ -1,34 +1,27 @@
 import { Card } from '@consta/uikit/Card';
 import React, {useState} from 'react';
 import {Collapse} from "@consta/uikit/Collapse";
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import {collapseItems, ICollapseItem} from "./NavCollapseModel";
 import cl from './NavCollapse.module.scss'
+import {Button} from "@consta/uikit/Button";
 
 const NavCollapse = () => {
 
     const [isOpen, setOpen] = useState<boolean>(false);
 
+    const nav = useNavigate()
+
     const navMaker = (item: ICollapseItem, key:string) => {
         if(!item.children){
-            return <Card
-                verticalSpace="m"
-                horizontalSpace="xs"
-                form="square"
-                shadow={false}
-                key={key}
-                // className={cl.collapseContent}
-            >
-                <NavLink
-                    to={item.link}
-                    className={cl.linkContent}
-                >
-                    <div className={cl.linkIcon}>
-                        <item.icon/>
-                    </div>
-                    {item.title}
-                </NavLink>
-            </Card>
+            return <Button
+                        size='m'
+                        view='clear'
+                        onClick={()=>nav(item.link)}
+                        iconLeft={item.icon}
+                        key={key}
+                        label={item.title}
+                    />
         }
 
         if(item.children){
@@ -54,7 +47,6 @@ const NavCollapse = () => {
                         <Card
                             key={item.title}
                             verticalSpace="m"
-                            horizontalSpace="m"
                             form="square"
                             shadow={false}
                         >
@@ -73,7 +65,7 @@ const NavCollapse = () => {
     }
 
     return (
-        <div>
+        <div className={cl.collapse}>
             {collapseItems.map(item => navMaker(item, item.title))}
         </div>
     );

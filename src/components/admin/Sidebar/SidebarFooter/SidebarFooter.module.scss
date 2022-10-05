@@ -1,0 +1,31 @@
+.footerGrid{
+  overflow: hidden;
+}
+
+.item{
+  text-decoration: none;
+  color: var(--color-typo-primary);
+  display: flex;
+  column-gap: 0.5em;
+  position: relative;
+  white-space: nowrap;
+}
+
+.icon{
+  width: var(--graphics-size-s);
+}
+
+.linkLabel{
+  position: relative;
+  transition: all 0.5s;
+}
+
+.expandLabel{
+  margin-left: 0;
+  opacity: 1;
+}
+
+.collapseLabel{
+  margin-left: 5em;
+  opacity: 0;
+}
