@@ -1,15 +1,18 @@
+import {dropUserActionCreator} from "../../../store/reducers/userReducer/userActionCreators";
+import {NavigateFunction} from "react-router-dom";
+import {AppDispatch} from "../../../store";
+
 export interface IErrors {
-    401: () => any,
-    404: () => any
+    [key: number]: (dispatch: AppDispatch, navigate: NavigateFunction) => void
+}
+
+const AuthFail = (dispatch: AppDispatch, navigate: NavigateFunction) => {
+    dispatch(dropUserActionCreator());
+    navigate("/login");
 }
 
 const errors: IErrors = {
-    401: () => {
-        return "Ошибка доступа"
-    },
-    404: () => {
-        return "Запрашиваемый ресурс не найден"
-    }
+    401: AuthFail,
 }
 
 export default errors

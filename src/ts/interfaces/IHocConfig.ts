@@ -1,13 +1,17 @@
 import {FC} from "react";
-import {HocProps} from "../types/HocProps";
-import {HocData} from "../types/HocData";
+import {HocPropsType} from "../types/HocPropsType";
+import {IRoute} from "./IRoute";
 
 export interface IHocParameter<T> {
     id: number,
-    value: FC<HocProps<T>>,
+    hoc: FC<HocPropsType<T>>,
 }
 
-export interface IHocConfig<T> {
-    hoc: FC<HocProps<T>> | IHocParameter<T>[],
-    data: HocData<T>[]
+export interface IHocConfig<T = undefined> {
+    id: number,
+    value: IHocParameter<T> | IHocParameter<T>[],
+    data: {id: number,
+        condition?: T,
+        routes: IRoute[]
+    }[]
 }

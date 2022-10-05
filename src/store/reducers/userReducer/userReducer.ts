@@ -1,10 +1,7 @@
-import {IUser} from "../../ts/interfaces/IUser";
-import {ProviderEnum, RoleEnum} from "../../config/authСonfig";
-
-interface UserAction {
-    type: UserActionTypes,
-    payload?: object
-}
+import {IUser} from "../../../ts/interfaces/IUser";
+import {ProviderEnum, RoleEnum} from "../../../config/authСonfig";
+import {UserActionTypes} from "./userActionTypes";
+import {IAction} from "../../../ts/interfaces/IAction";
 
 const initialState: IUser = {
     active: false,
@@ -30,28 +27,28 @@ const initialState: IUser = {
     provider: ProviderEnum.OPENEDU,
     role: RoleEnum.UNAUTHORIZED,
     username: "",
-    _id: ""
+    _id: "",
 }
 
-export enum UserActionTypes {
-    SET_USER = "SET_USER"
-}
 
-export const userReducer = (state: IUser = initialState, action: UserAction) => {
+export const userReducer = (state: IUser = initialState, action: IAction<UserActionTypes>) => {
     switch (action.type) {
         case UserActionTypes.SET_USER:
             return {
                 ...state,
-                ...action.payload
+                ...action.payload,
+            }
+        case UserActionTypes.UPDATE_USER:
+            return {
+                ...state,
+                ...action.payload,
+            }
+        case UserActionTypes.DROP_USER:
+            return {
+                ...state,
+                ...initialState,
             }
         default:
             return state
-    }
-}
-
-export function setUserActionCreator(payload: IUser) : UserAction{
-    return {
-        type: UserActionTypes.SET_USER,
-        payload: payload
     }
 }

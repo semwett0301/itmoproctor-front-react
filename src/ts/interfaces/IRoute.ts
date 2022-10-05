@@ -3,6 +3,6 @@ import {FC} from "react";
 export interface IRoute {
     id: number;
     path: string;
-    component: FC;
+    component?: FC;
     children?: IRoute[];
 }
