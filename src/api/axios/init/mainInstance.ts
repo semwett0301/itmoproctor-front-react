@@ -22,9 +22,9 @@ export default function (dispatch: AppDispatch, navigate: NavigateFunction) {
         return response
     }, (error => {
         dispatch(isLoadedActionCreator());
-        const status: keyof IErrors = error.response.status;
-        errors[status](dispatch, navigate);
-        return Promise.reject("Authorization fault")
+        const status: number = error.response.status;
+        if (status in Object.keys(errors)) errors[status](dispatch, navigate);
+        return Promise.reject(`${status} error`)
     }))
 
     return mainInstance;
