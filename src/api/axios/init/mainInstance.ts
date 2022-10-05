@@ -21,11 +21,10 @@ export default function (dispatch: AppDispatch, navigate: NavigateFunction) {
         dispatch(isLoadedActionCreator())
         return response
     }, (error => {
-        dispatch(isLoadedActionCreator())
-        return Promise.reject(() => {
-            const status: keyof IErrors = error.response.status;
-            errors[status](dispatch, navigate)
-        })
+        dispatch(isLoadedActionCreator());
+        const status: keyof IErrors = error.response.status;
+        errors[status](dispatch, navigate);
+        return Promise.reject("Authorization fault")
     }))
 
     return mainInstance;
