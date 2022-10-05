@@ -1,4 +1,4 @@
-import {RoleEnum} from "../../config/authСonfig";
+import {RoleEnum} from "./authСonfig";
 
 
 type MainRoutesConfig = {
