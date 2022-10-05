@@ -1,6 +1,6 @@
 import axios from "axios";
 import axiosConfig from "../../../config/axiosСonfig";
-import errors, {IErrors} from "./errors";
+import errors from "./errors";
 import {AppDispatch} from "../../../store";
 import {NavigateFunction} from "react-router-dom";
 import {isLoadedActionCreator, isLoadingActionCreator} from "../../../store/reducers/isLoading/isLoadingActionCreators";
