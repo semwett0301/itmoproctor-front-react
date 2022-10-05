@@ -27,7 +27,7 @@ const Sidebar: FC= () => {
                 />
 
                 <NavCollapse isOpen={expandSate}/>
-                <SidebarFooter flag={expandSate}/>
+                <SidebarFooter/>
             </Card>
 
     );
