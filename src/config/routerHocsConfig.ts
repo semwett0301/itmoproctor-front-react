@@ -55,9 +55,9 @@ const service: IHocConfig = {
 }
 
 // Сбор всех хок-конфигов
-const routerHocConfig: IHocConfig<any>[] = [
+const routerHocsConfig: IHocConfig<any>[] = [
     auth,
     service
 ]
 
-export default routerHocConfig;
+export default routerHocsConfig;
