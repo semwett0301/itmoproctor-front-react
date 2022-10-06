@@ -6,10 +6,7 @@ import notALogo from '../../../mockData/logos/NotALogo.png'
 import {Button} from "@consta/uikit/Button";
 import {Select} from "@consta/uikit/Select";
 import {useTranslation} from 'react-i18next';
-import {useAppDispatch} from "../../../hooks/reduxHooks";
-import {setUserActionCreator} from "../../../store/reducers/userReducer/userActionCreators";
-import {useRequest} from "../../../hooks/requestHooks";
-import {useNavigate} from "react-router-dom";
+import {useLogin} from "../../../hooks/authHooks";
 
 
 const AuthPage:FC = () => {
@@ -26,24 +23,13 @@ const AuthPage:FC = () => {
         return checkItem === undefined ? item : checkItem
     }
 
-    const request = useRequest();
-    const dispatch = useAppDispatch();
-    const navigate = useNavigate();
-
     const [username, setUsername] = useState<string | null>('');
     const loginChange = ({ value }: { value: string | null}) => setUsername(value);
 
     const [pass, setPass] = useState<string | null>('');
     const passChange = ({ value }: { value: string | null }) => setPass(value);
 
-    const login = () => {
-        if (username !== null && pass !== null) {
-            request.auth.login({username: username, password: pass}).then(r => {
-                dispatch(setUserActionCreator(r.data));
-                navigate("/");
-            })
-        }
-    }
+    const login = useLogin(username, pass);
 
     const { t, i18n } = useTranslation()
 

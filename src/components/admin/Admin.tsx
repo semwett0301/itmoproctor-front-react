@@ -5,7 +5,7 @@ import {Header, HeaderLogin, HeaderLogo, HeaderModule} from "@consta/uikit/Heade
 import logo from "../../mockData/logos/Group_12df.svg";
 import userLogo from "../../mockData/logos/UserLogo.png";
 import Sidebar from "./Sidebar/Sidebar";
-import {Outlet} from "react-router-dom";
+import {NavigateFunction, Outlet, useNavigate} from "react-router-dom";
 import {Card} from "@consta/uikit/Card";
 import {Tabs} from "@consta/uikit/Tabs";
 import TabWithCross from "./exams/components/TabWithCross/TabWithCross";
