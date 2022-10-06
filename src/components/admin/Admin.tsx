@@ -10,10 +10,18 @@ import {Card} from "@consta/uikit/Card";
 import {Tabs} from "@consta/uikit/Tabs";
 import TabWithCross from "./exams/components/TabWithCross/TabWithCross";
 import {TabItem} from "./exams/Exams";
+import {Button} from "@consta/uikit/Button";
+import {useRequest} from "../../hooks/requestHooks";
+import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks";
+import {IRequest} from "../../api/axios/request";
+import {AppDispatch} from "../../store";
+import {dropUserActionCreator} from "../../store/reducers/userReducer/userActionCreators";
+import {useLogout} from "../../hooks/authHooks";
 
 const Admin = () => {
     const [tabItems, setItems] = useState<TabItem[] | []>([{id: 100, title: 'Один'}]);
     const [value, setValue] = useState<TabItem | null>(null);
+    const [isLogged, setIsLogged] = useState<boolean>(true)
 
     const closeTab = (tabItem: TabItem) => {
         setItems(tabItems.filter(item => item.id !== tabItem.id))
@@ -27,6 +35,13 @@ const Admin = () => {
             return [...prevState]
         })
     }
+
+    const request: IRequest = useRequest();
+    const userId: string = useAppSelector(state => state.user._id)
+    const dispatch: AppDispatch = useAppDispatch();
+    const navigate: NavigateFunction = useNavigate();
+
+    const clickHandler = useLogout();
 
     return (
         <Layout className={cl.wrapper} direction={"column"}>
@@ -42,9 +57,12 @@ const Admin = () => {
                     }
                     rightSide={
                         <>
+                            <HeaderModule indent='m'>
+                                <Button label='Выход' onClick={clickHandler} view={'secondary'}/>
+                            </HeaderModule>
                             <HeaderModule>
                                 <HeaderLogin
-                                    isLogged={true}
+                                    isLogged={isLogged}
                                     personName="Наруто Удзумаки"
                                     personInfo="Хокаге"
                                     personStatus="available"
@@ -65,6 +83,7 @@ const Admin = () => {
                         className={cl.contentCard}
                     >
                         <Card verticalSpace={"s"} horizontalSpace={"s"} shadow={false}>
+
                             <Tabs
                                 value={value}
                                 onChange={({value}) => setValue(value)}
@@ -79,9 +98,10 @@ const Admin = () => {
                                     />
                                 )}
                             />
+
                         </Card>
 
-                        <Outlet/>
+                        <Outlet context={{openTab}}/>
 
                     </Card>
                 </Layout>

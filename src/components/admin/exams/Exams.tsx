@@ -4,6 +4,7 @@ import {Layout} from "@consta/uikit/Layout";
 import {Pagination} from "@consta/uikit/Pagination";
 import ExamTable from "./components/ExamTable/ExamTable";
 import FilterField from "./components/FilterField/FilterField";
+import {useOutletContext} from "react-router-dom";
 
 
 export interface TabItem {
@@ -11,8 +12,13 @@ export interface TabItem {
     title: string
 }
 
+interface ExamsProps{
+    openTab: (item:TabItem) => void
+}
 
-const Exams: FC = () => {
+const Exams:FC = () => {
+
+    const context = useOutletContext<ExamsProps>()
 
     return (
         <>
@@ -20,9 +26,7 @@ const Exams: FC = () => {
             <Layout className={cl.fillLayout}>
                 <div className={cl.card}>
                     <ExamTable
-                        onVideoBtnClick={(item: TabItem) => {
-                            console.log(item)
-                        }}
+                        onVideoBtnClick={context.openTab}
                     />
                 </div>
             </Layout>
