@@ -8,47 +8,54 @@ import { responseTableData } from '../../mockData/examTableData'
 import { Button } from '@consta/uikit/Button'
 import { IconVideo } from '@consta/uikit/IconVideo'
 import { IconBento } from '@consta/uikit/IconBento'
-import { TabItem } from '../../Exams'
+import { TabItem } from '../../../Admin'
 
 interface IExamTableProps {
-  onVideoBtnClick: (item: TabItem) => void
+   onVideoBtnClick: (item: TabItem) => void
 }
 
 const ExamTable: FC<IExamTableProps> = ({ onVideoBtnClick }) => {
-  const [fullRows, setFullRows] = useState<ITableColumns[]>([])
+   const [fullRows, setFullRows] = useState<ITableColumns[]>([])
 
-  useEffect(() => {
-    const obj = responseTableData.map((item) => {
-      return {
-        ...item,
-        check: <Checkbox checked={true} />,
-        video: (
-          <Button
-            size='xs'
-            onlyIcon
-            iconRight={IconVideo}
-            onClick={() => onVideoBtnClick({ id: +item.id, title: item.listener })}
-          />
-        ),
-        more: <Button size='xs' onlyIcon iconRight={IconBento} view='secondary' />,
-      }
-    })
+   useEffect(() => {
+      const obj = responseTableData.map((item) => {
+         return {
+            ...item,
+            check: <Checkbox checked={true} />,
+            video: (
+               <Button
+                  size='xs'
+                  onlyIcon
+                  iconRight={IconVideo}
+                  onClick={() =>
+                     onVideoBtnClick({
+                        id: +item.id,
+                        title: item.listener,
+                        path: 'exam',
+                        type: 'exam',
+                     })
+                  }
+               />
+            ),
+            more: <Button size='xs' onlyIcon iconRight={IconBento} view='secondary' />,
+         }
+      })
 
-    setFullRows(obj)
-  }, [])
+      setFullRows(obj)
+   }, [])
 
-  return (
-    <Table
-      size='s'
-      rows={fullRows}
-      columns={columns}
-      zebraStriped={'odd'}
-      borderBetweenColumns
-      borderBetweenRows
-      className={cl.table}
-      emptyRowsPlaceholder={<Text>Дата не пришла(</Text>}
-    />
-  )
+   return (
+      <Table
+         size='s'
+         rows={fullRows}
+         columns={columns}
+         zebraStriped={'odd'}
+         borderBetweenColumns
+         borderBetweenRows
+         className={cl.table}
+         emptyRowsPlaceholder={<Text>Дата не пришла(</Text>}
+      />
+   )
 }
 
 export default ExamTable
