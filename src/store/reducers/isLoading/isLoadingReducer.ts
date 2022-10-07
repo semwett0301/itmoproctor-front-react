@@ -1,7 +1,7 @@
 import {IAction} from "../../../ts/interfaces/IAction";
 import {IsLoadingActionTypes} from "./isLoadingActionTypes";
 
-export const isLoadingReducer = (state: boolean = true, action: IAction<IsLoadingActionTypes>) => {
+export const isLoadingReducer = (state = true, action: IAction<IsLoadingActionTypes>) => {
     switch (action.type) {
         case IsLoadingActionTypes.LOADING:
             return true;
