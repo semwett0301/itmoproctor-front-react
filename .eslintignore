@@ -1,0 +1,4 @@
+*.svg
+*.scss
+*.css
+.eslintrc.json

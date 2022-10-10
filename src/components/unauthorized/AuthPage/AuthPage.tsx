@@ -10,30 +10,6 @@ import {useLogin} from "../../../hooks/authHooks";
 
 
 const AuthPage:FC = () => {
-
-    const findLang = (name:string) =>{
-
-        let item: Item|null;
-        item = {
-            label: 'Русский',
-            id: 'ru'
-        }
-
-        const checkItem:any = items.find(item => item.id===name)
-        return checkItem === undefined ? item : checkItem
-    }
-
-    const [username, setUsername] = useState<string | null>('');
-    const loginChange = ({ value }: { value: string | null}) => setUsername(value);
-
-    const [pass, setPass] = useState<string | null>('');
-    const passChange = ({ value }: { value: string | null }) => setPass(value);
-
-    const login = useLogin(username, pass);
-
-    const { t, i18n } = useTranslation()
-
-
     type Item = {
         label: string;
         id: string;
@@ -49,6 +25,27 @@ const AuthPage:FC = () => {
             id: 'en'
         }
     ]
+
+    const findLang = (name:string) =>{
+        const item: Item|null = {
+            label: 'Русский',
+            id: 'ru'
+        }
+        const checkItem:any = items.find(i => i.id===name)
+        return checkItem === undefined ? item : checkItem
+    }
+
+    const [username, setUsername] = useState<string | null>('');
+    const loginChange = ({ value }: { value: string | null}) => setUsername(value);
+    const [pass, setPass] = useState<string | null>('');
+    const passChange = ({ value }: { value: string | null }) => setPass(value);
+
+    const login = useLogin(username, pass);
+
+    const { t, i18n } = useTranslation()
+
+
+
 
 
     const [lang, setLang] = useState<Item | null>(findLang(i18n.language))

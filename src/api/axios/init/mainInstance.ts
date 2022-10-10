@@ -28,4 +28,4 @@ export default function (dispatch: AppDispatch, navigate: NavigateFunction) {
     }))
 
     return mainInstance;
-};
+}

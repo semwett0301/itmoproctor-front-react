@@ -1,0 +1,66 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:react-hooks/recommended",
+        "prettier"
+    ],
+    "overrides": [
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "@typescript-eslint",
+        "react-hooks"
+    ],
+    "rules": {
+        "react/react-in-jsx-scope": "off",
+        "camelcase": "error",
+        "spaced-comment": "error",
+        "quotes": ["warn", "single", { "allowTemplateLiterals": true }],
+        "no-duplicate-imports": "error",
+
+        "react/prop-types": "off",
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn",
+        "no-use-before-define": "error",
+        "@typescript-eslint/no-use-before-define": ["error"],
+        "react/jsx-filename-extension": [ "warn", {"extensions": [".tsx"]} ],
+        "no-shadow": "off",
+        "@typescript-eslint/no-shadow": ["error"],
+        "no-fallthrough": "error",
+        "no-unused-vars": "warn",
+        "no-unreachable": "error",
+        "no-unused-labels": "error",
+
+        "@typescript-eslint/explicit-function-return-type": [
+            "warn",
+            {
+                "allowExpressions": true
+            }
+        ]
+    },
+    "settings": {
+        "import/resolver": {
+            "typescript": {}
+        },
+        "import/extensions": [
+            "error",
+            "ignorePackages",
+            {
+                "ts": "never",
+                "tsx": "never"
+            }
+        ]
+    },
+    "root": true
+}

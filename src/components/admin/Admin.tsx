@@ -1,113 +1,119 @@
-import React, {useState} from 'react';
-import {Layout} from "@consta/uikit/Layout";
-import cl from "./Admin.module.scss";
-import {Header, HeaderLogin, HeaderLogo, HeaderModule} from "@consta/uikit/Header";
-import logo from "../../mockData/logos/Group_12df.svg";
-import userLogo from "../../mockData/logos/UserLogo.png";
-import Sidebar from "./Sidebar/Sidebar";
-import {NavigateFunction, Outlet, useNavigate} from "react-router-dom";
-import {Card} from "@consta/uikit/Card";
-import {Tabs} from "@consta/uikit/Tabs";
-import TabWithCross from "./exams/components/TabWithCross/TabWithCross";
-import {TabItem} from "./exams/Exams";
-import {Button} from "@consta/uikit/Button";
-import {useRequest} from "../../hooks/requestHooks";
-import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks";
-import {IRequest} from "../../api/axios/request";
-import {AppDispatch} from "../../store";
-import {dropUserActionCreator} from "../../store/reducers/userReducer/userActionCreators";
-import {useLogout} from "../../hooks/authHooks";
+import React, { FC, useState } from 'react'
+import { Layout } from '@consta/uikit/Layout'
+import cl from './Admin.module.css'
+import { Header, HeaderLogin, HeaderLogo, HeaderModule } from '@consta/uikit/Header'
+import logo from '../../mockData/logos/Group_12df.svg'
+import userLogo from '../../mockData/logos/UserLogo.png'
+import Sidebar from './Sidebar/Sidebar'
+import { Outlet } from 'react-router-dom'
+import { Card } from '@consta/uikit/Card'
+import { Tabs } from '@consta/uikit/Tabs'
+import TabWithCross from './exams/components/TabWithCross/TabWithCross'
+import { Button } from '@consta/uikit/Button'
+import { useLogout } from '../../hooks/authHooks'
 
-const Admin = () => {
-    const [tabItems, setItems] = useState<TabItem[] | []>([{id: 100, title: 'Один'}]);
-    const [value, setValue] = useState<TabItem | null>(null);
-    const [isLogged, setIsLogged] = useState<boolean>(true)
+export interface TabItem {
+  id: number | string
+  title: string
+  path: string
+  type: 'tab' | 'exam'
+}
 
-    const closeTab = (tabItem: TabItem) => {
-        setItems(tabItems.filter(item => item.id !== tabItem.id))
-    }
+const Admin: FC = () => {
+  const [tabItems, setItems] = useState<TabItem[] | []>([
+    { id: 'exams', title: 'Экзамены', path: 'exams', type: 'tab' }
+  ])
 
-    const openTab = (item: TabItem) => {
-        setItems(prevState => {
-            if (!(prevState.find((i) => i.id === item.id))) {
-                return [...prevState, item]
-            }
-            return [...prevState]
-        })
-    }
+  const [activeTab, setActiveTab] = useState<TabItem | null>({
+    id: 'exams',
+    title: 'Экзамены',
+    path: 'exams',
+    type: 'tab'
+  })
+  const [isLogged] = useState<boolean>(true)
 
-    const request: IRequest = useRequest();
-    const userId: string = useAppSelector(state => state.user._id)
-    const dispatch: AppDispatch = useAppDispatch();
-    const navigate: NavigateFunction = useNavigate();
+  const closeTab = (tabItem: TabItem): void => {
+    setItems(tabItems.filter((item) => item.id !== tabItem.id))
+  }
 
-    const clickHandler = useLogout();
+  const openTab = (item: TabItem): void => {
+    setItems((prevState) => {
+      if (!prevState.find((i) => i.id === item.id)) {
+        setActiveTab(item)
+        return [...prevState, item]
+      } else {
+        setActiveTab(item)
+        return [...prevState]
+      }
+    })
+  }
 
-    return (
-        <Layout className={cl.wrapper} direction={"column"}>
-                <Header
-                    leftSide={
-                        <>
-                            <HeaderModule>
-                                <HeaderLogo>
-                                    <img src={logo} alt="LOGO"/>
-                                </HeaderLogo>
-                            </HeaderModule>
-                        </>
-                    }
-                    rightSide={
-                        <>
-                            <HeaderModule indent='m'>
-                                <Button label='Выход' onClick={clickHandler} view={'secondary'}/>
-                            </HeaderModule>
-                            <HeaderModule>
-                                <HeaderLogin
-                                    isLogged={isLogged}
-                                    personName="Наруто Удзумаки"
-                                    personInfo="Хокаге"
-                                    personStatus="available"
-                                    personAvatarUrl={userLogo}
-                                />
-                            </HeaderModule>
-                        </>
-                    }
+  const clickHandler = useLogout()
+
+  return (
+    <Layout className={cl.wrapper} direction={'column'}>
+      <Layout>
+        <Header
+          leftSide={
+            <>
+              <HeaderModule>
+                <HeaderLogo>
+                  <img src={logo} alt='LOGO' />
+                </HeaderLogo>
+              </HeaderModule>
+            </>
+          }
+          rightSide={
+            <>
+              <HeaderModule indent='m'>
+                <Button label='Выход' onClick={clickHandler} view={'secondary'} />
+              </HeaderModule>
+              <HeaderModule>
+                <HeaderLogin
+                  isLogged={isLogged}
+                  personName='Наруто Удзумаки'
+                  personInfo='Хокаге'
+                  personStatus='available'
+                  personAvatarUrl={userLogo}
                 />
+              </HeaderModule>
+            </>
+          }
+        />
+      </Layout>
 
-            <Layout className={cl.contentWrapper} direction="row">
-                <Layout className={cl.standardLayout}>
-                    <Sidebar/>
-                </Layout>
-
-                <Layout flex={1} className={cl.standardLayout} direction={"column"}>
-                    <Card
-                        className={cl.contentCard}
-                    >
-                        <Card verticalSpace={"s"} horizontalSpace={"s"} shadow={false}>
-
-                            <Tabs
-                                value={value}
-                                onChange={({value}) => setValue(value)}
-                                items={tabItems}
-                                getItemLabel={(item) => item.title}
-                                renderItem={({item, onChange, checked}) => (
-                                    <TabWithCross
-                                        item={item}
-                                        onChange={onChange}
-                                        checked={checked}
-                                        onCrossClick={closeTab}
-                                    />
-                                )}
-                            />
-
-                        </Card>
-
-                        <Outlet context={{openTab}}/>
-
-                    </Card>
-                </Layout>
-            </Layout>
+      <Layout className={cl.contentWrapper} direction='row'>
+        <Layout className={cl.standardLayout}>
+          <Sidebar addTab={openTab} />
         </Layout>
-    );
-};
 
-export default Admin;
+        <Layout flex={1} className={cl.standardLayout} direction={'column'}>
+          <Card className={cl.contentCard}>
+            <Card verticalSpace={'s'} horizontalSpace={'s'} shadow={false}>
+              <Tabs
+                value={activeTab}
+                onChange={({ value }) => setActiveTab(value)}
+                items={tabItems}
+                getItemLabel={(item) => item.title}
+                renderItem={({ item, onChange, checked }) => (
+                  <TabWithCross
+                    item={item}
+                    onChange={onChange}
+                    checked={checked}
+                    onCrossClick={closeTab}
+                  />
+                )}
+              />
+            </Card>
+
+            <div>
+              <Outlet context={{ openTab }} />
+            </div>
+          </Card>
+        </Layout>
+      </Layout>
+    </Layout>
+  )
+}
+
+export default Admin

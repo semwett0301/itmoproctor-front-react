@@ -1,15 +1,19 @@
-import React from 'react';
+import React, { FC } from 'react'
+import { Responses403 } from '@consta/uikit/Responses403'
 
-const AccessDenied = () => {
-    return (
-        <div style={{display: "flex", justifyContent: "center",
-            alignItems: "center"}}>
-            <h1 style={{font:"Roboto"}}>
-                403 Access Denied
-            </h1>
-        </div>
+const AccessDenied: FC = () => {
+      return (
+            <div
+                  style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginTop: '5em',
+                  }}
+            >
+                  <Responses403 />
+            </div>
+      )
+}
 
-    );
-};
-
-export default AccessDenied;
+export default AccessDenied
