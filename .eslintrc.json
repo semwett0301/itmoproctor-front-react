@@ -61,5 +61,6 @@
                 "tsx": "never"
             }
         ]
-    }
+    },
+    "root": true
 }
