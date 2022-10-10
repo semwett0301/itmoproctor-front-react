@@ -1,7 +1,7 @@
 import { AxiosInstance, AxiosResponse } from 'axios'
 import { IExams } from '../../../../ts/interfaces/IExams'
 
-interface filterInterface {
+export interface filterInterface {
   from: string
   to: string
   text: string

@@ -23,8 +23,6 @@ const Exams: FC = () => {
     }
 
     getExams().catch((e) => console.log(e))
-
-    console.log('Z')
   }, [])
 
   return (
