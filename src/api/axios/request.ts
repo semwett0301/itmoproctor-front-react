@@ -3,12 +3,12 @@ import auth, { IAuthAxios } from './modules/auth'
 import profile, { IProfileAxios } from './modules/profile'
 import { AppDispatch } from '../../store'
 import { NavigateFunction } from 'react-router-dom'
-import exams, { IExams } from './modules/admin/exams'
+import exams, { IExamsAxios } from './modules/admin/exams'
 
 export interface IRequest {
   auth: IAuthAxios
   profile: IProfileAxios
-  exams: IExams
+  exams: IExamsAxios
 }
 
 export function request(dispatch: AppDispatch, navigate: NavigateFunction): IRequest {
