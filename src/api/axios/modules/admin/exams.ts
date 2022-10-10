@@ -1,7 +1,7 @@
 import { AxiosInstance, AxiosResponse } from 'axios'
 import { IExams } from '../../../../ts/interfaces/IExams'
 
-interface filterInterface {
+export interface filterInterface {
   from: string
   to: string
   text: string
@@ -15,7 +15,7 @@ interface filterInterface {
 }
 
 export interface IExamsAxios {
-  getListOfOrganizations: (filter: filterInterface) => Promise<AxiosResponse<IExams>>
+  getListOfOrganizations: (filter?: filterInterface) => Promise<AxiosResponse<IExams>>
 }
 
 export default function (instance: AxiosInstance): IExamsAxios {

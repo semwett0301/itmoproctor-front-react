@@ -7,29 +7,29 @@ import FilterField from './components/FilterField/FilterField'
 import { useOutletContext } from 'react-router-dom'
 
 interface ExamsProps {
-   openTab: () => void
+  openTab: () => void
 }
 
 const Exams: FC = () => {
-   const context = useOutletContext<ExamsProps>()
+  const context = useOutletContext<ExamsProps>()
 
-   return (
-      <>
-         <FilterField />
-         <Layout className={cl.fillLayout}>
-            <div className={cl.card}>
-               <ExamTable onVideoBtnClick={context.openTab} />
-            </div>
-         </Layout>
+  return (
+    <>
+      <FilterField />
+      <Layout className={cl.fillLayout}>
+        <div className={cl.card}>
+          <ExamTable onVideoBtnClick={context.openTab} />
+        </div>
+      </Layout>
 
-         <Pagination
-            currentPage={1}
-            totalPages={2}
-            onChange={(item) => console.log(item)}
-            className={cl.minLayout}
-         />
-      </>
-   )
+      <Pagination
+        currentPage={1}
+        totalPages={2}
+        onChange={(item) => console.log(item)}
+        className={cl.minLayout}
+      />
+    </>
+  )
 }
 
 export default Exams

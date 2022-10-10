@@ -9,53 +9,80 @@ import { Button } from '@consta/uikit/Button'
 import { IconVideo } from '@consta/uikit/IconVideo'
 import { IconBento } from '@consta/uikit/IconBento'
 import { TabItem } from '../../../Admin'
+import { useRequest } from '../../../../../hooks/requestHooks'
+import axios, { AxiosResponse } from 'axios'
+import { IExams } from '../../../../../ts/interfaces/IExams'
+import { filterInterface } from '../../../../../api/axios/modules/admin/exams'
+import { data } from '@consta/uikit/__internal__/src/uiKit/components/ComponentsGridWithData/data'
+
+function getListOfExams(
+  filter: filterInterface = {
+    from: new Date().toISOString(),
+    to: new Date().toISOString(),
+    text: '',
+    status: null,
+    reset: null,
+    organizations: null,
+    myStudents: false,
+    async: null,
+    page: 1,
+    rows: 50
+  }
+): Promise<AxiosResponse<IExams>> {
+  return axios.get(`https://de-dev.itmo.ru/admin/exams`, { data: filter })
+}
 
 interface IExamTableProps {
-   onVideoBtnClick: (item: TabItem) => void
+  onVideoBtnClick: (item: TabItem) => void
 }
 
 const ExamTable: FC<IExamTableProps> = ({ onVideoBtnClick }) => {
-   const [fullRows, setFullRows] = useState<ITableColumns[]>([])
+  const [fullRows, setFullRows] = useState<ITableColumns[]>([])
 
-   useEffect(() => {
-      const obj = responseTableData.map((item) => {
-         return {
-            ...item,
-            check: <Checkbox checked={true} />,
-            video: (
-               <Button
-                  size='xs'
-                  onlyIcon
-                  iconRight={IconVideo}
-                  onClick={() =>
-                     onVideoBtnClick({
-                        id: +item.id,
-                        title: item.listener,
-                        path: 'exam',
-                        type: 'exam',
-                     })
-                  }
-               />
-            ),
-            more: <Button size='xs' onlyIcon iconRight={IconBento} view='secondary' />,
-         }
-      })
+  useEffect(() => {
+    const obj = responseTableData.map((item) => {
+      return {
+        ...item,
+        check: <Checkbox checked={true} />,
+        video: (
+          <Button
+            size='xs'
+            onlyIcon
+            iconRight={IconVideo}
+            onClick={() =>
+              onVideoBtnClick({
+                id: +item.id,
+                title: item.listener,
+                path: 'exam',
+                type: 'exam'
+              })
+            }
+          />
+        ),
+        more: <Button size='xs' onlyIcon iconRight={IconBento} view='secondary' />
+      }
+    })
 
-      setFullRows(obj)
-   }, [])
+    const req = async () => {
+      await getListOfExams().then((response) => console.log(response))
+    }
+    req()
 
-   return (
-      <Table
-         size='s'
-         rows={fullRows}
-         columns={columns}
-         zebraStriped={'odd'}
-         borderBetweenColumns
-         borderBetweenRows
-         className={cl.table}
-         emptyRowsPlaceholder={<Text>Дата не пришла(</Text>}
-      />
-   )
+    setFullRows(obj)
+  }, [])
+
+  return (
+    <Table
+      size='s'
+      rows={fullRows}
+      columns={columns}
+      zebraStriped={'odd'}
+      borderBetweenColumns
+      borderBetweenRows
+      className={cl.table}
+      emptyRowsPlaceholder={<Text>Дата не пришла(</Text>}
+    />
+  )
 }
 
 export default ExamTable
