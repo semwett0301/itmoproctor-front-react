@@ -16,10 +16,13 @@ function App() {
   useEffect(() => {
     const checkSession: () => Promise<void> = async () => {
       if (!userLoaded) {
-        await request.profile.getProfileBySession().then(async (r) => {
-          await dispatch(setUserActionCreator(r.data))
-        })
-        await dispatch(userLoadedActionCreator())
+        await request.profile
+          .getProfileBySession()
+          .then(async (r) => {
+            dispatch(setUserActionCreator(r.data))
+            dispatch(userLoadedActionCreator())
+          })
+          .catch(() => dispatch(userLoadedActionCreator()))
       }
     }
 
