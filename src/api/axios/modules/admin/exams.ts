@@ -15,12 +15,12 @@ export interface filterInterface {
 }
 
 export interface IExamsAxios {
-  getListOfOrganizations: (filter?: filterInterface) => Promise<AxiosResponse<IExams>>
+  getListOfExams: (filter?: filterInterface) => Promise<AxiosResponse<IExams>>
 }
 
 export default function (instance: AxiosInstance): IExamsAxios {
   return {
-    getListOfOrganizations(
+    getListOfExams(
       filter: filterInterface = {
         from: new Date().toISOString(),
         to: new Date().toISOString(),

@@ -1,6 +1,6 @@
 import axios from "axios";
 import axiosConfig from "../../../config/axiosСonfig";
-import errors, {IErrors} from "./errors";
+import errors from "./errors";
 import {AppDispatch} from "../../../store";
 import {NavigateFunction} from "react-router-dom";
 import {isLoadedActionCreator, isLoadingActionCreator} from "../../../store/reducers/isLoading/isLoadingActionCreators";
@@ -21,11 +21,10 @@ export default function (dispatch: AppDispatch, navigate: NavigateFunction) {
         dispatch(isLoadedActionCreator())
         return response
     }, (error => {
-        dispatch(isLoadedActionCreator())
-        return Promise.reject(() => {
-            const status: keyof IErrors = error.response.status;
-            errors[status](dispatch, navigate)
-        })
+        dispatch(isLoadedActionCreator());
+        const status: number = error.response.status;
+        if (status in Object.keys(errors)) errors[status](dispatch, navigate);
+        return Promise.reject(`${status} error`)
     }))
 
     return mainInstance;

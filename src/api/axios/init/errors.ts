@@ -2,7 +2,7 @@ import {dropUserActionCreator} from "../../../store/reducers/userReducer/userAct
 import {NavigateFunction} from "react-router-dom";
 import {AppDispatch} from "../../../store";
 
-export interface IErrors {
+interface IErrors {
     [key: number]: (dispatch: AppDispatch, navigate: NavigateFunction) => void
 }
 

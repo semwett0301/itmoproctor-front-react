@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { Theme, presetGpnDefault } from '@consta/uikit/Theme'
 import MainRouter from './router/MainRouter'
 import { useRequest } from './hooks/requestHooks'
@@ -14,19 +14,24 @@ function App() {
   const isLoading: boolean = useAppSelector((state) => state.isLoading)
 
   useEffect(() => {
-    const checkSession = async () => {
+    const checkSession: () => Promise<void> = async () => {
       if (!userLoaded) {
-        await request.profile.getProfileBySession().then((r) => {
-          dispatch(setUserActionCreator(r.data))
+        await request.profile.getProfileBySession().then(async (r) => {
+          await dispatch(setUserActionCreator(r.data))
         })
-        dispatch(userLoadedActionCreator())
+        await dispatch(userLoadedActionCreator())
       }
     }
 
     checkSession().catch((e) => console.log(e))
   }, [])
 
-  return <Theme preset={presetGpnDefault}>{!isLoading ? <MainRouter /> : <Loading />}</Theme>
+  return (
+    <Theme preset={presetGpnDefault}>
+      {isLoading ? <Loading /> : <></>}
+      {userLoaded ? <MainRouter /> : <></>}
+    </Theme>
+  )
 }
 
 export default App
