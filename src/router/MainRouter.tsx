@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react'
+import React, { FC } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { IRoute } from '../ts/interfaces/IRoute'
 import { IHocConfig, IHocParameter } from '../ts/interfaces/IHocConfig'

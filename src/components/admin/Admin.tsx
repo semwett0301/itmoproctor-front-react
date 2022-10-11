@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useState } from 'react'
 import { Layout } from '@consta/uikit/Layout'
 import cl from './Admin.module.css'
 import { Header, HeaderLogin, HeaderLogo, HeaderModule } from '@consta/uikit/Header'
@@ -11,7 +11,6 @@ import { Tabs } from '@consta/uikit/Tabs'
 import TabWithCross from './exams/components/TabWithCross/TabWithCross'
 import { Button } from '@consta/uikit/Button'
 import { useLogout } from '../../hooks/authHooks'
-import { useRequest } from '../../hooks/requestHooks'
 
 export interface TabItem {
   id: number | string

@@ -1,48 +1,17 @@
 import { IOrganization } from './IOrganization'
+import { ICourse } from './ICourse'
+import { IStudent } from './IStudent'
+import { IInspector } from './IInspector'
+import { IExpert } from './IExpert'
 
-export interface Course {
-  _id: string
-  accessAllowed: string[]
-  courseCode: string
-  sessionCode: string
-}
-
-export interface Student {
-  _id: string
-  username: string
-  lastname: string
-  firstname: string
-  middlename: string
-  email: string
-  provider: string
-  organization: string
-}
-
-export interface Inspector {
-  _id: string
-  username: string
-  lastname: string
-  firstname: string
-  middlename: string
-  organization: string
-}
-
-export interface Expert {
-  _id: string
-  username: string
-  lastname: string
-  firstname: string
-  middlename?: any
-}
-
-export interface IExamRow {
+interface IExamRow {
   _id: string
   examId: string
   organization: string
-  course: Course
+  course: ICourse
   assignment: string
   subject: string
-  student: Student
+  student: IStudent
   async: boolean
   duration: number
   leftDate: Date
@@ -50,13 +19,13 @@ export interface IExamRow {
   __v: number
   beginDate: Date
   endDate: Date
-  inspector: Inspector
+  inspector: IInspector
   startDate?: Date
   inspectorConnected: boolean
   stopDate?: Date
   comment: string
   examCode: string
-  expert: Expert
+  expert: IExpert
   note: string
   resolution?: boolean
   resolutionDate?: Date

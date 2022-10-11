@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo } from 'react'
-import { Theme, presetGpnDefault } from '@consta/uikit/Theme'
+import React, { FC, useEffect } from 'react'
+import { presetGpnDefault, Theme } from '@consta/uikit/Theme'
 import MainRouter from './router/MainRouter'
 import { useRequest } from './hooks/requestHooks'
 import { useAppDispatch, useAppSelector } from './hooks/reduxHooks'
@@ -7,7 +7,7 @@ import { setUserActionCreator } from './store/reducers/userReducer/userActionCre
 import { userLoadedActionCreator } from './store/reducers/userLoaded/userLoadedActionCreators'
 import Loading from './components/shared/loading/Loading'
 
-function App() {
+export const App: FC = () => {
   const request = useRequest()
   const dispatch = useAppDispatch()
   const userLoaded: boolean = useAppSelector((state) => state.userLoaded)
@@ -27,7 +27,7 @@ function App() {
     }
 
     checkSession().catch((e) => console.log(e))
-  }, [])
+  })
 
   return (
     <Theme preset={presetGpnDefault}>

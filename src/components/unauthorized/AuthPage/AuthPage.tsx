@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useState } from 'react'
 import classes from './AuthPage.module.scss'
 import { Card } from '@consta/uikit/Card'
 import { TextField } from '@consta/uikit/TextField'
@@ -25,12 +25,12 @@ const AuthPage: FC = () => {
     }
   ]
 
-  const findLang = (name: string) => {
-    const item: Item | null = {
+  const findLang: (name: string) => Item = (name) => {
+    const item: Item = {
       label: 'Русский',
       id: 'ru'
     }
-    const checkItem: any = items.find((i) => i.id === name)
+    const checkItem: Item | undefined = items.find((i) => i.id === name)
     return checkItem === undefined ? item : checkItem
   }
 
@@ -46,7 +46,7 @@ const AuthPage: FC = () => {
   const [lang, setLang] = useState<Item | null>(findLang(i18n.language))
   console.log()
 
-  const selectChangeHandler = (value: Item | null) => {
+  const selectChangeHandler: (value: Item | null) => void = (value) => {
     if (value !== null) {
       i18n.changeLanguage(value.id)
     }

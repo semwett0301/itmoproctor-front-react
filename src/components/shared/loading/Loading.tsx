@@ -1,12 +1,14 @@
-import React from 'react';
-import {ProgressSpin} from "@consta/uikit/ProgressSpin";
+import React, { FC } from 'react'
+import { ProgressSpin } from '@consta/uikit/ProgressSpin'
 
-const Loading = () => {
-    return (
-        <div style={{display: "flex", justifyContent: "center", alignItems: "center", height: "100vh"}}>
-            <ProgressSpin animation size="xl"/>
-        </div>
-    );
-};
+const Loading: FC = () => {
+  return (
+    <div
+      style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}
+    >
+      <ProgressSpin animation size='xl' />
+    </div>
+  )
+}
 
-export default Loading;
+export default Loading

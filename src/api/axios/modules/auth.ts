@@ -9,11 +9,11 @@ export interface IAuthAxios {
 
 export default function (instance: AxiosInstance): IAuthAxios {
   return {
-    login(data: ILogin): Promise<AxiosResponse<IUser>> {
+    login(data): Promise<AxiosResponse<IUser>> {
       return instance.post('/profile', data)
     },
-    logout(userId: string): Promise<AxiosResponse> {
+    logout(userId): Promise<AxiosResponse> {
       return instance.delete(`/profile/${userId}`)
-    },
+    }
   }
 }
