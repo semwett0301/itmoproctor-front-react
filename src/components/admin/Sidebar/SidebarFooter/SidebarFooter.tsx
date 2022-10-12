@@ -1,41 +1,29 @@
 import React, { FC } from 'react'
 import { NavLink } from 'react-router-dom'
-import { IconRestart } from '@consta/uikit/IconRestart'
 import { IconInfo } from '@consta/uikit/IconInfo'
 import { Card } from '@consta/uikit/Card'
 import cl from './SidebarFooter.module.scss'
+import { IconRing } from '@consta/uikit/IconRing'
+import { Button } from '@consta/uikit/Button'
 
 const SidebarFooter: FC = () => {
   return (
-    <div className={cl.sideFooter}>
+    <Card horizontalSpace='s' shadow={false} className={cl.sidebarFooter}>
       <NavLink to={'/update'} className={cl.link}>
-        <Card
-          horizontalSpace='xs' // {isOpen ? 'xs' : 'm'}
-          verticalSpace='xs'
-          shadow={false}
-          className={cl.linkContent}
-        >
-          <div className={cl.linkIcon}>
-            <IconRestart size='xs' />
-          </div>
-          Обновления
-        </Card>
+        <IconInfo size='xs' />
+        Обновления
       </NavLink>
 
-      <NavLink to={'/info'} className={cl.link}>
-        <Card
-          horizontalSpace='xs' // {isOpen ? 'xs' : 'm'}
-          verticalSpace='xs'
-          shadow={false}
-          className={cl.linkContent}
-        >
-          <div className={cl.linkIcon}>
-            <IconInfo size='xs' />
-          </div>
-          О системе
-        </Card>
+      <NavLink to={'/info'} className={cl.ringLink}>
+        <Button
+          onlyIcon={true}
+          iconRight={IconRing}
+          size={'xs'}
+          view={'clear'}
+          className={cl.ringButton}
+        />
       </NavLink>
-    </div>
+    </Card>
   )
 }
 

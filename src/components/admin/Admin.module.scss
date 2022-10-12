@@ -1,29 +1,29 @@
-.standardLayout{
-  padding-right:var(--space-xs);
+.standardLayout {
+  padding-right: var(--space-xs);
   box-sizing: border-box;
   height: 100%;
   display: flex;
 
-  &:last-child{
+  &:last-child {
     padding-right: 0;
+    width: 100%;
   }
 }
 
-.wrapper{
+.wrapper {
   width: 100%;
   height: 100vh;
   box-sizing: border-box;
 }
 
-.contentWrapper{
+.contentWrapper {
   box-sizing: border-box;
   padding: var(--space-xs);
-  height: 100%;
+  height: calc(100vh - 60px);
 }
 
-.contentCard{
-  box-sizing: content-box;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+.contentCard {
+  box-sizing: border-box;
+  height: inherit;
 }
+

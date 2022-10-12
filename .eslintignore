@@ -1,4 +1,5 @@
 *.svg
 *.scss
 *.css
+*.pcss
 .eslintrc.json

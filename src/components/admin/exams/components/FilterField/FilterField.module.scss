@@ -1,29 +1,17 @@
-.buttonGroup {
-  width: auto !important;
-  margin-left: var(--space-s)
-}
-
-.fieldsGroup {
-  flex-grow: 1;
-  flex-shrink: 0;
-  width: 100%;
-}
-
-.buttonGridItem {
-  width: auto;
-}
-
-.firstRow{
-  display: flex;
-  flex-wrap: nowrap;
-}
-
 .wrapper{
-  box-sizing: border-box;
   margin: var(--space-s);
-  margin-top: 0;
+  display: inline-flex;
+  row-gap: var(--space-s);
 }
 
-.searchField{
-  margin-left: var(--space-s);
+.rowWrapper{
+  display: inline-flex;
+  column-gap: var(--space-s);
+}
+.datePickerField{
+  width: 260px;
+}
+
+.contextMenu{
+  width: 126px !important;
 }

@@ -4,33 +4,11 @@ import cl from './ExamTable.module.scss'
 import { Checkbox } from '@consta/uikit/Checkbox'
 import { Text } from '@consta/uikit/Text'
 import { columns, ITableColumns } from './tableRowModel'
-import { responseTableData } from '../../mockData/examTableData'
 import { Button } from '@consta/uikit/Button'
 import { IconVideo } from '@consta/uikit/IconVideo'
 import { IconBento } from '@consta/uikit/IconBento'
 import { TabItem } from '../../../Admin'
 import { useRequest } from '../../../../../hooks/requestHooks'
-import axios, { AxiosResponse } from 'axios'
-import { IExams } from '../../../../../ts/interfaces/IExams'
-import { filterInterface } from '../../../../../api/axios/modules/admin/exams'
-import { data } from '@consta/uikit/__internal__/src/uiKit/components/ComponentsGridWithData/data'
-
-function getListOfExams(
-  filter: filterInterface = {
-    from: new Date().toISOString(),
-    to: new Date().toISOString(),
-    text: '',
-    status: null,
-    reset: null,
-    organizations: null,
-    myStudents: false,
-    async: null,
-    page: 1,
-    rows: 50
-  }
-): Promise<AxiosResponse<IExams>> {
-  return axios.get(`https://de-dev.itmo.ru/admin/exams`, { data: filter })
-}
 
 interface IExamTableProps {
   onVideoBtnClick: (item: TabItem) => void
@@ -38,41 +16,51 @@ interface IExamTableProps {
 
 const ExamTable: FC<IExamTableProps> = ({ onVideoBtnClick }) => {
   const [fullRows, setFullRows] = useState<ITableColumns[]>([])
+  const request = useRequest()
 
   useEffect(() => {
-    const obj = responseTableData.map((item) => {
-      return {
-        ...item,
-        check: <Checkbox checked={true} />,
-        video: (
-          <Button
-            size='xs'
-            onlyIcon
-            iconRight={IconVideo}
-            onClick={() =>
-              onVideoBtnClick({
-                id: +item.id,
-                title: item.listener,
-                path: 'exam',
-                type: 'exam'
-              })
-            }
-          />
-        ),
-        more: <Button size='xs' onlyIcon iconRight={IconBento} view='secondary' />
-      }
-    })
+    const getExams = async () => {
+      await request.exams.getListOfExams().then((r) => {
+        console.log(r.data.rows)
+        const obj = r.data.rows.map((item) => {
+          return {
+            id: item._id,
+            listener: item.student._id,
+            proctor: item.student._id,
+            exam: item.subject,
+            type: item.async,
+            start: item.startDate,
+            status: 'sdkhg',
+            check: <Checkbox checked={true} />,
+            video: (
+              <Button
+                size='xs'
+                onlyIcon
+                iconRight={IconVideo}
+                onClick={() =>
+                  onVideoBtnClick({
+                    id: item._id,
+                    title: item._id,
+                    path: `exam/${item._id}`,
+                    type: 'exam'
+                  })
+                }
+              />
+            ),
+            more: <Button size='xs' onlyIcon iconRight={IconBento} view='secondary' />
+          }
+        })
 
-    const req = async () => {
-      await getListOfExams().then((response) => console.log(response))
+        setFullRows(obj)
+      })
     }
-    req()
 
-    setFullRows(obj)
+    getExams().catch((e) => console.log(e))
   }, [])
 
   return (
     <Table
+      stickyHeader={true}
       size='s'
       rows={fullRows}
       columns={columns}

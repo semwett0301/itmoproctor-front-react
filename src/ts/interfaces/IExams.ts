@@ -47,7 +47,6 @@ export interface IExamRow {
   duration: number
   leftDate: Date
   rightDate: Date
-  __v: number
   beginDate: Date
   endDate: Date
   inspector: Inspector
