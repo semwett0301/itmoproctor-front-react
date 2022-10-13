@@ -2,19 +2,18 @@ import mainInstance from './init/mainInstance'
 import auth, { IAuthAxios } from './modules/auth'
 import profile, { IProfileAxios } from './modules/profile'
 import { AppDispatch } from '../../store'
-import { NavigateFunction } from 'react-router-dom'
 import exams, { IExamsAxios } from './modules/admin/exams'
 
-export interface IRequest {
+export interface IRequestAxios {
   auth: IAuthAxios
   profile: IProfileAxios
-  exams: IExamsAxios
+  exam: IExamsAxios
 }
 
-export function request(dispatch: AppDispatch, navigate: NavigateFunction): IRequest {
+export function request(dispatch: AppDispatch): IRequestAxios {
   return {
-    auth: auth(mainInstance(dispatch, navigate)),
-    profile: profile(mainInstance(dispatch, navigate)),
-    exams: exams(mainInstance(dispatch, navigate))
+    auth: auth(mainInstance(dispatch)),
+    profile: profile(mainInstance(dispatch)),
+    exam: exams(mainInstance(dispatch))
   }
 }

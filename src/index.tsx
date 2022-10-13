@@ -7,15 +7,12 @@ import store from './store'
 
 // import i18n (needs to be bundled ;))
 import './i18n/i18n'
-import { BrowserRouter } from 'react-router-dom'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 root.render(
   <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <App />
   </Provider>
 )
 

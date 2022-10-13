@@ -48,7 +48,7 @@ const AuthPage: FC = () => {
 
   const selectChangeHandler: (value: Item | null) => void = (value) => {
     if (value !== null) {
-      i18n.changeLanguage(value.id)
+      i18n.changeLanguage(value.id).then()
     }
     setLang(value)
   }

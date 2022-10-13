@@ -1,10 +1,8 @@
-import {IRequest, request} from "../api/axios/request";
-import {useAppDispatch} from "./reduxHooks";
-import {useNavigate} from "react-router-dom";
+import { IRequestAxios, request } from '../api/axios/request'
+import { useAppDispatch } from './reduxHooks'
 
-export const useRequest: () => IRequest = () => {
-    const dispatch = useAppDispatch();
-    const navigate = useNavigate();
+export const useRequest: () => IRequestAxios = () => {
+  const dispatch = useAppDispatch()
 
-    return request(dispatch, navigate);
+  return request(dispatch)
 }

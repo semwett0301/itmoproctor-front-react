@@ -6,8 +6,7 @@ import ExamTable from './components/ExamTable/ExamTable'
 import FilterField from './components/FilterField/FilterField'
 import { useOutletContext } from 'react-router-dom'
 import { useRequest } from '../../../hooks/requestHooks'
-import { setUserActionCreator } from '../../../store/reducers/userReducer/userActionCreators'
-import { userLoadedActionCreator } from '../../../store/reducers/userLoaded/userLoadedActionCreators'
+import { useSocket } from '../../../hooks/socketHooks'
 
 interface ExamsProps {
   openTab: () => void
@@ -16,13 +15,17 @@ interface ExamsProps {
 const Exams: FC = () => {
   const context = useOutletContext<ExamsProps>()
   const request = useRequest()
+  const socket = useSocket()
 
   useEffect(() => {
-    const getExams = async () => {
-      await request.exams.getListOfExams().then((r) => console.log(r))
+    const getExams: () => Promise<void> = async () => {
+      await request.exam.getListOfExams().then((r) => console.log(r))
     }
 
-    getExams().catch((e) => console.log(e))
+    getExams().then()
+    socket.exam.examChange((e) => {
+      console.log(e)
+    })
   }, [])
 
   return (

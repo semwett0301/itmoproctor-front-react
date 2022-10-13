@@ -1,3 +1,3 @@
-export type HocPropsType<T = undefined> = {
-    condition?: T
+export type HocPropsType<T> = {
+  condition?: T
 }

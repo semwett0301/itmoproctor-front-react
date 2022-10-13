@@ -1,4 +1,4 @@
-import { IRequest } from '../api/axios/request'
+import { IRequestAxios } from '../api/axios/request'
 import { useAppDispatch, useAppSelector } from './reduxHooks'
 import { Location, NavigateFunction, useLocation, useNavigate } from 'react-router-dom'
 import { useRequest } from './requestHooks'
@@ -11,7 +11,7 @@ import {
 type LogPass = string | null
 
 export const useLogout: () => () => void = () => {
-  const request: IRequest = useRequest()
+  const request: IRequestAxios = useRequest()
   const userId: string = useAppSelector((state) => state.user._id)
   const dispatch: AppDispatch = useAppDispatch()
   const navigate: NavigateFunction = useNavigate()
@@ -28,7 +28,7 @@ export const useLogin: (username: LogPass, password: LogPass) => () => void = (
   username: string | null,
   password: string | null
 ) => {
-  const request: IRequest = useRequest()
+  const request: IRequestAxios = useRequest()
   const dispatch: AppDispatch = useAppDispatch()
   const navigateFunction: NavigateFunction = useNavigate()
   const location: Location = useLocation()

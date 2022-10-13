@@ -9,11 +9,9 @@ import { Button } from '@consta/uikit/Button'
 import { IconVideo } from '@consta/uikit/IconVideo'
 import { IconBento } from '@consta/uikit/IconBento'
 import { TabItem } from '../../../Admin'
-import { useRequest } from '../../../../../hooks/requestHooks'
 import axios, { AxiosResponse } from 'axios'
 import { IExams } from '../../../../../ts/interfaces/IExams'
 import { filterInterface } from '../../../../../api/axios/modules/admin/exams'
-import { data } from '@consta/uikit/__internal__/src/uiKit/components/ComponentsGridWithData/data'
 
 function getListOfExams(
   filter: filterInterface = {
@@ -62,11 +60,6 @@ const ExamTable: FC<IExamTableProps> = ({ onVideoBtnClick }) => {
         more: <Button size='xs' onlyIcon iconRight={IconBento} view='secondary' />
       }
     })
-
-    const req = async () => {
-      await getListOfExams().then((response) => console.log(response))
-    }
-    req()
 
     setFullRows(obj)
   }, [])

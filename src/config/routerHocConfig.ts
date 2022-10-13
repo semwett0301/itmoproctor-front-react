@@ -7,6 +7,7 @@ import { unauthorizedRoutes } from '../router/modules/unauthorizedRoutes'
 import { studentRoutes } from '../router/modules/studentRoutes'
 import { serviceRoutes } from '../router/modules/serviceRoutes'
 import { adminRoutes } from '../router/modules/adminRoutes'
+import { HocConfig } from '../ts/types/HocConfig'
 
 // Генерирование хок-конфигов в соответствии с конкретным условием (RoleEnum, boolean, etc)
 const auth: IHocConfig<RoleEnum> = {
@@ -39,7 +40,7 @@ const auth: IHocConfig<RoleEnum> = {
   ]
 }
 
-const service: IHocConfig = {
+const service: IHocConfig<RoleEnum> = {
   id: 2,
   value: {
     id: 1,
@@ -54,6 +55,6 @@ const service: IHocConfig = {
 }
 
 // Сбор всех хок-конфигов
-const routerHocsConfig: (IHocConfig | IHocConfig<RoleEnum>)[] = [auth, service]
+const routerHocConfig: HocConfig[] = [auth, service]
 
-export default routerHocsConfig
+export default routerHocConfig
