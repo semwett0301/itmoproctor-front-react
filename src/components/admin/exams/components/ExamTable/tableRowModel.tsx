@@ -8,7 +8,7 @@ export interface ITableColumns {
   listener: string
   proctor: string
   exam: string
-  type: boolean
+  type: ReactNode
   start: Date | undefined
   status: ReactNode
   video: ReactNode

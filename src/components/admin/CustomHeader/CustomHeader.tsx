@@ -35,11 +35,11 @@ const CustomHeader: FC = () => {
       rightSide={
         <>
           <HeaderModule indent={'m'} className={cl.timeDateModule}>
-            <IconWatch />
+            <IconCalendar />
             <Text>{currentTime.toLocaleDateString()}</Text>
           </HeaderModule>
           <HeaderModule indent={'m'} className={cl.timeDateModule}>
-            <IconCalendar />
+            <IconWatch />
             <Text>{currentTime.toLocaleTimeString()}</Text>
           </HeaderModule>
           <HeaderModule indent='m'>

@@ -26,23 +26,23 @@ type status = {
 }
 
 type statusesDeclaration = {
-  [key in BadgePropStatus]: status
+  [key: string]: status
 }
 
 const statuses: statusesDeclaration = {
-  unplanned: { label: 'Не запланирован', className: cl.succes },
-  missed: { label: 'Пропущен', className: cl.succes },
-  planned: { label: 'Запланирован', className: cl.succes },
+  unplanned: { label: 'Не запланирован', className: cl.unplanned },
+  missed: { label: 'Пропущен', className: cl.missed },
+  planned: { label: 'Запланирован', className: cl.planned },
   success: { label: 'Принят', className: cl.success },
   waiting: { label: 'Ожидает ', className: cl.waiting },
-  conclusionWaiting: { label: 'Ожидает заключение', className: cl.succes },
-  async: { label: 'Асинхронно', className: cl.succes },
-  withProctor: { label: 'С проктором', className: cl.succes },
-  forming: { label: 'Формируется', className: cl.succes },
-  review: { label: 'На проверке', className: cl.succes },
-  withoutProctor: { label: 'Без проктора', className: cl.succes },
-  rejected: { label: 'Отклонен', className: cl.succes },
-  noAppearance: { label: 'Неявка', className: cl.succes }
+  conclusionWaiting: { label: 'Ожидает заключение', className: cl.conclusionWaiting },
+  async: { label: 'Асинхронно', className: cl.async },
+  withProctor: { label: 'С проктором', className: cl.withProctor },
+  forming: { label: 'Формируется', className: cl.forming },
+  review: { label: 'На проверке', className: cl.review },
+  withoutProctor: { label: 'Без проктора', className: cl.withoutProctor },
+  rejected: { label: 'Отклонен', className: cl.rejected },
+  noAppearance: { label: 'Неявка', className: cl.noAppearance }
 }
 
 interface StatusBadgeProps {

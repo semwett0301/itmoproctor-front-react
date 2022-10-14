@@ -48,6 +48,71 @@ const statusList: DefaultItem[] = [
     label: 'Кроме запланированных',
     id: 2,
     disabled: false
+  },
+  {
+    label: 'Не запланирован',
+    id: 3,
+    disabled: false
+  },
+  {
+    label: 'Запланирован',
+    id: 4,
+    disabled: false
+  },
+  {
+    label: 'Ожидает',
+    id: 5,
+    disabled: false
+  },
+  {
+    label: 'Идет (без проктора)',
+    id: 6,
+    disabled: false
+  },
+  {
+    label: 'Идет (с проктором)',
+    id: 7,
+    disabled: false
+  },
+  {
+    label: 'Идет (асинхронно)',
+    id: 8,
+    disabled: false
+  },
+  {
+    label: 'Формируется протокол',
+    id: 9,
+    disabled: false
+  },
+  {
+    label: 'Ожидается заключение',
+    id: 10,
+    disabled: false
+  },
+  {
+    label: 'На проверке',
+    id: 11,
+    disabled: false
+  },
+  {
+    label: 'Принят',
+    id: 12,
+    disabled: false
+  },
+  {
+    label: 'Прерван',
+    id: 13,
+    disabled: false
+  },
+  {
+    label: 'Пропущен',
+    id: 14,
+    disabled: false
+  },
+  {
+    label: 'Неявка',
+    id: 15,
+    disabled: false
   }
 ]
 
@@ -82,11 +147,12 @@ const FilterField: FC = () => {
 
   const [examType, setExamType] = useState<DefaultItem | null>()
   const [organizations, setOrganizations] = useState<DefaultItem[] | null>([organizationsList[0]])
-  const [status, setStatus] = useState<DefaultItem[] | null>([statusList[0]])
+  const [status, setStatus] = useState<DefaultItem[] | null>([statusList[1]])
 
   const tooltipAnchor = useRef<HTMLButtonElement>(null)
   const [isPopoverVisible, setIsPopoverVisible] = useState(false)
 
+  const [searchField, setSearchField] = useState<string | null>(null)
   const tooltipAnchorOnClick = (): void => {
     setIsPopoverVisible(!isPopoverVisible)
   }
@@ -117,6 +183,8 @@ const FilterField: FC = () => {
 
         <Layout flex={1}>
           <TextField
+            onChange={({ value }) => setSearchField(value)}
+            value={searchField}
             placeholder='Поиск по экзамену'
             leftSide={IconSearch}
             width={'full'}
@@ -158,6 +226,7 @@ const FilterField: FC = () => {
 
         <Layout flex={3}>
           <Combobox
+            placeholder={'Статус'}
             className={cl.combobox}
             items={statusList}
             multiple={true}
@@ -165,11 +234,11 @@ const FilterField: FC = () => {
             onChange={({ value }) => setStatus(value)}
             renderValue={(props) => (
               <Tag
+                className={cl.selectTag}
                 key={props.item.id}
                 mode={'cancel'}
                 label={props.item.label}
                 size={'s'}
-                className={cl.selectTag}
                 onCancel={() => {
                   setStatus((prevState) => {
                     const newState = prevState?.filter((value) => value.id !== props.item.id)

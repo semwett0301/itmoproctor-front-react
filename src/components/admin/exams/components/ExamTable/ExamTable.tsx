@@ -10,6 +10,7 @@ import { IconBento } from '@consta/uikit/IconBento'
 import { TabItem } from '../../../Admin'
 import { useRequest } from '../../../../../hooks/requestHooks'
 import StatusBadge from '../StatusBadge/StatusBadge'
+import TypeBadge from '../TypeBadge/TypeBadge'
 
 interface IExamTableProps {
   onVideoBtnClick: (item: TabItem) => void
@@ -29,7 +30,7 @@ const ExamTable: FC<IExamTableProps> = ({ onVideoBtnClick }) => {
             listener: item.student._id,
             proctor: item.student._id,
             exam: item.subject,
-            type: item.async,
+            type: <TypeBadge async={item.async} />,
             start: item.startDate,
             status: <StatusBadge status={'success'} />,
             check: <Checkbox checked={true} />,
@@ -61,6 +62,7 @@ const ExamTable: FC<IExamTableProps> = ({ onVideoBtnClick }) => {
 
   return (
     <Table
+      getCellWrap={(row) => 'truncate'}
       stickyHeader={true}
       size='s'
       rows={fullRows}

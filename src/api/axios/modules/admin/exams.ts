@@ -31,7 +31,7 @@ export default function (instance: AxiosInstance): IExamsAxios {
         myStudents: false,
         async: null,
         page: 1,
-        rows: 2
+        rows: 10
       }
     ): Promise<AxiosResponse<IExams>> {
       console.log(filter)
