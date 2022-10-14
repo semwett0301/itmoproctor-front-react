@@ -8,6 +8,7 @@ import { Card } from '@consta/uikit/Card'
 import { Outlet, useNavigate } from 'react-router-dom'
 import CustomHeader from './CustomHeader/CustomHeader'
 
+
 export interface TabItem {
   id: number | string
   title: string

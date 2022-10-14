@@ -9,5 +9,5 @@ export const mainRoutesConfig: MainRoutesConfig = {
   0: '/login',
   1: '/student',
   2: '/proctor',
-  3: '/admin'
+  3: '/admin/exams'
 }

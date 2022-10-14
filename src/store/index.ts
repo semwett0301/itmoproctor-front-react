@@ -1,11 +1,7 @@
-import {createStore} from "redux";
-import {combineReducer} from "./reducers/combineReducer";
+import { createStore } from 'redux'
+import { combineReducer } from './reducers/combineReducer'
 
-
-
-export const store = createStore(
-    combineReducer,
-)
+export const store = createStore(combineReducer)
 
 export default store
 

@@ -1,5 +1,6 @@
 import { AxiosInstance, AxiosResponse } from 'axios'
 import { IExams } from '../../../../ts/interfaces/IExams'
+import axiosConfig from '../../../../config/axiosСonfig'
 
 export interface filterInterface {
   from: string
@@ -34,8 +35,7 @@ export default function (instance: AxiosInstance): IExamsAxios {
         rows: 10
       }
     ): Promise<AxiosResponse<IExams>> {
-      console.log(filter)
-      return instance.get(`admin/exams`, { params: filter })
+      return instance.get(`${axiosConfig.adminUrl}/exams`, { params: filter })
     }
   }
 }

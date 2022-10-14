@@ -13,7 +13,6 @@ interface ExamsProps {
 
 const Exams: FC = () => {
   const context = useOutletContext<ExamsProps>()
-
   const amountOfRowsVariants: DefaultItem[] = [
     {
       label: '5',
@@ -68,6 +67,7 @@ const Exams: FC = () => {
       values: ['Shift', 'ArrowRight']
     }
   }
+
 
   return (
     <div className={cl.examTableModule}>
