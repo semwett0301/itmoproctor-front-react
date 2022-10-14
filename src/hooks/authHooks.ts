@@ -8,6 +8,7 @@ import {
   setUserActionCreator
 } from '../store/reducers/userReducer/userActionCreators'
 
+
 type LogPass = string | null
 
 export const useLogout: () => () => void = () => {

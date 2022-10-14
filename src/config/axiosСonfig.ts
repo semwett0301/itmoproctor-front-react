@@ -2,6 +2,7 @@ import { AxiosRequestHeaders } from 'axios'
 
 interface IAxiosConfig {
   baseUrl: string
+
   authUrl: string
   adminUrl: string
   baseHeaders: AxiosRequestHeaders

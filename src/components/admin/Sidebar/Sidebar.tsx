@@ -10,37 +10,49 @@ import SidebarFooter from './SidebarFooter/SidebarFooter'
 import { TabItem } from '../Admin'
 
 interface SideBarProps {
-   addTab: (item: TabItem) => void
+  addTab: (item: TabItem) => void
 }
 
 const Sidebar: FC<SideBarProps> = ({ addTab }) => {
-   const [expandSate, setExpandState] = useState<boolean>(true)
+  const [expandSate, setExpandState] = useState<boolean>(true)
+  const { themeClassNames } = useTheme()
 
-   const { themeClassNames } = useTheme()
-   return (
-      <Card
-         className={classWatcher(
-            expandSate,
-            cl.expand,
-            cl.collapse,
-            cl.sidebar,
-            themeClassNames.color.invert,
-         )}
-      >
-         <Button
-            className={classWatcher(expandSate, cl.sideBtnActive, cl.sideBtnCollapse, cl.sideBtn)}
-            onlyIcon={true}
-            iconLeft={IconArrowRight}
-            iconSize='xs'
-            form='round'
-            size='xs'
-            onClick={() => setExpandState(!expandSate)}
-         />
+  interface func {
+    res: (item: boolean) => void
+  }
 
-         <NavCollapse isOpen={expandSate} addTab={addTab} />
-         <SidebarFooter />
-      </Card>
-   )
+  const obj: func = {
+    res: (item: boolean) => {
+      console.log(item)
+    }
+  }
+
+  obj.res(false)
+
+  return (
+    <Card
+      className={classWatcher(
+        expandSate,
+        cl.expand,
+        cl.collapse,
+        cl.sidebar,
+        themeClassNames.color.invert
+      )}
+    >
+      <Button
+        className={classWatcher(expandSate, cl.sideBtnActive, cl.sideBtnCollapse, cl.sideBtn)}
+        onlyIcon={true}
+        iconLeft={IconArrowRight}
+        iconSize='xs'
+        form='round'
+        size='xs'
+        onClick={() => setExpandState(!expandSate)}
+      />
+
+      <NavCollapse isOpen={expandSate} addTab={addTab} />
+      <SidebarFooter />
+    </Card>
+  )
 }
 
 export default Sidebar

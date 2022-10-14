@@ -16,7 +16,6 @@ export interface IExam {
   duration: number
   leftDate: Date
   rightDate: Date
-  __v: number
   beginDate: Date
   endDate: Date
   inspector: IInspector

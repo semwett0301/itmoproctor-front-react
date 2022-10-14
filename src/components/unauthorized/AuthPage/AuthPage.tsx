@@ -25,8 +25,9 @@ const AuthPage: FC = () => {
     }
   ]
 
-  const findLang: (name: string) => Item = (name) => {
-    const item: Item = {
+  const findLang = (name: string): Item => {
+    const item: Item | null = {
+
       label: 'Русский',
       id: 'ru'
     }
@@ -35,9 +36,9 @@ const AuthPage: FC = () => {
   }
 
   const [username, setUsername] = useState<string | null>('')
-  const loginChange = ({ value }: { value: string | null }) => setUsername(value)
+  const loginChange = ({ value }: { value: string | null }): void => setUsername(value)
   const [pass, setPass] = useState<string | null>('')
-  const passChange = ({ value }: { value: string | null }) => setPass(value)
+  const passChange = ({ value }: { value: string | null }): void => setPass(value)
 
   const login = useLogin(username, pass)
 
@@ -46,7 +47,8 @@ const AuthPage: FC = () => {
   const [lang, setLang] = useState<Item | null>(findLang(i18n.language))
   console.log()
 
-  const selectChangeHandler: (value: Item | null) => void = (value) => {
+  const selectChangeHandler = (value: Item | null): void => {
+
     if (value !== null) {
       i18n.changeLanguage(value.id).then()
     }
