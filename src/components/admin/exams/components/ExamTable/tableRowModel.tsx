@@ -10,7 +10,7 @@ export interface ITableColumns {
   exam: string
   type: boolean
   start: Date | undefined
-  status: string
+  status: ReactNode
   video: ReactNode
   more: ReactNode
 }
@@ -55,7 +55,7 @@ export const columns: TableColumn<ITableColumns>[] = [
   {
     title: 'Статус',
     accessor: 'status',
-    align: 'left'
+    align: 'center'
   },
   {
     title: '',

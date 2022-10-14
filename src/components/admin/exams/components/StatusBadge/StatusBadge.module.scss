@@ -1,0 +1,55 @@
+@import "StatusBadgeVars";
+
+.unplanned{
+  color: $color-unplanned;
+  box-shadow:inset 0 0 0 1px $color-unplanned;
+}
+.missed{
+  color: $color-missed;
+  box-shadow:inset 0 0 0 1px $color-missed;
+}
+.planned{
+  color: $color-planned;
+  box-shadow:inset 0 0 0 1px $color-planned;
+}
+.success{
+  color: $color-success;
+  box-shadow:inset 0 0 0 1px $color-success;
+}
+
+.waiting{
+  color: $color-waiting;
+  box-shadow:inset 0 0 0 1px $color-waiting;
+}
+.conclusionWaiting{
+  color: $color-conclusionWaiting;
+  box-shadow:inset 0 0 0 1px $color-conclusionWaiting;
+}
+.async{
+  color: $color-async;
+  box-shadow:inset 0 0 0 1px $color-async;
+}
+.withProctor{
+  color: $color-withProctor;
+  box-shadow:inset 0 0 0 1px $color-withProctor;
+}
+.forming{
+  color: $color-forming;
+  box-shadow:inset 0 0 0 1px $color-forming;
+}
+.review{
+  color: $color-review;
+  box-shadow:inset 0 0 0 1px $color-review;
+}
+.withoutProctor{
+  color: $color-withoutProctor;
+  box-shadow:inset 0 0 0 1px $color-withoutProctor;
+}
+.rejected{
+  color: $color-rejected;
+  box-shadow:inset 0 0 0 1px $color-rejected;
+}
+.noAppearance{
+  color: $color-noAppearance;
+  box-shadow:inset 0 0 0 1px $color-noAppearance;
+}

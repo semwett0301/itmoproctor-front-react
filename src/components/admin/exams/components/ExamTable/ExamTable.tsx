@@ -9,6 +9,7 @@ import { IconVideo } from '@consta/uikit/IconVideo'
 import { IconBento } from '@consta/uikit/IconBento'
 import { TabItem } from '../../../Admin'
 import { useRequest } from '../../../../../hooks/requestHooks'
+import StatusBadge from '../StatusBadge/StatusBadge'
 
 interface IExamTableProps {
   onVideoBtnClick: (item: TabItem) => void
@@ -30,7 +31,7 @@ const ExamTable: FC<IExamTableProps> = ({ onVideoBtnClick }) => {
             exam: item.subject,
             type: item.async,
             start: item.startDate,
-            status: 'sdkhg',
+            status: <StatusBadge status={'success'} />,
             check: <Checkbox checked={true} />,
             video: (
               <Button

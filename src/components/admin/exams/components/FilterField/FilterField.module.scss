@@ -1,17 +1,31 @@
-.wrapper{
+.wrapper {
   margin: var(--space-s);
   display: inline-flex;
   row-gap: var(--space-s);
 }
 
-.rowWrapper{
+.rowWrapper {
   display: inline-flex;
   column-gap: var(--space-s);
 }
-.datePickerField{
+
+.datePickerField {
   width: 260px;
 }
 
-.contextMenu{
+.contextMenu {
   width: 126px !important;
+}
+
+.yellow {
+  color: yellow;
+}
+
+.combobox {
+  height: 50px;
+  overflow: hidden;
+}
+
+.selectTag {
+  background-color: rgba(#54B309, .2);
 }

@@ -19,6 +19,8 @@ import { IconDocExport } from '@consta/uikit/IconDocExport'
 import { IconUpload } from '@consta/uikit/IconUpload'
 import { IconTrash } from '@consta/uikit/IconTrash'
 import { Combobox } from '@consta/uikit/Combobox'
+import { SelectItem } from '@consta/uikit/__internal__/src/components/SelectComponents/SelectItem/SelectItem'
+import { Tag } from '@consta/uikit/Tag'
 
 type contextMenuItem = {
   label: string
@@ -36,15 +38,51 @@ const organizationsList: DefaultItem[] = [
   }
 ]
 
+const statusList: DefaultItem[] = [
+  {
+    label: 'Любой статус',
+    id: 1,
+    disabled: false
+  },
+  {
+    label: 'Кроме запланированных',
+    id: 2,
+    disabled: false
+  }
+]
+
+const typesList: DefaultItem[] = [
+  {
+    label: 'Любой тип',
+    id: 1
+  },
+  {
+    label: 'Асинхронный',
+    id: 2
+  },
+  {
+    label: 'Синхроннный',
+    id: 3
+  }
+]
+
+const contextMenuItems: contextMenuItem[] = [
+  { label: 'Добавить', iconLeft: IconAdd },
+  { label: 'Изменить', iconLeft: IconEdit },
+  { label: 'Сбросить', iconLeft: IconRevert },
+  { label: 'Дублировать', iconLeft: IconCopy },
+  { label: 'Скачать (csv)', iconLeft: IconDocExport },
+  { label: 'Импорт', iconLeft: IconUpload },
+  { label: 'Удалить', iconLeft: IconTrash }
+]
+
 const FilterField: FC = () => {
-  const [startDate, setStartDate] = useState<Date | null>(null)
-  const [endDate, setEndDate] = useState<Date | null>(null)
+  const [startDate, setStartDate] = useState<Date | undefined | null>(null)
+  const [endDate, setEndDate] = useState<Date | undefined | null>(null)
 
   const [examType, setExamType] = useState<DefaultItem | null>()
-
   const [organizations, setOrganizations] = useState<DefaultItem[] | null>([organizationsList[0]])
-
-  const [buttonDisabled, setButtonDisabled] = useState<boolean>(true)
+  const [status, setStatus] = useState<DefaultItem[] | null>([statusList[0]])
 
   const tooltipAnchor = useRef<HTMLButtonElement>(null)
   const [isPopoverVisible, setIsPopoverVisible] = useState(false)
@@ -52,16 +90,6 @@ const FilterField: FC = () => {
   const tooltipAnchorOnClick = (): void => {
     setIsPopoverVisible(!isPopoverVisible)
   }
-
-  const contextMenuItems: contextMenuItem[] = [
-    { label: 'Добавить', iconLeft: IconAdd },
-    { label: 'Изменить', iconLeft: IconEdit },
-    { label: 'Сбросить', iconLeft: IconRevert },
-    { label: 'Дублировать', iconLeft: IconCopy },
-    { label: 'Скачать (csv)', iconLeft: IconDocExport },
-    { label: 'Импорт', iconLeft: IconUpload },
-    { label: 'Удалить', iconLeft: IconTrash }
-  ]
 
   return (
     <Layout direction='column' className={cl.wrapper}>
@@ -71,12 +99,16 @@ const FilterField: FC = () => {
             <DatePicker
               value={startDate}
               onChange={({ value }) => setStartDate(value)}
+              minDate={startDate as Date}
+              maxDate={endDate as Date}
               rightSide={IconCalendar}
               size={'s'}
             />
             <DatePicker
               value={endDate}
               onChange={({ value }) => setEndDate(value)}
+              minDate={startDate as Date}
+              maxDate={endDate as Date}
               rightSide={IconCalendar}
               size={'s'}
             />
@@ -116,7 +148,8 @@ const FilterField: FC = () => {
       <Layout direction={'row'} className={cl.rowWrapper}>
         <Layout flex={2}>
           <Select
-            items={organizationsList}
+            items={typesList}
+            value={examType}
             onChange={({ value }) => setExamType(value)}
             placeholder='Тип'
             size='s'
@@ -124,14 +157,44 @@ const FilterField: FC = () => {
         </Layout>
 
         <Layout flex={3}>
-          <Select
-            items={organizationsList}
-            onChange={({ value }) => setExamType(value)}
-            placeholder='Статус'
+          <Combobox
+            className={cl.combobox}
+            items={statusList}
+            multiple={true}
+            value={status}
+            onChange={({ value }) => setStatus(value)}
+            renderValue={(props) => (
+              <Tag
+                key={props.item.id}
+                mode={'cancel'}
+                label={props.item.label}
+                size={'s'}
+                className={cl.selectTag}
+                onCancel={() => {
+                  setStatus((prevState) => {
+                    const newState = prevState?.filter((value) => value.id !== props.item.id)
+                    return typeof newState === 'undefined' ? null : newState
+                  })
+                }}
+              />
+            )}
+            renderItem={({ item, hovered, active, onClick, onMouseEnter }) => (
+              <SelectItem
+                label={item.label}
+                active={active}
+                hovered={hovered}
+                multiple={true}
+                size={'s'}
+                indent={'normal'}
+                disabled={item.disabled}
+                onClick={onClick}
+                onMouseEnter={onMouseEnter}
+                className={cl.yellow}
+              />
+            )}
             size='s'
           />
         </Layout>
-
         <Layout flex={5}>
           <Combobox
             items={organizationsList}
