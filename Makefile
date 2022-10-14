@@ -7,3 +7,6 @@ component:
 	@touch ./src/components/$(role)/$(name)/$(name).tsx
 	@cat ./src/components/snippet/index.tsx | sed 's?SnippetComponent?'$(name)'?' | sed 's?some-classname?'$(name)'?' | sed 's?SnippetComponentDefaultProps?'$(name)DefaultProps'?' | sed 's?ISnippetComponentProp?'$(name)Prop'?' > ./src/components/$(role)/$(name)/$(name).tsx
 	@cat ./src/components/snippet/index.css | sed 's?some-classname?'$(name)'?'  > ./src/components/$(name)/$(name).module.scss
+
+move:
+	@move ./src/components/$(role)/$(source) ./src/components/$(role)/$(target)
