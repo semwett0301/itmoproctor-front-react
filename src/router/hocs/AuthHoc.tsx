@@ -1,15 +1,16 @@
 import React, { FC } from 'react'
-import { Navigate, Outlet, useLocation } from 'react-router-dom'
+import { Navigate, Outlet, useLocation, useOutletContext } from 'react-router-dom'
 import { useAppSelector } from '../../hooks/reduxHooks'
 import { RoleEnum } from '../../config/authСonfig'
 import { HocPropsType } from '../../ts/types/HocPropsType'
 
-const AuthHoc: FC<HocPropsType<number>> = ({ condition }) => {
+const AuthHoc: FC<HocPropsType<RoleEnum>> = ({ condition }) => {
   const location = useLocation()
+  const context = useOutletContext()
   const role: RoleEnum = useAppSelector((state) => state.user.role)
 
   if (condition === RoleEnum.ALL || condition === role) {
-    return <Outlet />
+    return <Outlet context={context} />
   }
 
   if (role === RoleEnum.UNAUTHORIZED) {

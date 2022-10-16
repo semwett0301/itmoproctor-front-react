@@ -22,7 +22,7 @@ const ExamTable: FC<IExamTableProps> = ({ onVideoBtnClick }) => {
 
   useEffect(() => {
     const getExams = async () => {
-      await request.exams.getListOfExams().then((r) => {
+      await request.exam.getListOfExams().then((r) => {
         console.log(r.data.rows)
         const obj = r.data.rows.map((item) => {
           return {
@@ -62,7 +62,7 @@ const ExamTable: FC<IExamTableProps> = ({ onVideoBtnClick }) => {
 
   return (
     <Table
-      getCellWrap={(row) => 'truncate'}
+      getCellWrap={() => 'truncate'}
       stickyHeader={true}
       size='s'
       rows={fullRows}
