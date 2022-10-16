@@ -27,9 +27,9 @@ mainInstance.interceptors.response.use(
     store.dispatch(isLoadedActionCreator())
     const status: number = error.response.status
     if (Object.keys(errors).filter((val) => val === status.toString()).length === 1) {
-      // if (error.response.request.responseURL !== axiosConfig.baseUrl + axiosConfig.authUrl) {
-      errors[status]()
-      // }
+      if (error.response.request.responseURL !== axiosConfig.baseUrl + axiosConfig.authUrl) {
+        errors[status]()
+      }
     }
     return Promise.reject(`${status} error`)
   }
