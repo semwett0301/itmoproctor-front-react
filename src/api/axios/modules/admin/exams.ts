@@ -1,6 +1,8 @@
 import { AxiosInstance, AxiosResponse } from 'axios'
 import { IExams } from '../../../../ts/interfaces/IExams'
 import axiosConfig from '../../../../config/axiosСonfig'
+import store from '../../../../store'
+import { dropUserActionCreator } from '../../../../store/reducers/userReducer/userActionCreators'
 
 export interface filterInterface {
   from: string

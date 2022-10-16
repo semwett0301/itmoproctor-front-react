@@ -1,15 +1,14 @@
 import { dropUserActionCreator } from '../../../store/reducers/userReducer/userActionCreators'
-import { AppDispatch } from '../../../store'
+import store, { AppDispatch } from '../../../store'
 
 interface IErrors {
-  [key: number]: (dispatch: AppDispatch) => void
+  [key: number]: () => void
 }
 
 const errors: IErrors = {
-  401: (dispatch) => {
+  401: () => {
     console.log('A')
-    dispatch(dropUserActionCreator())
-    window.location.reload()
+    store.dispatch(dropUserActionCreator())
   }
 }
 

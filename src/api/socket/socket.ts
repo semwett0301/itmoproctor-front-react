@@ -6,10 +6,6 @@ export interface IRequestSocket {
   exam: IExamSocket
 }
 
-export function request(): IRequestSocket {
-  const notify: Socket = notifyInstance()
-
-  return {
-    exam: exam(notify)
-  }
+export const socket: IRequestSocket = {
+  exam: exam(notifyInstance)
 }

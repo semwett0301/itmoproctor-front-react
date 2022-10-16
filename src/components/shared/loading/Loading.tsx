@@ -11,7 +11,7 @@ const Loading: FC = () => {
 
   return (
     <div
-      style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}
+      style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}
     >
       <ProgressSpin animation size='xl' />
     </div>

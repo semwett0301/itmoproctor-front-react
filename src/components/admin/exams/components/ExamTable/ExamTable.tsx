@@ -8,9 +8,9 @@ import { Button } from '@consta/uikit/Button'
 import { IconVideo } from '@consta/uikit/IconVideo'
 import { IconBento } from '@consta/uikit/IconBento'
 import { TabItem } from '../../../Admin'
-import { useRequest } from '../../../../../hooks/requestHooks'
 import StatusBadge from '../StatusBadge/StatusBadge'
 import TypeBadge from '../TypeBadge/TypeBadge'
+import { request } from '../../../../../api/axios/request'
 
 interface IExamTableProps {
   onVideoBtnClick: (item: TabItem) => void
@@ -18,7 +18,6 @@ interface IExamTableProps {
 
 const ExamTable: FC<IExamTableProps> = ({ onVideoBtnClick }) => {
   const [fullRows, setFullRows] = useState<ITableColumns[]>([])
-  const request = useRequest()
 
   useEffect(() => {
     const getExams = async () => {

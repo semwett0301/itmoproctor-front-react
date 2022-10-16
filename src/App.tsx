@@ -8,14 +8,13 @@ import {
 } from 'react-router-dom'
 import routerHocConfig from './config/routerHocConfig'
 import { createRouter } from './router/createRouter'
-import { useRequest } from './hooks/requestHooks'
 import { useAppDispatch, useAppSelector } from './hooks/reduxHooks'
 import { setUserActionCreator } from './store/reducers/userReducer/userActionCreators'
 import { userLoadedActionCreator } from './store/reducers/userLoaded/userLoadedActionCreators'
 import Loading from './components/shared/loading/Loading'
+import { request } from './api/axios/request'
 
 export const App: FC = () => {
-  const request = useRequest()
   const dispatch = useAppDispatch()
   const userLoaded = useAppSelector((state) => state.userLoaded)
 
