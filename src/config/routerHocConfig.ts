@@ -12,10 +12,12 @@ import { HocConfig } from '../ts/types/HocConfig'
 // Генерирование хок-конфигов в соответствии с конкретным условием (RoleEnum, boolean, etc)
 const auth: IHocConfig<RoleEnum> = {
   id: 1,
-  value: {
-    id: 1,
-    hoc: AuthHoc
-  },
+  value: [
+    {
+      id: 1,
+      hoc: AuthHoc
+    }
+  ],
   data: [
     {
       id: 1,
@@ -42,10 +44,12 @@ const auth: IHocConfig<RoleEnum> = {
 
 const service: IHocConfig<RoleEnum> = {
   id: 2,
-  value: {
-    id: 1,
-    hoc: ServiceHoc
-  },
+  value: [
+    {
+      id: 1,
+      hoc: ServiceHoc
+    }
+  ],
   data: [
     {
       id: 1,

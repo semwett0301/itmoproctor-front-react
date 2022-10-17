@@ -16,6 +16,7 @@ import StatusBadge, {
 } from '../StatusBadge/StatusBadge'
 import TwoRowCell from '../TwoRowCell/TwoRowCell'
 import TypeBadge from '../TypeBadge/TypeBadge'
+import { request } from '../../../../../api/axios/request'
 
 interface IExamTableProps {
   onVideoBtnClick: (item: TabItem) => void
@@ -37,7 +38,6 @@ export interface TestTableColumns {
 
 const ExamTable: FC<IExamTableProps> = ({ onVideoBtnClick }) => {
   const [fullRows, setFullRows] = useState<ITableColumns[]>([])
-  const request = useRequest()
 
   useEffect(() => {
     const getExams = async () => {
@@ -95,7 +95,7 @@ const ExamTable: FC<IExamTableProps> = ({ onVideoBtnClick }) => {
 
   return (
     <Table
-      getCellWrap={(row) => 'truncate'}
+      getCellWrap={() => 'truncate'}
       stickyHeader={true}
       size='s'
       activeRow={{ id: selectedRow, onChange: handleClickRow }}

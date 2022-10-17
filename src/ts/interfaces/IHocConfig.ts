@@ -7,8 +7,14 @@ export interface IHocParameter<T> {
   hoc: FC<HocPropsType<T>>
 }
 
+export interface IHocData<T> {
+  id: number
+  condition?: T
+  routes: IRoute[]
+}
+
 export interface IHocConfig<T = undefined> {
   id: number
-  value: IHocParameter<T> | IHocParameter<T>[]
-  data: { id: number; condition?: T; routes: IRoute[] }[]
+  value: IHocParameter<T>[]
+  data: IHocData<T>[]
 }
