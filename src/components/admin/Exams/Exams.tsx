@@ -1,11 +1,11 @@
 import React, { FC, useState } from 'react'
 import cl from './exams.module.scss'
 import { Pagination } from '@consta/uikit/Pagination'
-import FilterField from './components/FilterField/FilterField'
 import { useOutletContext } from 'react-router-dom'
 import { DefaultItem, Select } from '@consta/uikit/Select'
 import { Text } from '@consta/uikit/Text'
 import ExamTable from './components/ExamTable/ExamTable'
+import FilterField from './components/FilterField/FilterField'
 
 interface ExamsProps {
   openTab: () => void
@@ -67,7 +67,6 @@ const Exams: FC = () => {
       values: ['Shift', 'ArrowRight']
     }
   }
-
 
   return (
     <div className={cl.examTableModule}>

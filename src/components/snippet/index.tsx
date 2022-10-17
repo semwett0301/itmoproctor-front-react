@@ -1,5 +1,5 @@
-import React from "react";
-import './index.css'
+import React, { FC } from 'react'
+import './index.scss'
 
 // CONSTANTS
 
@@ -8,23 +8,19 @@ import './index.css'
 // TODO: copy this components directory and add your content to make your page
 
 interface ISnippetComponentProp {
-    // You should declare props like this, delete this if you don't need props
-    someProp: any
-    somePropWithDefaultOption?: string
+  // You should declare props like this, delete this if you don't need props
+  someProp: any
+  somePropWithDefaultOption?: string
 }
 
 const SnippetComponentDefaultProps = {
-    // You should declare default props like this, delete this if you don't need props
-    somePropWithDefaultOption: 'default value'
+  // You should declare default props like this, delete this if you don't need props
+  somePropWithDefaultOption: 'default value'
 }
 
-const SnippetComponent = (props: ISnippetComponentProp) => {
-    return (
-        <div className={'some-classname'}>
-
-        </div>
-    )
-};
+const SnippetComponent: FC<ISnippetComponentProp> = ({ someProp }) => {
+  return <></>
+}
 
 SnippetComponent.defaultProps = SnippetComponentDefaultProps
 

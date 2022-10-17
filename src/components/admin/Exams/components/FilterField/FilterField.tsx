@@ -4,7 +4,6 @@ import { Button } from '@consta/uikit/Button'
 import { DatePicker } from '@consta/uikit/DatePicker'
 import { IconCalendar } from '@consta/uikit/IconCalendar'
 import { TextField } from '@consta/uikit/TextField'
-import { FieldGroup } from '@consta/uikit/FieldGroup'
 import { IconSearch } from '@consta/uikit/IconSearch'
 import { DefaultItem, Select } from '@consta/uikit/Select'
 import { Layout } from '@consta/uikit/Layout'
@@ -20,7 +19,7 @@ import { IconUpload } from '@consta/uikit/IconUpload'
 import { IconTrash } from '@consta/uikit/IconTrash'
 import { Combobox } from '@consta/uikit/Combobox'
 import { SelectItem } from '@consta/uikit/__internal__/src/components/SelectComponents/SelectItem/SelectItem'
-import { Tag } from '@consta/uikit/Tag'
+import StatusTag, { TagPropStatus } from '../StatusTag/StatusTag'
 
 type contextMenuItem = {
   label: string
@@ -38,80 +37,86 @@ const organizationsList: DefaultItem[] = [
   }
 ]
 
-const statusList: DefaultItem[] = [
+type statusComboboxItem = {
+  label: string
+  id: TagPropStatus
+  disabled: false
+}
+
+const statusList: statusComboboxItem[] = [
   {
     label: 'Любой статус',
-    id: 1,
+    id: 'allStatuses',
     disabled: false
   },
   {
     label: 'Кроме запланированных',
-    id: 2,
+    id: 'exceptPlanned',
     disabled: false
   },
   {
     label: 'Не запланирован',
-    id: 3,
+    id: 'unplanned',
     disabled: false
   },
   {
     label: 'Запланирован',
-    id: 4,
+    id: 'planned',
     disabled: false
   },
   {
     label: 'Ожидает',
-    id: 5,
+    id: 'waiting',
     disabled: false
   },
   {
     label: 'Идет (без проктора)',
-    id: 6,
+    id: 'withoutProctor',
     disabled: false
   },
   {
     label: 'Идет (с проктором)',
-    id: 7,
+    id: 'withProctor',
     disabled: false
   },
   {
     label: 'Идет (асинхронно)',
-    id: 8,
+    id: 'async',
     disabled: false
   },
   {
     label: 'Формируется протокол',
-    id: 9,
+    id: 'forming',
     disabled: false
   },
   {
     label: 'Ожидается заключение',
-    id: 10,
+    id: 'conclusionWaiting',
     disabled: false
   },
   {
     label: 'На проверке',
-    id: 11,
+    id: 'review',
     disabled: false
   },
   {
     label: 'Принят',
-    id: 12,
+    id: 'success',
     disabled: false
   },
   {
     label: 'Прерван',
-    id: 13,
+    id: 'interrupted',
     disabled: false
   },
   {
     label: 'Пропущен',
-    id: 14,
+    id: 'missed',
     disabled: false
   },
   {
     label: 'Неявка',
-    id: 15,
+    id: 'noAppearance',
     disabled: false
   }
 ]
@@ -123,6 +128,7 @@ const typesList: DefaultItem[] = [
   },
   {
     label: 'Асинхронный',
+
     id: 2
   },
   {
@@ -142,12 +148,11 @@ const contextMenuItems: contextMenuItem[] = [
 ]
 
 const FilterField: FC = () => {
-  const [startDate, setStartDate] = useState<Date | undefined | null>(null)
-  const [endDate, setEndDate] = useState<Date | undefined | null>(null)
+  const [datePeriod, setDatePeriod] = useState<[Date?, Date?] | null>(null)
 
   const [examType, setExamType] = useState<DefaultItem | null>()
   const [organizations, setOrganizations] = useState<DefaultItem[] | null>([organizationsList[0]])
-  const [status, setStatus] = useState<DefaultItem[] | null>([statusList[1]])
+  const [status, setStatus] = useState<statusComboboxItem[] | null>([statusList[1]])
 
   const tooltipAnchor = useRef<HTMLButtonElement>(null)
   const [isPopoverVisible, setIsPopoverVisible] = useState(false)
@@ -161,24 +166,14 @@ const FilterField: FC = () => {
     <Layout direction='column' className={cl.wrapper}>
       <Layout direction={'row'} className={cl.rowWrapper}>
         <Layout>
-          <FieldGroup size='s' className={cl.datePickerField}>
-            <DatePicker
-              value={startDate}
-              onChange={({ value }) => setStartDate(value)}
-              minDate={startDate as Date}
-              maxDate={endDate as Date}
-              rightSide={IconCalendar}
-              size={'s'}
-            />
-            <DatePicker
-              value={endDate}
-              onChange={({ value }) => setEndDate(value)}
-              minDate={startDate as Date}
-              maxDate={endDate as Date}
-              rightSide={IconCalendar}
-              size={'s'}
-            />
-          </FieldGroup>
+          <DatePicker
+            className={cl.datePickerField}
+            size={'s'}
+            type='date-range'
+            value={datePeriod}
+            onChange={({ value }) => setDatePeriod(value)}
+            rightSide={[IconCalendar, IconCalendar]}
+          />
         </Layout>
 
         <Layout flex={1}>
@@ -224,7 +219,7 @@ const FilterField: FC = () => {
           />
         </Layout>
 
-        <Layout flex={3}>
+        <Layout flex={3} style={{ position: 'relative' }}>
           <Combobox
             placeholder={'Статус'}
             className={cl.combobox}
@@ -233,18 +228,11 @@ const FilterField: FC = () => {
             value={status}
             onChange={({ value }) => setStatus(value)}
             renderValue={(props) => (
-              <Tag
-                className={cl.selectTag}
+              <StatusTag
                 key={props.item.id}
-                mode={'cancel'}
-                label={props.item.label}
-                size={'s'}
-                onCancel={() => {
-                  setStatus((prevState) => {
-                    const newState = prevState?.filter((value) => value.id !== props.item.id)
-                    return typeof newState === 'undefined' ? null : newState
-                  })
-                }}
+                status={props.item.id}
+                item={props.item}
+                onCancel={props.handleRemove}
               />
             )}
             renderItem={({ item, hovered, active, onClick, onMouseEnter }) => (

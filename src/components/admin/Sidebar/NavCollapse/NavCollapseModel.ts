@@ -16,7 +16,7 @@ export type ICollapseItem = {
 }
 
 export const collapseItems: ICollapseItem[] = [
-  { path: 'exams', icon: IconFolders, title: 'Экзамены' },
+  { path: 'Exams', icon: IconFolders, title: 'Экзамены' },
   { path: 'users', icon: IconTeam, title: 'Пользователи' },
   { path: 'schedule', icon: IconCalendar, title: 'Расписание' },
   { path: 'courses', icon: IconLayers, title: 'Курсы' },

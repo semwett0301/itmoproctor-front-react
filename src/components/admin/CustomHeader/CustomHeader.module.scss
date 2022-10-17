@@ -1,6 +1,15 @@
 .timeDateModule{
   display: inline-flex;
+  align-items: center;
   min-width: 120px;
   column-gap: 1em;
   color: #667985;
+}
+
+.adminContextMenu{
+  width: 128px;
+}
+
+.headerLogin{
+  cursor: pointer;
 }

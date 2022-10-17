@@ -4,12 +4,13 @@ import { Checkbox } from '@consta/uikit/Checkbox'
 
 export interface ITableColumns {
   id: string
+  selected: boolean
   check: ReactNode
-  listener: string
-  proctor: string
-  exam: string
+  listener: ReactNode
+  proctor: ReactNode
+  exam: ReactNode
   type: ReactNode
-  start: Date | undefined
+  start: ReactNode
   status: ReactNode
   video: ReactNode
   more: ReactNode

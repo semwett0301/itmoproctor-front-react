@@ -3,11 +3,10 @@ import { Layout } from '@consta/uikit/Layout'
 import cl from './Admin.module.css'
 import Sidebar from './Sidebar/Sidebar'
 import { Tabs } from '@consta/uikit/Tabs'
-import TabWithCross from './exams/components/TabWithCross/TabWithCross'
+import TabWithCross from './Exams/components/TabWithCross/TabWithCross'
 import { Card } from '@consta/uikit/Card'
 import { Outlet, useNavigate } from 'react-router-dom'
 import CustomHeader from './CustomHeader/CustomHeader'
-
 
 export interface TabItem {
   id: number | string
@@ -18,13 +17,13 @@ export interface TabItem {
 
 const Admin: FC = () => {
   const [tabItems, setItems] = useState<TabItem[] | []>([
-    { id: 'exams', title: 'Экзамены', path: 'exams', type: 'tab' }
+    { id: 'Exams', title: 'Экзамены', path: 'Exams', type: 'tab' }
   ])
 
   const [activeTab, setActiveTab] = useState<TabItem | null>({
-    id: 'exams',
+    id: 'Exams',
     title: 'Экзамены',
-    path: 'exams',
+    path: 'Exams',
     type: 'tab'
   })
 
@@ -68,6 +67,7 @@ const Admin: FC = () => {
           <Card className={cl.contentCard}>
             <Card shadow={false} horizontalSpace={'s'}>
               <Tabs
+                fitMode={'scroll'}
                 size={'m'}
                 value={activeTab}
                 onChange={({ value }) => setActiveTab(value)}
