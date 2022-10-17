@@ -1,11 +1,11 @@
 import React, { FC } from 'react'
 import { Badge } from '@consta/uikit/Badge'
 import cl from './StatusBadge.module.scss'
-import { IExam } from '../../../../../ts/interfaces/IExam'
+import { IExams } from '../../../../../ts/interfaces/IExams'
 import { IInspector } from '../../../../../ts/interfaces/IInspector'
 import { IExpert } from '../../../../../ts/interfaces/IExpert'
 
-export const getExamStatus = (data: IExam) => {
+export const getExamStatus = (data: IExams): number => {
   if (!data) return 0
   const now = Date.now()
   let statusID = 0

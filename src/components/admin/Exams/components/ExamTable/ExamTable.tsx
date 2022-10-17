@@ -7,7 +7,6 @@ import { Button } from '@consta/uikit/Button'
 import { IconVideo } from '@consta/uikit/IconVideo'
 import { IconBento } from '@consta/uikit/IconBento'
 import { TabItem } from '../../../Admin'
-import { useRequest } from '../../../../../hooks/requestHooks'
 import { columns, ITableColumns } from './tableRowModel'
 import StatusBadge, {
   badgePropStatus,
@@ -17,6 +16,7 @@ import StatusBadge, {
 import TwoRowCell from '../TwoRowCell/TwoRowCell'
 import TypeBadge from '../TypeBadge/TypeBadge'
 import { request } from '../../../../../api/axios/request'
+import { IExams } from '../../../../../ts/interfaces/IExams'
 
 interface IExamTableProps {
   onVideoBtnClick: (item: TabItem) => void
@@ -43,7 +43,7 @@ const ExamTable: FC<IExamTableProps> = ({ onVideoBtnClick }) => {
     const getExams = async () => {
       await request.exam.getListOfExams().then((r) => {
         console.log(r.data.rows)
-        const obj: ITableColumns[] = r.data.rows.map((item) => {
+        const obj: ITableColumns[] = r.data.rows.map((item: IExams) => {
           const row: TestTableColumns = {
             id: item._id,
             selected: false,
