@@ -12,9 +12,6 @@ const SidebarFooter: FC = () => {
       <NavLink to={'/update'} className={cl.link}>
         <IconInfo size='xs' />
         Обновления
-      </NavLink>
-
-      <NavLink to={'/info'} className={cl.ringLink}>
         <Button
           onlyIcon={true}
           iconRight={IconRing}

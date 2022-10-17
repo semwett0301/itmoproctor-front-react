@@ -1,19 +1,39 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, ReactNode, useEffect, useState } from 'react'
 import { Table } from '@consta/uikit/Table'
 import cl from './ExamTable.module.scss'
 import { Checkbox } from '@consta/uikit/Checkbox'
 import { Text } from '@consta/uikit/Text'
-import { columns, ITableColumns } from './tableRowModel'
 import { Button } from '@consta/uikit/Button'
 import { IconVideo } from '@consta/uikit/IconVideo'
 import { IconBento } from '@consta/uikit/IconBento'
 import { TabItem } from '../../../Admin'
-import StatusBadge from '../StatusBadge/StatusBadge'
+import { useRequest } from '../../../../../hooks/requestHooks'
+import { columns, ITableColumns } from './tableRowModel'
+import StatusBadge, {
+  badgePropStatus,
+  getExamStatus,
+  getProctorName
+} from '../StatusBadge/StatusBadge'
+import TwoRowCell from '../TwoRowCell/TwoRowCell'
 import TypeBadge from '../TypeBadge/TypeBadge'
 import { request } from '../../../../../api/axios/request'
 
 interface IExamTableProps {
   onVideoBtnClick: (item: TabItem) => void
+}
+
+export interface TestTableColumns {
+  id: string
+  selected: boolean
+  check: ReactNode
+  listener: ReactNode
+  proctor: ReactNode
+  exam: ReactNode
+  type: ReactNode
+  start: ReactNode
+  status: ReactNode
+  video: ReactNode
+  more: ReactNode
 }
 
 const ExamTable: FC<IExamTableProps> = ({ onVideoBtnClick }) => {
@@ -23,16 +43,17 @@ const ExamTable: FC<IExamTableProps> = ({ onVideoBtnClick }) => {
     const getExams = async () => {
       await request.exam.getListOfExams().then((r) => {
         console.log(r.data.rows)
-        const obj = r.data.rows.map((item) => {
-          return {
+        const obj: ITableColumns[] = r.data.rows.map((item) => {
+          const row: TestTableColumns = {
             id: item._id,
-            listener: item.student._id,
-            proctor: item.student._id,
-            exam: item.subject,
+            selected: false,
+            listener: `${item.student.middlename} ${item.student.firstname} ${item.student.lastname}`,
+            proctor: getProctorName(item.async, item.inspector, item.expert),
+            exam: <TwoRowCell firstRow={item.subject} secondRow={item.assignment} />,
             type: <TypeBadge async={item.async} />,
-            start: item.startDate,
-            status: <StatusBadge status={'success'} />,
-            check: <Checkbox checked={true} />,
+            start: <TwoRowCell firstRow={item.startDate} secondRow={item.endDate} />,
+            status: <StatusBadge status={badgePropStatus[getExamStatus(item)]} />,
+            check: <Checkbox checked={false} onClick={this} />,
             video: (
               <Button
                 size='xs'
@@ -50,6 +71,7 @@ const ExamTable: FC<IExamTableProps> = ({ onVideoBtnClick }) => {
             ),
             more: <Button size='xs' onlyIcon iconRight={IconBento} view='secondary' />
           }
+          return row
         })
 
         setFullRows(obj)
@@ -59,11 +81,24 @@ const ExamTable: FC<IExamTableProps> = ({ onVideoBtnClick }) => {
     getExams().catch((e) => console.log(e))
   }, [])
 
+  const [selectedRow, setSelectedRow] = useState<string>()
+
+  const handleClickRow = ({
+    id,
+    e
+  }: {
+    id: string | undefined
+    e?: React.SyntheticEvent
+  }): void => {
+    setSelectedRow(id)
+  }
+
   return (
     <Table
       getCellWrap={() => 'truncate'}
       stickyHeader={true}
       size='s'
+      activeRow={{ id: selectedRow, onChange: handleClickRow }}
       rows={fullRows}
       columns={columns}
       zebraStriped={'odd'}

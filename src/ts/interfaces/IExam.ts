@@ -14,26 +14,26 @@ export interface IExam {
   student: IStudent
   async: boolean
   duration: number
-  leftDate: Date
-  rightDate: Date
-  beginDate: Date
-  endDate: Date
+  leftDate: string
+  rightDate: string
+  beginDate: string
+  endDate: string
   inspector: IInspector
-  startDate?: Date
+  startDate?: string
   inspectorConnected: boolean
-  stopDate?: Date
+  stopDate?: string
   comment: string
   examCode: string
   expert: IExpert
   note: string
   resolution?: boolean
-  resolutionDate?: Date
+  resolutionDate?: string
   inCheck?: boolean
   videoAvailable?: boolean
   reportReady?: boolean
 }
 
-export interface IExams {
+export interface IExam {
   total: number
   rows: IExam[] | []
   organizations: IOrganization[] | []

@@ -21,8 +21,18 @@
 }
 
 .combobox {
-  height: 50px;
-  overflow: hidden;
+  max-height: 42px !important;
+  //position: absolute;
+  //left: 0;
+  //right: 0;
+  //top: 0;
+  //bottom: 0;
+  //div{
+  //  overflow: hidden;
+  //  white-space: nowrap !important;
+  //  flex-direction: row;
+  //  flex-wrap: nowrap;
+  //}
 }
 
 .selectTag {
