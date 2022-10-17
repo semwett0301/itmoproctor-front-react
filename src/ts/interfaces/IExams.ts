@@ -4,7 +4,7 @@ import { IStudent } from './IStudent'
 import { IInspector } from './IInspector'
 import { IExpert } from './IExpert'
 
-export interface IExam {
+export interface IExams {
   _id: string
   examId: string
   organization: string
@@ -33,8 +33,8 @@ export interface IExam {
   reportReady?: boolean
 }
 
-export interface IExam {
+export interface IExams {
   total: number
-  rows: IExam[] | []
+  rows: IExams[] | []
   organizations: IOrganization[] | []
 }

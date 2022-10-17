@@ -1,9 +1,9 @@
 import { Socket } from 'socket.io-client'
-import { IExam } from '../../../ts/interfaces/IExams'
 import { SocketCallback } from '../../../ts/types/SocketCallback'
+import { IExams } from '../../../ts/interfaces/IExams'
 
 export interface IExamsSocket {
-  subscribe: (callback: SocketCallback<IExam>) => void
+  subscribe: (callback: SocketCallback<IExams>) => void
   unsubscribe: () => void
 }
 
