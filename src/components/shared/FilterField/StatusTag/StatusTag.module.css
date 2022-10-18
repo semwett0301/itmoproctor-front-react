@@ -1,0 +1,66 @@
+.unplanned {
+  background-color: rgba(102, 121, 133, 0.2);
+}
+
+.missed {
+  background-color: rgba(179, 189, 194, 0.2);
+}
+
+.planned {
+  background-color: rgba(84, 179, 9, 0.2);
+}
+
+.success {
+  background-color: rgba(9, 179, 123, 0.2);
+}
+
+.waiting {
+  background-color: rgba(243, 197, 56, 0.2);
+}
+
+.conclusionWaiting {
+  color: var(--color-control-typo-ghost);
+  background-color: rgba(231, 153, 36, 0.2);
+}
+
+.async {
+  background-color: rgba(0, 113, 178, 0.2);
+}
+
+.withProctor {
+  background-color: rgba(0, 113, 178, 0.2);
+}
+
+.forming {
+  background-color: rgba(86, 185, 242, 0.2);
+}
+
+.review {
+  background-color: rgba(96, 58, 204, 0.2);
+}
+
+.withoutProctor {
+  background-color: rgba(235, 51, 51, 0.2);
+}
+
+.rejected {
+  background-color: rgba(183, 33, 69, 0.2);
+}
+
+.noAppearance {
+  background-color: rgba(240, 98, 90, 0.2);
+}
+
+.exceptPlanned {
+  background-color: rgba(0, 66, 105, 0.2);
+}
+
+.allStatuses {
+  background-color: rgba(0, 66, 105, 0.2);
+}
+
+.interrupted {
+  background-color: rgba(0, 66, 105, 0.2);
+}
+
+/*# sourceMappingURL=StatusTag.module.css.map */

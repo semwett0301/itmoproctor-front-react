@@ -1,6 +1,7 @@
 import { TableColumn } from '@consta/uikit/Table'
 import React, { ReactNode } from 'react'
 import { Checkbox } from '@consta/uikit/Checkbox'
+import { TestTableColumns } from './ExamTable'
 
 export interface ITableColumns {
   id: string
@@ -16,7 +17,7 @@ export interface ITableColumns {
   more: ReactNode
 }
 
-export const columns: TableColumn<ITableColumns>[] = [
+export const columns: TableColumn<TestTableColumns>[] = [
   {
     title: '№',
     accessor: 'id',
@@ -24,9 +25,10 @@ export const columns: TableColumn<ITableColumns>[] = [
     hidden: true
   },
   {
-    title: <Checkbox checked={true} />,
+    title: '',
     accessor: 'check',
-    align: 'center'
+    align: 'center',
+    renderCell: (row) => <Checkbox checked={row.selected} />
   },
   {
     title: 'Слушатель',

@@ -3,10 +3,10 @@ import { Layout } from '@consta/uikit/Layout'
 import cl from './Admin.module.css'
 import Sidebar from './Sidebar/Sidebar'
 import { Tabs } from '@consta/uikit/Tabs'
-import TabWithCross from './Exams/components/TabWithCross/TabWithCross'
+import TabWithCross from '../shared/navTabs/TabWithCross/TabWithCross'
 import { Card } from '@consta/uikit/Card'
 import { Outlet, useNavigate } from 'react-router-dom'
-import CustomHeader from './CustomHeader/CustomHeader'
+import CustomHeader from '../shared/CustomHeader/CustomHeader'
 
 export interface TabItem {
   id: number | string

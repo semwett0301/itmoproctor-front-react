@@ -19,7 +19,7 @@ import { IconUpload } from '@consta/uikit/IconUpload'
 import { IconTrash } from '@consta/uikit/IconTrash'
 import { Combobox } from '@consta/uikit/Combobox'
 import { SelectItem } from '@consta/uikit/__internal__/src/components/SelectComponents/SelectItem/SelectItem'
-import StatusTag, { TagPropStatus } from '../StatusTag/StatusTag'
+import StatusTag, { TagPropStatus } from './StatusTag/StatusTag'
 
 type contextMenuItem = {
   label: string
@@ -163,7 +163,7 @@ const FilterField: FC = () => {
   }
 
   return (
-    <Layout direction='column' className={cl.wrapper}>
+    <Layout direction={'column'} className={cl.wrapper}>
       <Layout direction={'row'} className={cl.rowWrapper}>
         <Layout>
           <DatePicker
@@ -221,6 +221,7 @@ const FilterField: FC = () => {
 
         <Layout flex={3} style={{ position: 'relative' }}>
           <Combobox
+            size='s'
             placeholder={'Статус'}
             className={cl.combobox}
             items={statusList}
@@ -249,7 +250,6 @@ const FilterField: FC = () => {
                 className={cl.yellow}
               />
             )}
-            size='s'
           />
         </Layout>
         <Layout flex={5}>

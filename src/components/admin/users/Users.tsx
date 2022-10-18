@@ -1,11 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react'
 
-const Users = () => {
-    return (
-        <div>
-            USERS
-        </div>
-    );
-};
+const Users: FC = () => {
+  return <div>USERS</div>
+}
 
-export default Users;
+export default Users

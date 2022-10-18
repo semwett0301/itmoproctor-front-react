@@ -1,5 +1,5 @@
 import { dropUserActionCreator } from '../../../store/reducers/userReducer/userActionCreators'
-import store, { AppDispatch } from '../../../store'
+import store from '../../../store'
 
 interface IErrors {
   [key: number]: () => void

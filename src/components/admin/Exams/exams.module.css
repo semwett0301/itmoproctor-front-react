@@ -1,0 +1,32 @@
+.examTableModule {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: calc(100% - 40px);
+}
+
+.minLayout {
+  height: min-content;
+}
+
+.examTable {
+  height: calc(100% - 141px);
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  padding: var(--space-2xs) var(--space-s);
+  border-top: var(--control-border-width) solid var(--color-bg-border);
+}
+
+.countRowsSelect {
+  width: 59px;
+}
+
+.footerText {
+  white-space: nowrap;
+  width: max-content;
+}
+
+/*# sourceMappingURL=Exams.module.css.map */

@@ -5,7 +5,7 @@ import { useOutletContext } from 'react-router-dom'
 import { DefaultItem, Select } from '@consta/uikit/Select'
 import { Text } from '@consta/uikit/Text'
 import ExamTable from './components/ExamTable/ExamTable'
-import FilterField from './components/FilterField/FilterField'
+import FilterField from '../../shared/FilterField/FilterField'
 
 interface ExamsProps {
   openTab: () => void

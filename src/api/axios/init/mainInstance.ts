@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from 'axios'
+import axios from 'axios'
 import axiosConfig from '../../../config/axiosСonfig'
 import errors from './errors'
 import {

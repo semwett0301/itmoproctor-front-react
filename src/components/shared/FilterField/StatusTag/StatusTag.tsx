@@ -2,7 +2,10 @@ import React, { FC, SyntheticEvent } from 'react'
 import cl from './StatusTag.module.scss'
 import { Tag } from '@consta/uikit/Tag'
 import { DefaultItem } from '@consta/uikit/Combobox'
-import { badgePropStatus, statusObject } from '../StatusBadge/StatusBadge'
+import {
+  badgePropStatus,
+  statusObject
+} from '../../../admin/Exams/components/ExamTable/StatusBadge/StatusBadge'
 
 // CONSTANTS
 const tagPropStatus = [...badgePropStatus, 'exceptPlanned', 'allStatuses', 'interrupted'] as const

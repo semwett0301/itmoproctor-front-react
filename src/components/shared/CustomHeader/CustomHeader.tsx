@@ -14,10 +14,10 @@ import { IconSettings } from '@consta/uikit/IconSettings'
 import { IconExit } from '@consta/uikit/IconExit'
 import { IconScreen } from '@consta/uikit/IconScreen'
 
-type contextMenuItem = {
+export type contextMenuItem = {
   label: string
   onClick?: (params: { e: React.MouseEvent<HTMLDivElement>; item: contextMenuItem }) => void
-  group: number
+  group?: number
   iconLeft: IconComponent
 }
 

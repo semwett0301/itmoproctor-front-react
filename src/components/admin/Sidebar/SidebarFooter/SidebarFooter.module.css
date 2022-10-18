@@ -1,0 +1,35 @@
+.sidebarFooter {
+  overflow: hidden;
+  display: inline-flex;
+  column-gap: 20px;
+  align-items: center;
+}
+
+.link {
+  margin-left: 4px;
+  text-decoration: none;
+  display: inline-flex;
+  column-gap: 20px;
+  font-size: 14px;
+  padding: 10px 0;
+  align-items: center;
+  color: var(--color-typo-primary);
+}
+
+.linkContent {
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.linkIcon {
+  margin-right: 11px;
+}
+
+.ringButton {
+  color: var(--color-typo-caution);
+}
+
+/*# sourceMappingURL=SidebarFooter.module.css.map */

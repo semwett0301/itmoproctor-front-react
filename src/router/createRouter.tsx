@@ -1,4 +1,4 @@
-import { IHocConfig, IHocData } from '../ts/interfaces/IHocConfig'
+import { IHocConfig } from '../ts/interfaces/IHocConfig'
 import { IRoute } from '../ts/interfaces/IRoute'
 import { Route } from 'react-router-dom'
 import React from 'react'
