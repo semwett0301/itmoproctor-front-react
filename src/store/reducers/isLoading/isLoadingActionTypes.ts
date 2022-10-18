@@ -1,4 +1,4 @@
 export enum IsLoadingActionTypes {
-    LOADING = "LOADING",
-    LOADED = "LOADED",
+  LOADING = 'LOADING',
+  LOADED = 'LOADED'
 }

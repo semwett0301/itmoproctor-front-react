@@ -2,12 +2,10 @@
   width: 100%;
 }
 
-.buttonCell {
-  div {
-    display: flex;
-    align-items: center;
-    padding: 8px;
-  }
+.buttonCell div {
+  display: flex;
+  align-items: center;
+  padding: 8px;
 }
 
 .table {
@@ -24,3 +22,5 @@
   max-height: inherit;
   overflow: hidden;
 }
+
+/*# sourceMappingURL=ExamTable.module.css.map */

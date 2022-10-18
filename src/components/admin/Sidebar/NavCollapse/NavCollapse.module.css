@@ -1,0 +1,85 @@
+.link {
+  text-decoration: none;
+  margin: 6px 0;
+  height: 32px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: var(--color-typo-primary);
+}
+
+.collapseLink {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+.linkIcon {
+  margin: 0 16px;
+}
+
+.collapseIcon {
+  position: absolute;
+  left: 16px;
+  top: 4px;
+  z-index: 5;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.activeCollapseIcon {
+  color: var(--color-typo-primary) !important;
+}
+
+.disabledCollapseIcon {
+  color: var(--color-typo-normal) !important;
+}
+
+.collapseLinkIcon {
+  margin: 0 11px 0 0;
+  transition: margin-right 0.5s;
+}
+
+.wideCollapseLinkIcon {
+  margin: 0 20px 0 0;
+  transition: margin-right 0.5s;
+}
+
+.collapseContent {
+  color: var(--color-typo-primary);
+  position: relative;
+}
+
+.collapse {
+  padding: 0 0 0 48px;
+  overflow: hidden;
+  position: absolute;
+}
+.collapse div {
+  position: relative;
+  z-index: 1;
+  overflow: visible;
+  padding: 0;
+}
+
+.navWrapper {
+  overflow-x: hidden;
+  flex-grow: 1;
+  flex-shrink: 0;
+}
+
+.collapseMenu {
+  z-index: 3;
+  position: absolute;
+}
+
+.activeCollapseMenu {
+  left: -30px;
+  transition: left 0.5s;
+}
+
+.disabledCollapseMenu {
+  left: 0;
+  transition: left 0.5s;
+}
+
+/*# sourceMappingURL=NavCollapse.module.css.map */

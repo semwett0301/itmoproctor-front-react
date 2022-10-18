@@ -1,4 +1,4 @@
-import { IRequestAxios, request } from '../api/axios/request'
+import { request } from '../api/axios/request'
 import { useAppDispatch, useAppSelector } from './reduxHooks'
 import { Location, NavigateFunction, useLocation, useNavigate } from 'react-router-dom'
 import { AppDispatch } from '../store'
