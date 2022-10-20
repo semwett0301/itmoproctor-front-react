@@ -12,18 +12,4 @@
 .examTable{
   height: calc(100% - 141px);
 }
-.pagination {
-  display: flex;
-  align-items: center;
-  padding: var(--space-2xs) var(--space-s);
-  border-top: var(--control-border-width) solid var(--color-bg-border);
-}
 
-.countRowsSelect {
-  width: 59px;
-}
-
-.footerText{
-  white-space: nowrap;
-  width: max-content;
-}

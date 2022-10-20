@@ -20,35 +20,47 @@ import { IconTrash } from '@consta/uikit/IconTrash'
 import { Combobox } from '@consta/uikit/Combobox'
 import { SelectItem } from '@consta/uikit/__internal__/src/components/SelectComponents/SelectItem/SelectItem'
 import StatusTag, { TagPropStatus } from './StatusTag/StatusTag'
+import { IFilter } from '../../admin/Exams/Exams'
 
 type contextMenuItem = {
   label: string
   iconLeft: IconComponent
 }
 
-const organizationsList: DefaultItem[] = [
+export const organizationsList: DefaultItem[] = [
   {
-    label: 'Любой правообладатель',
+    label: 'Университет ИТМО',
     id: 1
   },
   {
-    label: 'Университет ИТМО',
+    label: 'ВШЭ',
     id: 2
+  },
+  {
+    label: 'ДВФУ',
+    id: 3
+  },
+  {
+    label: 'Политех',
+    id: 4
+  },
+  {
+    label: 'Ростехнадзор',
+    id: 5
+  },
+  {
+    label: 'ТГУ',
+    id: 6
   }
 ]
 
-type statusComboboxItem = {
+export type statusComboboxItem = {
   label: string
   id: TagPropStatus
   disabled: false
 }
 
-const statusList: statusComboboxItem[] = [
-  {
-    label: 'Любой статус',
-    id: 'allStatuses',
-    disabled: false
-  },
+export const statusList: statusComboboxItem[] = [
   {
     label: 'Кроме запланированных',
     id: 'exceptPlanned',
@@ -123,17 +135,13 @@ const statusList: statusComboboxItem[] = [
 
 const typesList: DefaultItem[] = [
   {
-    label: 'Любой тип',
+    label: 'Асинхронный',
+
     id: 1
   },
   {
-    label: 'Асинхронный',
-
-    id: 2
-  },
-  {
     label: 'Синхроннный',
-    id: 3
+    id: 2
   }
 ]
 
@@ -147,8 +155,19 @@ const contextMenuItems: contextMenuItem[] = [
   { label: 'Удалить', iconLeft: IconTrash }
 ]
 
-const FilterField: FC = () => {
-  const [datePeriod, setDatePeriod] = useState<[Date?, Date?] | null>(null)
+interface IFilterHandlers {
+  datePicker: (value: [Date?, Date?] | null) => void
+}
+
+interface IFilterField {
+  filter: IFilter
+  filterHandlers: IFilterHandlers
+}
+
+const FilterField: FC<IFilterField> = ({ filter, filterHandlers }) => {
+  console.log(filter)
+
+  const [datePeriod, setDatePeriod] = useState<[Date?, Date?] | null>([new Date(), new Date()])
 
   const [examType, setExamType] = useState<DefaultItem | null>()
   const [organizations, setOrganizations] = useState<DefaultItem[] | null>([organizationsList[0]])
@@ -170,8 +189,8 @@ const FilterField: FC = () => {
             className={cl.datePickerField}
             size={'s'}
             type='date-range'
-            value={datePeriod}
-            onChange={({ value }) => setDatePeriod(value)}
+            value={filter.date}
+            onChange={({ value }) => filterHandlers.datePicker(value)}
             rightSide={[IconCalendar, IconCalendar]}
           />
         </Layout>

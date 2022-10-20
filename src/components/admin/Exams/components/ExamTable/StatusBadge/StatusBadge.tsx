@@ -4,6 +4,7 @@ import cl from './StatusBadge.module.scss'
 import { IExams } from '../../../../../../ts/interfaces/IExams'
 import { IInspector } from '../../../../../../ts/interfaces/IInspector'
 import { IExpert } from '../../../../../../ts/interfaces/IExpert'
+import { IconRevert } from '@consta/uikit/IconRevert'
 
 export const getExamStatus = (data: IExams): number => {
   if (!data) return 0
@@ -97,11 +98,17 @@ const statuses: badgeStatusesDeclaration = {
 
 interface StatusBadgeProps {
   status: BadgePropStatus
+  reset?: boolean
 }
 
-const StatusBadge: FC<StatusBadgeProps> = ({ status }) => {
+const StatusBadge: FC<StatusBadgeProps> = ({ status, reset }) => {
   return (
-    <Badge view={'stroked'} className={statuses[status].className} label={statuses[status].label} />
+    <Badge
+      view={'stroked'}
+      className={statuses[status].className}
+      label={statuses[status].label}
+      icon={reset ? IconRevert : undefined}
+    />
   )
 }
 
