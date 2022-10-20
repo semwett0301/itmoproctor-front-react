@@ -1,101 +1,173 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import cl from './exams.module.scss'
-import { Pagination } from '@consta/uikit/Pagination'
-import { useOutletContext } from 'react-router-dom'
-import { DefaultItem, Select } from '@consta/uikit/Select'
-import { Text } from '@consta/uikit/Text'
-import ExamTable from './components/ExamTable/ExamTable'
-import FilterField from '../../shared/FilterField/FilterField'
+import { DefaultItem } from '@consta/uikit/Select'
+import ExamTable, { TestTableColumns } from './components/ExamTable/ExamTable'
+import FilterField, { statusComboboxItem, statusList } from '../../shared/FilterField/FilterField'
+import PaginationField, {
+  ITotalRowsVariants,
+  totalRowsVariants
+} from './components/PaginationField/PaginationField'
+import { request } from '../../../api/axios/request'
+import { IExams } from '../../../ts/interfaces/IExams'
+import StatusBadge, {
+  badgePropStatus,
+  getExamStatus,
+  getProctorName
+} from './components/ExamTable/StatusBadge/StatusBadge'
+import TwoRowCell from './components/ExamTable/TwoRowCell/TwoRowCell'
+import TypeBadge from './components/ExamTable/TypeBadge/TypeBadge'
+import { Button } from '@consta/uikit/Button'
+import { IconVideo } from '@consta/uikit/IconVideo'
+import { IconBento } from '@consta/uikit/IconBento'
+import { useOpenTab } from '../Admin'
 
 interface ExamsProps {
   openTab: () => void
 }
 
+export interface IPagination {
+  totalRows: ITotalRowsVariants | null
+  currentPage: number
+  totalPages: number
+}
+
+export interface IFilter {
+  date: [Date?, Date?] | null
+  searchQuery: string | null
+  type: DefaultItem | null
+  status: statusComboboxItem[] | null
+  organizations: DefaultItem[] | null
+}
+
+export interface IFilterAndPagination {
+  pagination: IPagination
+  filter: IFilter
+}
+
 const Exams: FC = () => {
-  const context = useOutletContext<ExamsProps>()
-  const amountOfRowsVariants: DefaultItem[] = [
-    {
-      label: '5',
-      id: 5
+  const { openTab } = useOpenTab()
+
+  const [filterAndPagination, setFilterAndPagination] = useState<IFilterAndPagination>({
+    filter: {
+      date: [new Date(), new Date()],
+      searchQuery: null,
+      type: null,
+      status: [statusList[1]],
+      organizations: null
     },
-    {
-      label: '10',
-      id: 10
-    },
-    {
-      label: '15',
-      id: 15
-    },
-    {
-      label: '50',
-      id: 50
-    },
-    {
-      label: '100',
-      id: 100
-    },
-    {
-      label: '250',
-      id: 250
-    },
-    {
-      label: '500',
-      id: 500
-    },
-    {
-      label: '1000',
-      id: 1000
-    },
-    {
-      label: '10000',
-      id: 10000
+    pagination: {
+      totalRows: totalRowsVariants[1],
+      currentPage: 1,
+      totalPages: 1
     }
-  ]
+  })
 
-  const [amountOfRows, setAmountOsRows] = useState<DefaultItem | null>(amountOfRowsVariants[1])
-  const [currentPage, setCurrentPage] = useState<number>(1)
+  // filter set functions
 
-  const countOfPages = 20
+  const setDatePeriod = (value: [Date?, Date?] | null) => {
+    setFilterAndPagination((prevState) => ({
+      ...prevState,
+      filter: {
+        ...prevState.filter,
+        date: value
+      }
+    }))
+  }
 
-  const hotKeys = {
-    prevPage: {
-      label: '',
-      values: ['Shift', 'ArrowLeft']
-    },
-    nextPage: {
-      label: '',
-      values: ['Shift', 'ArrowRight']
+  // pagination set functions
+  const setTotalRows = (value: ITotalRowsVariants | null) => {
+    setFilterAndPagination((prevState) => ({
+      ...prevState,
+      pagination: { ...prevState.pagination, totalRows: value }
+    }))
+  }
+
+  const setCurrentPage = (value: number) => {
+    setFilterAndPagination((prevState) => ({
+      ...prevState,
+      pagination: { ...prevState.pagination, currentPage: value }
+    }))
+  }
+
+  // Exams table request
+  const [fullRows, setFullRows] = useState<TestTableColumns[]>([])
+  // const moreButtonClickHandler = (event: React.MouseEvent) => {
+  //   setMenuPosition((prevState) => {
+  //     console.log(prevState)
+  //     return { x: event.clientX, y: event.clientY }
+  //   })
+  // }
+
+  const getRow = (columnIdx: number, rowId: string | undefined): void => {
+    if (typeof rowId !== 'undefined' && columnIdx === 0) {
+      const newRows = fullRows.map((item) => {
+        if (item.id === rowId) {
+          return { ...item, selected: !item.selected }
+        } else return item
+      })
+      setFullRows(newRows)
     }
   }
 
+  useEffect(() => {
+    const getExams = async (): Promise<void> => {
+      await request.exam.getListOfExams().then((r) => {
+        console.log(r.data.rows)
+        if (r.data.rows.length > 0) {
+          const obj: TestTableColumns[] = r.data.rows.map((item: IExams) => {
+            const row: TestTableColumns = {
+              id: item._id,
+              selected: false,
+              listener: `${item.student.middlename} ${item.student.firstname} ${item.student.lastname}`,
+              proctor: getProctorName(item.async, item.inspector, item.expert),
+              exam: <TwoRowCell firstRow={item.subject} secondRow={item.assignment} />,
+              type: <TypeBadge async={item.async} />,
+              start: <TwoRowCell firstRow={item.startDate} secondRow={item.endDate} />,
+              status: <StatusBadge status={badgePropStatus[getExamStatus(item)]} />,
+              check: null,
+              video: (
+                <Button
+                  size='xs'
+                  onlyIcon
+                  iconRight={IconVideo}
+                  onClick={() =>
+                    openTab({
+                      id: item._id,
+                      title: item._id,
+                      path: `exam/${item._id}`,
+                      type: 'exam'
+                    })
+                  }
+                />
+              ),
+              more: <Button size='xs' onlyIcon iconRight={IconBento} view='secondary' />
+            }
+            return row
+          })
+
+          setFullRows(obj)
+        }
+      })
+    }
+
+    getExams().catch((e) => console.log(e))
+  }, [filterAndPagination.filter.date])
   return (
     <div className={cl.examTableModule}>
-      <FilterField />
+      <FilterField
+        filter={filterAndPagination.filter}
+        filterHandlers={{ datePicker: setDatePeriod }}
+      />
 
-      <div className={cl.examTable}>
-        <ExamTable onVideoBtnClick={context.openTab} />
-      </div>
+      <ExamTable rows={fullRows} />
 
-      <div className={cl.pagination}>
-        <Select
-          size={'xs'}
-          items={amountOfRowsVariants}
-          value={amountOfRows}
-          onChange={({ value }) => setAmountOsRows(value)}
-          className={cl.countRowsSelect}
-        />
-        <Pagination
-          size={'s'}
-          currentPage={currentPage}
-          totalPages={countOfPages}
-          onChange={(item) => setCurrentPage(item)}
-          className={cl.minLayout}
-          hotkeys={hotKeys}
-        />
-        <Text size={'2xs'} view={'secondary'} className={cl.footerText}>
-          Показ с 1 по 5 из 15 страниц
-        </Text>
-      </div>
+      <PaginationField
+        page={filterAndPagination.pagination.currentPage}
+        totalPages={filterAndPagination.pagination.totalPages}
+        totalRows={filterAndPagination.pagination.totalRows}
+        setTotalRows={setTotalRows}
+        setCurrentPage={setCurrentPage}
+      />
     </div>
   )
 }

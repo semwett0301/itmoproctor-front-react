@@ -1,12 +1,14 @@
 import React, { FC, useState } from 'react'
 import { Layout } from '@consta/uikit/Layout'
-import cl from './Admin.module.css'
+import cl from './Admin.module.scss'
 import Sidebar from './Sidebar/Sidebar'
 import { Tabs } from '@consta/uikit/Tabs'
 import TabWithCross from '../shared/navTabs/TabWithCross/TabWithCross'
 import { Card } from '@consta/uikit/Card'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate, useOutletContext } from 'react-router-dom'
 import CustomHeader from '../shared/CustomHeader/CustomHeader'
+import HeaderLogoModule from '../shared/CustomHeader/HeaderLogoModule/HeaderLogoModule'
+import HeaderTimeDateModule from '../shared/CustomHeader/HeaderTimeDateModule/HeaderTimeDateModule'
 
 export interface TabItem {
   id: number | string
@@ -14,6 +16,8 @@ export interface TabItem {
   path: string
   type: 'tab' | 'exam'
 }
+
+type AdminOutletContextType = { openTab: (item: TabItem) => void }
 
 const Admin: FC = () => {
   const [tabItems, setItems] = useState<TabItem[] | []>([
@@ -55,7 +59,10 @@ const Admin: FC = () => {
   return (
     <Layout className={cl.wrapper} direction={'column'}>
       <Layout>
-        <CustomHeader />
+        <CustomHeader
+          leftSide={<HeaderLogoModule />}
+          rightSide={[{ key: 'dateTime', component: HeaderTimeDateModule }]}
+        />
       </Layout>
 
       <Layout className={cl.contentWrapper} direction='row'>
@@ -93,3 +100,7 @@ const Admin: FC = () => {
 }
 
 export default Admin
+
+export function useOpenTab() {
+  return useOutletContext<AdminOutletContextType>()
+}

@@ -13,6 +13,14 @@
 
 #theme
 /src/themes
+
+#css
+/src/**/*.css
+/src/**/*.css.map
+
+#git
+.gitignore
+
 # misc
 .DS_Store
 .env.local
