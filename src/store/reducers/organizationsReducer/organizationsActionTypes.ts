@@ -1,0 +1,4 @@
+export enum OrganizationsActionTypes {
+  ADD_ORGANIZATION = 'ADD_ORGANIZATION',
+  SET_ORGANIZATIONS = 'SET_ORGANIZATIONS'
+}

@@ -9,17 +9,17 @@ import PaginationField, {
 } from './components/PaginationField/PaginationField'
 import { request } from '../../../api/axios/request'
 import { IExams } from '../../../ts/interfaces/IExams'
-import StatusBadge, {
-  badgePropStatus,
-  getExamStatus,
-  getProctorName
-} from './components/ExamTable/StatusBadge/StatusBadge'
 import TwoRowCell from './components/ExamTable/TwoRowCell/TwoRowCell'
 import TypeBadge from './components/ExamTable/TypeBadge/TypeBadge'
 import { Button } from '@consta/uikit/Button'
 import { IconVideo } from '@consta/uikit/IconVideo'
 import { IconBento } from '@consta/uikit/IconBento'
 import { useOpenTab } from '../Admin'
+import StatusBadge, {
+  badgePropStatus,
+  getExamStatus,
+  getProctorName
+} from './components/ExamTable/StatusBadge/StatusBadge'
 
 interface ExamsProps {
   openTab: () => void

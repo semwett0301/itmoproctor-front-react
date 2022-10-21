@@ -50,8 +50,8 @@ const CustomHeader: FC<ICustomHeader> = ({ leftSide, rightSide }) => {
     },
     {
       label: 'Выход',
-      onClick: () => {
-        clickHandler()
+      onClick: async () => {
+        await clickHandler()
       },
       group: 2,
       iconLeft: IconExit
