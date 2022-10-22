@@ -7,18 +7,20 @@ import { setOrganizationActionCreator } from '../store/reducers/organizationsRed
 
 interface IOrganizationsArguments {
   setter: (organizations: IOrganization[]) => void
+}
+
+interface IOrganizationFunctionArguments {
   ids?: string[]
 }
 
-export const useOrganizations: (args: IOrganizationsArguments) => [boolean, () => void] = ({
-  setter,
-  ids
-}) => {
-  const [loading, setLoading] = useState(false)
+export const useOrganizations: (
+  args: IOrganizationsArguments
+) => [boolean, (args: IOrganizationFunctionArguments) => void] = ({ setter }) => {
+  const [loading, setLoading] = useState<boolean>(false)
   const organizations: IOrganizations = useAppSelector((state) => state.organizations)
   const dispatch: AppDispatch = useAppDispatch()
 
-  const loadOrganizations = () => {
+  const loadOrganizations = ({ ids }: IOrganizationFunctionArguments) => {
     let newOrganizationList: IOrganization[] = []
 
     if (Object.keys(organizations).length === 0) {
