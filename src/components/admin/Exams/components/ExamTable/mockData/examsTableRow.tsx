@@ -1,12 +1,10 @@
 import { TableColumn } from '@consta/uikit/Table'
 import React, { ReactNode } from 'react'
 import { Checkbox } from '@consta/uikit/Checkbox'
-import { TestTableColumns } from './ExamTable'
+import {ITableRow} from '../../../../../shared/SharedTable/SharedTable';
 
-export interface ITableColumns {
-  id: string
-  selected: boolean
-  check: ReactNode
+export interface ExamsTableRow extends ITableRow{
+  check: ReactNode | null
   listener: ReactNode
   proctor: ReactNode
   exam: ReactNode
@@ -17,7 +15,7 @@ export interface ITableColumns {
   more: ReactNode
 }
 
-export const columns: TableColumn<TestTableColumns>[] = [
+export const examsColumn: TableColumn<ExamsTableRow>[] = [
   {
     title: '№',
     accessor: 'id',

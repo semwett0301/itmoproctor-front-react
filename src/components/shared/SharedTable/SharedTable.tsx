@@ -1,28 +1,19 @@
-import React, { FC, ReactNode } from 'react'
-import { onCellClick, Table } from '@consta/uikit/Table'
-import cl from './ExamTable.module.scss'
-import { columns } from './tableRowModel'
-import { ContextMenu } from '@consta/uikit/ContextMenu'
-import { Position } from '@consta/uikit/Popover'
-import { ResponsesNothingFound } from '@consta/uikit/ResponsesNothingFound'
-import { contextMenuItem } from '../../../../shared/CustomHeader/CustomHeader'
+import React from 'react'
+import {onCellClick, Table, TableColumn} from '@consta/uikit/Table'
+import cl from '../../admin/Exams/components/ExamTable/ExamTable.module.scss'
+import {ContextMenu} from '@consta/uikit/ContextMenu'
+import {Position} from '@consta/uikit/Popover'
+import {ResponsesNothingFound} from '@consta/uikit/ResponsesNothingFound'
+import {contextMenuItem} from '../CustomHeader/CustomHeader'
 
-export interface TestTableColumns {
-  id: string
+export interface ITableRow {
+  id: string,
   selected: boolean
-  check: ReactNode | null
-  listener: ReactNode
-  proctor: ReactNode
-  exam: ReactNode
-  type: ReactNode
-  start: ReactNode
-  status: ReactNode
-  video: ReactNode
-  more: ReactNode
 }
 
-interface IExamTableProps {
-  rows: TestTableColumns[]
+interface ISharedTableProps<T extends ITableRow> {
+  rows: T[],
+  columns: TableColumn<T>[]
   isMenuOpen: boolean
   menuPosition: Position
   onOneCellClick: onCellClick
@@ -30,20 +21,21 @@ interface IExamTableProps {
   contextMenuItems: contextMenuItem[]
 }
 
-const ExamTable: FC<IExamTableProps> = ({
+function SharedTable<T extends ITableRow = ITableRow>({
   rows,
+  columns,
   isMenuOpen,
   menuPosition,
   closeMenu,
   onOneCellClick,
   contextMenuItems
-}) => {
+}: ISharedTableProps<T>): JSX.Element {
   return (
     <>
       <Table
         getCellWrap={() => 'truncate'}
         stickyHeader={true}
-        size='s'
+        size="s"
         rows={rows}
         columns={columns}
         zebraStriped={'odd'}
@@ -51,7 +43,7 @@ const ExamTable: FC<IExamTableProps> = ({
         borderBetweenRows
         className={cl.table}
         onCellClick={onOneCellClick}
-        getAdditionalClassName={({ row }) => (row.selected ? cl.activeRow : '')}
+        getAdditionalClassName={({row}) => (row.selected ? cl.activeRow : '')}
         emptyRowsPlaceholder={
           <ResponsesNothingFound
             actions={<></>}
@@ -61,7 +53,7 @@ const ExamTable: FC<IExamTableProps> = ({
       />
 
       <ContextMenu
-        size='xs'
+        size="xs"
         className={cl.contextMenu}
         items={contextMenuItems}
         isOpen={isMenuOpen}
@@ -74,4 +66,4 @@ const ExamTable: FC<IExamTableProps> = ({
   )
 }
 
-export default ExamTable
+export default SharedTable

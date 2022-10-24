@@ -2,6 +2,7 @@ import { IUser } from '../../../ts/interfaces/IUser'
 import { ProviderEnum, RoleEnum } from '../../../config/authСonfig'
 import { UserActionTypes } from './userActionTypes'
 import { IAction } from '../../../ts/interfaces/IAction'
+import {Reducer} from 'redux';
 
 const initialState: IUser = {
   active: false,
@@ -31,7 +32,7 @@ const initialState: IUser = {
   _id: ''
 }
 
-export const userReducer = (state: IUser = initialState, action: IAction<UserActionTypes>) => {
+export const userReducer: Reducer<IUser> = (state: IUser = initialState, action: IAction<UserActionTypes>) => {
   switch (action.type) {
     case UserActionTypes.SET_USER:
       return {

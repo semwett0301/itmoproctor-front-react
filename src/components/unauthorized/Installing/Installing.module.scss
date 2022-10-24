@@ -1,0 +1,17 @@
+.main_container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  background-color: #ecf1f4;
+
+  width: 100vw;
+  height: 100vh;
+}
+
+.other_version {
+  display: flex;
+  justify-content: space-between;
+}
+
+

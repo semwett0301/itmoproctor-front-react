@@ -1,7 +1,6 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, {FC, useEffect, useState} from 'react'
 import cl from './exams.module.scss'
-import { DefaultItem } from '@consta/uikit/Select'
-import ExamTable, { TestTableColumns } from './components/ExamTable/ExamTable'
+import {DefaultItem} from '@consta/uikit/Select'
 import FilterField, {
   statusComboboxItem,
   statusList,
@@ -10,34 +9,36 @@ import FilterField, {
 import PaginationField, {
   ITotalRowsVariants,
   totalRowsVariants
-} from './components/PaginationField/PaginationField'
-import { request } from '../../../api/axios/request'
-import { IExams } from '../../../ts/interfaces/IExams'
+} from '../../shared/SharedPagination/PaginationField/PaginationField'
+import {request} from '../../../api/axios/request'
+import {IExams} from '../../../ts/interfaces/IExams'
 import TwoRowCell from './components/ExamTable/TwoRowCell/TwoRowCell'
 import TypeBadge from './components/ExamTable/TypeBadge/TypeBadge'
-import { Button } from '@consta/uikit/Button'
-import { IconVideo } from '@consta/uikit/IconVideo'
-import { IconBento } from '@consta/uikit/IconBento'
-import { useOpenTab } from '../Admin'
+import {Button} from '@consta/uikit/Button'
+import {IconVideo} from '@consta/uikit/IconVideo'
+import {IconBento} from '@consta/uikit/IconBento'
+import {useOpenTab} from '../Admin'
 
-import { IconAdd } from '@consta/uikit/IconAdd'
-import { IconEdit } from '@consta/uikit/IconEdit'
-import { IconRevert } from '@consta/uikit/IconRevert'
-import { IconCopy } from '@consta/uikit/IconCopy'
-import { IconDocExport } from '@consta/uikit/IconDocExport'
-import { IconUpload } from '@consta/uikit/IconUpload'
-import { IconTrash } from '@consta/uikit/IconTrash'
-import { CellClickType } from '@consta/uikit/Table'
-import { useFlag } from '@consta/uikit/useFlag'
-import { Position } from '@consta/uikit/Popover'
+import {IconAdd} from '@consta/uikit/IconAdd'
+import {IconEdit} from '@consta/uikit/IconEdit'
+import {IconRevert} from '@consta/uikit/IconRevert'
+import {IconCopy} from '@consta/uikit/IconCopy'
+import {IconDocExport} from '@consta/uikit/IconDocExport'
+import {IconUpload} from '@consta/uikit/IconUpload'
+import {IconTrash} from '@consta/uikit/IconTrash'
+import {CellClickType} from '@consta/uikit/Table'
+import {useFlag} from '@consta/uikit/useFlag'
+import {Position} from '@consta/uikit/Popover'
+import StatusBadge, {
+  badgePropStatus,
+  getExamStatus,
+  getProctorName
+} from './components/ExamTable/StatusBadge/StatusBadge';
+import {examsColumn, ExamsTableRow} from './components/ExamTable/mockData/examsTableRow';
+import SharedTable from '../../shared/SharedTable/SharedTable';
+import SharedPagination, {IPagination} from '../../shared/SharedPagination/SharedPagination';
+import {usePagination} from '../../../hooks/paginationHooks';
 
-
-export interface IPagination {
-  displayedRows: ITotalRowsVariants
-  totalRows: number
-  currentPage: number
-  totalPages: number
-}
 
 export interface IFilter {
   date: [Date, Date]
@@ -48,7 +49,7 @@ export interface IFilter {
 }
 
 const Exams: FC = () => {
-  const { openTab } = useOpenTab()
+  const {openTab} = useOpenTab()
 
   const [isTableMenuOpen, setIsTableMenuOpen] = useFlag(true)
   const [tableMenuPosition, setTableMenuPosition] = useState<Position>(undefined)
@@ -109,44 +110,11 @@ const Exams: FC = () => {
 
   // pagination
   // paginationState
-  const [pagination, setPagination] = useState<IPagination>({
-    displayedRows: totalRowsVariants[1],
-    currentPage: 1,
-    totalPages: 1,
-    totalRows: 0
-  })
+  const [pagination, setPagination, setTotal] = usePagination()
 
-  // pagination setters
-  const setDisplayedRows = (value: ITotalRowsVariants | null) => {
-    setPagination((prevState) => ({
-      ...prevState,
-      displayedRows: value || totalRowsVariants[1]
-    }))
-  }
-  const setTotalRows = (value: number) => {
-    setPagination((prevState) => ({
-      ...prevState,
-      totalRows: value
-    }))
-  }
-
-  const setCurrentPage = (value: number) => {
-    console.log(value)
-    setPagination((prevState) => ({
-      ...prevState,
-      currentPage: value
-    }))
-  }
-
-  const setTotalPages = (value: number) => {
-    setPagination((prevState) => ({
-      ...prevState,
-      totalPages: value
-    }))
-  }
 
   // Exams table request
-  const [fullRows, setFullRows] = useState<TestTableColumns[]>([])
+  const [fullRows, setFullRows] = useState<ExamsTableRow[]>([])
   // const moreButtonClickHandler = (event: React.MouseEvent) => {
   //   setMenuPosition((prevState) => {
   //     console.log(prevState)
@@ -158,7 +126,7 @@ const Exams: FC = () => {
     if (typeof rowId !== 'undefined' && columnIdx === 0) {
       const newRows = fullRows.map((item) => {
         if (item.id === rowId) {
-          return { ...item, selected: !item.selected }
+          return {...item, selected: !item.selected}
         } else return item
       })
       setFullRows(newRows)
@@ -174,8 +142,8 @@ const Exams: FC = () => {
           text: filter.searchQuery,
           status: filter.status
             ? filter.status
-                .map((item) => badgePropStatus.findIndex((value) => item.id === value))
-                .join(',')
+              .map((item) => badgePropStatus.findIndex((value) => item.id === value))
+              .join(',')
             : null,
           reset: null, // false,
           organizations: null,
@@ -185,23 +153,22 @@ const Exams: FC = () => {
           rows: pagination.displayedRows.id
         })
         .then((r) => {
-          setTotalPages(Math.ceil(r.data.total / pagination.displayedRows.id))
-          setTotalRows(r.data.total)
+          setTotal(r.data.total)
           if (r.data.rows.length > 0) {
-            const obj: TestTableColumns[] = r.data.rows.map((item: IExams) => {
-              const row: TestTableColumns = {
+            const obj: ExamsTableRow[] = r.data.rows.map((item: IExams) => {
+              const row: ExamsTableRow = {
                 id: item._id,
                 selected: false,
                 listener: `${item.student.middlename} ${item.student.firstname} ${item.student.lastname}`,
                 proctor: getProctorName(item.async, item.inspector, item.expert),
-                exam: <TwoRowCell firstRow={item.subject} secondRow={item.assignment} />,
-                type: <TypeBadge async={item.async} />,
-                start: <TwoRowCell firstRow={item.startDate} secondRow={item.endDate} />,
-                status: <StatusBadge status={badgePropStatus[getExamStatus(item)]} />,
+                exam: <TwoRowCell firstRow={item.subject} secondRow={item.assignment}/>,
+                type: <TypeBadge async={item.async}/>,
+                start: <TwoRowCell firstRow={item.startDate} secondRow={item.endDate}/>,
+                status: <StatusBadge status={badgePropStatus[getExamStatus(item)]}/>,
                 check: null,
                 video: (
                   <Button
-                    size='xs'
+                    size="xs"
                     onlyIcon
                     iconRight={IconVideo}
                     onClick={() =>
@@ -216,12 +183,12 @@ const Exams: FC = () => {
                 ),
                 more: (
                   <Button
-                    size='xs'
+                    size="xs"
                     onlyIcon
                     iconRight={IconBento}
-                    view='secondary'
+                    view="secondary"
                     onClick={(e: React.MouseEvent<HTMLElement>) => {
-                      const { x, y } = e.currentTarget.getBoundingClientRect()
+                      const {x, y} = e.currentTarget.getBoundingClientRect()
 
                       console.log('target', x, y)
 
@@ -233,7 +200,7 @@ const Exams: FC = () => {
                         } else {
                           setIsTableMenuOpen.on()
                           console.log('on')
-                          return { x: x, y: y }
+                          return {x: x, y: y}
                         }
                       })
                     }}
@@ -262,18 +229,19 @@ const Exams: FC = () => {
           setOrganizations: setOrganizations
         }}
         contextMenuItems={[
-          { label: 'Добавить', iconLeft: IconAdd },
-          { label: 'Изменить', iconLeft: IconEdit },
-          { label: 'Сбросить', iconLeft: IconRevert },
-          { label: 'Дублировать', iconLeft: IconCopy },
-          { label: 'Скачать (csv)', iconLeft: IconDocExport },
-          { label: 'Импорт', iconLeft: IconUpload },
-          { label: 'Удалить', iconLeft: IconTrash }
+          {label: 'Добавить', iconLeft: IconAdd},
+          {label: 'Изменить', iconLeft: IconEdit},
+          {label: 'Сбросить', iconLeft: IconRevert},
+          {label: 'Дублировать', iconLeft: IconCopy},
+          {label: 'Скачать (csv)', iconLeft: IconDocExport},
+          {label: 'Импорт', iconLeft: IconUpload},
+          {label: 'Удалить', iconLeft: IconTrash}
         ]}
       />
 
-      <ExamTable
+      <SharedTable<ExamsTableRow>
         rows={fullRows}
+        columns={examsColumn}
         contextMenuItems={[
           {
             label: 'Изменить',
@@ -295,12 +263,12 @@ const Exams: FC = () => {
         isMenuOpen={isTableMenuOpen}
         menuPosition={tableMenuPosition}
         onOneCellClick={function ({
-          e,
-          type,
-          rowId,
-          columnIdx,
-          ref
-        }: {
+                                    e,
+                                    type,
+                                    rowId,
+                                    columnIdx,
+                                    ref
+                                  }: {
           e: React.SyntheticEvent<Element, Event>
           type: CellClickType
           columnIdx: number
@@ -312,14 +280,8 @@ const Exams: FC = () => {
         closeMenu={setIsTableMenuOpen.off}
       />
 
-      <PaginationField
-        totalRows={pagination.totalRows}
-        page={pagination.currentPage}
-        totalPages={pagination.totalPages}
-        displayedRows={pagination.displayedRows}
-        setDisplayedRows={setDisplayedRows}
-        setCurrentPage={setCurrentPage}
-      />
+      <SharedPagination pagination={pagination} setPagination={setPagination}/>
+
     </div>
   )
 }
