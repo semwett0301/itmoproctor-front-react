@@ -24,16 +24,17 @@ const Admin: FC = () => {
     { id: 'Exams', title: 'Экзамены', path: 'Exams', type: 'tab' }
   ])
 
-  const [activeTab, setActiveTab] = useState<TabItem | null>({
-    id: 'Exams',
-    title: 'Экзамены',
-    path: 'Exams',
-    type: 'tab'
-  })
+  const [activeTab, setActiveTab] = useState<TabItem | null>(tabItems[0])
 
   const navigate = useNavigate()
 
   const closeTab = (tabItem: TabItem): void => {
+    setActiveTab(() => {
+      const tab = tabItems[tabItems.findIndex((el) => el.id === tabItem.id) - 1]
+      navigate(tab ? tab.path : '')
+      return tab
+    })
+
     setItems(tabItems.filter((item) => item.id !== tabItem.id))
   }
 
@@ -101,6 +102,6 @@ const Admin: FC = () => {
 
 export default Admin
 
-export function useOpenTab() {
+export function useOpenTab(): AdminOutletContextType {
   return useOutletContext<AdminOutletContextType>()
 }
