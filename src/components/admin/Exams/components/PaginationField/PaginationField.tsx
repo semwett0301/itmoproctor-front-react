@@ -62,8 +62,9 @@ const hotKeys = {
 interface IPaginationProp {
   page: number
   totalPages: number
-  totalRows: ITotalRowsVariants | null
-  setTotalRows: (value: ITotalRowsVariants | null) => void
+  totalRows: number
+  displayedRows: ITotalRowsVariants
+  setDisplayedRows: (value: ITotalRowsVariants | null) => void
   setCurrentPage: (item: number) => void
 }
 
@@ -71,31 +72,34 @@ const PaginationField: FC<IPaginationProp> = ({
   page,
   totalPages,
   totalRows,
-  setTotalRows,
+  displayedRows,
+  setDisplayedRows,
   setCurrentPage
 }) => {
+  console.log(page)
   return (
     <div className={cl.pagination}>
       <Select
         size={'xs'}
         items={totalRowsVariants}
-        value={totalRows}
-        onChange={({ value }) => setTotalRows(value)}
+        value={displayedRows}
+        onChange={({ value }) => setDisplayedRows(value)}
         className={cl.countRowsSelect}
       />
 
       <Pagination
         size={'s'}
         currentPage={page}
-        totalPages={page}
-        onChange={(item) => setCurrentPage(item)}
+        totalPages={totalPages}
+        onChange={(item) => {
+          setCurrentPage(item)
+        }}
         className={cl.minLayout}
         hotkeys={hotKeys}
       />
 
       <Text size={'2xs'} view={'secondary'} className={cl.footerText}>
-        Показ с {totalRows ? page * totalRows.id - totalRows.id + 1 : 0} по{' '}
-        {totalRows ? page * totalRows.id : 0} из {totalRows ? totalPages * totalRows.id : 0} записей
+        Показано с {displayedRows.id * (page - 1) + 1} по {displayedRows.id * page} из {totalRows}
       </Text>
     </div>
   )

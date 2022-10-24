@@ -25,6 +25,7 @@ import { IFilter } from '../../admin/exams/Exams'
 type contextMenuItem = {
   label: string
   iconLeft: IconComponent
+  onClick?: (params: { e: React.MouseEvent<HTMLDivElement>; item: contextMenuItem }) => void
 }
 
 export const organizationsList: DefaultItem[] = [
@@ -62,7 +63,7 @@ export type statusComboboxItem = {
 
 export const statusList: statusComboboxItem[] = [
   {
-    label: 'Кроме запланированных',
+    label: 'Кроме незапланированных',
     id: 'exceptPlanned',
     disabled: false
   },
@@ -133,19 +134,25 @@ export const statusList: statusComboboxItem[] = [
   }
 ]
 
-const typesList: DefaultItem[] = [
+export type typeItem = {
+  label: string
+  id: number
+  flag: boolean
+}
+const typesList: typeItem[] = [
   {
     label: 'Асинхронный',
-
-    id: 1
+    id: 1,
+    flag: true
   },
   {
     label: 'Синхроннный',
-    id: 2
+    id: 2,
+    flag: false
   }
 ]
 
-const contextMenuItems: contextMenuItem[] = [
+const defaultContextMenuItems: contextMenuItem[] = [
   { label: 'Добавить', iconLeft: IconAdd },
   { label: 'Изменить', iconLeft: IconEdit },
   { label: 'Сбросить', iconLeft: IconRevert },
@@ -156,27 +163,23 @@ const contextMenuItems: contextMenuItem[] = [
 ]
 
 interface IFilterHandlers {
-  datePicker: (value: [Date?, Date?] | null) => void
+  setDate: (value: [Date?, Date?] | null) => void
+  setSearchQuery: (query: string | null) => void
+  setType: (item: typeItem | null) => void
+  setStatus: (item: statusComboboxItem[] | null) => void
+  setOrganizations: (item: DefaultItem[] | null) => void
 }
 
 interface IFilterField {
   filter: IFilter
   filterHandlers: IFilterHandlers
+  contextMenuItems: contextMenuItem[]
 }
 
-const FilterField: FC<IFilterField> = ({ filter, filterHandlers }) => {
-  console.log(filter)
-
-  const [datePeriod, setDatePeriod] = useState<[Date?, Date?] | null>([new Date(), new Date()])
-
-  const [examType, setExamType] = useState<DefaultItem | null>()
-  const [organizations, setOrganizations] = useState<DefaultItem[] | null>([organizationsList[0]])
-  const [status, setStatus] = useState<statusComboboxItem[] | null>([statusList[1]])
-
+const FilterField: FC<IFilterField> = ({ filter, filterHandlers, contextMenuItems }) => {
   const tooltipAnchor = useRef<HTMLButtonElement>(null)
   const [isPopoverVisible, setIsPopoverVisible] = useState(false)
 
-  const [searchField, setSearchField] = useState<string | null>(null)
   const tooltipAnchorOnClick = (): void => {
     setIsPopoverVisible(!isPopoverVisible)
   }
@@ -190,15 +193,17 @@ const FilterField: FC<IFilterField> = ({ filter, filterHandlers }) => {
             size={'s'}
             type='date-range'
             value={filter.date}
-            onChange={({ value }) => filterHandlers.datePicker(value)}
+            onChange={({ value }) => {
+              filterHandlers.setDate(value)
+            }}
             rightSide={[IconCalendar, IconCalendar]}
           />
         </Layout>
 
         <Layout flex={1}>
           <TextField
-            onChange={({ value }) => setSearchField(value)}
-            value={searchField}
+            onChange={({ value }) => filterHandlers.setSearchQuery(value)}
+            value={filter.searchQuery}
             placeholder='Поиск по экзамену'
             leftSide={IconSearch}
             width={'full'}
@@ -222,6 +227,7 @@ const FilterField: FC<IFilterField> = ({ filter, filterHandlers }) => {
             isOpen={isPopoverVisible}
             anchorRef={tooltipAnchor}
             getItemLeftIcon={(item) => item.iconLeft}
+            getItemOnClick={(item) => item.onClick}
             onClickOutside={() => setIsPopoverVisible(false)}
           />
         </Layout>
@@ -231,8 +237,8 @@ const FilterField: FC<IFilterField> = ({ filter, filterHandlers }) => {
         <Layout flex={2}>
           <Select
             items={typesList}
-            value={examType}
-            onChange={({ value }) => setExamType(value)}
+            value={filter.type}
+            onChange={({ value }) => filterHandlers.setType(value)}
             placeholder='Тип'
             size='s'
           />
@@ -245,8 +251,8 @@ const FilterField: FC<IFilterField> = ({ filter, filterHandlers }) => {
             className={cl.combobox}
             items={statusList}
             multiple={true}
-            value={status}
-            onChange={({ value }) => setStatus(value)}
+            value={filter.status}
+            onChange={({ value }) => filterHandlers.setStatus(value)}
             renderValue={(props) => (
               <StatusTag
                 key={props.item.id}
@@ -274,9 +280,9 @@ const FilterField: FC<IFilterField> = ({ filter, filterHandlers }) => {
         <Layout flex={5}>
           <Combobox
             items={organizationsList}
-            value={organizations}
+            value={filter.organizations}
             multiple={true}
-            onChange={({ value }) => setOrganizations(value)}
+            onChange={({ value }) => filterHandlers.setOrganizations(value)}
             placeholder='Правообладатель'
             size='s'
           />
