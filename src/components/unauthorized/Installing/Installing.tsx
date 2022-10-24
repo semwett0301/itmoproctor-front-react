@@ -20,24 +20,32 @@ const Installing: FC = () => {
 
   return (
     <div className={classes.main_container}>
-      <Logo logoWidth={97} logoHeight={89}/>
-      <Text size={'m'}>Система прокторинга от ИТМО</Text>
-      <Button label={'Скачать'} size={'l'} view={'primary'}/>
-      <Text>версия {metadata.version} (от {metadata.date.getDate()}.{metadata.date.getMonth()}.{metadata.date.getFullYear()})</Text>
-      <Text>для {osMatcher[osInfo.detectedOS]} x{osInfo.detectedArch}</Text>
-      <Text>Другие версии приложения</Text>
-      {
-        md5OtherKeys.map(e => {
-          return (
-            <div key={e} className={classes.other_version}>
-              <IconDiamond size={'s'}/>
-              <a href={e}>
-                <Text>{e}</Text>
-              </a>
-            </div>
-          )
-        })
-      }
+      <div className={classes.logo}>
+        <Logo logoWidth={90} logoHeight={82.5}/>
+      </div>
+      <div className={classes.text_proctoring}>
+        <Text size={'m'}>Система прокторинга от ИТМО</Text>
+      </div>
+      <a href={`${axiosConfig.baseUrl}/dist/${md5TargetKey}`}>
+        <Button label={'Скачать'} size={'l'} view={'primary'}/>
+      </a>
+      <Text className={classes.version}>версия {metadata.version} (от {metadata.date.getDate()}.{metadata.date.getMonth()}.{metadata.date.getFullYear()})</Text>
+      <Text className={classes.os}>для {osMatcher[osInfo.detectedOS]} x{osInfo.detectedArch}</Text>
+      <Text className={classes.other_versions_text}>Другие версии приложения</Text>
+      <div className={classes.other_versions}>
+        {
+          md5OtherKeys.map(e => {
+            return (
+              <div key={e} className={classes.other_version}>
+                <IconDiamond className={classes.icon_diamond} size={'s'}/>
+                <a href={`${axiosConfig.baseUrl}/dist/${e}`}>
+                  <Text>{e}</Text>
+                </a>
+              </div>
+            )
+          })
+        }
+      </div>
     </div>
   );
 };
