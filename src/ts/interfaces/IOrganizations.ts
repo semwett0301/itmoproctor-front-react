@@ -4,3 +4,7 @@ export interface IOrganization {
   fullName?: string
   shortName?: string
 }
+
+export interface IOrganizations {
+  [_id: string]: IOrganization
+}

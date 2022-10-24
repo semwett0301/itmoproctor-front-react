@@ -13,17 +13,13 @@ import PaginationField, {
 } from './components/PaginationField/PaginationField'
 import { request } from '../../../api/axios/request'
 import { IExams } from '../../../ts/interfaces/IExams'
-import StatusBadge, {
-  badgePropStatus,
-  getExamStatus,
-  getProctorName
-} from './components/ExamTable/StatusBadge/StatusBadge'
 import TwoRowCell from './components/ExamTable/TwoRowCell/TwoRowCell'
 import TypeBadge from './components/ExamTable/TypeBadge/TypeBadge'
 import { Button } from '@consta/uikit/Button'
 import { IconVideo } from '@consta/uikit/IconVideo'
 import { IconBento } from '@consta/uikit/IconBento'
 import { useOpenTab } from '../Admin'
+
 import { IconAdd } from '@consta/uikit/IconAdd'
 import { IconEdit } from '@consta/uikit/IconEdit'
 import { IconRevert } from '@consta/uikit/IconRevert'
@@ -34,6 +30,7 @@ import { IconTrash } from '@consta/uikit/IconTrash'
 import { CellClickType } from '@consta/uikit/Table'
 import { useFlag } from '@consta/uikit/useFlag'
 import { Position } from '@consta/uikit/Popover'
+
 
 export interface IPagination {
   displayedRows: ITotalRowsVariants

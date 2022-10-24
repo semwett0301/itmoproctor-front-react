@@ -20,7 +20,7 @@ import { IconTrash } from '@consta/uikit/IconTrash'
 import { Combobox } from '@consta/uikit/Combobox'
 import { SelectItem } from '@consta/uikit/__internal__/src/components/SelectComponents/SelectItem/SelectItem'
 import StatusTag, { TagPropStatus } from './StatusTag/StatusTag'
-import { IFilter } from '../../admin/Exams/Exams'
+import { IFilter } from '../../admin/exams/Exams'
 
 type contextMenuItem = {
   label: string
