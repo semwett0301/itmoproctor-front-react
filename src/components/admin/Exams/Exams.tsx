@@ -232,7 +232,6 @@ const Exams: FC = () => {
                     view='secondary'
                     onClick={(e: React.MouseEvent<HTMLElement>) => {
                       const { x, y } = e.currentTarget.getBoundingClientRect()
-
                       setTableMenuPosition((prevState) => {
                         console.log('prevState', prevState)
                         if (prevState && x === prevState.x && y === prevState.y) {
@@ -352,20 +351,14 @@ const Exams: FC = () => {
         ]}
         isMenuOpen={isTableMenuOpen}
         menuPosition={tableMenuPosition}
-        onOneCellClick={function ({
-          e,
-          type,
-          rowId,
-          columnIdx,
-          ref
-        }: {
+        onOneCellClick={function (prop: {
           e: React.SyntheticEvent<Element, Event>
           type: CellClickType
           columnIdx: number
           ref: React.RefObject<HTMLDivElement>
           rowId?: string | undefined
         }): void {
-          console.log(columnIdx)
+          console.log(prop)
         }}
         closeMenu={setIsTableMenuOpen.off}
       />

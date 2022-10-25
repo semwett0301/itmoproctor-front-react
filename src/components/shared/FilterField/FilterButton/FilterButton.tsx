@@ -3,17 +3,10 @@ import { Button } from '@consta/uikit/Button'
 import { IconBento } from '@consta/uikit/IconBento'
 import { ContextMenu } from '@consta/uikit/ContextMenu'
 import cl from '../FilterField.module.scss'
-import { IconComponent } from '@consta/uikit/Icon'
-
-// INTERFACES
-export type contextMenuItem = {
-  label: string
-  iconLeft: IconComponent
-  onClick?: (params: { e: React.MouseEvent<HTMLDivElement>; item: contextMenuItem }) => void
-}
+import { IContextMenuItem } from '../../CustomHeader/CustomHeader'
 
 interface IFilterButtonProp {
-  MenuItems: contextMenuItem[]
+  MenuItems: IContextMenuItem[]
 }
 
 // CONSTANTS

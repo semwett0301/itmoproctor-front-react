@@ -5,7 +5,7 @@ import { columns, tableRow } from './tableRowModel'
 import { ContextMenu } from '@consta/uikit/ContextMenu'
 import { Position } from '@consta/uikit/Popover'
 import { ResponsesNothingFound } from '@consta/uikit/ResponsesNothingFound'
-import { contextMenuItem } from '../../../../shared/CustomHeader/CustomHeader'
+import { IContextMenuItem } from '../../../../shared/CustomHeader/CustomHeader'
 
 export interface TestTableColumns extends tableRow {
   check: ReactNode | null
@@ -24,7 +24,7 @@ interface IExamTableProps {
   menuPosition: Position
   onOneCellClick: onCellClick
   closeMenu: () => void
-  contextMenuItems: contextMenuItem[]
+  contextMenuItems: IContextMenuItem[]
   rows: TestTableColumns[]
 }
 

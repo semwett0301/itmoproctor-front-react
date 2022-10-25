@@ -1,18 +1,13 @@
 import React, { FC, ReactElement, useRef, useState } from 'react'
 import { Header, HeaderLogin, HeaderModule } from '@consta/uikit/Header'
 import userLogo from '../../../mockData/logos/UserLogo.png'
-import { useLogout } from '../../../hooks/authHooks'
 import cl from './CustomHeader.module.scss'
 import { ContextMenu } from '@consta/uikit/ContextMenu'
 import { IconComponent } from '@consta/uikit/Icon'
-import { IconUser } from '@consta/uikit/IconUser'
-import { IconSettings } from '@consta/uikit/IconSettings'
-import { IconScreen } from '@consta/uikit/IconScreen'
-import { IconExit } from '@consta/uikit/IconExit'
 
-export type contextMenuItem = {
+export type IContextMenuItem = {
   label: string
-  onClick?: (params: { e: React.MouseEvent<HTMLDivElement>; item: contextMenuItem }) => void
+  onClick?: (params: { e: React.MouseEvent<HTMLDivElement>; item: IContextMenuItem }) => void
   group?: number
   iconLeft: IconComponent
 }
@@ -26,37 +21,11 @@ interface IHeaderModule {
 interface ICustomHeader {
   leftSide?: ReactElement
   rightSide?: IHeaderModule[]
+  contextMenuItems: IContextMenuItem[]
 }
 
-const CustomHeader: FC<ICustomHeader> = ({ leftSide, rightSide }) => {
+const CustomHeader: FC<ICustomHeader> = ({ leftSide, rightSide, contextMenuItems }) => {
   const [isLogged] = useState<boolean>(true)
-  const clickHandler = useLogout()
-
-  const items: contextMenuItem[] = [
-    {
-      label: 'Профиль',
-      group: 1,
-      iconLeft: IconUser
-    },
-    {
-      label: 'Настройки',
-      group: 1,
-      iconLeft: IconSettings
-    },
-    {
-      label: 'Проверка',
-      group: 1,
-      iconLeft: IconScreen
-    },
-    {
-      label: 'Выход',
-      onClick: async () => {
-        await clickHandler()
-      },
-      group: 2,
-      iconLeft: IconExit
-    }
-  ]
 
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
   const menuRef = useRef(null)
@@ -87,7 +56,7 @@ const CustomHeader: FC<ICustomHeader> = ({ leftSide, rightSide }) => {
       />
       <ContextMenu
         size={'xs'}
-        items={items}
+        items={contextMenuItems}
         isOpen={isMenuOpen}
         anchorRef={menuRef}
         className={cl.headerContextMenu}
