@@ -31,20 +31,22 @@ const Installing: FC = () => {
       </a>
       <Text className={classes.version}>версия {metadata.version} (от {metadata.date.getDate()}.{metadata.date.getMonth()}.{metadata.date.getFullYear()})</Text>
       <Text className={classes.os}>для {osMatcher[osInfo.detectedOS]} x{osInfo.detectedArch}</Text>
-      <Text className={classes.other_versions_text}>Другие версии приложения</Text>
       <div className={classes.other_versions}>
-        {
-          md5OtherKeys.map(e => {
-            return (
-              <div key={e} className={classes.other_version}>
-                <IconDiamond className={classes.icon_diamond} size={'s'}/>
-                <a href={`${axiosConfig.baseUrl}/dist/${e}`}>
-                  <Text>{e}</Text>
-                </a>
-              </div>
-            )
-          })
-        }
+        <Text className={classes.other_versions_text}>Другие версии приложения</Text>
+        <div className={classes.other_version_body}>
+          {
+            md5OtherKeys.map(e => {
+              return (
+                <div key={e} className={classes.other_version}>
+                  <IconDiamond className={classes.icon_diamond} size={'s'}/>
+                  <a href={`${axiosConfig.baseUrl}/dist/${e}`}>
+                    <Text>{e}</Text>
+                  </a>
+                </div>
+              )
+            })
+          }
+        </div>
       </div>
     </div>
   );

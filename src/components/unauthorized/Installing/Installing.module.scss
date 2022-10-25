@@ -31,10 +31,19 @@
 .other_versions {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .other_versions_text {
   margin-bottom: 8px;
+}
+
+.other_version_body {
+  display: flex;
+  flex-direction: column;
+
+  position: relative;
+  left: 40px;
 }
 
 .other_version {
