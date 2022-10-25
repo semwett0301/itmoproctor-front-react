@@ -29,16 +29,16 @@ const Installing: FC = () => {
         <Logo logoWidth={90} logoHeight={82.5}/>
       </div>
       <div className={classes.text_proctoring}>
-        <Text weight={'light'} size={'m'}>{t('unauthorized.installing.name')}</Text>
+        <Text size={'m'} view={'secondary'} weight={'light'}>{t('unauthorized.installing.name')}</Text>
       </div>
       <a href={`${axiosConfig.baseUrl}/dist/${md5TargetKey}`}>
         <Button label={t('unauthorized.installing.download')} size={'l'} view={'primary'}/>
       </a>
-      <Text weight={'light'}
+      <Text size={'s'} view={'secondary'} weight={'light'}
             className={classes.version}>{t('unauthorized.installing.version')} {metadata.version} ({t('unauthorized.installing.from')} {metadata.date.getDate()}.{metadata.date.getMonth()}.{metadata.date.getFullYear()})</Text>
-      <Text weight={'light'} className={classes.os}>{t('unauthorized.installing.forEach')} {osMatcher[osInfo.detectedOS]} x{osInfo.detectedArch}</Text>
+      <Text size={'s'} view={'secondary'} weight={'light'} className={classes.os}>{t('unauthorized.installing.forEach')} {osMatcher[osInfo.detectedOS]} x{osInfo.detectedArch}</Text>
       <div className={classes.other_versions}>
-        <Text weight={'light'} className={classes.other_versions_text}>{t('unauthorized.installing.other')}</Text>
+        <Text size={'s'} view={'secondary'} weight={'light'} className={classes.other_versions_text}>{t('unauthorized.installing.other')}</Text>
         <div className={classes.other_version_body}>
           {
             md5OtherKeys.map(e => {
@@ -46,7 +46,7 @@ const Installing: FC = () => {
                 <div key={e} className={classes.other_version}>
                   <IconDiamond className={classes.icon_diamond} size={'s'}/>
                   <a href={`${axiosConfig.baseUrl}/dist/${e}`}>
-                    <Text>{e}</Text>
+                    <Text size={'s'} view={'linkMinor'}>{e}</Text>
                   </a>
                 </div>
               )
