@@ -9,6 +9,8 @@ import {useAppSelector} from '../../../hooks/reduxHooks';
 import {osMatcher} from '../../../utils/osMatcher';
 import axiosConfig from '../../../config/axiosСonfig';
 import {IconDiamond} from '@consta/uikit/IconDiamond';
+import {useTranslation} from 'react-i18next';
+import SwitchLanguage from '../../shared/SwitchLanguage/SwitchLanguage';
 
 const Installing: FC = () => {
   const metadata = useLoaderData() as IDistMetadata
@@ -18,21 +20,25 @@ const Installing: FC = () => {
   const md5TargetKey: string = Object.keys(metadata.md5).filter(k => k.includes(osInfo.detectedOS) && k.includes(osInfo.detectedArch))[0]
   const md5OtherKeys: string[] = Object.keys(metadata.md5).filter(k => k !== md5TargetKey)
 
+  const {t} = useTranslation()
+
   return (
     <div className={classes.main_container}>
+      <SwitchLanguage/>
       <div className={classes.logo}>
         <Logo logoWidth={90} logoHeight={82.5}/>
       </div>
       <div className={classes.text_proctoring}>
-        <Text size={'m'}>Система прокторинга от ИТМО</Text>
+        <Text weight={'light'} size={'m'}>{t('unauthorized.installing.name')}</Text>
       </div>
       <a href={`${axiosConfig.baseUrl}/dist/${md5TargetKey}`}>
-        <Button label={'Скачать'} size={'l'} view={'primary'}/>
+        <Button label={t('unauthorized.installing.download')} size={'l'} view={'primary'}/>
       </a>
-      <Text className={classes.version}>версия {metadata.version} (от {metadata.date.getDate()}.{metadata.date.getMonth()}.{metadata.date.getFullYear()})</Text>
-      <Text className={classes.os}>для {osMatcher[osInfo.detectedOS]} x{osInfo.detectedArch}</Text>
+      <Text weight={'light'}
+            className={classes.version}>{t('unauthorized.installing.version')} {metadata.version} ({t('unauthorized.installing.from')} {metadata.date.getDate()}.{metadata.date.getMonth()}.{metadata.date.getFullYear()})</Text>
+      <Text weight={'light'} className={classes.os}>{t('unauthorized.installing.forEach')} {osMatcher[osInfo.detectedOS]} x{osInfo.detectedArch}</Text>
       <div className={classes.other_versions}>
-        <Text className={classes.other_versions_text}>Другие версии приложения</Text>
+        <Text weight={'light'} className={classes.other_versions_text}>{t('unauthorized.installing.other')}</Text>
         <div className={classes.other_version_body}>
           {
             md5OtherKeys.map(e => {

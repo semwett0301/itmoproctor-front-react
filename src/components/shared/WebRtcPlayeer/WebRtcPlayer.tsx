@@ -1,8 +1,8 @@
 import React, { FC } from 'react'
 
-interface IWebRtcPlayerProps {}
+// interface IWebRtcPlayerProps {}
 
-const WebRtcPlayer: FC<IWebRtcPlayerProps> = () => {
+const WebRtcPlayer: FC = () => {
   return <div></div>
 }
 
