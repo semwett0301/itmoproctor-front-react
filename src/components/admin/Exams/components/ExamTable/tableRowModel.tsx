@@ -3,9 +3,12 @@ import React, { ReactNode } from 'react'
 import { Checkbox } from '@consta/uikit/Checkbox'
 import { TestTableColumns } from './ExamTable'
 
-export interface ITableColumns {
+export interface tableRow {
   id: string
   selected: boolean
+}
+
+export interface ITableColumns extends tableRow {
   check: ReactNode
   listener: ReactNode
   proctor: ReactNode

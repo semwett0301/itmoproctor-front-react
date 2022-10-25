@@ -1,15 +1,13 @@
 import React, { FC, ReactNode } from 'react'
 import { onCellClick, Table } from '@consta/uikit/Table'
 import cl from './ExamTable.module.scss'
-import { columns } from './tableRowModel'
+import { columns, tableRow } from './tableRowModel'
 import { ContextMenu } from '@consta/uikit/ContextMenu'
 import { Position } from '@consta/uikit/Popover'
 import { ResponsesNothingFound } from '@consta/uikit/ResponsesNothingFound'
 import { contextMenuItem } from '../../../../shared/CustomHeader/CustomHeader'
 
-export interface TestTableColumns {
-  id: string
-  selected: boolean
+export interface TestTableColumns extends tableRow {
   check: ReactNode | null
   listener: ReactNode
   proctor: ReactNode
@@ -22,12 +20,12 @@ export interface TestTableColumns {
 }
 
 interface IExamTableProps {
-  rows: TestTableColumns[]
   isMenuOpen: boolean
   menuPosition: Position
   onOneCellClick: onCellClick
   closeMenu: () => void
   contextMenuItems: contextMenuItem[]
+  rows: TestTableColumns[]
 }
 
 const ExamTable: FC<IExamTableProps> = ({

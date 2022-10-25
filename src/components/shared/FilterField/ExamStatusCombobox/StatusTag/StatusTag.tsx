@@ -5,7 +5,7 @@ import { DefaultItem } from '@consta/uikit/Combobox'
 import {
   badgePropStatus,
   statusObject
-} from '../../../admin/exams/components/ExamTable/StatusBadge/StatusBadge'
+} from '../../../../admin/Exams/components/ExamTable/StatusBadge/StatusBadge'
 
 // CONSTANTS
 const tagPropStatus = [...badgePropStatus, 'exceptPlanned', 'allStatuses', 'interrupted'] as const

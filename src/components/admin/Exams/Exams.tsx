@@ -2,11 +2,6 @@ import React, { FC, useEffect, useState } from 'react'
 import cl from './exams.module.scss'
 import { DefaultItem } from '@consta/uikit/Select'
 import ExamTable, { TestTableColumns } from './components/ExamTable/ExamTable'
-import FilterField, {
-  statusComboboxItem,
-  statusList,
-  typeItem
-} from '../../shared/FilterField/FilterField'
 import PaginationField, {
   ITotalRowsVariants,
   totalRowsVariants
@@ -30,7 +25,21 @@ import { IconTrash } from '@consta/uikit/IconTrash'
 import { CellClickType } from '@consta/uikit/Table'
 import { useFlag } from '@consta/uikit/useFlag'
 import { Position } from '@consta/uikit/Popover'
-
+import StatusBadge, {
+  badgePropStatus,
+  getExamStatus,
+  getProctorName
+} from './components/ExamTable/StatusBadge/StatusBadge'
+import ExamStatusCombobox, {
+  statusComboboxItem,
+  statusList
+} from '../../shared/FilterField/ExamStatusCombobox/ExamStatusCombobox'
+import ExamTypeSelect, { typeItem } from '../../shared/FilterField/ExamTypeSelect/ExamTypeSelect'
+import FilterConstructor from '../../shared/FilterField/FilterConstructor'
+import DatePeriodPicker from '../../shared/FilterField/DatePeriodPicker/DatePeriodPicker'
+import SearchField from '../../shared/FilterField/SearchField/SearchField'
+import FilterButton from '../../shared/FilterField/FilterButton/FilterButton'
+import OrganizationSelect from '../../shared/FilterField/OrganizationSelect/OrganizationSelect'
 
 export interface IPagination {
   displayedRows: ITotalRowsVariants
@@ -199,7 +208,8 @@ const Exams: FC = () => {
                 start: <TwoRowCell firstRow={item.startDate} secondRow={item.endDate} />,
                 status: <StatusBadge status={badgePropStatus[getExamStatus(item)]} />,
                 check: null,
-                video: (
+                // Если есть фактическая дата начала(startDate), то отображать
+                video: item.startDate && (
                   <Button
                     size='xs'
                     onlyIcon
@@ -223,16 +233,12 @@ const Exams: FC = () => {
                     onClick={(e: React.MouseEvent<HTMLElement>) => {
                       const { x, y } = e.currentTarget.getBoundingClientRect()
 
-                      console.log('target', x, y)
-
                       setTableMenuPosition((prevState) => {
                         console.log('prevState', prevState)
                         if (prevState && x === prevState.x && y === prevState.y) {
                           setIsTableMenuOpen.toogle()
-                          console.log('toogle')
                         } else {
                           setIsTableMenuOpen.on()
-                          console.log('on')
                           return { x: x, y: y }
                         }
                       })
@@ -252,23 +258,75 @@ const Exams: FC = () => {
   }, [filter.date, filter.type, filter.status, pagination.displayedRows, pagination.currentPage])
   return (
     <div className={cl.examTableModule}>
-      <FilterField
-        filter={filter}
-        filterHandlers={{
-          setDate: setDatePeriod,
-          setSearchQuery: setSearchQuery,
-          setType: setType,
-          setStatus: setStatus,
-          setOrganizations: setOrganizations
-        }}
-        contextMenuItems={[
-          { label: 'Добавить', iconLeft: IconAdd },
-          { label: 'Изменить', iconLeft: IconEdit },
-          { label: 'Сбросить', iconLeft: IconRevert },
-          { label: 'Дублировать', iconLeft: IconCopy },
-          { label: 'Скачать (csv)', iconLeft: IconDocExport },
-          { label: 'Импорт', iconLeft: IconUpload },
-          { label: 'Удалить', iconLeft: IconTrash }
+      <FilterConstructor
+        items={[
+          {
+            key: '1',
+            components: [
+              {
+                key: 'date',
+                component: (
+                  <DatePeriodPicker
+                    value={filter.date}
+                    onChange={({ value }) => setDatePeriod(value)}
+                  />
+                )
+              },
+              {
+                key: 'search;',
+                component: (
+                  <SearchField
+                    onChange={({ value }) => setSearchQuery(value)}
+                    value={filter.searchQuery}
+                  />
+                ),
+                flex: 1
+              },
+              {
+                key: 'btn',
+                component: (
+                  <FilterButton
+                    MenuItems={[
+                      { label: 'Добавить', iconLeft: IconAdd },
+                      { label: 'Изменить', iconLeft: IconEdit },
+                      { label: 'Сбросить', iconLeft: IconRevert },
+                      { label: 'Дублировать', iconLeft: IconCopy },
+                      { label: 'Скачать (csv)', iconLeft: IconDocExport },
+                      { label: 'Импорт', iconLeft: IconUpload },
+                      { label: 'Удалить', iconLeft: IconTrash }
+                    ]}
+                  />
+                )
+              }
+            ]
+          },
+          {
+            key: '2',
+            components: [
+              {
+                key: 'Type',
+                component: (
+                  <ExamTypeSelect value={filter.type} onChange={({ value }) => setType(value)} />
+                ),
+                flex: 2
+              },
+              {
+                key: 'Status',
+                component: <ExamStatusCombobox value={filter.status} onChange={setStatus} />,
+                flex: 3
+              },
+              {
+                key: 'Organization',
+                component: (
+                  <OrganizationSelect
+                    value={filter.organizations}
+                    onChange={({ value }) => setOrganizations(value)}
+                  />
+                ),
+                flex: 5
+              }
+            ]
+          }
         ]}
       />
 
