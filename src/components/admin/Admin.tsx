@@ -9,6 +9,11 @@ import { Outlet, useNavigate, useOutletContext } from 'react-router-dom'
 import CustomHeader from '../shared/CustomHeader/CustomHeader'
 import HeaderLogoModule from '../shared/CustomHeader/HeaderLogoModule/HeaderLogoModule'
 import HeaderTimeDateModule from '../shared/CustomHeader/HeaderTimeDateModule/HeaderTimeDateModule'
+import { IconUser } from '@consta/uikit/IconUser'
+import { IconSettings } from '@consta/uikit/IconSettings'
+import { IconScreen } from '@consta/uikit/IconScreen'
+import { IconExit } from '@consta/uikit/IconExit'
+import { useLogout } from '../../hooks/authHooks'
 
 export interface TabItem {
   id: number | string
@@ -27,6 +32,8 @@ const Admin: FC = () => {
   const [activeTab, setActiveTab] = useState<TabItem | null>(tabItems[0])
 
   const navigate = useNavigate()
+
+  const outHandler = useLogout()
 
   const closeTab = (tabItem: TabItem): void => {
     setActiveTab(() => {
@@ -63,6 +70,31 @@ const Admin: FC = () => {
         <CustomHeader
           leftSide={<HeaderLogoModule />}
           rightSide={[{ key: 'dateTime', component: HeaderTimeDateModule }]}
+          contextMenuItems={[
+            {
+              label: 'Профиль',
+              group: 1,
+              iconLeft: IconUser
+            },
+            {
+              label: 'Настройки',
+              group: 1,
+              iconLeft: IconSettings
+            },
+            {
+              label: 'Проверка',
+              group: 1,
+              iconLeft: IconScreen
+            },
+            {
+              label: 'Выход',
+              onClick: async () => {
+                await outHandler()
+              },
+              group: 2,
+              iconLeft: IconExit
+            }
+          ]}
         />
       </Layout>
 

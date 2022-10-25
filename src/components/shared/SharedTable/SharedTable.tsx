@@ -18,7 +18,8 @@ interface ISharedTableProps<T extends ITableRow> {
   menuPosition: Position
   onOneCellClick: onCellClick
   closeMenu: () => void
-  contextMenuItems: contextMenuItem[]
+  contextMenuItems: IContextMenuItem[]
+  rows: TestTableColumns[]
 }
 
 function SharedTable<T extends ITableRow = ITableRow>({
