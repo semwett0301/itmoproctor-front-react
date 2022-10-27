@@ -39,7 +39,7 @@ import OrganizationSelect from '../../shared/Filter/OrganizationSelect/Organizat
 import { IOrganization } from '../../../ts/interfaces/IOrganizations'
 import { Layout } from '@consta/uikit/Layout'
 
-export interface IFilter {
+interface IFilter {
   date: [Date, Date]
   searchQuery: string | null
   type: typeItem | null
@@ -128,7 +128,6 @@ const Exams: FC = () => {
             ? filter.status
                 .map((item) => {
                   if (item.getStatus) {
-                    console.log(item.getStatus)
                     return item.getStatus
                   }
                 })
@@ -184,7 +183,6 @@ const Exams: FC = () => {
                     onClick={(e: React.MouseEvent<HTMLElement>) => {
                       const { x, y } = e.currentTarget.getBoundingClientRect()
                       setTableMenuPosition((prevState) => {
-                        console.log('prevState', prevState)
                         if (prevState && x === prevState.x && y === prevState.y) {
                           setIsTableMenuOpen.toogle()
                         } else {
@@ -215,7 +213,7 @@ const Exams: FC = () => {
     pagination.currentPage
   ])
   return (
-    <Layout direction={'column'} className={cl.examTableModule}>
+    <Layout direction={'column'} className={cl.exams}>
       <FilterConstructor
         items={[
           {

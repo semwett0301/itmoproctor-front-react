@@ -157,7 +157,6 @@ const ExamStatusCombobox: FC<IExamStatusComboboxProp> = ({ value, onChange }) =>
       value={value}
       groups={statusGroupsList}
       onChange={(changeValue) => {
-        console.log(changeValue.value)
         if (
           value &&
           changeValue.value &&

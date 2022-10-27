@@ -1,0 +1,10 @@
+.users {
+  position: relative;
+  height: calc(100% - 40px);
+}
+
+.table {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: min-content;
+}

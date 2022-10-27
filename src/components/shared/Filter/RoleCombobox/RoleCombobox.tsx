@@ -1,38 +1,37 @@
 import React, { FC } from 'react'
-import { statusComboboxItem } from '../ExamStatusCombobox/ExamStatusCombobox'
 import { Combobox } from '@consta/uikit/Combobox'
 import { DefaultItem } from '@consta/uikit/__internal__/src/components/Combobox/helpers'
 
 // CONSTANTS
 const roleList: DefaultItem[] = [
   {
-    id: '',
+    id: 1,
     label: 'Слушатель'
   },
   {
-    id: '',
+    id: 2,
     label: 'Проктор'
   },
   {
-    id: '',
+    id: 3,
     label: 'Эксперт'
   },
   {
-    id: '',
+    id: 4,
     label: 'Администратор'
   }
 ]
 
 interface IRoleComboboxProp {
   onChange: (props: { value: DefaultItem[] | null; e: React.SyntheticEvent }) => void
-  value: statusComboboxItem[] | null
+  value: DefaultItem[] | null
 }
 
 const RoleCombobox: FC<IRoleComboboxProp> = ({ value, onChange }) => {
   return (
     <Combobox
       size='s'
-      placeholder={'Статус'}
+      placeholder={'Слушатель'}
       items={roleList}
       multiple={true}
       value={value}

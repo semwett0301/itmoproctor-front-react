@@ -22,7 +22,7 @@ const typesList: providerItem[] = [
   },
   {
     label: 'OpenEdu',
-    id: 2,
+    id: 3,
     provider: 'openedu'
   }
 ]
