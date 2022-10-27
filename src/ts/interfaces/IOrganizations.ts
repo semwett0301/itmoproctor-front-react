@@ -5,6 +5,11 @@ export interface IOrganization {
   shortName?: string
 }
 
+export interface IOrganizationsResponse {
+  rows: IOrganization[]
+  total: number
+}
+
 export interface IOrganizations {
   [_id: string]: IOrganization
 }

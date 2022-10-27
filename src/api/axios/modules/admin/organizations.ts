@@ -1,15 +1,14 @@
 import { AxiosInstance, AxiosResponse } from 'axios'
 import axiosConfig from '../../../../config/axiosСonfig'
-import { IExams } from '../../../../ts/interfaces/IExams'
-import { IOrganization } from '../../../../ts/interfaces/IOrganizations'
+import { IOrganizationsResponse } from '../../../../ts/interfaces/IOrganizations'
 
 export interface IOrganizationsAxios {
-  getListOfOrganizations: () => Promise<AxiosResponse<IOrganization[]>>
+  getListOfOrganizations: () => Promise<AxiosResponse<IOrganizationsResponse>>
 }
 
 export default function (instance: AxiosInstance): IOrganizationsAxios {
   return {
-    getListOfOrganizations(): Promise<AxiosResponse<IOrganization[]>> {
+    getListOfOrganizations(): Promise<AxiosResponse<IOrganizationsResponse>> {
       return instance.get(`${axiosConfig.adminUrl}/organizations`)
     }
   }

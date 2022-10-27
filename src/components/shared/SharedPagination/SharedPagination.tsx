@@ -1,20 +1,23 @@
-import React, {Dispatch, FC, SetStateAction} from 'react';
+import React, { Dispatch, FC, SetStateAction } from 'react'
 
-import PaginationField, {ITotalRowsVariants, totalRowsVariants} from './PaginationField/PaginationField';
+import PaginationField, {
+  ITotalRowsVariants,
+  totalRowsVariants
+} from './PaginationField/PaginationField'
 
 export interface IPagination {
   displayedRows: ITotalRowsVariants
-  currentPage: number,
-  totalRows: number,
+  currentPage: number
+  totalRows: number
   totalPages: number
 }
 
 interface ISharedPaginationProps {
-  pagination: IPagination,
-  setPagination: Dispatch<SetStateAction<IPagination>>,
+  pagination: IPagination
+  setPagination: Dispatch<SetStateAction<IPagination>>
 }
 
-const SharedPagination: FC<ISharedPaginationProps> = ({pagination, setPagination}) => {
+const SharedPagination: FC<ISharedPaginationProps> = ({ pagination, setPagination }) => {
   // pagination setters
   const setDisplayedRows: (value: ITotalRowsVariants | null) => void = (value) => {
     setPagination((prevState) => ({
@@ -23,7 +26,6 @@ const SharedPagination: FC<ISharedPaginationProps> = ({pagination, setPagination
     }))
   }
 
-
   const setCurrentPage: (value: number) => void = (value) => {
     console.log(value)
     setPagination((prevState) => ({
@@ -31,8 +33,6 @@ const SharedPagination: FC<ISharedPaginationProps> = ({pagination, setPagination
       currentPage: value
     }))
   }
-
-
 
   return (
     <PaginationField
@@ -43,7 +43,7 @@ const SharedPagination: FC<ISharedPaginationProps> = ({pagination, setPagination
       setDisplayedRows={setDisplayedRows}
       setCurrentPage={setCurrentPage}
     />
-  );
-};
+  )
+}
 
-export default SharedPagination;
+export default SharedPagination

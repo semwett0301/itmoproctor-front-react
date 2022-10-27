@@ -1,15 +1,3 @@
-.row {
-  width: 100%;
-}
-
-.buttonCell {
-  div {
-    display: flex;
-    align-items: center;
-    padding: 8px;
-  }
-}
-
 .table {
   width: 100%;
   --table-grid-template-columns: 40px calc(24.62% - 34.8px) calc(15.43% - 34.8px) calc(33.54% - 34.8px) 46px calc(10.59% - 34.8px) calc(15.82% - 34.8px) 40px 44px !important;
@@ -22,7 +10,6 @@
 .tableWrapper {
   width: 100%;
   max-height: inherit;
-  overflow: hidden;
 }
 
 .contextMenu{

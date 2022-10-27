@@ -2,11 +2,16 @@ import React, { FC, SyntheticEvent } from 'react'
 import cl from './StatusTag.module.scss'
 import { Tag } from '@consta/uikit/Tag'
 import { DefaultItem } from '@consta/uikit/Combobox'
-import {badgePropStatus, statusObject} from '../../../admin/Exams/components/ExamTable/StatusBadge/StatusBadge';
-
+import { customBadgePropStatus, statusObject } from '../../../SharedTable/StatusBadge/StatusBadge'
 
 // CONSTANTS
-const tagPropStatus = [...badgePropStatus, 'exceptPlanned', 'allStatuses', 'interrupted'] as const
+export const tagPropStatus = [
+  ...customBadgePropStatus,
+  'exceptPlanned',
+  'interrupted',
+  'reset',
+  'notReset'
+] as const
 export type TagPropStatus = typeof tagPropStatus[number]
 
 export type tagStatusesDeclaration = {
@@ -28,8 +33,9 @@ const statuses: tagStatusesDeclaration = {
   rejected: { label: 'Отклонен', className: cl.rejected },
   noAppearance: { label: 'Неявка', className: cl.noAppearance },
   exceptPlanned: { label: 'Кроме запланированных', className: cl.exceptPlanned },
-  allStatuses: { label: 'Неявка', className: cl.allStatuses },
-  interrupted: { label: 'Прерван', className: cl.interrupted }
+  interrupted: { label: 'Прерван', className: cl.interrupted },
+  reset: { label: 'Сброшен', className: cl.interrupted },
+  notReset: { label: 'Не сброшен', className: cl.forming }
 }
 
 interface IStatusTagProp {

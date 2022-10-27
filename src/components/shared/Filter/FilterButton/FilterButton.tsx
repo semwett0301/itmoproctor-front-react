@@ -2,7 +2,7 @@ import React, { FC, useRef, useState } from 'react'
 import { Button } from '@consta/uikit/Button'
 import { IconBento } from '@consta/uikit/IconBento'
 import { ContextMenu } from '@consta/uikit/ContextMenu'
-import cl from '../FilterField.module.scss'
+import cl from '../FilterConstructor.module.scss'
 import { IContextMenuItem } from '../../CustomHeader/CustomHeader'
 
 interface IFilterButtonProp {

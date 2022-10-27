@@ -1,12 +1,11 @@
 import { TableColumn } from '@consta/uikit/Table'
 import React, { ReactNode } from 'react'
 import { Checkbox } from '@consta/uikit/Checkbox'
-import {ITableRow} from '../../../../../shared/SharedTable/SharedTable';
+import { ITableRow } from '../../../../../shared/SharedTable/SharedTable'
 
-
-export interface ExamsTableRow extends ITableRow{
+export interface ExamsTableRow extends ITableRow {
   check: ReactNode | null
-
+  listener: ReactNode
   proctor: ReactNode
   exam: ReactNode
   type: ReactNode

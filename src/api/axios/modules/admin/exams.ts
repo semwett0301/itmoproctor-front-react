@@ -8,7 +8,7 @@ export interface filterInterface {
   text: string | null
   status: string | null
   reset: boolean | null
-  organizations: string | null
+  organization: string | null
   myStudents: boolean
   async: boolean | null
   page: number
@@ -28,7 +28,7 @@ export default function (instance: AxiosInstance): IExamsAxios {
         text: null,
         status: null,
         reset: null,
-        organizations: null,
+        organization: null,
         myStudents: false,
         async: null,
         page: 1,
