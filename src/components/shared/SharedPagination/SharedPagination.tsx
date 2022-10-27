@@ -27,7 +27,6 @@ const SharedPagination: FC<ISharedPaginationProps> = ({ pagination, setPaginatio
   }
 
   const setCurrentPage: (value: number) => void = (value) => {
-    console.log(value)
     setPagination((prevState) => ({
       ...prevState,
       currentPage: value

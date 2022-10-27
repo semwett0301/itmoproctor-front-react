@@ -9,8 +9,8 @@ export const usePagination: () => [
 ] = () => {
   const [pagination, setPagination] = useState<IPagination>({
     displayedRows: totalRowsVariants[1],
-    currentPage: 1,
-    totalPages: 1,
+    currentPage: 0,
+    totalPages: 0,
     totalRows: 0
   })
 

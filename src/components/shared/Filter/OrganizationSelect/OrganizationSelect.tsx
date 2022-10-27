@@ -15,8 +15,6 @@ const OrganizationSelect: FC<IOrganizationSelectProp> = ({ value, onChange, orga
   const [loading, loadOrganizations] = useOrganizations(setItems)
 
   useEffect(() => {
-    console.log(organizationsIds)
-    console.log(items)
     loadOrganizations(organizationsIds)
   }, [organizationsIds])
 

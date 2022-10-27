@@ -22,7 +22,7 @@ import StatusBadge, {
   getExamStatus,
   getProctorName
 } from '../../shared/SharedTable/StatusBadge/StatusBadge'
-import { examsColumn, ExamsTableRow } from './components/ExamTable/mockData/examsTableRow'
+import { examsColumn, ExamsTableData } from './examsTableData'
 import SharedTable from '../../shared/SharedTable/SharedTable'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
 import { usePagination } from '../../../hooks/paginationHooks'
@@ -112,7 +112,7 @@ const Exams: FC = () => {
   const [pagination, setPagination, setTotal] = usePagination()
 
   // Exams table request
-  const [fullRows, setFullRows] = useState<ExamsTableRow[]>([])
+  const [fullRows, setFullRows] = useState<ExamsTableData[]>([])
   const [selectedRowsId, setSelectedRowsId] = useState<string[]>([])
 
   // Select rows
@@ -141,15 +141,15 @@ const Exams: FC = () => {
             : null,
           myStudents: false,
           async: filter.type ? filter.type.flag : null,
-          page: pagination.currentPage,
+          page: pagination.currentPage + 1,
           rows: pagination.displayedRows.id
         })
         .then((r) => {
           setOrganizationsIds(() => r.data.organizations)
           setTotal(r.data.total)
           if (r.data.rows.length > 0) {
-            const obj: ExamsTableRow[] = r.data.rows.map((item: IExams) => {
-              const row: ExamsTableRow = {
+            const obj: ExamsTableData[] = r.data.rows.map((item: IExams) => {
+              const row: ExamsTableData = {
                 id: item._id,
                 selected: false,
                 listener: `${item.student.middlename} ${item.student.firstname} ${item.student.lastname}`,
@@ -234,6 +234,7 @@ const Exams: FC = () => {
                 key: 'search;',
                 component: (
                   <SearchField
+                    placeholder={'Поиск по экзамену'}
                     onChange={({ value }) => setSearchQuery(value)}
                     value={filter.searchQuery}
                   />
@@ -290,7 +291,7 @@ const Exams: FC = () => {
       />
 
       <Layout flex={1} className={cl.table}>
-        <SharedTable<ExamsTableRow>
+        <SharedTable<ExamsTableData>
           rows={fullRows}
           setRows={setFullRows}
           columns={examsColumn}
