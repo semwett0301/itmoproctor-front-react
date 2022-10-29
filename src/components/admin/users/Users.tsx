@@ -108,7 +108,7 @@ const Users: FC = () => {
                 selected: false,
                 check: null,
                 user: getFullName(item.firstname, item.middlename, item.lastname),
-                login: item.username,
+                login: getFullName(item.firstname, item.middlename, item.lastname),
                 provider: item.provider,
                 role: t(`table.roles.${item.role}`),
                 university: item.organization,
