@@ -1,12 +1,12 @@
 import React, { FC } from 'react'
 import { Badge } from '@consta/uikit/Badge'
 import cl from './StatusBadge.module.scss'
-import { IExams } from '../../../../ts/interfaces/IExams'
+import { IExamRow } from '../../../../ts/interfaces/IExams'
 import { IInspector } from '../../../../ts/interfaces/IInspector'
 import { IExpert } from '../../../../ts/interfaces/IExpert'
 import { IconRevert } from '@consta/uikit/IconRevert'
 
-export const getExamStatus = (data: IExams): number => {
+export const getExamStatus = (data: IExamRow): number => {
   if (!data) return 0
   const now = Date.now()
   let statusID = 0

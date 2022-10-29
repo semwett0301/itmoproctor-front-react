@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react'
 import { Checkbox } from '@consta/uikit/Checkbox'
 import { ITableRow } from '../../shared/SharedTable/SharedTable'
 
-export interface ExamsTableData extends ITableRow {
+export interface IUsersTableData extends ITableRow {
   check: ReactNode | null
   user: ReactNode
   login: ReactNode
@@ -15,7 +15,7 @@ export interface ExamsTableData extends ITableRow {
   more: ReactNode
 }
 
-export const examsColumn: TableColumn<ExamsTableData>[] = [
+export const usersColumns: TableColumn<IUsersTableData>[] = [
   {
     title: '№',
     accessor: 'id',
@@ -29,37 +29,37 @@ export const examsColumn: TableColumn<ExamsTableData>[] = [
     renderCell: (row) => <Checkbox checked={row.selected} />
   },
   {
-    title: 'Слушатель',
+    title: 'Пользователь',
     accessor: 'user',
     align: 'left'
   },
   {
-    title: 'Проктор',
+    title: 'Логин',
     accessor: 'login',
     align: 'left'
   },
   {
-    title: 'Экзамен',
+    title: 'Провайдер',
     accessor: 'provider',
     align: 'left'
   },
   {
-    title: 'Тип',
+    title: 'Роль',
     accessor: 'role',
     align: 'center'
   },
   {
-    title: 'Тип',
+    title: 'Университет',
     accessor: 'university',
     align: 'center'
   },
   {
-    title: 'Тип',
+    title: 'Дата Рег',
     accessor: 'regDate',
     align: 'center'
   },
   {
-    title: 'Тип',
+    title: 'Посл Вход',
     accessor: 'lastDate',
     align: 'center'
   },

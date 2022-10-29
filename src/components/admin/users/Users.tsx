@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import cl from './Users.module.scss'
 import { Layout } from '@consta/uikit/Layout'
 import FilterConstructor from '../../shared/Filter/FilterConstructor'
@@ -6,9 +6,6 @@ import SearchField from '../../shared/Filter/SearchField/SearchField'
 import FilterButton from '../../shared/Filter/FilterButton/FilterButton'
 import { IconAdd } from '@consta/uikit/IconAdd'
 import { IconEdit } from '@consta/uikit/IconEdit'
-import { IconRevert } from '@consta/uikit/IconRevert'
-import { IconCopy } from '@consta/uikit/IconCopy'
-import { IconDocExport } from '@consta/uikit/IconDocExport'
 import { IconUpload } from '@consta/uikit/IconUpload'
 import { IconTrash } from '@consta/uikit/IconTrash'
 import OrganizationSelect from '../../shared/Filter/OrganizationSelect/OrganizationSelect'
@@ -19,8 +16,16 @@ import { useFlag } from '@consta/uikit/useFlag'
 import { Position } from '@consta/uikit/Popover'
 import RoleCombobox from '../../shared/Filter/RoleCombobox/RoleCombobox'
 import { usePagination } from '../../../hooks/paginationHooks'
-import { ExamsTableData } from '../Exams/examsTableData'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
+import { request } from '../../../api/axios/request'
+import { IUsersTableData, usersColumns } from './usersTableData'
+import { IUsersRow } from '../../../ts/interfaces/IUsers'
+import { Button } from '@consta/uikit/Button'
+import { IconBento } from '@consta/uikit/IconBento'
+import SharedTable from '../../shared/SharedTable/SharedTable'
+import { useTranslation } from 'react-i18next'
+import { IconAllDone } from '@consta/uikit/IconAllDone'
+import { getFullName } from '../../../utils/nameHelper'
 
 // TYPES
 interface IFilter {
@@ -31,6 +36,8 @@ interface IFilter {
 }
 
 const Users: FC = () => {
+  const { t } = useTranslation('translation', { keyPrefix: 'admin.users' })
+
   const [isTableMenuOpen, setIsTableMenuOpen] = useFlag(true)
   const [tableMenuPosition, setTableMenuPosition] = useState<Position>(undefined)
   const [organizationsIds, setOrganizationsIds] = useState<string[]>([])
@@ -39,7 +46,7 @@ const Users: FC = () => {
   const [pagination, setPagination, setTotal] = usePagination()
 
   // Users table request
-  const [fullRows, setFullRows] = useState<ExamsTableData[]>([])
+  const [fullRows, setFullRows] = useState<IUsersTableData[]>([])
   const [selectedRowsId, setSelectedRowsId] = useState<string[]>([])
 
   // filter
@@ -78,6 +85,63 @@ const Users: FC = () => {
       organizations: item
     }))
   }
+
+  // Users table request
+  useEffect(() => {
+    const getUsers = async (): Promise<void> => {
+      await request.users
+        .getListOfExams({
+          text: filter.searchQuery,
+          organization: null,
+          role: null,
+          page: pagination.currentPage + 1,
+          rows: pagination.displayedRows.id
+        })
+        .then((r) => {
+          console.log(r)
+          setOrganizationsIds(() => r.data.organizations)
+          setTotal(r.data.total)
+          if (r.data.rows.length > 0) {
+            const obj: IUsersTableData[] = r.data.rows.map((item: IUsersRow) => {
+              return {
+                id: item._id,
+                selected: false,
+                check: null,
+                user: getFullName(item.firstname, item.middlename, item.lastname),
+                login: item.username,
+                provider: item.provider,
+                role: t(`table.roles.${item.role}`),
+                university: item.organization,
+                regDate: item.created,
+                lastDate: item.active,
+                more: (
+                  <Button
+                    size='xs'
+                    onlyIcon
+                    iconRight={IconBento}
+                    view='secondary'
+                    onClick={(e: React.MouseEvent<HTMLElement>) => {
+                      const { x, y } = e.currentTarget.getBoundingClientRect()
+                      setTableMenuPosition((prevState) => {
+                        if (prevState && x === prevState.x && y === prevState.y) {
+                          setIsTableMenuOpen.toogle()
+                        } else {
+                          setIsTableMenuOpen.on()
+                          return { x: x, y: y }
+                        }
+                      })
+                    }}
+                  />
+                )
+              }
+            })
+
+            setFullRows(obj)
+          } else setFullRows([])
+        })
+    }
+    getUsers().catch((e) => console.log(e))
+  }, [filter, pagination.currentPage, pagination.displayedRows.id])
 
   return (
     <Layout direction={'column'} className={cl.users}>
@@ -130,13 +194,18 @@ const Users: FC = () => {
                 component: (
                   <FilterButton
                     MenuItems={[
-                      { label: 'Добавить', iconLeft: IconAdd },
-                      { label: 'Изменить', iconLeft: IconEdit },
-                      { label: 'Сбросить', iconLeft: IconRevert },
-                      { label: 'Дублировать', iconLeft: IconCopy },
-                      { label: 'Скачать (csv)', iconLeft: IconDocExport },
-                      { label: 'Импорт', iconLeft: IconUpload },
-                      { label: 'Удалить', iconLeft: IconTrash }
+                      {
+                        label: 'Добавить',
+                        iconLeft: IconAdd
+                      },
+                      {
+                        label: 'Импоорт',
+                        iconLeft: IconUpload
+                      },
+                      {
+                        label: 'Удалить',
+                        iconLeft: IconTrash
+                      }
                     ]}
                   />
                 )
@@ -146,35 +215,22 @@ const Users: FC = () => {
         ]}
       />
 
-      <Layout flex={1} className={cl.table} style={{ backgroundColor: '#87293822' }}>
-        {/* <SharedTable<ExamsTableData> */}
-        {/*   rows={fullRows} */}
-        {/*   setRows={setFullRows} */}
-        {/*   columns={examsColumn} */}
-        {/*   contextMenuItems={[ */}
-        {/*     { */}
-        {/*       label: 'Изменить', */}
-        {/*       iconLeft: IconEdit */}
-        {/*     }, */}
-        {/*     { */}
-        {/*       label: 'Сбросить', */}
-        {/*       iconLeft: IconRevert */}
-        {/*     }, */}
-        {/*     { */}
-        {/*       label: 'Дублировать', */}
-        {/*       iconLeft: IconCopy */}
-        {/*     }, */}
-        {/*     { */}
-        {/*       label: 'Удалить', */}
-        {/*       iconLeft: IconTrash */}
-        {/*     } */}
-        {/*   ]} */}
-        {/*   isMenuOpen={isTableMenuOpen} */}
-        {/*   menuPosition={tableMenuPosition} */}
-        {/*   closeMenu={setIsTableMenuOpen.off} */}
-        {/*   selectedRows={selectedRowsId} */}
-        {/*   setSelectedRows={setSelectedRowsId} */}
-        {/* /> */}
+      <Layout flex={1} className={cl.tableLayout}>
+        <SharedTable<IUsersTableData>
+          className={cl.table}
+          rows={fullRows}
+          setRows={setFullRows}
+          columns={usersColumns}
+          contextMenuItems={[
+            { label: 'Изменить', iconLeft: IconEdit },
+            { label: 'Все экзамены', iconLeft: IconAllDone }
+          ]}
+          isMenuOpen={isTableMenuOpen}
+          menuPosition={tableMenuPosition}
+          closeMenu={setIsTableMenuOpen.off}
+          selectedRows={selectedRowsId}
+          setSelectedRows={setSelectedRowsId}
+        />
       </Layout>
 
       <SharedPagination pagination={pagination} setPagination={setPagination} />

@@ -17,7 +17,7 @@ interface ISharedTableProps<T extends ITableRow> {
   menuPosition: Position
   closeMenu: () => void
   contextMenuItems: IContextMenuItem[]
-
+  className?: string
   rows: T[]
   setRows: React.Dispatch<React.SetStateAction<T[]>>
   selectedRows: string[]
@@ -29,7 +29,7 @@ function SharedTable<T extends ITableRow = ITableRow>({
   setRows,
   selectedRows,
   setSelectedRows,
-
+  className,
   columns,
   isMenuOpen,
   menuPosition,
@@ -57,7 +57,7 @@ function SharedTable<T extends ITableRow = ITableRow>({
         zebraStriped={'odd'}
         borderBetweenColumns
         borderBetweenRows
-        className={cl.table}
+        className={className || cl.table}
         onCellClick={({ rowId, columnIdx }) => {
           if (columnIdx === 0) {
             if (rowId) {
@@ -85,6 +85,7 @@ function SharedTable<T extends ITableRow = ITableRow>({
 
       <ContextMenu
         size='xs'
+        possibleDirections={['leftDown']}
         className={cl.contextMenu}
         items={contextMenuItems}
         isOpen={isMenuOpen}

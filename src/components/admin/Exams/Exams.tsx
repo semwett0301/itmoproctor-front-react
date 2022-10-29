@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react'
 import cl from './exams.module.scss'
 import { request } from '../../../api/axios/request'
-import { IExams } from '../../../ts/interfaces/IExams'
+import { IExamRow } from '../../../ts/interfaces/IExams'
 import TwoRowCell from '../../shared/SharedTable/TwoRowCell/TwoRowCell'
 import TypeBadge from '../../shared/SharedTable/TypeBadge/TypeBadge'
 import { Button } from '@consta/uikit/Button'
@@ -147,7 +147,7 @@ const Exams: FC = () => {
           setOrganizationsIds(() => r.data.organizations)
           setTotal(r.data.total)
           if (r.data.rows.length > 0) {
-            const obj: ExamsTableData[] = r.data.rows.map((item: IExams) => {
+            const obj: ExamsTableData[] = r.data.rows.map((item: IExamRow) => {
               const row: ExamsTableData = {
                 id: item._id,
                 selected: false,
@@ -288,8 +288,9 @@ const Exams: FC = () => {
         ]}
       />
 
-      <Layout flex={1} className={cl.table}>
+      <Layout flex={1} className={cl.tableLayout}>
         <SharedTable<ExamsTableData>
+          className={cl.table}
           rows={fullRows}
           setRows={setFullRows}
           columns={examsColumn}
