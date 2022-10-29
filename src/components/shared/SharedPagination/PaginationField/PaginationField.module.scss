@@ -1,4 +1,5 @@
 .pagination {
+  background-color: var(--color-bg-default);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -8,7 +9,7 @@
 }
 
 .countRowsSelect {
-  width: 59px;
+  width: 59px !important;
 }
 
 .footerText{

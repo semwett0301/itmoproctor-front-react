@@ -76,7 +76,9 @@ const PaginationField: FC<IPaginationProp> = ({
   setDisplayedRows,
   setCurrentPage
 }) => {
-  console.log(page)
+  const startRow: number = totalRows ? page * displayedRows.id + 1 : 0,
+    endRow: number =
+      totalPages - 1 === page || !totalPages ? totalRows : (page + 1) * displayedRows.id - 1
   return (
     <div className={cl.pagination}>
       <Select
@@ -99,7 +101,7 @@ const PaginationField: FC<IPaginationProp> = ({
       />
 
       <Text size={'2xs'} view={'secondary'} className={cl.footerText}>
-        Показано с {displayedRows.id * (page - 1) + 1} по {displayedRows.id * page} из {totalRows}
+        Показано с {startRow} по {endRow} из {totalRows}
       </Text>
     </div>
   )

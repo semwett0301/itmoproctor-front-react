@@ -1,12 +1,12 @@
 import React, { FC } from 'react'
 import { Badge } from '@consta/uikit/Badge'
 import cl from './StatusBadge.module.scss'
-import { IExams } from '../../../../../../ts/interfaces/IExams'
-import { IInspector } from '../../../../../../ts/interfaces/IInspector'
-import { IExpert } from '../../../../../../ts/interfaces/IExpert'
+import { IExamRow } from '../../../../ts/interfaces/IExams'
+import { IInspector } from '../../../../ts/interfaces/IInspector'
+import { IExpert } from '../../../../ts/interfaces/IExpert'
 import { IconRevert } from '@consta/uikit/IconRevert'
 
-export const getExamStatus = (data: IExams): number => {
+export const getExamStatus = (data: IExamRow): number => {
   if (!data) return 0
   const now = Date.now()
   let statusID = 0
@@ -53,7 +53,7 @@ export const getProctorName = (
   return 'Не назначен'
 }
 
-export const badgePropStatus = [
+export const customBadgePropStatus = [
   'unplanned',
   'planned',
   'waiting',
@@ -69,7 +69,7 @@ export const badgePropStatus = [
   'review'
 ] as const
 
-export type BadgePropStatus = typeof badgePropStatus[number]
+export type CustomBadgePropStatus = typeof customBadgePropStatus[number]
 
 export type statusObject = {
   label: string
@@ -77,7 +77,7 @@ export type statusObject = {
 }
 
 export type badgeStatusesDeclaration = {
-  [key in BadgePropStatus]: statusObject
+  [key in CustomBadgePropStatus]: statusObject
 }
 
 const statuses: badgeStatusesDeclaration = {
@@ -97,7 +97,7 @@ const statuses: badgeStatusesDeclaration = {
 }
 
 interface StatusBadgeProps {
-  status: BadgePropStatus
+  status: CustomBadgePropStatus
   reset?: boolean
 }
 

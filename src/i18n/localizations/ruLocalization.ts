@@ -1,4 +1,4 @@
-import {ILocalization} from './engLocalization';
+import { ILocalization } from './engLocalization'
 
 export const ruLocalization: ILocalization = {
   translation: {
@@ -21,9 +21,18 @@ export const ruLocalization: ILocalization = {
       name: 'Имя студента'
     },
     proctor: {},
-    admin: {},
-    shared: {
-
-    }
+    admin: {
+      users: {
+        table: {
+          roles: {
+            1: 'Слушатель',
+            2: 'Проктор',
+            3: 'Администратор',
+            expert: 'Эксперт'
+          }
+        }
+      }
+    },
+    shared: {}
   }
 }

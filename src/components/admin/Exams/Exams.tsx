@@ -1,72 +1,58 @@
-import React, {FC, useEffect, useState} from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import cl from './exams.module.scss'
-import {DefaultItem} from '@consta/uikit/Select'
-import FilterField, {
-  statusComboboxItem,
-  statusList,
-  typeItem
-} from '../../shared/FilterField/FilterField'
-import PaginationField, {
-  ITotalRowsVariants,
-  totalRowsVariants
-} from '../../shared/SharedPagination/PaginationField/PaginationField'
-import {request} from '../../../api/axios/request'
-import {IExams} from '../../../ts/interfaces/IExams'
-import TwoRowCell from './components/ExamTable/TwoRowCell/TwoRowCell'
-import TypeBadge from './components/ExamTable/TypeBadge/TypeBadge'
-import {Button} from '@consta/uikit/Button'
-import {IconVideo} from '@consta/uikit/IconVideo'
-import {IconBento} from '@consta/uikit/IconBento'
-import {useOpenTab} from '../Admin'
-
-import {IconAdd} from '@consta/uikit/IconAdd'
-import {IconEdit} from '@consta/uikit/IconEdit'
-import {IconRevert} from '@consta/uikit/IconRevert'
-import {IconCopy} from '@consta/uikit/IconCopy'
-import {IconDocExport} from '@consta/uikit/IconDocExport'
-import {IconUpload} from '@consta/uikit/IconUpload'
-import {IconTrash} from '@consta/uikit/IconTrash'
-import {CellClickType} from '@consta/uikit/Table'
-import {useFlag} from '@consta/uikit/useFlag'
-import {Position} from '@consta/uikit/Popover'
-
+import { request } from '../../../api/axios/request'
+import { IExamRow } from '../../../ts/interfaces/IExams'
+import TwoRowCell from '../../shared/SharedTable/TwoRowCell/TwoRowCell'
+import TypeBadge from '../../shared/SharedTable/TypeBadge/TypeBadge'
+import { Button } from '@consta/uikit/Button'
+import { IconVideo } from '@consta/uikit/IconVideo'
+import { IconBento } from '@consta/uikit/IconBento'
+import { useOpenTab } from '../Admin'
+import { IconAdd } from '@consta/uikit/IconAdd'
+import { IconEdit } from '@consta/uikit/IconEdit'
+import { IconRevert } from '@consta/uikit/IconRevert'
+import { IconCopy } from '@consta/uikit/IconCopy'
+import { IconDocExport } from '@consta/uikit/IconDocExport'
+import { IconUpload } from '@consta/uikit/IconUpload'
+import { IconTrash } from '@consta/uikit/IconTrash'
+import { useFlag } from '@consta/uikit/useFlag'
+import { Position } from '@consta/uikit/Popover'
 import StatusBadge, {
-  badgePropStatus,
+  customBadgePropStatus,
   getExamStatus,
   getProctorName
-} from './components/ExamTable/StatusBadge/StatusBadge';
-import {examsColumn, ExamsTableRow} from './components/ExamTable/mockData/examsTableRow';
-import SharedTable from '../../shared/SharedTable/SharedTable';
-import SharedPagination, {IPagination} from '../../shared/SharedPagination/SharedPagination';
-import {usePagination} from '../../../hooks/paginationHooks';
-
-
-} from './components/ExamTable/StatusBadge/StatusBadge'
+} from '../../shared/SharedTable/StatusBadge/StatusBadge'
+import { examsColumn, ExamsTableData } from './examsTableData'
+import SharedTable from '../../shared/SharedTable/SharedTable'
+import SharedPagination from '../../shared/SharedPagination/SharedPagination'
+import { usePagination } from '../../../hooks/paginationHooks'
 import ExamStatusCombobox, {
   statusComboboxItem,
   statusList
-} from '../../shared/FilterField/ExamStatusCombobox/ExamStatusCombobox'
-import ExamTypeSelect, { typeItem } from '../../shared/FilterField/ExamTypeSelect/ExamTypeSelect'
-import FilterConstructor from '../../shared/FilterField/FilterConstructor'
-import DatePeriodPicker from '../../shared/FilterField/DatePeriodPicker/DatePeriodPicker'
-import SearchField from '../../shared/FilterField/SearchField/SearchField'
-import FilterButton from '../../shared/FilterField/FilterButton/FilterButton'
-import OrganizationSelect from '../../shared/FilterField/OrganizationSelect/OrganizationSelect'
+} from '../../shared/Filter/ExamStatusCombobox/ExamStatusCombobox'
+import ExamTypeSelect, { typeItem } from '../../shared/Filter/ExamTypeSelect/ExamTypeSelect'
+import FilterConstructor from '../../shared/Filter/FilterConstructor'
+import DatePeriodPicker from '../../shared/Filter/DatePeriodPicker/DatePeriodPicker'
+import SearchField from '../../shared/Filter/SearchField/SearchField'
+import FilterButton from '../../shared/Filter/FilterButton/FilterButton'
+import OrganizationSelect from '../../shared/Filter/OrganizationSelect/OrganizationSelect'
+import { IOrganization } from '../../../ts/interfaces/IOrganizations'
+import { Layout } from '@consta/uikit/Layout'
 
-
-export interface IFilter {
+interface IFilter {
   date: [Date, Date]
   searchQuery: string | null
   type: typeItem | null
   status: statusComboboxItem[] | null
-  organizations: DefaultItem[] | null
+  organizations: IOrganization[] | null
 }
 
 const Exams: FC = () => {
-  const {openTab} = useOpenTab()
+  const { openTab } = useOpenTab()
 
   const [isTableMenuOpen, setIsTableMenuOpen] = useFlag(true)
   const [tableMenuPosition, setTableMenuPosition] = useState<Position>(undefined)
+  const [organizationsIds, setOrganizationsIds] = useState<string[]>([])
 
   // filter
   // filterState
@@ -74,13 +60,13 @@ const Exams: FC = () => {
     date: [new Date(), new Date()],
     searchQuery: null,
     type: null,
-    status: [statusList[1]],
+    status: [statusList[0]],
     organizations: null
   })
 
   // filter setters
 
-  const setDatePeriod = (value: [Date?, Date?] | null) => {
+  const setDatePeriod = (value: [Date?, Date?] | null): void => {
     const newValue: [Date, Date] = [new Date(), new Date()]
     if (value && value[0]) {
       newValue[0] = value[0]
@@ -95,27 +81,27 @@ const Exams: FC = () => {
     }))
   }
 
-  const setSearchQuery = (query: string | null) =>
+  const setSearchQuery = (query: string | null): void =>
     setFilter((prevState) => ({
       ...prevState,
       searchQuery: query
     }))
 
-  const setType = (item: typeItem | null) => {
+  const setType = (item: typeItem | null): void => {
     setFilter((prevState) => ({
       ...prevState,
       type: item
     }))
   }
 
-  const setStatus = (item: statusComboboxItem[] | null) => {
+  const setStatus = (item: statusComboboxItem[] | null): void => {
     setFilter((prevState) => ({
       ...prevState,
       status: item
     }))
   }
 
-  const setOrganizations = (item: DefaultItem[] | null) => {
+  const setOrganizations = (item: IOrganization[] | null): void => {
     setFilter((prevState) => ({
       ...prevState,
       organizations: item
@@ -123,29 +109,13 @@ const Exams: FC = () => {
   }
 
   // pagination
-  // paginationState
   const [pagination, setPagination, setTotal] = usePagination()
 
-
   // Exams table request
-  const [fullRows, setFullRows] = useState<ExamsTableRow[]>([])
-  // const moreButtonClickHandler = (event: React.MouseEvent) => {
-  //   setMenuPosition((prevState) => {
-  //     console.log(prevState)
-  //     return { x: event.clientX, y: event.clientY }
-  //   })
-  // }
+  const [fullRows, setFullRows] = useState<ExamsTableData[]>([])
+  const [selectedRowsId, setSelectedRowsId] = useState<string[]>([])
 
-  const getRow = (columnIdx: number, rowId: string | undefined): void => {
-    if (typeof rowId !== 'undefined' && columnIdx === 0) {
-      const newRows = fullRows.map((item) => {
-        if (item.id === rowId) {
-          return {...item, selected: !item.selected}
-        } else return item
-      })
-      setFullRows(newRows)
-    }
-  }
+  // Select rows
 
   useEffect(() => {
     const getExams = async (): Promise<void> => {
@@ -156,34 +126,42 @@ const Exams: FC = () => {
           text: filter.searchQuery,
           status: filter.status
             ? filter.status
-              .map((item) => badgePropStatus.findIndex((value) => item.id === value))
-              .join(',')
+                .map((item) => {
+                  if (item.getStatus) {
+                    return item.getStatus
+                  }
+                })
+                .filter((item) => item != null)
+                .join(',')
             : null,
           reset: null, // false,
-          organizations: null,
+          organization: filter.organizations
+            ? filter.organizations.map((item) => item._id).join('&')
+            : null,
           myStudents: false,
           async: filter.type ? filter.type.flag : null,
-          page: pagination.currentPage,
+          page: pagination.currentPage + 1,
           rows: pagination.displayedRows.id
         })
         .then((r) => {
+          setOrganizationsIds(() => r.data.organizations)
           setTotal(r.data.total)
           if (r.data.rows.length > 0) {
-            const obj: ExamsTableRow[] = r.data.rows.map((item: IExams) => {
-              const row: ExamsTableRow = {
+            const obj: ExamsTableData[] = r.data.rows.map((item: IExamRow) => {
+              const row: ExamsTableData = {
                 id: item._id,
                 selected: false,
                 listener: `${item.student.middlename} ${item.student.firstname} ${item.student.lastname}`,
                 proctor: getProctorName(item.async, item.inspector, item.expert),
-                exam: <TwoRowCell firstRow={item.subject} secondRow={item.assignment}/>,
-                type: <TypeBadge async={item.async}/>,
-                start: <TwoRowCell firstRow={item.startDate} secondRow={item.endDate}/>,
-                status: <StatusBadge status={badgePropStatus[getExamStatus(item)]}/>,
+                exam: <TwoRowCell firstRow={item.subject} secondRow={item.assignment} />,
+                type: <TypeBadge async={item.async} />,
+                start: <TwoRowCell firstRow={item.startDate} secondRow={item.endDate} />,
+                status: <StatusBadge status={customBadgePropStatus[getExamStatus(item)]} />,
                 check: null,
                 // Если есть фактическая дата начала(startDate), то отображать
                 video: item.startDate && (
                   <Button
-                    size="xs"
+                    size='xs'
                     onlyIcon
                     iconRight={IconVideo}
                     onClick={() =>
@@ -198,14 +176,13 @@ const Exams: FC = () => {
                 ),
                 more: (
                   <Button
-                    size="xs"
+                    size='xs'
                     onlyIcon
                     iconRight={IconBento}
-                    view="secondary"
+                    view='secondary'
                     onClick={(e: React.MouseEvent<HTMLElement>) => {
                       const { x, y } = e.currentTarget.getBoundingClientRect()
                       setTableMenuPosition((prevState) => {
-                        console.log('prevState', prevState)
                         if (prevState && x === prevState.x && y === prevState.y) {
                           setIsTableMenuOpen.toogle()
                         } else {
@@ -226,9 +203,17 @@ const Exams: FC = () => {
     }
 
     getExams().catch((e) => console.log(e))
-  }, [filter.date, filter.type, filter.status, pagination.displayedRows, pagination.currentPage])
+  }, [
+    filter.date,
+    filter.type,
+    filter.status,
+    filter.organizations,
+    filter.searchQuery,
+    pagination.displayedRows,
+    pagination.currentPage
+  ])
   return (
-    <div className={cl.examTableModule}>
+    <Layout direction={'column'} className={cl.exams}>
       <FilterConstructor
         items={[
           {
@@ -247,6 +232,7 @@ const Exams: FC = () => {
                 key: 'search;',
                 component: (
                   <SearchField
+                    placeholder={'Поиск по экзамену'}
                     onChange={({ value }) => setSearchQuery(value)}
                     value={filter.searchQuery}
                   />
@@ -292,6 +278,7 @@ const Exams: FC = () => {
                   <OrganizationSelect
                     value={filter.organizations}
                     onChange={({ value }) => setOrganizations(value)}
+                    organizationsIds={organizationsIds}
                   />
                 ),
                 flex: 5
@@ -301,44 +288,40 @@ const Exams: FC = () => {
         ]}
       />
 
-      <SharedTable<ExamsTableRow>
-        rows={fullRows}
-        columns={examsColumn}
-        contextMenuItems={[
-          {
-            label: 'Изменить',
-            iconLeft: IconEdit
-          },
-          {
-            label: 'Сбросить',
-            iconLeft: IconRevert
-          },
-          {
-            label: 'Дублировать',
-            iconLeft: IconCopy
-          },
-          {
-            label: 'Удалить',
-            iconLeft: IconTrash
-          }
-        ]}
-        isMenuOpen={isTableMenuOpen}
-        menuPosition={tableMenuPosition}
-        onOneCellClick={function (prop: {
-          e: React.SyntheticEvent<Element, Event>
-          type: CellClickType
-          columnIdx: number
-          ref: React.RefObject<HTMLDivElement>
-          rowId?: string | undefined
-        }): void {
-          console.log(prop)
-        }}
-        closeMenu={setIsTableMenuOpen.off}
-      />
+      <Layout flex={1} className={cl.tableLayout}>
+        <SharedTable<ExamsTableData>
+          className={cl.table}
+          rows={fullRows}
+          setRows={setFullRows}
+          columns={examsColumn}
+          contextMenuItems={[
+            {
+              label: 'Изменить',
+              iconLeft: IconEdit
+            },
+            {
+              label: 'Сбросить',
+              iconLeft: IconRevert
+            },
+            {
+              label: 'Дублировать',
+              iconLeft: IconCopy
+            },
+            {
+              label: 'Удалить',
+              iconLeft: IconTrash
+            }
+          ]}
+          isMenuOpen={isTableMenuOpen}
+          menuPosition={tableMenuPosition}
+          closeMenu={setIsTableMenuOpen.off}
+          selectedRows={selectedRowsId}
+          setSelectedRows={setSelectedRowsId}
+        />
+      </Layout>
 
-      <SharedPagination pagination={pagination} setPagination={setPagination}/>
-
-    </div>
+      <SharedPagination pagination={pagination} setPagination={setPagination} />
+    </Layout>
   )
 }
 

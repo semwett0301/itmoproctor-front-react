@@ -1,50 +1,80 @@
-import React from 'react'
-import {onCellClick, Table, TableColumn} from '@consta/uikit/Table'
-import cl from '../../admin/Exams/components/ExamTable/ExamTable.module.scss'
-import {ContextMenu} from '@consta/uikit/ContextMenu'
-import {Position} from '@consta/uikit/Popover'
-import {ResponsesNothingFound} from '@consta/uikit/ResponsesNothingFound'
-import {contextMenuItem} from '../CustomHeader/CustomHeader'
+import React, { useEffect } from 'react'
+import { Table, TableColumn } from '@consta/uikit/Table'
+import cl from './SharedTable.module.scss'
+import { ContextMenu } from '@consta/uikit/ContextMenu'
+import { Position } from '@consta/uikit/Popover'
+import { ResponsesNothingFound } from '@consta/uikit/ResponsesNothingFound'
+import { IContextMenuItem } from '../CustomHeader/CustomHeader'
 
 export interface ITableRow {
-  id: string,
+  id: string
   selected: boolean
 }
 
 interface ISharedTableProps<T extends ITableRow> {
-  rows: T[],
   columns: TableColumn<T>[]
   isMenuOpen: boolean
   menuPosition: Position
-  onOneCellClick: onCellClick
   closeMenu: () => void
   contextMenuItems: IContextMenuItem[]
-  rows: TestTableColumns[]
+  className?: string
+  rows: T[]
+  setRows: React.Dispatch<React.SetStateAction<T[]>>
+  selectedRows: string[]
+  setSelectedRows: React.Dispatch<React.SetStateAction<string[]>>
 }
 
 function SharedTable<T extends ITableRow = ITableRow>({
   rows,
+  setRows,
+  selectedRows,
+  setSelectedRows,
+  className,
   columns,
   isMenuOpen,
   menuPosition,
   closeMenu,
-  onOneCellClick,
   contextMenuItems
 }: ISharedTableProps<T>): JSX.Element {
+  useEffect(() => {
+    console.log('effect')
+    setRows((prevState) => {
+      return prevState.map((row) => {
+        row.selected = selectedRows && selectedRows.includes(row.id)
+        return row
+      })
+    })
+  }, [selectedRows])
+
   return (
-    <>
+    <div className={cl.tableWrapper}>
       <Table
         getCellWrap={() => 'truncate'}
         stickyHeader={true}
-        size="s"
+        size='s'
         rows={rows}
         columns={columns}
         zebraStriped={'odd'}
         borderBetweenColumns
         borderBetweenRows
-        className={cl.table}
-        onCellClick={onOneCellClick}
-        getAdditionalClassName={({row}) => (row.selected ? cl.activeRow : '')}
+        className={className || cl.table}
+        onCellClick={({ rowId, columnIdx }) => {
+          if (columnIdx === 0) {
+            if (rowId) {
+              setSelectedRows((prevState) => {
+                if (selectedRows.includes(rowId)) {
+                  const newState = prevState.filter((item) => item != rowId)
+                  return [...newState]
+                } else {
+                  return [...prevState, rowId]
+                }
+              })
+            }
+
+            // toggleSelected(rowId)
+          }
+        }}
+        getAdditionalClassName={({ row }) => (row.selected ? cl.activeRow : '')}
         emptyRowsPlaceholder={
           <ResponsesNothingFound
             actions={<></>}
@@ -54,7 +84,8 @@ function SharedTable<T extends ITableRow = ITableRow>({
       />
 
       <ContextMenu
-        size="xs"
+        size='xs'
+        possibleDirections={['leftDown']}
         className={cl.contextMenu}
         items={contextMenuItems}
         isOpen={isMenuOpen}
@@ -63,7 +94,7 @@ function SharedTable<T extends ITableRow = ITableRow>({
         position={menuPosition}
         onClickOutside={closeMenu}
       />
-    </>
+    </div>
   )
 }
 

@@ -1,8 +1,8 @@
 import { IRoute } from '../../ts/interfaces/IRoute'
 import Admin from '../../components/admin/Admin'
 import NotFound from '../../components/shared/errors/NotFound/NotFound'
-import Users from '../../components/admin/users/Users'
-import Exams from '../../components/admin/Exams/Exams';
+import Exams from '../../components/admin/Exams/Exams'
+import Users from '../../components/admin/Users/Users'
 
 export const adminRoutes: IRoute[] = [
   {

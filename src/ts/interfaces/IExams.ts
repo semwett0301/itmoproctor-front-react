@@ -2,9 +2,8 @@ import { ICourse } from './ICourse'
 import { IStudent } from './IStudent'
 import { IInspector } from './IInspector'
 import { IExpert } from './IExpert'
-import { IOrganization } from './IOrganizations'
 
-export interface IExams {
+export interface IExamRow {
   _id: string
   examId: string
   organization: string
@@ -35,6 +34,6 @@ export interface IExams {
 
 export interface IExams {
   total: number
-  rows: IExams[] | []
-  organizations: IOrganization[] | []
+  rows: IExamRow[] | []
+  organizations: string[] | []
 }
