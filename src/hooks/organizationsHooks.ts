@@ -1,5 +1,5 @@
 import {IOrganization, IOrganizations} from '../ts/interfaces/IOrganizations'
-import {Dispatch, SetStateAction, useState} from 'react'
+import {Dispatch, SetStateAction, useEffect, useState} from 'react'
 import {useAppDispatch, useAppSelector} from './reduxHooks'
 import {request} from '../api/axios/request'
 import {AppDispatch} from '../store'
@@ -17,18 +17,26 @@ export const useOrganizations = (
   const organizations: IOrganizations = useAppSelector((state) => state.organizations)
   const dispatch: AppDispatch = useAppDispatch()
 
-  if (Object.keys(organizations).length === 0) {
-    setLoading(true)
-    request.organizations.getListOfOrganizations().then((r) => {
-      const newOrganizations: IOrganizations = {}
-      r.data.rows.map((e) => {
-        newOrganizations[e._id] = e
-      })
-      dispatch(setOrganizationActionCreator(newOrganizations))
-    })
-  }
+  useEffect(() => {
+    const loadOrganizations: () => Promise<void> = async () => {
+      if (Object.keys(organizations).length === 0) {
+        setLoading(true)
+        await request.organizations.getListOfOrganizations().then((r) => {
+          const newOrganizations: IOrganizations = {}
+          r.data.rows.map((e) => {
+            newOrganizations[e._id] = e
+          })
+          dispatch(setOrganizationActionCreator(newOrganizations))
+          setLoading(false)
+        })
+      }
+    }
 
-  const loadOrganizations = (ids?: string[]): void => {
+    loadOrganizations().catch(e => console.log(e))
+  }, [])
+
+
+  const getOrganizations = (ids?: string[]): void => {
     let newOrganizationList: IOrganization[] = []
 
     if (ids) {
@@ -46,5 +54,5 @@ export const useOrganizations = (
     return organizations[id]
   }
 
-  return [loading, loadOrganizations, getOrganization]
+  return [loading, getOrganizations, getOrganization]
 }
