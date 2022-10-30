@@ -18,7 +18,6 @@ import RoleCombobox from '../../shared/Filter/RoleCombobox/RoleCombobox'
 import { usePagination } from '../../../hooks/paginationHooks'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
 import { request } from '../../../api/axios/request'
-import { IUsersTableData, usersColumns } from './usersTableData'
 import { IUsersRow } from '../../../ts/interfaces/IUsers'
 import { Button } from '@consta/uikit/Button'
 import { IconBento } from '@consta/uikit/IconBento'
@@ -26,6 +25,7 @@ import SharedTable from '../../shared/SharedTable/SharedTable'
 import { useTranslation } from 'react-i18next'
 import { IconAllDone } from '@consta/uikit/IconAllDone'
 import { getFullName } from '../../../utils/nameHelper'
+import {IUsersTableData, usersColumns} from './usersTableData';
 
 // TYPES
 interface IFilter {

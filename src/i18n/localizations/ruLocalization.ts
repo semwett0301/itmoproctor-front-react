@@ -14,7 +14,9 @@ export const ruLocalization: ILocalization = {
         version: 'версия',
         from: 'от',
         other: 'Другие версии приложения',
-        forEach: 'для'
+        forEach: 'Для',
+        prevVersion: 'Предыдущая версия',
+        nextVersion: 'Следующая версия'
       }
     },
     student: {
