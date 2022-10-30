@@ -20,7 +20,6 @@ const Installing: FC = () => {
   const [currentVersion, setCurrentVersion] = useState<number>(0)
 
   const md5TargetKey: IArchive = metadata.versions[currentVersion].archives.filter(k => k.os.includes(osInfo.detectedOS) && k.arch.toString() === osInfo.detectedArch)[0]
-  md5TargetKey.path = md5TargetKey.path.substring(1, md5TargetKey.path.length)
   const md5OtherKeys: IArchive[] = metadata.versions[currentVersion].archives.filter(k => k !== md5TargetKey)
 
   const {t} = useTranslation()
@@ -46,7 +45,6 @@ const Installing: FC = () => {
         <div className={classes.other_version_body}>
           {
             md5OtherKeys.map(e => {
-              e.path = e.path.substring(1, e.path.length)
               return (
                 <div key={e.os} className={classes.other_version}>
                   <IconDiamond className={classes.icon_diamond} size={'s'}/>
