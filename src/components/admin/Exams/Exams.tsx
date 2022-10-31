@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
-import cl from './exams.module.scss'
+import cl from './Exams.module.scss'
 import { request } from '../../../api/axios/request'
 import { IExamRow } from '../../../ts/interfaces/IExams'
 import TwoRowCell from '../../shared/SharedTable/TwoRowCell/TwoRowCell'
