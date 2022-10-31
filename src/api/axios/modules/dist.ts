@@ -1,11 +1,8 @@
 import {AxiosInstance, AxiosResponse} from 'axios'
+import {IVersion} from '../../../ts/interfaces/IVersion';
 
 export interface IDistMetadata {
-  version: string,
-  date: Date,
-  md5: {
-    [key: string]: string
-  }
+  versions: IVersion[]
 }
 
 export interface IDistAxios {
@@ -15,7 +12,7 @@ export interface IDistAxios {
 export default function (instance: AxiosInstance): IDistAxios {
   return {
     getInfo(): Promise<AxiosResponse<IDistMetadata>> {
-      return instance.get('/dist/metadata.json')
+      return instance.get('/dist/metadata')
     }
   }
 }

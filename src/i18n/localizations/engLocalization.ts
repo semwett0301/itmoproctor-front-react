@@ -22,7 +22,9 @@ export const engLocalization: ILocalization = {
                 version: 'version',
                 from: 'from',
                 other: 'Other versions of application',
-                forEach: 'for'
+                forEach: 'For',
+                prevVersion: 'Previous version',
+                nextVersion: 'Next version'
             }
         },
         student: {
