@@ -4,7 +4,6 @@ import { Checkbox } from '@consta/uikit/Checkbox'
 import { ITableRow } from '../../shared/SharedTable/SharedTable'
 
 export interface ExamsTableData extends ITableRow {
-  check: ReactNode | null
   listener: ReactNode
   proctor: ReactNode
   exam: ReactNode
@@ -24,7 +23,7 @@ export const examsColumn: TableColumn<ExamsTableData>[] = [
   },
   {
     title: '',
-    accessor: 'check',
+    accessor: 'selected',
     align: 'center',
     renderCell: (row) => <Checkbox checked={row.selected} />
   },

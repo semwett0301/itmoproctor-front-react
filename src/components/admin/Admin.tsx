@@ -26,7 +26,7 @@ type AdminOutletContextType = { openTab: (item: TabItem) => void }
 
 const Admin: FC = () => {
   const [tabItems, setItems] = useState<TabItem[] | []>([
-    { id: 'Exams', title: 'Экзамены', path: 'Exams', type: 'tab' }
+    { id: 'exams', title: 'Экзамены', path: 'exams', type: 'tab' }
   ])
 
   const [activeTab, setActiveTab] = useState<TabItem | null>(tabItems[0])

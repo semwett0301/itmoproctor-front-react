@@ -31,7 +31,7 @@ const RoleCombobox: FC<IRoleComboboxProp> = ({ value, onChange }) => {
   return (
     <Combobox
       size='s'
-      placeholder={'Слушатель'}
+      placeholder={'Роль'}
       items={roleList}
       multiple={true}
       value={value}
