@@ -1,84 +1,51 @@
 import React, { FC, useEffect, useState } from 'react'
-import cl from './Users.module.scss'
+import cl from './Courses.module.scss'
 import { Layout } from '@consta/uikit/Layout'
-import FilterConstructor from '../../shared/Filter/FilterConstructor'
-import SearchField from '../../shared/Filter/SearchField/SearchField'
-import FilterButton from '../../shared/Filter/FilterButton/FilterButton'
-import { IconAdd } from '@consta/uikit/IconAdd'
-import { IconEdit } from '@consta/uikit/IconEdit'
-import { IconUpload } from '@consta/uikit/IconUpload'
-import { IconTrash } from '@consta/uikit/IconTrash'
-import OrganizationSelect from '../../shared/Filter/OrganizationSelect/OrganizationSelect'
-import { IOrganization } from '../../../ts/interfaces/IOrganizations'
-import ProviderSelect, { providerItem } from '../../shared/Filter/ProviderSelect/ProviderSelect'
-import { DefaultItem } from '@consta/uikit/__internal__/src/components/Combobox/helpers'
-import { useFlag } from '@consta/uikit/useFlag'
-import { Position } from '@consta/uikit/Popover'
-import RoleCombobox from '../../shared/Filter/RoleCombobox/RoleCombobox'
 import { usePagination } from '../../../hooks/paginationHooks'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
+import FilterButton from '../../shared/Filter/FilterButton/FilterButton'
+import FilterConstructor from '../../shared/Filter/FilterConstructor'
+import SearchField from '../../shared/Filter/SearchField/SearchField'
+import OrganizationSelect from '../../shared/Filter/OrganizationSelect/OrganizationSelect'
+import { IconAdd } from '@consta/uikit/IconAdd'
+import { IconTrash } from '@consta/uikit/IconTrash'
+import { IOrganization } from '../../../ts/interfaces/IOrganizations'
+import { useFlag } from '@consta/uikit/useFlag'
+import { Position } from '@consta/uikit/Popover'
+import { IconEdit } from '@consta/uikit/IconEdit'
+import SharedTable from '../../shared/SharedTable/SharedTable'
+import { coursesColumns, ICoursesTableModel } from './coursesTableModel'
 import { request } from '../../../api/axios/request'
-import { IUsersRow } from '../../../ts/interfaces/IUsers'
+import twoRowCell from '../../shared/SharedTable/TwoRowCell/TwoRowCell'
 import { Button } from '@consta/uikit/Button'
 import { IconBento } from '@consta/uikit/IconBento'
-import SharedTable from '../../shared/SharedTable/SharedTable'
-import { useTranslation } from 'react-i18next'
-import { IconAllDone } from '@consta/uikit/IconAllDone'
-import { getFullName } from '../../../utils/nameHelper'
-import { IUsersTableModel, usersColumns } from './usersTableModel'
+import { ICourseRow } from '../../../ts/interfaces/ICourses'
 
 // TYPES
 interface IFilter {
   searchQuery: string | null
   organizations: IOrganization[] | null
-  provider: providerItem | null
-  role: DefaultItem[] | null
 }
 
-const Users: FC = () => {
-  const { t } = useTranslation('translation', { keyPrefix: 'admin.users' })
+const Courses: FC = () => {
+  // pagination
+  const [pagination, setPagination, setTotal] = usePagination()
 
   const [isTableMenuOpen, setIsTableMenuOpen] = useFlag(true)
   const [tableMenuPosition, setTableMenuPosition] = useState<Position>(undefined)
   const [organizationsIds, setOrganizationsIds] = useState<string[]>([])
 
-  // pagination
-  const [pagination, setPagination, setTotal] = usePagination()
-
-  // Users table request
-  const [fullRows, setFullRows] = useState<IUsersTableModel[]>([])
-  const [selectedRowsId, setSelectedRowsId] = useState<string[]>([])
-
   // filter
   // filterState
-  const [filter, setFilter] = useState<IFilter>({
+  const [{ searchQuery, organizations }, setFilter] = useState<IFilter>({
     searchQuery: null,
-    organizations: null,
-    provider: null,
-    role: null
+    organizations: null
   })
-
-  // filter setters
   const setSearchQuery = (query: string | null): void =>
     setFilter((prevState) => ({
       ...prevState,
       searchQuery: query
     }))
-
-  const setProvider = (item: providerItem | null): void => {
-    setFilter((prevState) => ({
-      ...prevState,
-      provider: item
-    }))
-  }
-
-  const setRole = (item: DefaultItem[] | null): void => {
-    setFilter((prevState) => ({
-      ...prevState,
-      role: item
-    }))
-  }
-
   const setOrganizations = (item: IOrganization[] | null): void => {
     setFilter((prevState) => ({
       ...prevState,
@@ -86,15 +53,16 @@ const Users: FC = () => {
     }))
   }
 
-  // Users table request
+  // Exams table request
+  const [fullRows, setFullRows] = useState<ICoursesTableModel[]>([])
+  const [selectedRowsId, setSelectedRowsId] = useState<string[]>([])
+
   useEffect(() => {
-    console.log(organizationsIds)
-    const getUsers = async (): Promise<void> => {
-      await request.users
-        .getListOfUsers({
-          text: filter.searchQuery,
-          organization: null,
-          role: null,
+    const getCourses = async (): Promise<void> => {
+      await request.courses
+        .getListOfCourses({
+          text: searchQuery,
+          organization: organizations?.map((item) => item._id).join(',') || null,
           page: pagination.currentPage + 1,
           rows: pagination.displayedRows.id
         })
@@ -103,18 +71,19 @@ const Users: FC = () => {
           setOrganizationsIds(() => r.data.organizations)
           setTotal(r.data.total)
           if (r.data.rows.length > 0) {
-            const obj: IUsersTableModel[] = r.data.rows.map((item: IUsersRow) => {
-              return {
+            const obj: ICoursesTableModel[] = r.data.rows.map((item: ICourseRow) => {
+              const row: ICoursesTableModel = {
                 id: item._id,
                 selected: false,
-                // check: null,
-                user: getFullName(item.firstname, item.middlename, item.lastname),
-                login: item.username,
-                provider: t(`table.providers.${item.provider}`),
-                role: t(`table.roles.${item.role}`),
-                university: item.organization,
-                regDate: item.created,
-                lastDate: item.active,
+                name: twoRowCell({
+                  firstRow: 'Название курса, Артем добавить и я заменю...',
+                  secondRow: '...на тексмт в 2 строках'
+                }),
+                courseCode: item.courseCode,
+                sessionCode: item.sessionCode,
+                organization: item.organization.shortName,
+                accessAllowed: item.accessAllowed.map((i) => i.shortName).join(', ') || null,
+                updated: item.updated,
                 more: (
                   <Button
                     size='xs'
@@ -135,24 +104,18 @@ const Users: FC = () => {
                   />
                 )
               }
+              return row
             })
 
             setFullRows(obj)
           } else setFullRows([])
         })
     }
-    getUsers().catch((e) => console.log(e))
-  }, [
-    filter.searchQuery,
-    filter.role,
-    filter.provider,
-    filter.organizations,
-    pagination.currentPage,
-    pagination.displayedRows.id
-  ])
 
+    getCourses().catch((e) => console.log(e))
+  }, [searchQuery, organizations, pagination.displayedRows, pagination.currentPage])
   return (
-    <Layout direction={'column'} className={cl.users}>
+    <Layout direction={'column'} className={cl.exams}>
       <FilterConstructor
         items={[
           {
@@ -163,7 +126,7 @@ const Users: FC = () => {
                 component: (
                   <SearchField
                     onChange={({ value }) => setSearchQuery(value)}
-                    value={filter.searchQuery}
+                    value={searchQuery}
                   />
                 ),
                 flex: 1
@@ -172,31 +135,13 @@ const Users: FC = () => {
                 key: 'Organization',
                 component: (
                   <OrganizationSelect
-                    value={filter.organizations}
+                    value={organizations}
                     onChange={({ value }) => setOrganizations(value)}
                     organizationsIds={organizationsIds}
                   />
                 ),
                 flex: 1
               },
-              {
-                key: 'role',
-                component: (
-                  <ProviderSelect
-                    value={filter.provider}
-                    onChange={({ value }) => setProvider(value)}
-                  />
-                ),
-                flex: 1
-              },
-              {
-                key: 'provider',
-                component: (
-                  <RoleCombobox onChange={({ value }) => setRole(value)} value={filter.role} />
-                ),
-                flex: 1
-              },
-
               {
                 key: 'btn',
                 component: (
@@ -207,8 +152,8 @@ const Users: FC = () => {
                         iconLeft: IconAdd
                       },
                       {
-                        label: 'Импоорт',
-                        iconLeft: IconUpload
+                        label: 'Изменить',
+                        iconLeft: IconEdit
                       },
                       {
                         label: 'Удалить',
@@ -224,14 +169,20 @@ const Users: FC = () => {
       />
 
       <Layout flex={1} className={cl.tableLayout}>
-        <SharedTable<IUsersTableModel>
+        <SharedTable<ICoursesTableModel>
           className={cl.table}
           rows={fullRows}
           setRows={setFullRows}
-          columns={usersColumns}
+          columns={coursesColumns}
           contextMenuItems={[
-            { label: 'Изменить', iconLeft: IconEdit },
-            { label: 'Все экзамены', iconLeft: IconAllDone }
+            {
+              label: 'Изменить',
+              iconLeft: IconEdit
+            },
+            {
+              label: 'Удалить',
+              iconLeft: IconTrash
+            }
           ]}
           isMenuOpen={isTableMenuOpen}
           menuPosition={tableMenuPosition}
@@ -246,4 +197,4 @@ const Users: FC = () => {
   )
 }
 
-export default Users
+export default Courses

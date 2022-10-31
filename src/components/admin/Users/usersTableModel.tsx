@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react'
 import { Checkbox } from '@consta/uikit/Checkbox'
 import { ITableRow } from '../../shared/SharedTable/SharedTable'
 
-export interface IUsersTableData extends ITableRow {
+export interface IUsersTableModel extends ITableRow {
   user: ReactNode
   login: ReactNode
   provider: ReactNode
@@ -14,7 +14,7 @@ export interface IUsersTableData extends ITableRow {
   more: ReactNode
 }
 
-export const usersColumns: TableColumn<IUsersTableData>[] = [
+export const usersColumns: TableColumn<IUsersTableModel>[] = [
   {
     title: '№',
     accessor: 'id',
