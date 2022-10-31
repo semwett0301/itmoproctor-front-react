@@ -5,8 +5,8 @@ export interface IScheduleRow {
   concurrent: number
   maxExamsBeginnings: number
   inspector: IInspector
-  beginDate: Date
-  endDate: Date
+  beginDate: string
+  endDate: string
   __v: number
 }
 

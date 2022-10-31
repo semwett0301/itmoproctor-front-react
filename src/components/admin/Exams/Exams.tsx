@@ -22,7 +22,7 @@ import StatusBadge, {
   getExamStatus,
   getProctorName
 } from '../../shared/SharedTable/StatusBadge/StatusBadge'
-import { examsColumn, ExamsTableData } from './examsTableData'
+import { examsColumn, IExamsTableModel } from './examsTableModel'
 import SharedTable from '../../shared/SharedTable/SharedTable'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
 import { usePagination } from '../../../hooks/paginationHooks'
@@ -112,10 +112,8 @@ const Exams: FC = () => {
   const [pagination, setPagination, setTotal] = usePagination()
 
   // Exams table request
-  const [fullRows, setFullRows] = useState<ExamsTableData[]>([])
+  const [fullRows, setFullRows] = useState<IExamsTableModel[]>([])
   const [selectedRowsId, setSelectedRowsId] = useState<string[]>([])
-
-  // Select rows
 
   useEffect(() => {
     const getExams = async (): Promise<void> => {
@@ -136,7 +134,7 @@ const Exams: FC = () => {
             : null,
           reset: null, // false,
           organization: filter.organizations
-            ? filter.organizations.map((item) => item._id).join('&')
+            ? filter.organizations.map((item) => item._id).join(',')
             : null,
           myStudents: false,
           async: filter.type ? filter.type.flag : null,
@@ -147,8 +145,8 @@ const Exams: FC = () => {
           setOrganizationsIds(() => r.data.organizations)
           setTotal(r.data.total)
           if (r.data.rows.length > 0) {
-            const obj: ExamsTableData[] = r.data.rows.map((item: IExamRow) => {
-              const row: ExamsTableData = {
+            const obj: IExamsTableModel[] = r.data.rows.map((item: IExamRow) => {
+              const row: IExamsTableModel = {
                 id: item._id,
                 selected: false,
                 listener: `${item.student.middlename} ${item.student.firstname} ${item.student.lastname}`,
@@ -288,7 +286,7 @@ const Exams: FC = () => {
       />
 
       <Layout flex={1} className={cl.tableLayout}>
-        <SharedTable<ExamsTableData>
+        <SharedTable<IExamsTableModel>
           className={cl.table}
           rows={fullRows}
           setRows={setFullRows}

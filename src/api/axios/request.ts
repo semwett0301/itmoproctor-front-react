@@ -6,6 +6,7 @@ import mainInstance from './init/mainInstance'
 import organizations, { IOrganizationsAxios } from './modules/admin/organizations'
 import users, { IUsersAxios } from './modules/admin/users'
 import schedule, { IScheduleAxios } from './modules/admin/schedule'
+import courses, { ICoursesAxios } from './modules/admin/сourses'
 
 export interface IRequestAxios {
   auth: IAuthAxios
@@ -13,6 +14,7 @@ export interface IRequestAxios {
   exam: IExamsAxios
   users: IUsersAxios
   schedule: IScheduleAxios
+  courses: ICoursesAxios
   dist: IDistAxios
   organizations: IOrganizationsAxios
 }
@@ -23,6 +25,7 @@ export const request: IRequestAxios = {
   exam: exams(mainInstance),
   users: users(mainInstance),
   schedule: schedule(mainInstance),
+  courses: courses(mainInstance),
   dist: dist(mainInstance),
   organizations: organizations(mainInstance)
 }

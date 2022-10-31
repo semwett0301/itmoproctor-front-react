@@ -11,12 +11,12 @@ export interface IUserFilter {
 }
 
 export interface IUsersAxios {
-  getListOfExams: (filter?: IUserFilter) => Promise<AxiosResponse<IUsers>>
+  getListOfUsers: (filter?: IUserFilter) => Promise<AxiosResponse<IUsers>>
 }
 
 export default function (instance: AxiosInstance): IUsersAxios {
   return {
-    getListOfExams(
+    getListOfUsers(
       filter: IUserFilter = {
         text: null,
         organization: null,
