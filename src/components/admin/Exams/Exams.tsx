@@ -157,7 +157,6 @@ const Exams: FC = () => {
                 type: <TypeBadge async={item.async} />,
                 start: <TwoRowCell firstRow={item.startDate} secondRow={item.endDate} />,
                 status: <StatusBadge status={customBadgePropStatus[getExamStatus(item)]} />,
-                check: null,
                 // Если есть фактическая дата начала(startDate), то отображать
                 video: item.startDate && (
                   <Button

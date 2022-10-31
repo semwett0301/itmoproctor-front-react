@@ -26,7 +26,9 @@ const OrganizationSelect: FC<IOrganizationSelectProp> = ({ value, onChange, orga
       multiple={true}
       onChange={onChange}
       getItemKey={(item) => item._id}
-      getItemLabel={(item) => item.shortName || ''}
+      getItemLabel={(item) =>
+        item.shortName || item.fullName || `Отсутствует название \n ID:${item._id}`
+      }
       placeholder='Правообладатель'
       size='s'
     />

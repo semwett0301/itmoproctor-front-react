@@ -88,6 +88,7 @@ const Users: FC = () => {
 
   // Users table request
   useEffect(() => {
+    console.log(organizationsIds)
     const getUsers = async (): Promise<void> => {
       await request.users
         .getListOfExams({
@@ -106,10 +107,10 @@ const Users: FC = () => {
               return {
                 id: item._id,
                 selected: false,
-                check: null,
+                // check: null,
                 user: getFullName(item.firstname, item.middlename, item.lastname),
                 login: item.username,
-                provider: item.provider,
+                provider: t(`table.providers.${item.provider}`),
                 role: t(`table.roles.${item.role}`),
                 university: item.organization,
                 regDate: item.created,
@@ -141,7 +142,14 @@ const Users: FC = () => {
         })
     }
     getUsers().catch((e) => console.log(e))
-  }, [filter, pagination.currentPage, pagination.displayedRows.id])
+  }, [
+    filter.searchQuery,
+    filter.role,
+    filter.provider,
+    filter.organizations,
+    pagination.currentPage,
+    pagination.displayedRows.id
+  ])
 
   return (
     <Layout direction={'column'} className={cl.users}>

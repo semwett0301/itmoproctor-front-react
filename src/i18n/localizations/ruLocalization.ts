@@ -31,6 +31,10 @@ export const ruLocalization: ILocalization = {
             2: 'Проктор',
             3: 'Администратор',
             expert: 'Эксперт'
+          },
+          providers: {
+            local: 'Локальный',
+            openedu: 'OpenEdu'
           }
         }
       }
