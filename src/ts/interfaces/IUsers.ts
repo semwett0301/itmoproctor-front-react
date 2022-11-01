@@ -12,9 +12,3 @@ export interface IUsersRow {
   expert?: boolean
   organization: string
 }
-
-export interface IUsers {
-  total: number
-  rows: IUsersRow[]
-  organizations: string[]
-}

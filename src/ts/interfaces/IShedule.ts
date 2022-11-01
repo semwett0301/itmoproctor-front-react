@@ -9,8 +9,3 @@ export interface IScheduleRow {
   endDate: string
   __v: number
 }
-
-export interface ISchedule {
-  total: number
-  rows: IScheduleRow[]
-}

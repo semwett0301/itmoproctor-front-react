@@ -1,6 +1,7 @@
 import { AxiosInstance, AxiosResponse } from 'axios'
 import axiosConfig from '../../../../config/axiosСonfig'
-import { ISchedule } from '../../../../ts/interfaces/IShedule'
+import {IScheduleRow} from '../../../../ts/interfaces/IShedule'
+import {IResponseArray} from '../../../../ts/interfaces/IResponseInterfaces';
 
 export interface IScheduleFilter {
   from: string
@@ -11,7 +12,7 @@ export interface IScheduleFilter {
 }
 
 export interface IScheduleAxios {
-  getSchedule: (filter?: IScheduleFilter) => Promise<AxiosResponse<ISchedule>>
+  getSchedule: (filter?: IScheduleFilter) => Promise<AxiosResponse<IResponseArray<IScheduleRow>>>
 }
 
 export default function (instance: AxiosInstance): IScheduleAxios {
@@ -24,7 +25,7 @@ export default function (instance: AxiosInstance): IScheduleAxios {
         page: 1,
         rows: 5
       }
-    ): Promise<AxiosResponse<ISchedule>> {
+    ): Promise<AxiosResponse<IResponseArray<IScheduleRow>>> {
       return instance.get(`${axiosConfig.adminUrl}/schedules`, { params: filter })
     }
   }

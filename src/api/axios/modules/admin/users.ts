@@ -1,6 +1,7 @@
 import { AxiosInstance, AxiosResponse } from 'axios'
 import axiosConfig from '../../../../config/axiosСonfig'
-import { IUsers } from '../../../../ts/interfaces/IUsers'
+import {IUsersRow} from '../../../../ts/interfaces/IUsers'
+import {IResponseArray} from '../../../../ts/interfaces/IResponseInterfaces';
 
 export interface IUserFilter {
   text: string | null
@@ -11,7 +12,7 @@ export interface IUserFilter {
 }
 
 export interface IUsersAxios {
-  getListOfUsers: (filter?: IUserFilter) => Promise<AxiosResponse<IUsers>>
+  getListOfUsers: (filter?: IUserFilter) => Promise<AxiosResponse<IResponseArray<IUsersRow>>>
 }
 
 export default function (instance: AxiosInstance): IUsersAxios {
@@ -24,7 +25,7 @@ export default function (instance: AxiosInstance): IUsersAxios {
         page: 1,
         rows: 10
       }
-    ): Promise<AxiosResponse<IUsers>> {
+    ): Promise<AxiosResponse<IResponseArray<IUsersRow>>> {
       return instance.get(`${axiosConfig.adminUrl}/users`, { params: filter })
     }
   }

@@ -7,7 +7,3 @@ export interface IMaintenanceRow {
   __v: number
 }
 
-export interface IMaintenance {
-  total: number
-  rows: IMaintenanceRow[]
-}

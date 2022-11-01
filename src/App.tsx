@@ -40,7 +40,6 @@ export const App: FC = () => {
 
   return (
     <Theme preset={presetGpnDefault}>
-      <Loading />
       <RouterProvider router={router} />
     </Theme>
   )

@@ -10,9 +10,3 @@ export interface ICourseRow {
   updated: string
   __v?: number
 }
-
-export interface ICourses {
-  total: number
-  rows: ICourseRow[] | []
-  organizations: string[] | []
-}

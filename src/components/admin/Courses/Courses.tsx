@@ -68,7 +68,7 @@ const Courses: FC = () => {
         })
         .then((r) => {
           console.log(r)
-          setOrganizationsIds(() => r.data.organizations)
+          setOrganizationsIds(() => r.data.organizations || [])
           setTotal(r.data.total)
           if (r.data.rows.length > 0) {
             const obj: ICoursesTableModel[] = r.data.rows.map((item: ICourseRow) => {

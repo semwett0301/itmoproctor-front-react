@@ -3,9 +3,9 @@ import Admin from '../../components/admin/Admin'
 import Exams from '../../components/admin/Exams/Exams'
 import Schedule from '../../components/admin/Schedule/Schedule'
 import Courses from '../../components/admin/Courses/Courses'
-import Organizations from '../../components/admin/Organizations/Organizations'
 import Maintenance from '../../components/admin/Maintenance/Maintenance'
-import Users from '../../components/admin/users/Users';
+import Users from '../../components/admin/Users/Users';
+import Organizations from '../../components/admin/Organizations/Organizations';
 
 export const adminRoutes: IRoute[] = [
   {

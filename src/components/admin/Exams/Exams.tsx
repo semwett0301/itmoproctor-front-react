@@ -146,7 +146,7 @@ const Exams: FC = () => {
           rows: pagination.displayedRows.id
         })
         .then((r) => {
-          setOrganizationsIds(() => r.data.organizations)
+          setOrganizationsIds(() => r.data.organizations || [])
           setTotal(r.data.total)
           if (r.data.rows.length > 0) {
             const obj: IExamsTableModel[] = r.data.rows.map((item: IExamRow) => {

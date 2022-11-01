@@ -11,48 +11,39 @@ import {log} from 'util';
 // }
 
 
-export const useOrganizations = (
-  setter: Dispatch<SetStateAction<IOrganization[]>>
-): [boolean, (ids?: string[]) => void, (id: string) => IOrganization | undefined] => {
+export const useOrganizations = (): {loading: boolean, getOrganizations: (ids?: string[]) => IOrganization[], getOrganization: (id: string) => IOrganization} => {
   const [loading, setLoading] = useState(false)
   const organizations: IOrganizations = useAppSelector((state) => state.organizations)
   const dispatch: AppDispatch = useAppDispatch()
 
-  const loadOrganizations: () => Promise<void> = async () => {
-    if (Object.keys(organizations).length === 0) {
-      setLoading(true)
-      await request.organizations.getListOfOrganizations().then((r) => {
-        const newOrganizations: IOrganizations = {}
-        r.data.rows.map((e) => {
-          newOrganizations[e._id] = e
-        })
-        dispatch(setOrganizationActionCreator(newOrganizations))
-        setLoading(false)
-      })
-    }
-  }
-
   useEffect(() => {
-    loadOrganizations().catch(r => console.log(r))
+    const loadOrganizations: () => Promise<void> = async () => {
+      if (Object.keys(organizations).length === 0) {
+        setLoading(true)
+        const newOrganizations: IOrganizations = {}
+        await request.organizations.getListOfOrganizations().then((r) => {
+          r.data.rows.map((e) => {
+            newOrganizations[e._id] = e
+          })
+          dispatch(setOrganizationActionCreator(newOrganizations))
+          setLoading(false)
+        })
+      }
+    }
+
+    loadOrganizations().then(() => console.log(organizations))
   }, [])
 
-  const getOrganizations = (ids?: string[]): void => {
-      let newOrganizationList: IOrganization[] = []
-
-      if (ids) {
-        ids.map((e) => {
-          newOrganizationList.push(organizations[e])
-        })
-      } else {
-        newOrganizationList = Object.values(organizations)
-      }
-
-      setter(newOrganizationList)
+  const getOrganizations = (ids?: string[]): IOrganization[] => {
+    if (ids) {
+      return Object.values(organizations).filter(e => ids.includes(e._id))
+    }
+    return Object.values(organizations)
   }
 
-  const getOrganization: (id: string) => IOrganization | undefined = (id) => {
+  const getOrganization = (id: string): IOrganization => {
     return organizations[id]
   }
 
-  return [loading, getOrganizations, getOrganization]
+  return {loading, getOrganizations, getOrganization}
 }

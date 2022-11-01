@@ -25,7 +25,9 @@ import SharedTable from '../../shared/SharedTable/SharedTable'
 import { useTranslation } from 'react-i18next'
 import { IconAllDone } from '@consta/uikit/IconAllDone'
 import { getFullName } from '../../../utils/nameHelper'
-import { IUsersTableModel, usersColumns } from './usersTableModel'
+import {IUsersTableModel, usersColumns} from './usersTableModel';
+import {useOrganizations} from '../../../hooks/organizationsHooks';
+import TwoRowCell from '../../shared/SharedTable/TwoRowCell/TwoRowCell';
 
 // TYPES
 interface IFilter {
@@ -36,7 +38,7 @@ interface IFilter {
 }
 
 const Users: FC = () => {
-  const { t } = useTranslation('translation', { keyPrefix: 'admin.users' })
+  const { t } = useTranslation('translation', { keyPrefix: 'admin.Users' })
 
   const [isTableMenuOpen, setIsTableMenuOpen] = useFlag(true)
   const [tableMenuPosition, setTableMenuPosition] = useState<Position>(undefined)
@@ -48,6 +50,8 @@ const Users: FC = () => {
   // Users table request
   const [fullRows, setFullRows] = useState<IUsersTableModel[]>([])
   const [selectedRowsId, setSelectedRowsId] = useState<string[]>([])
+
+  const {getOrganization} = useOrganizations()
 
   // filter
   // filterState
@@ -100,10 +104,12 @@ const Users: FC = () => {
         })
         .then((r) => {
           console.log(r)
-          setOrganizationsIds(() => r.data.organizations)
+          setOrganizationsIds(() => r.data.organizations || [])
           setTotal(r.data.total)
           if (r.data.rows.length > 0) {
             const obj: IUsersTableModel[] = r.data.rows.map((item: IUsersRow) => {
+              const university = getOrganization(item.organization)
+
               return {
                 id: item._id,
                 selected: false,
@@ -112,7 +118,7 @@ const Users: FC = () => {
                 login: item.username,
                 provider: t(`table.providers.${item.provider}`),
                 role: t(`table.roles.${item.role}`),
-                university: item.organization,
+                university: university.shortName || <TwoRowCell firstRow={'Название отсутствует'} secondRow={`ID:${item._id}`}/>,
                 regDate: item.created,
                 lastDate: item.active,
                 more: (

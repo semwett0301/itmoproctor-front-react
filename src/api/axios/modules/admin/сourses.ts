@@ -1,6 +1,7 @@
 import { AxiosInstance, AxiosResponse } from 'axios'
-import { ICourses } from '../../../../ts/interfaces/ICourses'
 import axiosConfig from '../../../../config/axiosСonfig'
+import {IResponseArray} from '../../../../ts/interfaces/IResponseInterfaces';
+import {ICourseRow} from '../../../../ts/interfaces/ICourses';
 
 export interface ICoursesFilter {
   text: string | null
@@ -10,7 +11,7 @@ export interface ICoursesFilter {
 }
 
 export interface ICoursesAxios {
-  getListOfCourses: (filter?: ICoursesFilter) => Promise<AxiosResponse<ICourses>>
+  getListOfCourses: (filter?: ICoursesFilter) => Promise<AxiosResponse<IResponseArray<ICourseRow>>>
 }
 
 export default function (instance: AxiosInstance): ICoursesAxios {
@@ -22,7 +23,7 @@ export default function (instance: AxiosInstance): ICoursesAxios {
         page: 1,
         rows: 10
       }
-    ): Promise<AxiosResponse<ICourses>> {
+    ): Promise<AxiosResponse<IResponseArray<ICourseRow>>> {
       return instance.get(`${axiosConfig.adminUrl}/courses`, { params: filter })
     }
   }

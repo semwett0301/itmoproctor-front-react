@@ -1,6 +1,7 @@
-import { AxiosInstance, AxiosResponse } from 'axios'
+import {AxiosInstance, AxiosResponse} from 'axios'
 import axiosConfig from '../../../../config/axiosСonfig'
-import { IMaintenance } from '../../../../ts/interfaces/IMaintenance'
+import {IMaintenanceRow} from '../../../../ts/interfaces/IMaintenance'
+import {IResponseArray} from '../../../../ts/interfaces/IResponseInterfaces';
 
 export interface IMaintenanceFilter {
   from: string
@@ -10,7 +11,7 @@ export interface IMaintenanceFilter {
 }
 
 export interface IMaintenanceAxios {
-  getMaintenance: (filter?: IMaintenanceFilter) => Promise<AxiosResponse<IMaintenance>>
+  getMaintenance: (filter?: IMaintenanceFilter) => Promise<AxiosResponse<IResponseArray<IMaintenanceRow>>>
 }
 
 export default function (instance: AxiosInstance): IMaintenanceAxios {
@@ -22,8 +23,8 @@ export default function (instance: AxiosInstance): IMaintenanceAxios {
         page: 1,
         rows: 5
       }
-    ): Promise<AxiosResponse<IMaintenance>> {
-      return instance.get(`${axiosConfig.baseUrl}maintenance`, { params: filter })
+    ): Promise<AxiosResponse<IResponseArray<IMaintenanceRow>>> {
+      return instance.get(`${axiosConfig.baseUrl}maintenance`, {params: filter})
     }
   }
 }

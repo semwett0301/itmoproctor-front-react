@@ -31,9 +31,3 @@ export interface IExamRow {
   videoAvailable?: boolean
   reportReady?: boolean
 }
-
-export interface IExams {
-  total: number
-  rows: IExamRow[] | []
-  organizations: string[] | []
-}

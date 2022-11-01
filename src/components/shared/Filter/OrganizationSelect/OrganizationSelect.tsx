@@ -12,10 +12,10 @@ interface IOrganizationSelectProp {
 const OrganizationSelect: FC<IOrganizationSelectProp> = ({ value, onChange, organizationsIds }) => {
   const [items, setItems] = useState<IOrganization[]>([])
 
-  const [loading, getOrganizations] = useOrganizations(setItems)
+  const {loading, getOrganizations} = useOrganizations()
 
   useEffect(() => {
-    getOrganizations(organizationsIds)
+    setItems(getOrganizations(organizationsIds))
   }, [organizationsIds])
 
   return (
