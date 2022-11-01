@@ -196,9 +196,8 @@ const Users: FC = () => {
                 ),
                 flex: 1
               },
-
               {
-                key: 'btn',
+                key: 'more_btn',
                 component: (
                   <FilterButton
                     MenuItems={[
