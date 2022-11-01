@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from 'react'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
+
 import { usePagination } from '../../../hooks/paginationHooks'
 import { statusComboboxItem } from '../../shared/Filter/ExamStatusCombobox/ExamStatusCombobox'
 import { typeItem } from '../../shared/Filter/ExamTypeSelect/ExamTypeSelect'
@@ -42,6 +43,8 @@ const Organizations: FC = () => {
 
   const [selectedRowsId, setSelectedRowsId] = useState<string[]>([])
 
+  const [currentOrganizations, setCurrentOrganizations] = useState<IOrganization[]>([])
+
   // filter
   // filterState
   const [{ searchQuery }, setFilter] = useState<IFilter>({
@@ -56,7 +59,6 @@ const Organizations: FC = () => {
 
   useEffect(() => {
     getOrganizations()
-  }, [loading])
 
   useEffect(() => {
     const newFullRows: IOrganizationsTableModel[] = []
@@ -79,6 +81,24 @@ const Organizations: FC = () => {
           filteredOrganizations[i].shortName?.includes(searchQuery)
         ) {
           newFullRows.push({
+
+    setCurrentOrganizations(organizations)
+  }, [loading])
+
+  useEffect(() => {
+    setCurrentOrganizations(organizations.filter(e => !searchQuery || e.shortName?.includes(searchQuery) || e.fullName?.includes(searchQuery)))
+    pagination.currentPage = 0
+  }, [searchQuery])
+
+  useEffect(() => {
+    const newFullRows: IOrganizationsTableModel[] = []
+
+    setTotal(currentOrganizations.length)
+
+    for (let i = pagination.displayedRows.id * pagination.currentPage; i < pagination.displayedRows.id * pagination.currentPage + pagination.displayedRows.id; i++) {
+      if (currentOrganizations[i]) {
+        if (!searchQuery || currentOrganizations[i].fullName?.includes(searchQuery) || currentOrganizations[i].shortName?.includes(searchQuery)) {
+          newFullRows.push  ({
             id: organizations[i]._id,
             selected: false,
             fullName: organizations[i].fullName,
