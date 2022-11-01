@@ -60,14 +60,17 @@ const Organizations: FC = () => {
 
 
   useEffect(() => {
-    setTotal(organizations.length)
 
     const newFullRows: IOrganizationsTableModel[] = []
 
+    const filteredOrganizations = organizations.filter(e => !searchQuery || (e.shortName?.includes(searchQuery) || e.fullName?.includes(searchQuery)))
+
+    setTotal(filteredOrganizations.length)
+
     for (let i = pagination.displayedRows.id * pagination.currentPage; i < pagination.displayedRows.id * pagination.currentPage + pagination.displayedRows.id; i++) {
-      if (organizations[i]) {
-        if (!searchQuery || (organizations[i].fullName?.includes(searchQuery) || organizations[i].shortName?.includes(searchQuery))) {
-          newFullRows.push({
+      if (filteredOrganizations[i]) {
+        if (!searchQuery || filteredOrganizations[i].fullName?.includes(searchQuery) || filteredOrganizations[i].shortName?.includes(searchQuery)) {
+          newFullRows.push  ({
             id: organizations[i]._id,
             selected: false,
             fullName: organizations[i].fullName,
