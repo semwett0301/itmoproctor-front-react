@@ -3,8 +3,9 @@ import Admin from '../../components/admin/Admin'
 import Exams from '../../components/admin/Exams/Exams'
 import Schedule from '../../components/admin/Schedule/Schedule'
 import Courses from '../../components/admin/Courses/Courses'
-import Users from '../../components/admin/users/Users';
-import Organizations from '../../components/admin/Organizations/Organizations';
+import Organizations from '../../components/admin/Organizations/Organizations'
+import Users from '../../components/admin/Users/Users'
+import Maintenance from '../../components/admin/Maintenance/Maintenance'
 
 export const adminRoutes: IRoute[] = [
   {
@@ -16,7 +17,8 @@ export const adminRoutes: IRoute[] = [
       { id: 2, path: 'users', component: Users },
       { id: 3, path: 'schedule', component: Schedule },
       { id: 4, path: 'courses', component: Courses },
-      { id: 5, path: 'organizations', component: Organizations}
+      { id: 5, path: 'maintenance', component: Maintenance },
+      { id: 6, path: 'organizations', component: Organizations }
     ]
   }
 ]

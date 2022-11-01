@@ -1,0 +1,14 @@
+.maintenance {
+  position: relative;
+  height: calc(100% - 40px);
+}
+
+.tableLayout {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: min-content;
+}
+
+.table {
+  --table-grid-template-columns: 40px calc(31.21% - 21px) calc(30.3% - 21px) calc(13.55% - 21px) calc(24.94% - 21px) 44px !important;
+}

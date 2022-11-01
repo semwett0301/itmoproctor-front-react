@@ -115,7 +115,7 @@ const Courses: FC = () => {
     getCourses().catch((e) => console.log(e))
   }, [searchQuery, organizations, pagination.displayedRows, pagination.currentPage])
   return (
-    <Layout direction={'column'} className={cl.exams}>
+    <Layout direction={'column'} className={cl.courses}>
       <FilterConstructor
         items={[
           {
