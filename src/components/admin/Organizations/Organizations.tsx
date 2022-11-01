@@ -1,8 +1,6 @@
 import React, {FC, useEffect, useState} from 'react'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
 import {usePagination} from '../../../hooks/paginationHooks'
-import {statusComboboxItem} from '../../shared/Filter/ExamStatusCombobox/ExamStatusCombobox'
-import {typeItem} from '../../shared/Filter/ExamTypeSelect/ExamTypeSelect'
 import {IOrganization} from '../../../ts/interfaces/IOrganizations'
 import {Layout} from '@consta/uikit/Layout'
 import SharedTable from '../../shared/SharedTable/SharedTable';
@@ -18,10 +16,10 @@ import {IconBento} from '@consta/uikit/IconBento';
 import {Button} from '@consta/uikit/Button';
 import cl from './Organizations.module.scss'
 import FilterConstructor from '../../shared/Filter/FilterConstructor';
-import DatePeriodPicker from '../../shared/Filter/DatePeriodPicker/DatePeriodPicker';
 import SearchField from '../../shared/Filter/SearchField/SearchField';
 import FilterButton from '../../shared/Filter/FilterButton/FilterButton';
 import {IconAdd} from '@consta/uikit/IconAdd';
+import {log} from 'util';
 
 interface IFilter {
   searchQuery: string | null
@@ -42,6 +40,8 @@ const Organizations: FC = () => {
 
   const [selectedRowsId, setSelectedRowsId] = useState<string[]>([])
 
+  const [currentOrganizations, setCurrentOrganizations] = useState<IOrganization[]>([])
+
   // filter
   // filterState
   const [{searchQuery}, setFilter] = useState<IFilter>({
@@ -56,20 +56,23 @@ const Organizations: FC = () => {
 
   useEffect(() => {
     getOrganizations()
+
+    setCurrentOrganizations(organizations)
   }, [loading])
 
+  useEffect(() => {
+    setCurrentOrganizations(organizations.filter(e => !searchQuery || e.shortName?.includes(searchQuery) || e.fullName?.includes(searchQuery)))
+    pagination.currentPage = 0
+  }, [searchQuery])
 
   useEffect(() => {
-
     const newFullRows: IOrganizationsTableModel[] = []
 
-    const filteredOrganizations = organizations.filter(e => !searchQuery || (e.shortName?.includes(searchQuery) || e.fullName?.includes(searchQuery)))
-
-    setTotal(filteredOrganizations.length)
+    setTotal(currentOrganizations.length)
 
     for (let i = pagination.displayedRows.id * pagination.currentPage; i < pagination.displayedRows.id * pagination.currentPage + pagination.displayedRows.id; i++) {
-      if (filteredOrganizations[i]) {
-        if (!searchQuery || filteredOrganizations[i].fullName?.includes(searchQuery) || filteredOrganizations[i].shortName?.includes(searchQuery)) {
+      if (currentOrganizations[i]) {
+        if (!searchQuery || currentOrganizations[i].fullName?.includes(searchQuery) || currentOrganizations[i].shortName?.includes(searchQuery)) {
           newFullRows.push  ({
             id: organizations[i]._id,
             selected: false,
@@ -101,7 +104,7 @@ const Organizations: FC = () => {
     }
 
     setFullRows(newFullRows)
-  }, [organizations, pagination, searchQuery])
+  }, [currentOrganizations, pagination.displayedRows, pagination.currentPage])
 
   return (
     <Layout direction={'column'} className={cl.organizations}>

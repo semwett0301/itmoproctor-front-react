@@ -4,8 +4,8 @@ import Exams from '../../components/admin/Exams/Exams'
 import Schedule from '../../components/admin/Schedule/Schedule'
 import Courses from '../../components/admin/Courses/Courses'
 import Organizations from '../../components/admin/Organizations/Organizations'
-import Users from '../../components/admin/Users/Users'
 import Maintenance from '../../components/admin/Maintenance/Maintenance'
+import Users from '../../components/admin/users/Users';
 
 export const adminRoutes: IRoute[] = [
   {
