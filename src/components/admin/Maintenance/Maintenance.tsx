@@ -60,6 +60,10 @@ const Maintenance: FC = () => {
 
   useEffect(() => {
     const getMaintenance = async (): Promise<void> => {
+      setPagination((prevState) => ({
+        ...prevState,
+        currentPage: 0
+      }))
       await request.maintenance
         .getMaintenance({
           from: date[0].toISOString(),
