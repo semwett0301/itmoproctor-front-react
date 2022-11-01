@@ -1,0 +1,16 @@
+.organizations {
+  position: relative;
+  height: calc(100% - 40px);
+  overflow: hidden;
+}
+
+.tableLayout {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: min-content;
+}
+
+.table {
+  width: 100%;
+  --table-grid-template-columns: 40px calc(42.59% - 17.6px) calc(39.541% - 17.6px) calc(18.786% - 17.6px) 44px !important;
+}

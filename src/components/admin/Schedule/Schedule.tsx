@@ -1,25 +1,24 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, {FC, useEffect, useState} from 'react'
 import cl from './Schedule.module.scss'
-import { Layout } from '@consta/uikit/Layout'
+import {Layout} from '@consta/uikit/Layout'
 import DatePeriodPicker from '../../shared/Filter/DatePeriodPicker/DatePeriodPicker'
 import SearchField from '../../shared/Filter/SearchField/SearchField'
 import FilterButton from '../../shared/Filter/FilterButton/FilterButton'
-import { IconAdd } from '@consta/uikit/IconAdd'
-import { IconEdit } from '@consta/uikit/IconEdit'
-import { IconTrash } from '@consta/uikit/IconTrash'
+import {IconAdd} from '@consta/uikit/IconAdd'
+import {IconEdit} from '@consta/uikit/IconEdit'
+import {IconTrash} from '@consta/uikit/IconTrash'
 import FilterConstructor from '../../shared/Filter/FilterConstructor'
-import { usePagination } from '../../../hooks/paginationHooks'
+import {usePagination} from '../../../hooks/paginationHooks'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
 import SharedTable from '../../shared/SharedTable/SharedTable'
-import { IconAllDone } from '@consta/uikit/IconAllDone'
-import { useFlag } from '@consta/uikit/useFlag'
-import { Position } from '@consta/uikit/Popover'
-import { IScheduleTableModel, scheduleColumns } from './scheduleTableModel'
-import { request } from '../../../api/axios/request'
-import { getFullName } from '../../../utils/nameHelper'
-import { Button } from '@consta/uikit/Button'
-import { IconBento } from '@consta/uikit/IconBento'
-import { IScheduleRow } from '../../../ts/interfaces/IShedule'
+import {useFlag} from '@consta/uikit/useFlag'
+import {Position} from '@consta/uikit/Popover'
+import {IScheduleTableModel, scheduleColumns} from './scheduleTableModel'
+import {request} from '../../../api/axios/request'
+import {getFullName} from '../../../utils/nameHelper'
+import {Button} from '@consta/uikit/Button'
+import {IconBento} from '@consta/uikit/IconBento'
+import {IScheduleRow} from '../../../ts/interfaces/IShedule'
 
 // TYPES
 interface IFilter {
@@ -104,7 +103,7 @@ const Schedule: FC = () => {
                     view='secondary'
                     onClick={(e: React.MouseEvent<HTMLElement>) => {
                       const { x, y } = e.currentTarget.getBoundingClientRect()
-                      setTableMenuPosition((prevState) => {
+                        setTableMenuPosition((prevState) => {
                         if (prevState && x === prevState.x && y === prevState.y) {
                           setIsTableMenuOpen.toogle()
                         } else {
