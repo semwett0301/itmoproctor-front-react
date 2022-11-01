@@ -117,6 +117,10 @@ const Exams: FC = () => {
 
   useEffect(() => {
     const getExams = async (): Promise<void> => {
+      setPagination((prevState) => ({
+        ...prevState,
+        currentPage: 0
+      }))
       await request.exam
         .getListOfExams({
           from: filter.date[0].toISOString(),

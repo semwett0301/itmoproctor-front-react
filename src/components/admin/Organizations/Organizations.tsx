@@ -1,27 +1,27 @@
-import React, {FC, useEffect, useState} from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
-import {usePagination} from '../../../hooks/paginationHooks'
-import {statusComboboxItem} from '../../shared/Filter/ExamStatusCombobox/ExamStatusCombobox'
-import {typeItem} from '../../shared/Filter/ExamTypeSelect/ExamTypeSelect'
-import {IOrganization} from '../../../ts/interfaces/IOrganizations'
-import {Layout} from '@consta/uikit/Layout'
-import SharedTable from '../../shared/SharedTable/SharedTable';
-import {IconEdit} from '@consta/uikit/IconEdit';
-import {IconRevert} from '@consta/uikit/IconRevert';
-import {IconCopy} from '@consta/uikit/IconCopy';
-import {IconTrash} from '@consta/uikit/IconTrash';
-import {useFlag} from '@consta/uikit/useFlag';
-import {Position} from '@consta/uikit/Popover';
-import {useOrganizations} from '../../../hooks/organizationsHooks';
-import {IOrganizationsTableModel, organizationsColumn} from './organizationsTableData';
-import {IconBento} from '@consta/uikit/IconBento';
-import {Button} from '@consta/uikit/Button';
+import { usePagination } from '../../../hooks/paginationHooks'
+import { statusComboboxItem } from '../../shared/Filter/ExamStatusCombobox/ExamStatusCombobox'
+import { typeItem } from '../../shared/Filter/ExamTypeSelect/ExamTypeSelect'
+import { IOrganization } from '../../../ts/interfaces/IOrganizations'
+import { Layout } from '@consta/uikit/Layout'
+import SharedTable from '../../shared/SharedTable/SharedTable'
+import { IconEdit } from '@consta/uikit/IconEdit'
+import { IconRevert } from '@consta/uikit/IconRevert'
+import { IconCopy } from '@consta/uikit/IconCopy'
+import { IconTrash } from '@consta/uikit/IconTrash'
+import { useFlag } from '@consta/uikit/useFlag'
+import { Position } from '@consta/uikit/Popover'
+import { useOrganizations } from '../../../hooks/organizationsHooks'
+import { IOrganizationsTableModel, organizationsColumn } from './organizationsTableData'
+import { IconBento } from '@consta/uikit/IconBento'
+import { Button } from '@consta/uikit/Button'
 import cl from './Organizations.module.scss'
-import FilterConstructor from '../../shared/Filter/FilterConstructor';
-import DatePeriodPicker from '../../shared/Filter/DatePeriodPicker/DatePeriodPicker';
-import SearchField from '../../shared/Filter/SearchField/SearchField';
-import FilterButton from '../../shared/Filter/FilterButton/FilterButton';
-import {IconAdd} from '@consta/uikit/IconAdd';
+import FilterConstructor from '../../shared/Filter/FilterConstructor'
+import DatePeriodPicker from '../../shared/Filter/DatePeriodPicker/DatePeriodPicker'
+import SearchField from '../../shared/Filter/SearchField/SearchField'
+import FilterButton from '../../shared/Filter/FilterButton/FilterButton'
+import { IconAdd } from '@consta/uikit/IconAdd'
 
 interface IFilter {
   searchQuery: string | null
@@ -44,7 +44,7 @@ const Organizations: FC = () => {
 
   // filter
   // filterState
-  const [{searchQuery}, setFilter] = useState<IFilter>({
+  const [{ searchQuery }, setFilter] = useState<IFilter>({
     searchQuery: null
   })
 
@@ -58,19 +58,27 @@ const Organizations: FC = () => {
     getOrganizations()
   }, [loading])
 
-
   useEffect(() => {
-
     const newFullRows: IOrganizationsTableModel[] = []
 
-    const filteredOrganizations = organizations.filter(e => !searchQuery || (e.shortName?.includes(searchQuery) || e.fullName?.includes(searchQuery)))
+    const filteredOrganizations = organizations.filter(
+      (e) => !searchQuery || e.shortName?.includes(searchQuery) || e.fullName?.includes(searchQuery)
+    )
 
     setTotal(filteredOrganizations.length)
 
-    for (let i = pagination.displayedRows.id * pagination.currentPage; i < pagination.displayedRows.id * pagination.currentPage + pagination.displayedRows.id; i++) {
+    for (
+      let i = pagination.displayedRows.id * pagination.currentPage;
+      i < pagination.displayedRows.id * pagination.currentPage + pagination.displayedRows.id;
+      i++
+    ) {
       if (filteredOrganizations[i]) {
-        if (!searchQuery || filteredOrganizations[i].fullName?.includes(searchQuery) || filteredOrganizations[i].shortName?.includes(searchQuery)) {
-          newFullRows.push  ({
+        if (
+          !searchQuery ||
+          filteredOrganizations[i].fullName?.includes(searchQuery) ||
+          filteredOrganizations[i].shortName?.includes(searchQuery)
+        ) {
+          newFullRows.push({
             id: organizations[i]._id,
             selected: false,
             fullName: organizations[i].fullName,
@@ -78,18 +86,18 @@ const Organizations: FC = () => {
             code: organizations[i].code,
             more: (
               <Button
-                size="xs"
+                size='xs'
                 onlyIcon
                 iconRight={IconBento}
-                view="secondary"
+                view='secondary'
                 onClick={(click: React.MouseEvent<HTMLElement>) => {
-                  const {x, y} = click.currentTarget.getBoundingClientRect()
+                  const { x, y } = click.currentTarget.getBoundingClientRect()
                   setTableMenuPosition((prevState) => {
                     if (prevState && x === prevState.x && y === prevState.y) {
                       setIsTableMenuOpen.toogle()
                     } else {
                       setIsTableMenuOpen.on()
-                      return {x: x, y: y}
+                      return { x: x, y: y }
                     }
                   })
                 }}
@@ -101,39 +109,40 @@ const Organizations: FC = () => {
     }
 
     setFullRows(newFullRows)
-  }, [organizations, pagination, searchQuery])
+  }, [organizations, pagination.displayedRows, pagination.currentPage, searchQuery])
 
   return (
     <Layout direction={'column'} className={cl.organizations}>
       <FilterConstructor
-        items={[{
-          key: '1',
-          components: [
-            {
-              key: 'search;',
-              component: (
-                <SearchField
-                  placeholder={'Поиск университета'}
-                  onChange={({value}) => setSearchQuery(value)}
-                  value={searchQuery}
-                />
-              ),
-              flex: 1
-            },
-            {
-              key: 'btn',
-              component: (
-                <FilterButton
-                  MenuItems={[
-                    {label: 'Добавить', iconLeft: IconAdd},
-                    {label: 'Изменить', iconLeft: IconEdit},
-                    {label: 'Удалить', iconLeft: IconTrash}
-                  ]}
-                />
-              )
-            }
-          ]
-        }
+        items={[
+          {
+            key: '1',
+            components: [
+              {
+                key: 'search;',
+                component: (
+                  <SearchField
+                    placeholder={'Поиск университета'}
+                    onChange={({ value }) => setSearchQuery(value)}
+                    value={searchQuery}
+                  />
+                ),
+                flex: 1
+              },
+              {
+                key: 'btn',
+                component: (
+                  <FilterButton
+                    MenuItems={[
+                      { label: 'Добавить', iconLeft: IconAdd },
+                      { label: 'Изменить', iconLeft: IconEdit },
+                      { label: 'Удалить', iconLeft: IconTrash }
+                    ]}
+                  />
+                )
+              }
+            ]
+          }
         ]}
       />
 
@@ -169,7 +178,7 @@ const Organizations: FC = () => {
         />
       </Layout>
 
-      <SharedPagination pagination={pagination} setPagination={setPagination}/>
+      <SharedPagination pagination={pagination} setPagination={setPagination} />
     </Layout>
   )
 }
