@@ -26,6 +26,8 @@ import { useTranslation } from 'react-i18next'
 import { IconAllDone } from '@consta/uikit/IconAllDone'
 import { getFullName } from '../../../utils/nameHelper'
 
+import { IUsersTableModel, usersColumns } from './usersTableModel'
+import DateCell from '../../shared/SharedTable/DateCell/DateCell'
 
 // TYPES
 interface IFilter {
@@ -94,6 +96,8 @@ const Users: FC = () => {
     const getUsers = async (): Promise<void> => {
       setPagination((prevState) => ({
         ...prevState,
+        currentPage: 0
+      }))
       await request.users
         .getListOfUsers({
           text: filter.searchQuery,
