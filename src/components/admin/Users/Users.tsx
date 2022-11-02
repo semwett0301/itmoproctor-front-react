@@ -28,6 +28,8 @@ import { getFullName } from '../../../utils/nameHelper'
 
 import { IUsersTableModel, usersColumns } from './usersTableModel'
 import DateCell from '../../shared/SharedTable/DateCell/DateCell'
+import { useOrganizations } from '../../../hooks/organizationsHooks'
+import TwoRowCell from '../../shared/SharedTable/TwoRowCell/TwoRowCell'
 
 // TYPES
 interface IFilter {
@@ -51,7 +53,7 @@ const Users: FC = () => {
   const [fullRows, setFullRows] = useState<IUsersTableModel[]>([])
   const [selectedRowsId, setSelectedRowsId] = useState<string[]>([])
 
-  const {getOrganization} = useOrganizations()
+  const { getOrganization } = useOrganizations()
 
   // filter
   // filterState
@@ -122,7 +124,9 @@ const Users: FC = () => {
                 provider: t(`table.providers.${item.provider}`),
                 role: t(`table.roles.${item.role}`),
 
-                university: university.shortName || <TwoRowCell firstRow={'Название отсутствует'} secondRow={`ID:${item._id}`}/>,
+                university: university.shortName || (
+                  <TwoRowCell firstRow={'Название отсутствует'} secondRow={`ID:${item._id}`} />
+                ),
                 regDate: <DateCell date={item.created} noSecondRow={true} />,
                 lastDate: <DateCell date={item.activityDate} />,
 
