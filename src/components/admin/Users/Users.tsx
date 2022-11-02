@@ -25,9 +25,7 @@ import SharedTable from '../../shared/SharedTable/SharedTable'
 import { useTranslation } from 'react-i18next'
 import { IconAllDone } from '@consta/uikit/IconAllDone'
 import { getFullName } from '../../../utils/nameHelper'
-import {IUsersTableModel, usersColumns} from './usersTableModel';
-import {useOrganizations} from '../../../hooks/organizationsHooks';
-import TwoRowCell from '../../shared/SharedTable/TwoRowCell/TwoRowCell';
+
 
 // TYPES
 interface IFilter {
@@ -94,6 +92,8 @@ const Users: FC = () => {
   useEffect(() => {
     console.log(organizationsIds)
     const getUsers = async (): Promise<void> => {
+      setPagination((prevState) => ({
+        ...prevState,
       await request.users
         .getListOfUsers({
           text: filter.searchQuery,
@@ -113,14 +113,15 @@ const Users: FC = () => {
               return {
                 id: item._id,
                 selected: false,
-                // check: null,
                 user: getFullName(item.firstname, item.middlename, item.lastname),
                 login: item.username,
                 provider: t(`table.providers.${item.provider}`),
                 role: t(`table.roles.${item.role}`),
+
                 university: university.shortName || <TwoRowCell firstRow={'Название отсутствует'} secondRow={`ID:${item._id}`}/>,
-                regDate: item.created,
-                lastDate: item.active,
+                regDate: <DateCell date={item.created} noSecondRow={true} />,
+                lastDate: <DateCell date={item.activityDate} />,
+
                 more: (
                   <Button
                     size='xs'
@@ -168,6 +169,7 @@ const Users: FC = () => {
                 key: 'search',
                 component: (
                   <SearchField
+                    placeholder={'Поиск пользователя'}
                     onChange={({ value }) => setSearchQuery(value)}
                     value={filter.searchQuery}
                   />

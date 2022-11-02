@@ -18,6 +18,7 @@ import { Position } from '@consta/uikit/Popover'
 import { IMaintenanceTableModel, maintenanceColumns } from './maintenanceTableModel'
 import { IMaintenanceRow } from '../../../ts/interfaces/IMaintenance'
 import SharedTable from '../../shared/SharedTable/SharedTable'
+import DateCell from '../../shared/SharedTable/DateCell/DateCell'
 
 // TYPES
 interface IFilter {
@@ -79,9 +80,9 @@ const Maintenance: FC = () => {
               return {
                 id: item._id,
                 selected: false,
-                beginDate: item.beginDate,
-                endDate: item.endDate,
-                created: item.created,
+                beginDate: <DateCell date={item.beginDate} />,
+                endDate: <DateCell date={item.endDate} />,
+                created: <DateCell date={item.created} />,
                 active: item.active,
                 more: (
                   <Button
