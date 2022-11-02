@@ -20,6 +20,7 @@ import twoRowCell from '../../shared/SharedTable/TwoRowCell/TwoRowCell'
 import { Button } from '@consta/uikit/Button'
 import { IconBento } from '@consta/uikit/IconBento'
 import { ICourseRow } from '../../../ts/interfaces/ICourses'
+import DateCell from '../../shared/SharedTable/DateCell/DateCell'
 
 // TYPES
 interface IFilter {
@@ -83,7 +84,7 @@ const Courses: FC = () => {
                 sessionCode: item.sessionCode,
                 organization: item.organization.shortName,
                 accessAllowed: item.accessAllowed.map((i) => i.shortName).join(', ') || null,
-                updated: item.updated,
+                updated: <DateCell date={item.updated} />,
                 more: (
                   <Button
                     size='xs'
@@ -126,6 +127,7 @@ const Courses: FC = () => {
                 component: (
                   <SearchField
                     onChange={({ value }) => setSearchQuery(value)}
+                    placeholder={'Поиск курса'}
                     value={searchQuery}
                   />
                 ),

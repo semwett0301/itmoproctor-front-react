@@ -3,6 +3,7 @@ import cl from './StatusTag.module.scss'
 import { Tag } from '@consta/uikit/Tag'
 import { DefaultItem } from '@consta/uikit/Combobox'
 import { customBadgePropStatus, statusObject } from '../../../SharedTable/StatusBadge/StatusBadge'
+import { classJoiner } from '../../../../../utils/styleClassesUtills'
 
 // CONSTANTS
 export const tagPropStatus = [
@@ -49,7 +50,7 @@ interface IStatusTagProp {
 const StatusTag: FC<IStatusTagProp> = ({ status, item, onCancel }) => {
   return (
     <Tag
-      className={statuses[status].className}
+      className={classJoiner(statuses[status].className, cl.statusTag)}
       key={item.id}
       mode={'cancel'}
       label={item.label}

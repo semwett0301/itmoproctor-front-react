@@ -26,6 +26,7 @@ import { useTranslation } from 'react-i18next'
 import { IconAllDone } from '@consta/uikit/IconAllDone'
 import { getFullName } from '../../../utils/nameHelper'
 import { IUsersTableModel, usersColumns } from './usersTableModel'
+import DateCell from '../../shared/SharedTable/DateCell/DateCell'
 
 // TYPES
 interface IFilter {
@@ -90,6 +91,10 @@ const Users: FC = () => {
   useEffect(() => {
     console.log(organizationsIds)
     const getUsers = async (): Promise<void> => {
+      setPagination((prevState) => ({
+        ...prevState,
+        currentPage: 0
+      }))
       await request.users
         .getListOfUsers({
           text: filter.searchQuery,
@@ -107,14 +112,13 @@ const Users: FC = () => {
               return {
                 id: item._id,
                 selected: false,
-                // check: null,
                 user: getFullName(item.firstname, item.middlename, item.lastname),
                 login: item.username,
                 provider: t(`table.providers.${item.provider}`),
                 role: t(`table.roles.${item.role}`),
                 university: item.organization,
-                regDate: item.created,
-                lastDate: item.active,
+                regDate: <DateCell date={item.created} noSecondRow={true} />,
+                lastDate: <DateCell date={item.activityDate} />,
                 more: (
                   <Button
                     size='xs'
@@ -162,6 +166,7 @@ const Users: FC = () => {
                 key: 'search',
                 component: (
                   <SearchField
+                    placeholder={'Поиск пользователя'}
                     onChange={({ value }) => setSearchQuery(value)}
                     value={filter.searchQuery}
                   />

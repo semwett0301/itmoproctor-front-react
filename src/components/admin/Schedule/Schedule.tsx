@@ -19,6 +19,7 @@ import { getFullName } from '../../../utils/nameHelper'
 import { Button } from '@consta/uikit/Button'
 import { IconBento } from '@consta/uikit/IconBento'
 import { IScheduleRow } from '../../../ts/interfaces/IShedule'
+import DateCell from '../../shared/SharedTable/DateCell/DateCell'
 
 // TYPES
 interface IFilter {
@@ -95,8 +96,8 @@ const Schedule: FC = () => {
                   item.inspector.middlename,
                   item.inspector.lastname
                 ),
-                beginDate: item.beginDate,
-                endDate: item.endDate,
+                beginDate: <DateCell date={item.beginDate} />,
+                endDate: <DateCell date={item.endDate} />,
                 concurrent: item.concurrent,
                 maxExamsBeginnings: item.maxExamsBeginnings,
                 more: (
@@ -144,7 +145,7 @@ const Schedule: FC = () => {
                 key: 'search;',
                 component: (
                   <SearchField
-                    placeholder={'Поиск по экзамену'}
+                    placeholder={'Поиск проктора'}
                     onChange={({ value }) => setSearchQuery(value)}
                     value={searchQuery}
                   />

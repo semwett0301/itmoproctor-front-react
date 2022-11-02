@@ -38,6 +38,7 @@ import FilterButton from '../../shared/Filter/FilterButton/FilterButton'
 import OrganizationSelect from '../../shared/Filter/OrganizationSelect/OrganizationSelect'
 import { IOrganization } from '../../../ts/interfaces/IOrganizations'
 import { Layout } from '@consta/uikit/Layout'
+import DateCell from '../../shared/SharedTable/DateCell/DateCell'
 
 interface IFilter {
   date: [Date, Date]
@@ -157,7 +158,7 @@ const Exams: FC = () => {
                 proctor: getProctorName(item.async, item.inspector, item.expert),
                 exam: <TwoRowCell firstRow={item.subject} secondRow={item.assignment} />,
                 type: <TypeBadge async={item.async} />,
-                start: <TwoRowCell firstRow={item.startDate} secondRow={item.endDate} />,
+                start: <DateCell date={item.startDate} />, // <DateCell firstRow={item.startDate} secondRow={item.endDate} />,
                 status: <StatusBadge status={customBadgePropStatus[getExamStatus(item)]} />,
                 // Если есть фактическая дата начала(startDate), то отображать
                 video: item.startDate && (

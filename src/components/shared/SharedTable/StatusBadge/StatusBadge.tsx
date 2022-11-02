@@ -47,7 +47,7 @@ export const getProctorName = (
     if (async && expert) {
       return `${expert.lastname} ${expert.firstname[0]}.${expert.middlename[0]}`
     } else if (!async && inspector) {
-      return `${inspector.lastname} ${inspector.firstname[0]}.${inspector.middlename[0]}`
+      return `${inspector.lastname} ${inspector.firstname[0]}.${inspector.middlename[0]}.`
     }
   }
   return 'Не назначен'
