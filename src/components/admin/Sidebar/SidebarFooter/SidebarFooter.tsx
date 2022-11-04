@@ -9,9 +9,9 @@ import { Button } from '@consta/uikit/Button'
 const SidebarFooter: FC = () => {
   return (
     <Card horizontalSpace='s' shadow={false} className={cl.sidebarFooter}>
-      <NavLink to={'/update'} className={cl.link}>
-        <IconInfo size='xs' />
-        Обновления
+      <NavLink to={'/admin/about'} className={cl.link}>
+        <IconInfo size='xs' className={cl.iconInfo}/>
+        <span className={cl.info}>О системе</span>
         <Button
           onlyIcon={true}
           iconRight={IconRing}
