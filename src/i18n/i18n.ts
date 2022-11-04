@@ -21,3 +21,4 @@ i18n
     },
     resources: resources
   })
+  .then()

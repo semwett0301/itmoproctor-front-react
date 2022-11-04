@@ -17,18 +17,6 @@ const Sidebar: FC<SideBarProps> = ({ addTab }) => {
   const [expandSate, setExpandState] = useState<boolean>(true)
   const { themeClassNames } = useTheme()
 
-  interface func {
-    res: (item: boolean) => void
-  }
-
-  const obj: func = {
-    res: (item: boolean) => {
-      console.log(item)
-    }
-  }
-
-  obj.res(false)
-
   return (
     <Card
       className={classWatcher(

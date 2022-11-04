@@ -1,0 +1,16 @@
+.courses {
+  position: relative;
+  height: calc(100% - 40px);
+}
+
+.tableLayout {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: min-content;
+}
+
+.table {
+  width: 100%;
+  --table-grid-template-columns: 40px calc(23.5% - (88/6)*1px) calc(14.12% - (88/6)*1px) calc(14.6% - (88/6)*1px) calc(19.71% - (88/6)*1px) calc(16.63% - (88/6)*1px) calc(11.6% - (88/6)*1px) 44px !important;
+}
+

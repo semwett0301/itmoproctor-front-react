@@ -1,0 +1,18 @@
+.pagination {
+  background-color: var(--color-bg-default);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2xs) var(--space-s);
+  border-top: var(--control-border-width) solid var(--color-bg-border);
+  float: bottom !important;
+}
+
+.countRowsSelect {
+  width: 59px !important;
+}
+
+.footerText{
+  white-space: nowrap;
+  width: max-content;
+}

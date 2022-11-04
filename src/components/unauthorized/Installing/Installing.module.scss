@@ -1,0 +1,55 @@
+.main_container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  background-color: #ecf1f4;
+
+  width: 100vw;
+  height: 100vh;
+}
+
+.logo {
+  margin-top: 76px;
+}
+
+.version {
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.os {
+  margin-bottom: 19px;
+}
+
+.text_proctoring {
+  margin-top: 31px;
+  margin-bottom: 36px;
+}
+
+.other_versions {
+  display: flex;
+  flex-direction: column;
+}
+
+.other_version_body {
+  display: flex;
+  flex-direction: column;
+}
+
+.other_version {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.other_version a {
+  text-decoration: none;
+}
+
+.icon_diamond {
+  margin-right: 8px;
+}
+
+

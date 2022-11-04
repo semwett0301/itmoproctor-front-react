@@ -1,6 +1,7 @@
 import { AxiosInstance, AxiosResponse } from 'axios'
 import axiosConfig from '../../../../config/axiosСonfig'
-import { IExams } from '../../../../ts/interfaces/IExams'
+import {IExamRow} from '../../../../ts/interfaces/IExams'
+import {IResponseArray} from '../../../../ts/interfaces/IResponseInterfaces';
 
 export interface filterInterface {
   from: string
@@ -8,7 +9,7 @@ export interface filterInterface {
   text: string | null
   status: string | null
   reset: boolean | null
-  organizations: string | null
+  organization: string | null
   myStudents: boolean
   async: boolean | null
   page: number
@@ -16,7 +17,7 @@ export interface filterInterface {
 }
 
 export interface IExamsAxios {
-  getListOfExams: (filter?: filterInterface) => Promise<AxiosResponse<IExams>>
+  getListOfExams: (filter?: filterInterface) => Promise<AxiosResponse<IResponseArray<IExamRow>>>
 }
 
 export default function (instance: AxiosInstance): IExamsAxios {
@@ -28,13 +29,13 @@ export default function (instance: AxiosInstance): IExamsAxios {
         text: null,
         status: null,
         reset: null,
-        organizations: null,
+        organization: null,
         myStudents: false,
         async: null,
         page: 1,
         rows: 10
       }
-    ): Promise<AxiosResponse<IExams>> {
+    ): Promise<AxiosResponse<IResponseArray<IExamRow>>> {
       return instance.get(`${axiosConfig.adminUrl}/exams`, { params: filter })
     }
   }

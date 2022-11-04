@@ -26,7 +26,7 @@ const routeHelper: (
         return (
           <Route
             key={route.id}
-            path={route.path}
+            path={route?.path}
             element={route.component ? <route.component /> : ''}
             loader={route?.loader}
           />

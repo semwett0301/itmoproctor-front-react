@@ -1,0 +1,13 @@
+.schedule {
+  position: relative;
+  height: calc(100% - 40px);
+}
+
+.tableLayout {
+  overflow-y: scroll;
+}
+
+.table {
+  width: 100%;
+  --table-grid-template-columns: 40px calc(29.13% - 17.6px) calc(20.07% - 17.6px) calc(22.82% - 17.6px) calc(16.74% - 17.6px) calc(11.24% - 17.6px) 44px !important;
+}

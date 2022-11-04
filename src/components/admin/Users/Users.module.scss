@@ -1,0 +1,14 @@
+.users {
+  position: relative;
+  height: calc(100% - 40px);
+}
+
+.tableLayout {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: min-content;
+}
+
+.table{
+  --table-grid-template-columns: 40px calc(22.18% - 12px) calc(13.56% - 12px) calc(11.49% - 12px) calc(10.24% - 12px) calc(20.8% - 12px) calc(9.89% - 12px) calc(11.84% - 12px) 44px !important;
+}

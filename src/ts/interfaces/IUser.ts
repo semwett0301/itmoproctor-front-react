@@ -1,4 +1,4 @@
-import {ProviderEnum, RoleEnum} from "../../config/authСonfig";
+import {ProviderEnum, RoleEnum} from '../../config/authСonfig';
 
 
 export interface IUser {

@@ -1,0 +1,74 @@
+@import "../../../SharedTable/StatusBadge/StatusBadgeVars";
+
+$exceptPlanned: #004269;
+$allStatuses: #004269;
+$interrupted: #004269;
+
+.statusTag{
+  margin: 0 0 3px 3px
+}
+.unplanned {
+  background-color: rgba($color-unplanned, 0.2);
+}
+
+.missed {
+  background-color: rgba($color-missed, 0.2);
+}
+
+.planned {
+  background-color: rgba($color-planned, 0.2);
+}
+
+.success {
+  background-color: rgba($color-success, 0.2);
+}
+
+.waiting {
+  background-color: rgba($color-waiting, 0.2);
+}
+
+.conclusionWaiting {
+  color: var(--color-control-typo-ghost);
+  background-color: rgba($color-conclusionWaiting, 0.2);
+}
+
+.async {
+  background-color: rgba($color-async, 0.2);
+}
+
+.withProctor {
+  background-color: rgba($color-withProctor, 0.2);
+}
+
+.forming {
+  background-color: rgba($color-forming, 0.2);
+}
+
+.review {
+  background-color: rgba($color-review, 0.2);
+}
+
+.withoutProctor {
+  background-color: rgba($color-withoutProctor, 0.2);
+}
+
+.rejected {
+  background-color: rgba($color-rejected, 0.2);
+}
+
+.noAppearance {
+  background-color: rgba($color-noAppearance, 0.2);
+}
+
+.exceptPlanned{
+  background-color: rgba($exceptPlanned, 0.2);
+}
+
+.allStatuses{
+  background-color: rgba($allStatuses, 0.2);
+}
+
+.interrupted{
+  background-color: rgba($interrupted, 0.2);
+}
+

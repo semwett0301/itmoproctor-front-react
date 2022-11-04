@@ -1,50 +1,49 @@
-import { IOrganization, IOrganizations } from '../ts/interfaces/IOrganizations'
-import { useState } from 'react'
-import { useAppDispatch, useAppSelector } from './reduxHooks'
-import { request } from '../api/axios/request'
-import { AppDispatch } from '../store'
-import { setOrganizationActionCreator } from '../store/reducers/organizationsReducer/organizationsActionCreators'
+import {IOrganization, IOrganizations} from '../ts/interfaces/IOrganizations'
+import {Dispatch, SetStateAction, useEffect, useState} from 'react'
+import {useAppDispatch, useAppSelector} from './reduxHooks'
+import {request} from '../api/axios/request'
+import {AppDispatch} from '../store'
+import {setOrganizationActionCreator} from '../store/reducers/organizationsReducer/organizationsActionCreators'
+import {log} from 'util';
 
-interface IOrganizationsArguments {
-  setter: (organizations: IOrganization[]) => void
-}
+// interface IOrganizationsArguments {
+//   setter: (organizations: IOrganization[]) => void
+// }
 
-interface IOrganizationFunctionArguments {
-  ids?: string[]
-}
 
-export const useOrganizations: (
-  args: IOrganizationsArguments
-) => [boolean, (args: IOrganizationFunctionArguments) => void] = ({ setter }) => {
-  const [loading, setLoading] = useState<boolean>(false)
+export const useOrganizations = (): {loading: boolean, getOrganizations: (ids?: string[]) => IOrganization[], getOrganization: (id: string) => IOrganization} => {
+  const [loading, setLoading] = useState(false)
   const organizations: IOrganizations = useAppSelector((state) => state.organizations)
   const dispatch: AppDispatch = useAppDispatch()
 
-  const loadOrganizations = ({ ids }: IOrganizationFunctionArguments) => {
-    let newOrganizationList: IOrganization[] = []
-
-    if (Object.keys(organizations).length === 0) {
-      setLoading(true)
-      request.organizations.getListOfOrganizations().then((r) => {
+  useEffect(() => {
+    const loadOrganizations: () => Promise<void> = async () => {
+      if (Object.keys(organizations).length === 0) {
+        setLoading(true)
         const newOrganizations: IOrganizations = {}
-        r.data.map((e) => {
-          newOrganizations[e._id] = e
-        })
-        dispatch(setOrganizationActionCreator(newOrganizations))
-
-        if (ids) {
-          ids.map((e) => {
-            newOrganizationList.push(organizations[e])
+        await request.organizations.getListOfOrganizations().then((r) => {
+          r.data.rows.map((e) => {
+            newOrganizations[e._id] = e
           })
-        } else {
-          newOrganizationList = Object.values(organizations)
-        }
-
-        setter(newOrganizationList)
-        setLoading(false)
-      })
+          dispatch(setOrganizationActionCreator(newOrganizations))
+          setLoading(false)
+        })
+      }
     }
+
+    loadOrganizations().then(() => console.log(organizations))
+  }, [])
+
+  const getOrganizations = (ids?: string[]): IOrganization[] => {
+    if (ids) {
+      return Object.values(organizations).filter(e => ids.includes(e._id))
+    }
+    return Object.values(organizations)
   }
 
-  return [loading, loadOrganizations]
+  const getOrganization = (id: string): IOrganization => {
+    return organizations[id]
+  }
+
+  return {loading, getOrganizations, getOrganization}
 }
