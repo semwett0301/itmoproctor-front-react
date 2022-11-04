@@ -1,4 +1,3 @@
-import cl from '../StatusTag/StatusTag.module.scss'
 import { tagStatusesDeclaration } from '../StatusTag/StatusTag'
 
 export const statuses: tagStatusesDeclaration = {

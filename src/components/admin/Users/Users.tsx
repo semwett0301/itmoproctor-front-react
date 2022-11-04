@@ -26,10 +26,10 @@ import { useTranslation } from 'react-i18next'
 import { IconAllDone } from '@consta/uikit/IconAllDone'
 import { getFullName } from '../../../utils/nameHelper'
 
-import { IUsersTableModel, usersColumns } from './usersTableModel'
 import DateCell from '../../shared/SharedTable/DateCell/DateCell'
 import { useOrganizations } from '../../../hooks/organizationsHooks'
 import TwoRowCell from '../../shared/SharedTable/TwoRowCell/TwoRowCell'
+import { IUsersTableModel, usersColumns } from './usersTableModel'
 
 // TYPES
 interface IFilter {

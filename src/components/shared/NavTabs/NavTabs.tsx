@@ -1,9 +1,9 @@
 import React, { FC } from 'react'
-import TabWithCross from './TabWithCross/TabWithCross'
 import { Tabs, TabsPropOnChange } from '@consta/uikit/Tabs'
 import { TabItem } from '../../admin/Admin'
 import { Card } from '@consta/uikit/Card'
 import cl from './NavTabs.module.scss'
+import TabWithCross from './TabWithCross/TabWithCross'
 
 type INavTabsProps = {
   activeTab: TabItem | null

@@ -12,7 +12,7 @@ export type StatusComboboxItem = {
   id: TagPropStatus
   disabled: false
   getStatus: string | boolean | null
-  groupId: number
+  groupId?: number
   className: string
 }
 
@@ -34,7 +34,6 @@ export const statusList: StatusComboboxItem[] = [
     id: 'exceptPlanned',
     disabled: false,
     getStatus: '1,2,3,4,5,6,7,8,9,10,11,12',
-    groupId: 1,
     className: statuses.exceptPlanned.className
   },
   {
@@ -42,7 +41,6 @@ export const statusList: StatusComboboxItem[] = [
     id: 'unplanned',
     disabled: false,
     getStatus: '0',
-    groupId: 1,
     className: statuses.unplanned.className
   },
   {
@@ -50,7 +48,6 @@ export const statusList: StatusComboboxItem[] = [
     id: 'planned',
     disabled: false,
     getStatus: '1',
-    groupId: 1,
     className: statuses.planned.className
   },
   {
@@ -58,7 +55,6 @@ export const statusList: StatusComboboxItem[] = [
     id: 'waiting',
     disabled: false,
     getStatus: '2',
-    groupId: 1,
     className: statuses.waiting.className
   },
   {
@@ -66,7 +62,6 @@ export const statusList: StatusComboboxItem[] = [
     id: 'withoutProctor',
     disabled: false,
     getStatus: '3',
-    groupId: 1,
     className: statuses.withoutProctor.className
   },
   {
@@ -74,7 +69,6 @@ export const statusList: StatusComboboxItem[] = [
     id: 'withProctor',
     disabled: false,
     getStatus: '7',
-    groupId: 1,
     className: statuses.withProctor.className
   },
   {
@@ -82,7 +76,6 @@ export const statusList: StatusComboboxItem[] = [
     id: 'async',
     disabled: false,
     getStatus: '9',
-    groupId: 1,
     className: statuses.async.className
   },
   {
@@ -90,7 +83,6 @@ export const statusList: StatusComboboxItem[] = [
     id: 'forming',
     disabled: false,
     getStatus: '11',
-    groupId: 1,
     className: statuses.forming.className
   },
   {
@@ -98,7 +90,6 @@ export const statusList: StatusComboboxItem[] = [
     id: 'conclusionWaiting',
     disabled: false,
     getStatus: '10',
-    groupId: 1,
     className: statuses.conclusionWaiting.className
   },
   {
@@ -106,7 +97,6 @@ export const statusList: StatusComboboxItem[] = [
     id: 'review',
     disabled: false,
     getStatus: '12',
-    groupId: 1,
     className: statuses.review.className
   },
   {
@@ -114,7 +104,6 @@ export const statusList: StatusComboboxItem[] = [
     id: 'success',
     disabled: false,
     getStatus: '4',
-    groupId: 1,
     className: statuses.success.className
   },
   {
@@ -122,7 +111,6 @@ export const statusList: StatusComboboxItem[] = [
     id: 'interrupted',
     disabled: false,
     getStatus: '5',
-    groupId: 1,
     className: statuses.interrupted.className
   },
   {
@@ -130,7 +118,6 @@ export const statusList: StatusComboboxItem[] = [
     id: 'missed',
     disabled: false,
     getStatus: '6',
-    groupId: 1,
     className: statuses.missed.className
   },
   {
@@ -138,7 +125,6 @@ export const statusList: StatusComboboxItem[] = [
     id: 'noAppearance',
     disabled: false,
     getStatus: '8',
-    groupId: 1,
     className: statuses.noAppearance.className
   },
   {
@@ -175,24 +161,30 @@ const ExamStatusCombobox: FC<IExamStatusComboboxProp> = ({ value, onChange }) =>
       value={value}
       groups={statusGroupsList}
       onChange={(changeValue) => {
-        if (
-          value &&
-          changeValue.value &&
-          changeValue.value.includes(statusList[0]) &&
-          !value.includes(statusList[0])
-        ) {
-          changeValue.value = [statusList[0]]
-          onChange(changeValue.value)
-        } else if (
-          value &&
-          changeValue.value &&
-          changeValue.value.includes(statusList[0]) &&
-          value.includes(statusList[0])
-        ) {
-          onChange(changeValue.value.filter((item) => item.id !== statusList[0].id))
-        } else {
-          onChange(changeValue.value)
+        if (value && changeValue.value) {
+          const groupTwo = changeValue.value.filter((e) => e.groupId === 2)
+          const currentGroupTwo = value.filter((e) => e.groupId === 2)
+
+          if (groupTwo.length === 2) {
+            changeValue.value = changeValue.value.filter(
+              (e) => !e.groupId || e.groupId !== 2 || !currentGroupTwo.includes(e)
+            )
+          }
+
+          if (changeValue.value.includes(statusList[0])) {
+            if (!value.includes(statusList[0])) {
+              changeValue.value = [
+                ...changeValue.value.filter((item) => item.groupId),
+                statusList[0]
+              ]
+            } else {
+              changeValue.value = changeValue.value.filter((item) => item.id !== statusList[0].id)
+              console.log(changeValue.value)
+            }
+          }
         }
+
+        onChange(changeValue.value)
       }}
       renderValue={(props) => (
         <StatusTag
@@ -204,7 +196,6 @@ const ExamStatusCombobox: FC<IExamStatusComboboxProp> = ({ value, onChange }) =>
       )}
       renderItem={({ item, hovered, active, onClick, onMouseEnter }) => {
         const currentClassName: string = item.className
-        console.log(cl)
 
         return (
           <SelectItem
