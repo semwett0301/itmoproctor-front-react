@@ -1,5 +1,5 @@
-import { FC } from 'react'
-import { LoaderFunction } from 'react-router-dom'
+import {FC} from 'react'
+import {LoaderFunction} from 'react-router-dom'
 
 export interface IRoute {
   id: number

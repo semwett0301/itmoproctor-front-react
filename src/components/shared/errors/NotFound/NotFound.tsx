@@ -1,5 +1,5 @@
-import React, { FC } from 'react'
-import { Responses404 } from '@consta/uikit/Responses404'
+import React, {FC} from 'react'
+import {Responses404} from '@consta/uikit/Responses404'
 import cl from './NotFound.module.scss'
 
 const NotFound: FC = () => {

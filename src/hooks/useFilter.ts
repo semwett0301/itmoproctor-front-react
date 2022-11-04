@@ -1,7 +1,7 @@
 // TYPES
 
-import { useState } from 'react'
-import { IOrganization } from '../ts/interfaces/IOrganizations'
+import {useState} from 'react'
+import {IOrganization} from '../ts/interfaces/IOrganizations'
 
 export type ISearchQuery = string | null
 export type IFilterOrganizations = IOrganization[] | null | 'kjkjkj'

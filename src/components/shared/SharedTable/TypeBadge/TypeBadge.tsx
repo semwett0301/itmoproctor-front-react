@@ -1,5 +1,5 @@
-import React, { FC } from 'react'
-import { Badge } from '@consta/uikit/Badge'
+import React, {FC} from 'react'
+import {Badge} from '@consta/uikit/Badge'
 import cl from './TypeBadge.module.scss'
 
 interface TypeBadgeProps {

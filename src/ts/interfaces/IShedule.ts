@@ -1,4 +1,4 @@
-import { IInspector } from './IInspector'
+import {IInspector} from './IInspector'
 
 export interface IScheduleRow {
   _id: string

@@ -1,4 +1,4 @@
-import { dropUserActionCreator } from '../../../store/reducers/userReducer/userActionCreators'
+import {dropUserActionCreator} from '../../../store/reducers/userReducer/userActionCreators'
 import store from '../../../store'
 
 interface IErrors {

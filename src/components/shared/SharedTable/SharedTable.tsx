@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
-import { Table, TableColumn } from '@consta/uikit/Table'
+import React, {useEffect} from 'react'
+import {Table, TableColumn} from '@consta/uikit/Table'
 import cl from './SharedTable.module.scss'
-import { ContextMenu } from '@consta/uikit/ContextMenu'
-import { Position } from '@consta/uikit/Popover'
-import { ResponsesNothingFound } from '@consta/uikit/ResponsesNothingFound'
-import { IContextMenuItem } from '../CustomHeader/CustomHeader'
+import {ContextMenu} from '@consta/uikit/ContextMenu'
+import {Position} from '@consta/uikit/Popover'
+import {ResponsesNothingFound} from '@consta/uikit/ResponsesNothingFound'
+import {IContextMenuItem} from '../CustomHeader/CustomHeader'
 
 export interface ITableRow {
   id: string

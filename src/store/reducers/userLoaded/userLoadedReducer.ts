@@ -1,5 +1,5 @@
-import { IAction } from '../../../ts/interfaces/IAction'
-import { UserLoadedActionTypes } from './userLoadedActionTypes'
+import {IAction} from '../../../ts/interfaces/IAction'
+import {UserLoadedActionTypes} from './userLoadedActionTypes'
 
 export const userLoadedReducer = (
   state = false,

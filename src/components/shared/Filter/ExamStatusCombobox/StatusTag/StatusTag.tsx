@@ -1,10 +1,10 @@
-import React, { FC, SyntheticEvent } from 'react'
+import React, {FC, SyntheticEvent} from 'react'
 import cl from './StatusTag.module.scss'
-import { Tag } from '@consta/uikit/Tag'
-import { DefaultItem } from '@consta/uikit/Combobox'
-import { customBadgePropStatus, statusObject } from '../../../SharedTable/StatusBadge/StatusBadge'
-import { classJoiner } from '../../../../../utils/styleClassesUtills'
-import { statuses } from '../model/statuses'
+import {Tag} from '@consta/uikit/Tag'
+import {DefaultItem} from '@consta/uikit/Combobox'
+import {customBadgePropStatus, statusObject} from '../../../SharedTable/StatusBadge/StatusBadge'
+import {classJoiner} from '../../../../../utils/styleClassesUtills'
+import {statuses} from '../model/statuses'
 
 // CONSTANTS
 export const tagPropStatus = [

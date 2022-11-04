@@ -1,7 +1,7 @@
-import { IAction } from '../../../ts/interfaces/IAction'
-import { OrganizationsActionTypes } from './organizationsActionTypes'
-import { Reducer } from 'redux'
-import { IOrganization, IOrganizations } from '../../../ts/interfaces/IOrganizations'
+import {IAction} from '../../../ts/interfaces/IAction'
+import {OrganizationsActionTypes} from './organizationsActionTypes'
+import {Reducer} from 'redux'
+import {IOrganization, IOrganizations} from '../../../ts/interfaces/IOrganizations'
 
 export interface IActionOrganizations extends IAction<OrganizationsActionTypes, IOrganizations> {
   newOrganization?: {

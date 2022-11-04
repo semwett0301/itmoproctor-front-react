@@ -1,4 +1,4 @@
-import { IOrganization } from './IOrganizations'
+import {IOrganization} from './IOrganizations'
 
 export interface ICourseRow {
   _id: string

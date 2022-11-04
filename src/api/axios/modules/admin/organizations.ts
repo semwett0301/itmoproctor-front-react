@@ -1,6 +1,6 @@
-import { AxiosInstance, AxiosResponse } from 'axios'
+import {AxiosInstance, AxiosResponse} from 'axios'
 import axiosConfig from '../../../../config/axiosСonfig'
-import { IOrganizationsResponse } from '../../../../ts/interfaces/IOrganizations'
+import {IOrganizationsResponse} from '../../../../ts/interfaces/IOrganizations'
 
 export interface IOrganizationsAxios {
   getListOfOrganizations: () => Promise<AxiosResponse<IOrganizationsResponse>>

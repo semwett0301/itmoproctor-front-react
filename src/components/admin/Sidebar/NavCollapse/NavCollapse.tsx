@@ -1,11 +1,11 @@
-import { Card } from '@consta/uikit/Card'
-import React, { FC, useState } from 'react'
-import { Collapse } from '@consta/uikit/Collapse'
-import { NavLink } from 'react-router-dom'
-import { collapseItems, ICollapseItem } from './NavCollapseModel'
+import {Card} from '@consta/uikit/Card'
+import React, {FC, useState} from 'react'
+import {Collapse} from '@consta/uikit/Collapse'
+import {NavLink} from 'react-router-dom'
+import {collapseItems, ICollapseItem} from './NavCollapseModel'
 import cl from './NavCollapse.module.scss'
-import { classJoiner, classWatcher } from '../../../../utils/styleClassesUtills'
-import { TabItem } from '../../Admin'
+import {classJoiner, classWatcher} from '../../../../utils/styleClassesUtills'
+import {TabItem} from '../../Admin'
 
 interface NavCollapseProps {
   isOpen: boolean

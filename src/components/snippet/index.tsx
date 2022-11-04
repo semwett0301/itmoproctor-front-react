@@ -1,5 +1,4 @@
-import React, { FC } from 'react'
-import cl from './index.scss'
+import React, {FC} from 'react'
 // TYPES
 
 // CONSTANTS

@@ -1,7 +1,7 @@
-import React, { FC } from 'react'
+import React, {FC} from 'react'
 import cl from './DatePeriodPicker.module.scss'
-import { IconCalendar } from '@consta/uikit/IconCalendar'
-import { DatePicker, DatePickerPropOnChange } from '@consta/uikit/DatePicker'
+import {IconCalendar} from '@consta/uikit/IconCalendar'
+import {DatePicker, DatePickerPropOnChange} from '@consta/uikit/DatePicker'
 
 interface IDatePeriodPickerProp {
   value: [Date, Date]

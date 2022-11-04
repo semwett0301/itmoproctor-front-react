@@ -1,11 +1,8 @@
-import { request } from '../api/axios/request'
-import { useAppDispatch, useAppSelector } from './reduxHooks'
-import { Location, NavigateFunction, useLocation, useNavigate } from 'react-router-dom'
-import { AppDispatch } from '../store'
-import {
-  dropUserActionCreator,
-  setUserActionCreator
-} from '../store/reducers/userReducer/userActionCreators'
+import {request} from '../api/axios/request'
+import {useAppDispatch, useAppSelector} from './reduxHooks'
+import {Location, NavigateFunction, useLocation, useNavigate} from 'react-router-dom'
+import {AppDispatch} from '../store'
+import {dropUserActionCreator, setUserActionCreator} from '../store/reducers/userReducer/userActionCreators'
 
 type LogPass = string | null
 

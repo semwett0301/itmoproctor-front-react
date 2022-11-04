@@ -1,5 +1,5 @@
 import React, {FC} from 'react'
-import {Navigate, useLocation, Outlet, useOutletContext} from 'react-router-dom'
+import {Navigate, Outlet, useLocation, useOutletContext} from 'react-router-dom'
 import {useAppSelector} from '../../hooks/reduxHooks'
 import {RoleEnum} from '../../config/authСonfig'
 import {HocPropsType} from '../../ts/types/HocPropsType'

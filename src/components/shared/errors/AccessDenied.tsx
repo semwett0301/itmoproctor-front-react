@@ -1,5 +1,5 @@
-import React, { FC } from 'react'
-import { Responses403 } from '@consta/uikit/Responses403'
+import React, {FC} from 'react'
+import {Responses403} from '@consta/uikit/Responses403'
 
 const AccessDenied: FC = () => {
       return (

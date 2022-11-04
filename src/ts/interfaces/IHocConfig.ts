@@ -1,6 +1,6 @@
-import { FC } from 'react'
-import { HocPropsType } from '../types/HocPropsType'
-import { IRoute } from './IRoute'
+import {FC} from 'react'
+import {HocPropsType} from '../types/HocPropsType'
+import {IRoute} from './IRoute'
 
 export interface IHocParameter<T> {
   id: number

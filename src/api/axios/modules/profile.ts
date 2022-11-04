@@ -1,5 +1,5 @@
-import { AxiosInstance, AxiosResponse } from 'axios'
-import { IUser } from '../../../ts/interfaces/IUser'
+import {AxiosInstance, AxiosResponse} from 'axios'
+import {IUser} from '../../../ts/interfaces/IUser'
 import axiosConfig from '../../../config/axiosСonfig'
 
 export interface IProfileAxios {

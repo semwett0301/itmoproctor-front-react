@@ -1,10 +1,9 @@
 import {IOrganization, IOrganizations} from '../ts/interfaces/IOrganizations'
-import {Dispatch, SetStateAction, useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 import {useAppDispatch, useAppSelector} from './reduxHooks'
 import {request} from '../api/axios/request'
 import {AppDispatch} from '../store'
 import {setOrganizationActionCreator} from '../store/reducers/organizationsReducer/organizationsActionCreators'
-import {log} from 'util';
 
 // interface IOrganizationsArguments {
 //   setter: (organizations: IOrganization[]) => void

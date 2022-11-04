@@ -1,5 +1,5 @@
-import { IInspector } from '../ts/interfaces/IInspector'
-import { IExpert } from '../ts/interfaces/IExpert'
+import {IInspector} from '../ts/interfaces/IInspector'
+import {IExpert} from '../ts/interfaces/IExpert'
 
 export const getFullName = (firstname?: string, secondName?: string, lastName?: string): string => {
   console.log(secondName)

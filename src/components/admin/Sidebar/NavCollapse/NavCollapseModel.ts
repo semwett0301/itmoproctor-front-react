@@ -1,12 +1,12 @@
-import { IconBag } from '@consta/uikit/IconBag'
-import { IconLayers } from '@consta/uikit/IconLayers'
-import { IconCalendar } from '@consta/uikit/IconCalendar'
-import { IconFolders } from '@consta/uikit/IconFolders'
-import { IconLineAndBarChart } from '@consta/uikit/IconLineAndBarChart'
-import { IconTeam } from '@consta/uikit/IconTeam'
-import { IconOperators } from '@consta/uikit/IconOperators'
-import { IconComponent } from '@consta/uikit/Icon'
-import { IconWrench } from '@consta/uikit/IconWrench'
+import {IconBag} from '@consta/uikit/IconBag'
+import {IconLayers} from '@consta/uikit/IconLayers'
+import {IconCalendar} from '@consta/uikit/IconCalendar'
+import {IconFolders} from '@consta/uikit/IconFolders'
+import {IconLineAndBarChart} from '@consta/uikit/IconLineAndBarChart'
+import {IconTeam} from '@consta/uikit/IconTeam'
+import {IconOperators} from '@consta/uikit/IconOperators'
+import {IconComponent} from '@consta/uikit/Icon'
+import {IconWrench} from '@consta/uikit/IconWrench'
 
 export type ICollapseItem = {
   path: string

@@ -1,7 +1,7 @@
-import React, { FC, useEffect, useState } from 'react'
-import { Combobox } from '@consta/uikit/Combobox'
-import { IOrganization } from '../../../../ts/interfaces/IOrganizations'
-import { useOrganizations } from '../../../../hooks/organizationsHooks'
+import React, {FC, useEffect, useState} from 'react'
+import {Combobox} from '@consta/uikit/Combobox'
+import {IOrganization} from '../../../../ts/interfaces/IOrganizations'
+import {useOrganizations} from '../../../../hooks/organizationsHooks'
 
 interface IOrganizationSelectProp {
   organizationsIds: string[]

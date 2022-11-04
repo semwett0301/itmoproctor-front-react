@@ -1,9 +1,6 @@
-import React, { Dispatch, FC, SetStateAction } from 'react'
+import React, {Dispatch, FC, SetStateAction} from 'react'
 
-import PaginationField, {
-  ITotalRowsVariants,
-  totalRowsVariants
-} from './PaginationField/PaginationField'
+import PaginationField, {ITotalRowsVariants, totalRowsVariants} from './PaginationField/PaginationField'
 
 export interface IPagination {
   displayedRows: ITotalRowsVariants

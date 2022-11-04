@@ -1,7 +1,7 @@
-import { IUser } from '../../../ts/interfaces/IUser'
-import { ProviderEnum, RoleEnum } from '../../../config/authСonfig'
-import { UserActionTypes } from './userActionTypes'
-import { IAction } from '../../../ts/interfaces/IAction'
+import {IUser} from '../../../ts/interfaces/IUser'
+import {ProviderEnum, RoleEnum} from '../../../config/authСonfig'
+import {UserActionTypes} from './userActionTypes'
+import {IAction} from '../../../ts/interfaces/IAction'
 import {Reducer} from 'redux';
 
 const initialState: IUser = {

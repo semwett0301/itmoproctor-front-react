@@ -1,6 +1,6 @@
-import React, { FC } from 'react'
-import { ProgressSpin } from '@consta/uikit/ProgressSpin'
-import { useAppSelector } from '../../../hooks/reduxHooks'
+import React, {FC} from 'react'
+import {ProgressSpin} from '@consta/uikit/ProgressSpin'
+import {useAppSelector} from '../../../hooks/reduxHooks'
 
 const Loading: FC = () => {
   const isLoading = useAppSelector((state) => state.isLoading)

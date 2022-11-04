@@ -1,4 +1,4 @@
-import { AxiosInstance, AxiosResponse } from 'axios'
+import {AxiosInstance, AxiosResponse} from 'axios'
 import axiosConfig from '../../../../config/axiosСonfig'
 import {IExamRow} from '../../../../ts/interfaces/IExams'
 import {IResponseArray} from '../../../../ts/interfaces/IResponseInterfaces';

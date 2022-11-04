@@ -1,4 +1,4 @@
-import { ILocalization } from './engLocalization'
+import {ILocalization} from './engLocalization'
 
 export const ruLocalization: ILocalization = {
   translation: {

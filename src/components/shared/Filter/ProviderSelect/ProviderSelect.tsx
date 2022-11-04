@@ -1,5 +1,5 @@
-import React, { FC } from 'react'
-import { Select } from '@consta/uikit/Select'
+import React, {FC} from 'react'
+import {Select} from '@consta/uikit/Select'
 
 // TYPES
 export type providerItem = {

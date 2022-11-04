@@ -1,6 +1,6 @@
-import { OrganizationsActionTypes } from './organizationsActionTypes'
-import { IActionOrganizations } from './organizationsReducer'
-import { IOrganization, IOrganizations } from '../../../ts/interfaces/IOrganizations'
+import {OrganizationsActionTypes} from './organizationsActionTypes'
+import {IActionOrganizations} from './organizationsReducer'
+import {IOrganization, IOrganizations} from '../../../ts/interfaces/IOrganizations'
 
 export function addOrganizationActionCreator(payload: IOrganization): IActionOrganizations {
   return {

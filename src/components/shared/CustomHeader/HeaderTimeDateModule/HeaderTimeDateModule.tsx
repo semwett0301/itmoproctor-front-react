@@ -1,9 +1,9 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, {FC, useEffect, useState} from 'react'
 import cl from './HeaderTimeDateModule.module.scss'
-import { IconCalendar } from '@consta/uikit/IconCalendar'
-import { Text } from '@consta/uikit/Text'
-import { IconWatch } from '@consta/uikit/IconWatch'
-import { HeaderModule } from '@consta/uikit/Header'
+import {IconCalendar} from '@consta/uikit/IconCalendar'
+import {Text} from '@consta/uikit/Text'
+import {IconWatch} from '@consta/uikit/IconWatch'
+import {HeaderModule} from '@consta/uikit/Header'
 
 const HeaderTimeDateModule: FC = () => {
   const [currentTime, setCurrentTime] = useState<Date>(new Date())

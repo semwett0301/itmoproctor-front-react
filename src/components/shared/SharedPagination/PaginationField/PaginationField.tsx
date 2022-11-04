@@ -1,8 +1,8 @@
-import React, { FC } from 'react'
+import React, {FC} from 'react'
 import cl from './PaginationField.module.scss'
-import { Select } from '@consta/uikit/Select'
-import { Text } from '@consta/uikit/Text'
-import { Pagination } from '@consta/uikit/Pagination'
+import {Select} from '@consta/uikit/Select'
+import {Text} from '@consta/uikit/Text'
+import {Pagination} from '@consta/uikit/Pagination'
 
 export interface ITotalRowsVariants {
   label: string
