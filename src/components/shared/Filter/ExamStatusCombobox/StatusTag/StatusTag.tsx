@@ -3,6 +3,8 @@ import cl from './StatusTag.module.scss'
 import { Tag } from '@consta/uikit/Tag'
 import { DefaultItem } from '@consta/uikit/Combobox'
 import { customBadgePropStatus, statusObject } from '../../../SharedTable/StatusBadge/StatusBadge'
+import { classJoiner } from '../../../../../utils/styleClassesUtills'
+import { statuses } from '../model/statuses'
 
 // CONSTANTS
 export const tagPropStatus = [
@@ -18,26 +20,6 @@ export type tagStatusesDeclaration = {
   [key in TagPropStatus]: statusObject
 }
 
-const statuses: tagStatusesDeclaration = {
-  unplanned: { label: 'Не запланирован', className: cl.unplanned },
-  missed: { label: 'Пропущен', className: cl.missed },
-  planned: { label: 'Запланирован', className: cl.planned },
-  success: { label: 'Принят', className: cl.success },
-  waiting: { label: 'Ожидает ', className: cl.waiting },
-  conclusionWaiting: { label: 'Ожидает заключение', className: cl.conclusionWaiting },
-  async: { label: 'Асинхронно', className: cl.async },
-  withProctor: { label: 'С проктором', className: cl.withProctor },
-  forming: { label: 'Формируется', className: cl.forming },
-  review: { label: 'На проверке', className: cl.review },
-  withoutProctor: { label: 'Без проктора', className: cl.withoutProctor },
-  rejected: { label: 'Отклонен', className: cl.rejected },
-  noAppearance: { label: 'Неявка', className: cl.noAppearance },
-  exceptPlanned: { label: 'Кроме запланированных', className: cl.exceptPlanned },
-  interrupted: { label: 'Прерван', className: cl.interrupted },
-  reset: { label: 'Сброшен', className: cl.interrupted },
-  notReset: { label: 'Не сброшен', className: cl.forming }
-}
-
 interface IStatusTagProp {
   status: TagPropStatus
   item: DefaultItem
@@ -49,7 +31,7 @@ interface IStatusTagProp {
 const StatusTag: FC<IStatusTagProp> = ({ status, item, onCancel }) => {
   return (
     <Tag
-      className={statuses[status].className}
+      className={classJoiner(cl[statuses[status].className], cl.statusTag)}
       key={item.id}
       mode={'cancel'}
       label={item.label}

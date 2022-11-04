@@ -25,9 +25,11 @@ import SharedTable from '../../shared/SharedTable/SharedTable'
 import { useTranslation } from 'react-i18next'
 import { IconAllDone } from '@consta/uikit/IconAllDone'
 import { getFullName } from '../../../utils/nameHelper'
-import {IUsersTableModel, usersColumns} from './usersTableModel';
-import {useOrganizations} from '../../../hooks/organizationsHooks';
-import TwoRowCell from '../../shared/SharedTable/TwoRowCell/TwoRowCell';
+
+import { IUsersTableModel, usersColumns } from './usersTableModel'
+import DateCell from '../../shared/SharedTable/DateCell/DateCell'
+import { useOrganizations } from '../../../hooks/organizationsHooks'
+import TwoRowCell from '../../shared/SharedTable/TwoRowCell/TwoRowCell'
 
 // TYPES
 interface IFilter {
@@ -38,7 +40,7 @@ interface IFilter {
 }
 
 const Users: FC = () => {
-  const { t } = useTranslation('translation', { keyPrefix: 'admin.Users' })
+  const { t } = useTranslation('translation', { keyPrefix: 'admin.users' })
 
   const [isTableMenuOpen, setIsTableMenuOpen] = useFlag(true)
   const [tableMenuPosition, setTableMenuPosition] = useState<Position>(undefined)
@@ -51,7 +53,7 @@ const Users: FC = () => {
   const [fullRows, setFullRows] = useState<IUsersTableModel[]>([])
   const [selectedRowsId, setSelectedRowsId] = useState<string[]>([])
 
-  const {getOrganization} = useOrganizations()
+  const { getOrganization, getOrganizations } = useOrganizations()
 
   // filter
   // filterState
@@ -94,6 +96,10 @@ const Users: FC = () => {
   useEffect(() => {
     console.log(organizationsIds)
     const getUsers = async (): Promise<void> => {
+      setPagination((prevState) => ({
+        ...prevState,
+        currentPage: 0
+      }))
       await request.users
         .getListOfUsers({
           text: filter.searchQuery,
@@ -104,23 +110,32 @@ const Users: FC = () => {
         })
         .then((r) => {
           console.log(r)
+          console.log(getOrganizations())
           setOrganizationsIds(() => r.data.organizations || [])
           setTotal(r.data.total)
+          console.log(r.data)
           if (r.data.rows.length > 0) {
             const obj: IUsersTableModel[] = r.data.rows.map((item: IUsersRow) => {
-              const university = getOrganization(item.organization)
-
+              let university = null
+              if (item.organization) {
+                university = getOrganization(item.organization)
+              }
               return {
                 id: item._id,
                 selected: false,
-                // check: null,
                 user: getFullName(item.firstname, item.middlename, item.lastname),
                 login: item.username,
                 provider: t(`table.providers.${item.provider}`),
                 role: t(`table.roles.${item.role}`),
-                university: university.shortName || <TwoRowCell firstRow={'Название отсутствует'} secondRow={`ID:${item._id}`}/>,
-                regDate: item.created,
-                lastDate: item.active,
+
+                university: university
+                  ? university.shortName || (
+                      <TwoRowCell firstRow={'Название отсутствует'} secondRow={`ID:${item._id}`} />
+                    )
+                  : 'kj',
+                regDate: <DateCell date={item.created} noSecondRow={true} />,
+                lastDate: <DateCell date={item.activityDate} />,
+
                 more: (
                   <Button
                     size='xs'
@@ -168,6 +183,7 @@ const Users: FC = () => {
                 key: 'search',
                 component: (
                   <SearchField
+                    placeholder={'Поиск пользователя'}
                     onChange={({ value }) => setSearchQuery(value)}
                     value={filter.searchQuery}
                   />

@@ -2,6 +2,7 @@ export interface IUsersRow {
   _id: string
   role: number
   active: boolean
+  activityDate: string
   username: string
   firstname: string
   lastname: string
@@ -10,5 +11,5 @@ export interface IUsersRow {
   provider: string
   created: string
   expert?: boolean
-  organization: string
+  organization?: string
 }

@@ -1,3 +1,73 @@
+@import "../../SharedTable/StatusBadge/StatusBadgeVars";
+
+$exceptPlanned: #004269;
+$allStatuses: #004269;
+$interrupted: #004269;
+
+.unplanned {
+  color: $color-unplanned;
+}
+
+.missed {
+  color: $color-missed;
+}
+
+.planned {
+  color: $color-planned;
+}
+
+.success {
+  color: $color-success;
+}
+
+.waiting {
+  color: $color-waiting;
+}
+
+.conclusionWaiting {
+  color: var(--color-control-typo-ghost) $color-conclusionWaiting;
+}
+
+.async {
+  color: rgba($color-async, 0.2);
+}
+
+.withProctor {
+  color: $color-withProctor;
+}
+
+.forming {
+  color: $color-forming;
+}
+
+.review {
+  color: $color-review;
+}
+
+.withoutProctor {
+  color: $color-withoutProctor;
+}
+
+.rejected {
+  color: $color-rejected;
+}
+
+.noAppearance {
+  color: $color-noAppearance;
+}
+
+.exceptPlanned{
+  color: $exceptPlanned;
+}
+
+.allStatuses{
+  color: $allStatuses;
+}
+
+.interrupted{
+  color: $interrupted;
+}
+
 .statusTag {
   margin-right: 3px;
   margin-bottom: 3px;
@@ -22,3 +92,5 @@
   display: inline-flex;
   background-color: rgba(#54B309, .2) !important;
 }
+
+

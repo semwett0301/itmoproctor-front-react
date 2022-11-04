@@ -39,7 +39,7 @@ function SharedTable<T extends ITableRow = ITableRow>({
   useEffect(() => {
     console.log('effect')
     setRows((prevState) => {
-      return prevState.map((  row) => {
+      return prevState.map((row) => {
         row.selected = selectedRows && selectedRows.includes(row.id)
         return row
       })
