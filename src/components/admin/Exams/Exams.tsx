@@ -134,7 +134,7 @@ const Exams: FC = () => {
                 .filter((item) => item != null)
                 .join(',')
             : null,
-          reset: null, // false,
+          reset: filter.status?.filter(e => e.groupId === 2)[0].getStatus as boolean | null,
           organization: filter.organizations
             ? filter.organizations.map((item) => item._id).join(',')
             : null,
