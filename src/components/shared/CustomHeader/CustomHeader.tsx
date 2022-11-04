@@ -4,6 +4,7 @@ import userLogo from '../../../mockData/logos/UserLogo.png'
 import cl from './CustomHeader.module.scss'
 import { ContextMenu } from '@consta/uikit/ContextMenu'
 import { IconComponent } from '@consta/uikit/Icon'
+import { useAppSelector } from '../../../hooks/reduxHooks'
 
 export type IContextMenuItem = {
   label: string
@@ -29,6 +30,7 @@ const CustomHeader: FC<ICustomHeader> = ({ leftSide, rightSide, contextMenuItems
 
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
   const menuRef = useRef(null)
+  const user = useAppSelector((state) => state.user)
 
   return (
     <>
@@ -45,8 +47,8 @@ const CustomHeader: FC<ICustomHeader> = ({ leftSide, rightSide, contextMenuItems
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className={cl.headerLogin}
                 isLogged={isLogged}
-                personName='Наруто Удзумаки'
-                personInfo='Хокаге'
+                personName={`${user.lastname} ${user.firstname}`}
+                personInfo={user.username}
                 personStatus='available'
                 personAvatarUrl={userLogo}
               />

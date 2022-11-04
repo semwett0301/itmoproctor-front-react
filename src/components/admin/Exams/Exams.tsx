@@ -22,12 +22,11 @@ import StatusBadge, {
   getExamStatus,
   getProctorName
 } from '../../shared/SharedTable/StatusBadge/StatusBadge'
-import { examsColumn, IExamsTableModel } from './examsTableModel'
 import SharedTable from '../../shared/SharedTable/SharedTable'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
 import { usePagination } from '../../../hooks/paginationHooks'
 import ExamStatusCombobox, {
-  statusComboboxItem,
+  StatusComboboxItem,
   statusList
 } from '../../shared/Filter/ExamStatusCombobox/ExamStatusCombobox'
 import ExamTypeSelect, { typeItem } from '../../shared/Filter/ExamTypeSelect/ExamTypeSelect'
@@ -39,12 +38,13 @@ import OrganizationSelect from '../../shared/Filter/OrganizationSelect/Organizat
 import { IOrganization } from '../../../ts/interfaces/IOrganizations'
 import { Layout } from '@consta/uikit/Layout'
 import DateCell from '../../shared/SharedTable/DateCell/DateCell'
+import { examsColumn, IExamsTableModel } from './examsTableModel'
 
 interface IFilter {
   date: [Date, Date]
   searchQuery: string | null
   type: typeItem | null
-  status: statusComboboxItem[] | null
+  status: StatusComboboxItem[] | null
   organizations: IOrganization[] | null
 }
 
@@ -95,7 +95,7 @@ const Exams: FC = () => {
     }))
   }
 
-  const setStatus = (item: statusComboboxItem[] | null): void => {
+  const setStatus = (item: StatusComboboxItem[] | null): void => {
     setFilter((prevState) => ({
       ...prevState,
       status: item
