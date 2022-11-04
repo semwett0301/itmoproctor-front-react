@@ -40,7 +40,7 @@ interface IFilter {
 }
 
 const Users: FC = () => {
-  const { t } = useTranslation('translation', { keyPrefix: 'admin.Users' })
+  const { t } = useTranslation('translation', { keyPrefix: 'admin.users' })
 
   const [isTableMenuOpen, setIsTableMenuOpen] = useFlag(true)
   const [tableMenuPosition, setTableMenuPosition] = useState<Position>(undefined)
@@ -53,7 +53,7 @@ const Users: FC = () => {
   const [fullRows, setFullRows] = useState<IUsersTableModel[]>([])
   const [selectedRowsId, setSelectedRowsId] = useState<string[]>([])
 
-  const { getOrganization } = useOrganizations()
+  const { getOrganization, getOrganizations } = useOrganizations()
 
   // filter
   // filterState
@@ -110,12 +110,16 @@ const Users: FC = () => {
         })
         .then((r) => {
           console.log(r)
+          console.log(getOrganizations())
           setOrganizationsIds(() => r.data.organizations || [])
           setTotal(r.data.total)
+          console.log(r.data)
           if (r.data.rows.length > 0) {
             const obj: IUsersTableModel[] = r.data.rows.map((item: IUsersRow) => {
-              const university = getOrganization(item.organization)
-
+              let university = null
+              if (item.organization) {
+                university = getOrganization(item.organization)
+              }
               return {
                 id: item._id,
                 selected: false,
@@ -124,9 +128,11 @@ const Users: FC = () => {
                 provider: t(`table.providers.${item.provider}`),
                 role: t(`table.roles.${item.role}`),
 
-                university: university.shortName || (
-                  <TwoRowCell firstRow={'Название отсутствует'} secondRow={`ID:${item._id}`} />
-                ),
+                university: university
+                  ? university.shortName || (
+                      <TwoRowCell firstRow={'Название отсутствует'} secondRow={`ID:${item._id}`} />
+                    )
+                  : 'kj',
                 regDate: <DateCell date={item.created} noSecondRow={true} />,
                 lastDate: <DateCell date={item.activityDate} />,
 

@@ -11,5 +11,5 @@ export interface IUsersRow {
   provider: string
   created: string
   expert?: boolean
-  organization: string
+  organization?: string
 }

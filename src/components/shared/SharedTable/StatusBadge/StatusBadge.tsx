@@ -2,8 +2,6 @@ import React, { FC } from 'react'
 import { Badge } from '@consta/uikit/Badge'
 import cl from './StatusBadge.module.scss'
 import { IExamRow } from '../../../../ts/interfaces/IExams'
-import { IInspector } from '../../../../ts/interfaces/IInspector'
-import { IExpert } from '../../../../ts/interfaces/IExpert'
 import { IconRevert } from '@consta/uikit/IconRevert'
 
 export const getExamStatus = (data: IExamRow): number => {
@@ -36,21 +34,6 @@ export const getExamStatus = (data: IExamRow): number => {
     if (data.resolution === false) statusID = 5
   }
   return statusID
-}
-
-export const getProctorName = (
-  async: boolean,
-  inspector: IInspector | undefined,
-  expert: IExpert | undefined
-): string => {
-  if (inspector || expert) {
-    if (async && expert) {
-      return `${expert.lastname} ${expert.firstname[0]}.${expert.middlename[0]}`
-    } else if (!async && inspector) {
-      return `${inspector.lastname} ${inspector.firstname[0]}.${inspector.middlename[0]}.`
-    }
-  }
-  return 'Не назначен'
 }
 
 export const customBadgePropStatus = [

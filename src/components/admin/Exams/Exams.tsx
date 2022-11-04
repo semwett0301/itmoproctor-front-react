@@ -19,8 +19,7 @@ import { useFlag } from '@consta/uikit/useFlag'
 import { Position } from '@consta/uikit/Popover'
 import StatusBadge, {
   customBadgePropStatus,
-  getExamStatus,
-  getProctorName
+  getExamStatus
 } from '../../shared/SharedTable/StatusBadge/StatusBadge'
 import { examsColumn, IExamsTableModel } from './examsTableModel'
 import SharedTable from '../../shared/SharedTable/SharedTable'
@@ -39,6 +38,7 @@ import OrganizationSelect from '../../shared/Filter/OrganizationSelect/Organizat
 import { IOrganization } from '../../../ts/interfaces/IOrganizations'
 import { Layout } from '@consta/uikit/Layout'
 import DateCell from '../../shared/SharedTable/DateCell/DateCell'
+import { getFullName, getProctorName } from '../../../utils/nameHelper'
 
 interface IFilter {
   date: [Date, Date]
@@ -154,11 +154,15 @@ const Exams: FC = () => {
               const row: IExamsTableModel = {
                 id: item._id,
                 selected: false,
-                listener: `${item.student.middlename} ${item.student.firstname} ${item.student.lastname}`,
+                listener: getFullName(
+                  item.student.firstname,
+                  item.student.middlename,
+                  item.student.lastname
+                ),
                 proctor: getProctorName(item.async, item.inspector, item.expert),
                 exam: <TwoRowCell firstRow={item.subject} secondRow={item.assignment} />,
                 type: <TypeBadge async={item.async} />,
-                start: <DateCell date={item.startDate} />, // <DateCell firstRow={item.startDate} secondRow={item.endDate} />,
+                start: <DateCell date={item.startDate} />,
                 status: <StatusBadge status={customBadgePropStatus[getExamStatus(item)]} />,
                 // Если есть фактическая дата начала(startDate), то отображать
                 video: item.startDate && (

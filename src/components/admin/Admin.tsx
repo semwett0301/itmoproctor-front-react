@@ -2,8 +2,6 @@ import React, { FC, useState } from 'react'
 import { Layout } from '@consta/uikit/Layout'
 import cl from './Admin.module.scss'
 import Sidebar from './Sidebar/Sidebar'
-import { Tabs } from '@consta/uikit/Tabs'
-import TabWithCross from '../shared/navTabs/TabWithCross/TabWithCross'
 import { Card } from '@consta/uikit/Card'
 import { Outlet, useNavigate, useOutletContext } from 'react-router-dom'
 import CustomHeader from '../shared/CustomHeader/CustomHeader'
@@ -14,6 +12,7 @@ import { IconSettings } from '@consta/uikit/IconSettings'
 import { IconScreen } from '@consta/uikit/IconScreen'
 import { IconExit } from '@consta/uikit/IconExit'
 import { useLogout } from '../../hooks/authHooks'
+import NavTabs from '../shared/NavTabs/NavTabs'
 
 export interface TabItem {
   id: number | string
@@ -25,9 +24,7 @@ export interface TabItem {
 type AdminOutletContextType = { openTab: (item: TabItem) => void }
 
 const Admin: FC = () => {
-  const [tabItems, setItems] = useState<TabItem[] | []>([
-    { id: 'exams', title: 'Экзамены', path: 'exams', type: 'tab' }
-  ])
+  const [tabItems, setItems] = useState<TabItem[]>([])
 
   const [activeTab, setActiveTab] = useState<TabItem | null>(tabItems[0])
 
@@ -105,25 +102,12 @@ const Admin: FC = () => {
 
         <Layout className={cl.standardLayout} direction={'column'}>
           <Card className={cl.contentCard}>
-            <Card shadow={false} horizontalSpace={'s'}>
-              <Tabs
-                fitMode={'scroll'}
-                size={'m'}
-                value={activeTab}
-                onChange={({ value }) => setActiveTab(value)}
-                items={tabItems}
-                getItemLabel={(item) => item.title}
-                renderItem={({ item, onChange, checked }) => (
-                  <TabWithCross
-                    item={item}
-                    onChange={onChange}
-                    checked={checked}
-                    onCrossClick={closeTab}
-                  />
-                )}
-              />
-            </Card>
-
+            <NavTabs
+              activeTab={activeTab}
+              tabItems={tabItems}
+              setActiveTab={({ value }) => setActiveTab(value)}
+              closeTab={closeTab}
+            />
             <Outlet context={{ openTab }} />
           </Card>
         </Layout>
