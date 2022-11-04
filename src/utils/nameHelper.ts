@@ -21,9 +21,9 @@ export const getProctorName = (
 ): string => {
   if (inspector || expert) {
     if (async && expert) {
-      return getShortName(expert.lastname, expert.firstname, expert.middlename[0])
+      return getShortName(expert.lastname, expert.firstname, expert.middlename)
     } else if (!async && inspector) {
-      return getShortName(inspector.lastname, inspector.firstname, inspector.middlename[0])
+      return getShortName(inspector.lastname, inspector.firstname, inspector.middlename)
     }
   }
   return 'Не назначен'

@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import cl from '../FilterConstructor.module.scss'
+import cl from './DatePeriodPicker.module.scss'
 import { IconCalendar } from '@consta/uikit/IconCalendar'
 import { DatePicker, DatePickerPropOnChange } from '@consta/uikit/DatePicker'
 
