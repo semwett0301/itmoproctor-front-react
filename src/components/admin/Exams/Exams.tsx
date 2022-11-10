@@ -1,41 +1,44 @@
-import React, {FC, useEffect, useState} from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import cl from './Exams.module.scss'
-import {request} from '../../../api/axios/request'
-import {IExamRow} from '../../../ts/interfaces/IExams'
+import { request } from '../../../api/axios/request'
+import { IExamRow } from '../../../ts/interfaces/IExams'
 import TwoRowCell from '../../shared/SharedTable/TwoRowCell/TwoRowCell'
 import TypeBadge from '../../shared/SharedTable/TypeBadge/TypeBadge'
-import {Button} from '@consta/uikit/Button'
-import {IconVideo} from '@consta/uikit/IconVideo'
-import {IconBento} from '@consta/uikit/IconBento'
-import {useOpenTab} from '../Admin'
-import {IconAdd} from '@consta/uikit/IconAdd'
-import {IconEdit} from '@consta/uikit/IconEdit'
-import {IconRevert} from '@consta/uikit/IconRevert'
-import {IconCopy} from '@consta/uikit/IconCopy'
-import {IconDocExport} from '@consta/uikit/IconDocExport'
-import {IconUpload} from '@consta/uikit/IconUpload'
-import {IconTrash} from '@consta/uikit/IconTrash'
-import {useFlag} from '@consta/uikit/useFlag'
-import {Position} from '@consta/uikit/Popover'
-import StatusBadge, {customBadgePropStatus, getExamStatus} from '../../shared/SharedTable/StatusBadge/StatusBadge'
+import { Button } from '@consta/uikit/Button'
+import { IconVideo } from '@consta/uikit/IconVideo'
+import { IconBento } from '@consta/uikit/IconBento'
+import { useOpenTab } from '../Admin'
+import { IconAdd } from '@consta/uikit/IconAdd'
+import { IconEdit } from '@consta/uikit/IconEdit'
+import { IconRevert } from '@consta/uikit/IconRevert'
+import { IconCopy } from '@consta/uikit/IconCopy'
+import { IconDocExport } from '@consta/uikit/IconDocExport'
+import { IconUpload } from '@consta/uikit/IconUpload'
+import { IconTrash } from '@consta/uikit/IconTrash'
+import { useFlag } from '@consta/uikit/useFlag'
+import { Position } from '@consta/uikit/Popover'
+import StatusBadge, {
+  customBadgePropStatus,
+  getExamStatus
+} from '../../shared/SharedTable/StatusBadge/StatusBadge'
 import SharedTable from '../../shared/SharedTable/SharedTable'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
-import {usePagination} from '../../../hooks/paginationHooks'
+import { usePagination } from '../../../hooks/paginationHooks'
 import ExamStatusCombobox, {
   StatusComboboxItem,
   statusList
 } from '../../shared/Filter/ExamStatusCombobox/ExamStatusCombobox'
-import ExamTypeSelect, {typeItem} from '../../shared/Filter/ExamTypeSelect/ExamTypeSelect'
+import ExamTypeSelect, { typeItem } from '../../shared/Filter/ExamTypeSelect/ExamTypeSelect'
 import FilterConstructor from '../../shared/Filter/FilterConstructor'
 import DatePeriodPicker from '../../shared/Filter/DatePeriodPicker/DatePeriodPicker'
 import SearchField from '../../shared/Filter/SearchField/SearchField'
 import FilterButton from '../../shared/Filter/FilterButton/FilterButton'
 import OrganizationSelect from '../../shared/Filter/OrganizationSelect/OrganizationSelect'
-import {IOrganization} from '../../../ts/interfaces/IOrganizations'
-import {Layout} from '@consta/uikit/Layout'
+import { IOrganization } from '../../../ts/interfaces/IOrganizations'
+import { Layout } from '@consta/uikit/Layout'
 import DateCell from '../../shared/SharedTable/DateCell/DateCell'
-import {getFullName, getProctorName} from '../../../utils/nameHelper'
-import {examsColumn, IExamsTableModel} from './examsTableModel'
+import { getFullName, getProctorName } from '../../../utils/nameHelper'
+import { examsColumn, IExamsTableModel } from './examsTableModel'
 
 interface IFilter {
   date: [Date, Date]
@@ -115,10 +118,6 @@ const Exams: FC = () => {
 
   useEffect(() => {
     const getExams = async (): Promise<void> => {
-      setPagination((prevState) => ({
-        ...prevState,
-        currentPage: 0
-      }))
       await request.exam
         .getListOfExams({
           from: filter.date[0].toISOString(),
@@ -134,7 +133,7 @@ const Exams: FC = () => {
                 .filter((item) => item != null)
                 .join(',')
             : null,
-          reset: filter.status?.filter(e => e.groupId === 2)[0].getStatus as boolean | null,
+          reset: null, // filter.status?.filter((e) => e.groupId === 2)[0].getStatus as boolean | null,
           organization: filter.organizations
             ? filter.organizations.map((item) => item._id).join(',')
             : null,
