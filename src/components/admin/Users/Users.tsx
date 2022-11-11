@@ -96,10 +96,6 @@ const Users: FC = () => {
   useEffect(() => {
     console.log(organizationsIds)
     const getUsers = async (): Promise<void> => {
-      setPagination((prevState) => ({
-        ...prevState,
-        currentPage: 0
-      }))
       await request.users
         .getListOfUsers({
           text: filter.searchQuery,
@@ -113,7 +109,6 @@ const Users: FC = () => {
           console.log(getOrganizations())
           setOrganizationsIds(() => r.data.organizations || [])
           setTotal(r.data.total)
-          console.log(r.data)
           if (r.data.rows.length > 0) {
             const obj: IUsersTableModel[] = r.data.rows.map((item: IUsersRow) => {
               let university = null
