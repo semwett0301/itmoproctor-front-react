@@ -3,9 +3,10 @@ import {StatusComboboxItem} from '../../components/shared/Filter/ExamStatusCombo
 import {IOrganization} from '../interfaces/IOrganizations';
 import {providerItem} from '../../components/shared/Filter/ProviderSelect/ProviderSelect';
 import {DefaultItem} from '@consta/uikit/__internal__/src/components/Combobox/helpers';
+import {Dayjs} from 'dayjs';
 
 export interface IDateFilter {
-  date: [Date, Date]
+  date: [Dayjs, Dayjs]
 }
 
 export interface ISearchQueryFilter {

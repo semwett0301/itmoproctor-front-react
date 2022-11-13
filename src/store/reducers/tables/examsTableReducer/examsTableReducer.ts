@@ -6,9 +6,10 @@ import {ExamsTableActionTypes} from './examsTableActionTypes';
 import {statusList} from '../../../../components/shared/Filter/ExamStatusCombobox/ExamStatusCombobox';
 import {ITotalRowsVariants} from '../../../../components/shared/SharedPagination/PaginationField/PaginationField';
 import {ITotalPagination} from '../../../../ts/interfaces/IPagination';
+import dayjs from 'dayjs';
 
 const initialState: ITableParams<ExamFilter> = initialTableParams<ExamFilter>({
-  date: [new Date(), new Date()],
+  date: [dayjs(), dayjs()],
   searchQuery: null,
   type: null,
   status: [statusList[0]],

@@ -5,8 +5,8 @@ import routerHocConfig from './config/routerHocConfig'
 import {createRouter} from './router/createRouter'
 import {useAppDispatch, useAppSelector} from './hooks/reduxHooks'
 import {setUserActionCreator} from './store/reducers/userReducer/userActionCreators'
-import {userLoadedActionCreator} from './store/reducers/userLoadedReducer/userLoadedActionCreators'
 import {request} from './api/axios/request'
+import {userLoadedActionCreator} from './store/reducers/userLoaded/userLoadedActionCreators';
 
 export const App: FC = () => {
   const dispatch = useAppDispatch()

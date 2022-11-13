@@ -5,10 +5,11 @@ import {IAction} from '../../../../ts/interfaces/IAction';
 import {ITotalRowsVariants} from '../../../../components/shared/SharedPagination/PaginationField/PaginationField';
 import {ITotalPagination} from '../../../../ts/interfaces/IPagination';
 import {ScheduleTableActionTypes} from './scheduleTableActionTypes';
+import dayjs from 'dayjs';
 
 const initialState: ITableParams<ScheduleFilter> = initialTableParams<ScheduleFilter>({
   searchQuery: null,
-  date: [new Date(), new Date()],
+  date: [dayjs(), dayjs()],
 })
 
 export const scheduleTableReducer: Reducer<ITableParams<ScheduleFilter>> = (state = initialState, action: IAction<ScheduleTableActionTypes, ActionPayloadTable<ScheduleFilter>>) => {

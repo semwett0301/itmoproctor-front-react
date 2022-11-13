@@ -5,9 +5,10 @@ import {IAction} from '../../../../ts/interfaces/IAction';
 import {ITotalRowsVariants} from '../../../../components/shared/SharedPagination/PaginationField/PaginationField';
 import {ITotalPagination} from '../../../../ts/interfaces/IPagination';
 import {MaintenanceTableActionTypes} from './maintenanceTableActionTypes';
+import dayjs from 'dayjs';
 
 const initialState: ITableParams<MaintenanceFilter> = initialTableParams<MaintenanceFilter>({
-  date: [new Date(), new Date()],
+  date: [dayjs(), dayjs()],
 })
 
 export const maintenanceTableReducer: Reducer<ITableParams<MaintenanceFilter>> = (state = initialState, action: IAction<MaintenanceTableActionTypes, ActionPayloadTable<MaintenanceFilter>>) => {

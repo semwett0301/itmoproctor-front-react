@@ -1,8 +1,5 @@
 import {combineReducers, Reducer} from 'redux'
 import {userReducer} from './userReducer/userReducer'
-import {userLoadedReducer} from './userLoadedReducer/userLoadedReducer'
-import {isLoadingReducer} from './isLoadingReducer/isLoadingReducer'
-import {osInfoReducer} from './osInfoReducer/osInfoReducer';
 import {organizationsReducer} from './organizationsReducer/organizationsReducer'
 import {TablesEnum} from '../../config/tablesReducerConfig';
 import {examsTableReducer} from './tables/examsTableReducer/examsTableReducer';
@@ -11,6 +8,9 @@ import {coursesTableReducer} from './tables/courses/coursesTableReducer';
 import {scheduleTableReducer} from './tables/schedule/scheduleTableReducer';
 import {maintenanceTableReducer} from './tables/maintenance/maintenanceTableReducer';
 import {organizationsTableReducer} from './tables/organizations/organizationsTableReducer';
+import {userLoadedReducer} from './userLoaded/userLoadedReducer';
+import {isLoadingReducer} from './isLoading/isLoadingReducer';
+import {osInfoReducer} from './osInfo/osInfoReducer';
 
 const tableReducer = combineReducers<{ [value in TablesEnum]: Reducer} >({
   exams: examsTableReducer,
