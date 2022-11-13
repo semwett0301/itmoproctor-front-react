@@ -1,7 +1,7 @@
 import axios from 'axios'
 import axiosConfig from '../../../config/axiosСonfig'
 import errors from './errors'
-import {isLoadedActionCreator, isLoadingActionCreator} from '../../../store/reducers/isLoading/isLoadingActionCreators'
+import {isLoadedActionCreator, isLoadingActionCreator} from '../../../store/reducers/isLoadingReducer/isLoadingActionCreators'
 import store from '../../../store'
 
 const mainInstance = axios.create({

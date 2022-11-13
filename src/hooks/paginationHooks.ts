@@ -2,6 +2,7 @@ import { IPagination } from '../components/shared/SharedPagination/SharedPaginat
 import { Dispatch, SetStateAction, useState } from 'react'
 import { totalRowsVariants } from '../components/shared/SharedPagination/PaginationField/PaginationField'
 
+
 export const usePagination: () => [
   IPagination,
   Dispatch<SetStateAction<IPagination>>,
