@@ -1,8 +1,8 @@
-import React, {FC} from 'react'
-import {Badge} from '@consta/uikit/Badge'
+import React, { FC } from 'react'
+import { Badge } from '@consta/uikit/Badge'
 import cl from './StatusBadge.module.scss'
-import {IExamRow} from '../../../../ts/interfaces/IExams'
-import {IconRevert} from '@consta/uikit/IconRevert'
+import { IExamRow } from '../../../../ts/interfaces/IExams'
+import { IconRevert } from '@consta/uikit/IconRevert'
 
 export const getExamStatus = (data: IExamRow): number => {
   if (!data) return 0
@@ -20,7 +20,6 @@ export const getExamStatus = (data: IExamRow): number => {
 
     if (beginDate > now) statusID = 1
     if (endDate <= now) {
-      console.log('hhhh')
       statusID = 8
     }
     if (beginDate <= now && endDate > now) statusID = 2
@@ -87,6 +86,7 @@ interface StatusBadgeProps {
 const StatusBadge: FC<StatusBadgeProps> = ({ status, reset }) => {
   return (
     <Badge
+      style={{width: 'fit-content'}}
       view={'stroked'}
       className={statuses[status].className}
       label={statuses[status].label}

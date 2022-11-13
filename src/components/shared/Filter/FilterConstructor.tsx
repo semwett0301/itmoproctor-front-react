@@ -1,8 +1,8 @@
-import React, {FC, ReactNode} from 'react'
-import {Layout} from '@consta/uikit/Layout'
-import {cnMixSpace} from '@consta/uikit/MixSpace'
+import React, { FC, ReactNode } from 'react'
+import { Layout } from '@consta/uikit/Layout'
+import { cnMixSpace } from '@consta/uikit/MixSpace'
 import cl from './FilterConstructor.module.scss'
-import {classJoiner} from '../../../utils/styleClassesUtills'
+import { classJoiner } from '../../../utils/styleClassesUtills'
 
 interface IFilterComponent {
   key: string | number
@@ -21,7 +21,8 @@ interface IFilterConstructorProps {
 const FilterConstructor: FC<IFilterConstructorProps> = ({ items }) => {
   const blockClass = cnMixSpace({
     mH: 's',
-    mT: 's'
+    mT: 's',
+    mB: '2xs'
   })
 
   const rowClass = classJoiner(

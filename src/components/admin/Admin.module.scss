@@ -20,6 +20,17 @@
   box-sizing: border-box;
   padding: var(--space-xs);
   height: calc(100vh - 60px);
+
+}
+
+.wideContent{
+  width: calc(100vw - 80px);
+  transition: all .5s ease;
+}
+
+.smallContent{
+  width: calc(100vw - 244px);
+  transition: all .5s ease;
 }
 
 .contentCard {

@@ -1,20 +1,23 @@
-import {TableColumn} from '@consta/uikit/Table'
-import React, {ReactNode} from 'react'
-import {Checkbox} from '@consta/uikit/Checkbox'
-import {ITableRow} from '../../shared/SharedTable/SharedTable'
+import { TableColumn } from '@consta/uikit/Table'
+import React, { ReactNode } from 'react'
+import { Checkbox } from '@consta/uikit/Checkbox'
+import { ITableRow } from '../../shared/SharedTable/SharedTable'
 
 export interface IExamsTableModel extends ITableRow {
   listener: ReactNode
   proctor: ReactNode
   exam: ReactNode
   type: ReactNode
+  async: ReactNode
   start: ReactNode
   status: ReactNode
   video: ReactNode
   more: ReactNode
 }
 
-export const examsColumn: TableColumn<IExamsTableModel>[] = [
+type culumns = TableColumn<IExamsTableModel>
+
+export const examsColumn: culumns[] = [
   {
     title: '№',
     accessor: 'id',
@@ -22,7 +25,7 @@ export const examsColumn: TableColumn<IExamsTableModel>[] = [
     hidden: true
   },
   {
-    title: '',
+    title: null,
     accessor: 'selected',
     align: 'center',
     renderCell: (row) => <Checkbox checked={row.selected} />
@@ -55,7 +58,7 @@ export const examsColumn: TableColumn<IExamsTableModel>[] = [
   {
     title: 'Статус',
     accessor: 'status',
-    align: 'center'
+    align: 'left'
   },
   {
     title: '',

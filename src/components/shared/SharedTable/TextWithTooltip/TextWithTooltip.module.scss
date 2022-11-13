@@ -1,0 +1,6 @@
+.text{
+  cursor: pointer;
+  &:hover{
+    color: var(--color-typo-brand);
+  }
+}

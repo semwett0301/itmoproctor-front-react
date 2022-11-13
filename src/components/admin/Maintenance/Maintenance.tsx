@@ -1,28 +1,29 @@
-import React, {FC, useEffect, useState} from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import cl from './Maintenance.module.scss'
-import {Layout} from '@consta/uikit/Layout'
-import {usePagination} from '../../../hooks/paginationHooks'
+import { Layout } from '@consta/uikit/Layout'
+import { usePagination } from '../../../hooks/paginationHooks'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
 import FilterConstructor from '../../shared/Filter/FilterConstructor'
 import DatePeriodPicker from '../../shared/Filter/DatePeriodPicker/DatePeriodPicker'
 import FilterButton from '../../shared/Filter/FilterButton/FilterButton'
-import {IconAdd} from '@consta/uikit/IconAdd'
-import {IconEdit} from '@consta/uikit/IconEdit'
-import {IconTrash} from '@consta/uikit/IconTrash'
-import {Button} from '@consta/uikit/Button'
-import {IconRestart} from '@consta/uikit/IconRestart'
-import {request} from '../../../api/axios/request'
-import {IconBento} from '@consta/uikit/IconBento'
-import {useFlag} from '@consta/uikit/useFlag'
-import {Position} from '@consta/uikit/Popover'
-import {IMaintenanceTableModel, maintenanceColumns} from './maintenanceTableModel'
-import {IMaintenanceRow} from '../../../ts/interfaces/IMaintenance'
+import { IconAdd } from '@consta/uikit/IconAdd'
+import { IconEdit } from '@consta/uikit/IconEdit'
+import { IconTrash } from '@consta/uikit/IconTrash'
+import { Button } from '@consta/uikit/Button'
+import { IconRestart } from '@consta/uikit/IconRestart'
+import { request } from '../../../api/axios/request'
+import { IconBento } from '@consta/uikit/IconBento'
+import { useFlag } from '@consta/uikit/useFlag'
+import { Position } from '@consta/uikit/Popover'
+import { IMaintenanceTableModel, maintenanceColumns } from './maintenanceTableModel'
+import { IMaintenanceRow } from '../../../ts/interfaces/IMaintenance'
 import SharedTable from '../../shared/SharedTable/SharedTable'
 import DateCell from '../../shared/SharedTable/DateCell/DateCell'
+import dayjs, { Dayjs } from 'dayjs'
 
 // TYPES
 interface IFilter {
-  date: [Date, Date]
+  date: [Dayjs, Dayjs]
 }
 
 const Maintenance: FC = () => {
@@ -32,18 +33,18 @@ const Maintenance: FC = () => {
   // filter
   // filterState
   const [{ date }, setFilter] = useState<IFilter>({
-    date: [new Date(), new Date()]
+    date: [dayjs(), dayjs()]
   })
 
   // filter setters
 
   const setDatePeriod = (value: [Date?, Date?] | null): void => {
-    const newValue: [Date, Date] = [new Date(), new Date()]
+    const newValue: [Dayjs, Dayjs] = [dayjs(), dayjs()]
     if (value && value[0]) {
-      newValue[0] = value[0]
+      newValue[0] = dayjs(value[0])
     }
     if (value && value[1]) {
-      newValue[1] = value[1]
+      newValue[1] = dayjs(value[1])
     }
 
     setFilter((prevState) => ({

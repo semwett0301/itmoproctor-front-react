@@ -94,7 +94,6 @@ const Users: FC = () => {
 
   // Users table request
   useEffect(() => {
-    console.log(organizationsIds)
     const getUsers = async (): Promise<void> => {
       await request.users
         .getListOfUsers({
@@ -105,8 +104,7 @@ const Users: FC = () => {
           rows: pagination.displayedRows.id
         })
         .then((r) => {
-          console.log(r)
-          console.log(getOrganizations())
+          getOrganizations()
           setOrganizationsIds(() => r.data.organizations || [])
           setTotal(r.data.total)
           if (r.data.rows.length > 0) {
@@ -118,7 +116,7 @@ const Users: FC = () => {
               return {
                 id: item._id,
                 selected: false,
-                user: getFullName(item.firstname, item.middlename, item.lastname),
+                user: getFullName(item.lastname, item.firstname, item.middlename),
                 login: item.username,
                 provider: t(`table.providers.${item.provider}`),
                 role: t(`table.roles.${item.role}`),

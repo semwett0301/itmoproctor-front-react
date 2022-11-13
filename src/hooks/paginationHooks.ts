@@ -1,6 +1,7 @@
-import {Dispatch, SetStateAction, useState} from 'react'
-import {totalRowsVariants} from '../components/shared/SharedPagination/PaginationField/PaginationField'
-import {IPagination} from '../ts/interfaces/IPagination';
+import { IPagination } from '../components/shared/SharedPagination/SharedPagination'
+import { Dispatch, SetStateAction, useState } from 'react'
+import { totalRowsVariants } from '../components/shared/SharedPagination/PaginationField/PaginationField'
+
 
 export const usePagination: () => [
   IPagination,

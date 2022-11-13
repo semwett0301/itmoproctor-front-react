@@ -1,29 +1,30 @@
-import React, {FC, useEffect, useState} from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import cl from './Schedule.module.scss'
-import {Layout} from '@consta/uikit/Layout'
+import { Layout } from '@consta/uikit/Layout'
 import DatePeriodPicker from '../../shared/Filter/DatePeriodPicker/DatePeriodPicker'
 import SearchField from '../../shared/Filter/SearchField/SearchField'
 import FilterButton from '../../shared/Filter/FilterButton/FilterButton'
-import {IconAdd} from '@consta/uikit/IconAdd'
-import {IconEdit} from '@consta/uikit/IconEdit'
-import {IconTrash} from '@consta/uikit/IconTrash'
+import { IconAdd } from '@consta/uikit/IconAdd'
+import { IconEdit } from '@consta/uikit/IconEdit'
+import { IconTrash } from '@consta/uikit/IconTrash'
 import FilterConstructor from '../../shared/Filter/FilterConstructor'
-import {usePagination} from '../../../hooks/paginationHooks'
+import { usePagination } from '../../../hooks/paginationHooks'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
 import SharedTable from '../../shared/SharedTable/SharedTable'
-import {useFlag} from '@consta/uikit/useFlag'
-import {Position} from '@consta/uikit/Popover'
-import {IScheduleTableModel, scheduleColumns} from './scheduleTableModel'
-import {request} from '../../../api/axios/request'
-import {getFullName} from '../../../utils/nameHelper'
-import {Button} from '@consta/uikit/Button'
-import {IconBento} from '@consta/uikit/IconBento'
-import {IScheduleRow} from '../../../ts/interfaces/IShedule'
+import { useFlag } from '@consta/uikit/useFlag'
+import { Position } from '@consta/uikit/Popover'
+import { IScheduleTableModel, scheduleColumns } from './scheduleTableModel'
+import { request } from '../../../api/axios/request'
+import { getFullName } from '../../../utils/nameHelper'
+import { Button } from '@consta/uikit/Button'
+import { IconBento } from '@consta/uikit/IconBento'
+import { IScheduleRow } from '../../../ts/interfaces/IShedule'
 import DateCell from '../../shared/SharedTable/DateCell/DateCell'
+import dayjs, { Dayjs } from 'dayjs'
 
 // TYPES
 interface IFilter {
-  date: [Date, Date]
+  date: [Dayjs, Dayjs]
   searchQuery: string | null
 }
 
@@ -41,19 +42,19 @@ const Schedule: FC = () => {
   // filter
   // filterState
   const [{ date, searchQuery }, setFilter] = useState<IFilter>({
-    date: [new Date(), new Date()],
+    date: [dayjs(), dayjs()],
     searchQuery: null
   })
 
   // filter setters
 
   const setDatePeriod = (value: [Date?, Date?] | null): void => {
-    const newValue: [Date, Date] = [new Date(), new Date()]
+    const newValue: [Dayjs, Dayjs] = [dayjs(), dayjs()]
     if (value && value[0]) {
-      newValue[0] = value[0]
+      newValue[0] = dayjs(value[0])
     }
     if (value && value[1]) {
-      newValue[1] = value[1]
+      newValue[1] = dayjs(value[1])
     }
 
     setFilter((prevState) => ({

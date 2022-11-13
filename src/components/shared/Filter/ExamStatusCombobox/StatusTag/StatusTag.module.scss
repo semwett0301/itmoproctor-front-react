@@ -4,8 +4,11 @@ $exceptPlanned: #004269;
 $allStatuses: #004269;
 $interrupted: #004269;
 
-.statusTag{
-  margin: 0 0 3px 3px
+.statusTag {
+  margin: 0 0 3px 3px;
+  overflow-x: hidden;
+  white-space: nowrap;
+  width: min-content;
 }
 .unplanned {
   background-color: rgba($color-unplanned, 0.2);
@@ -62,6 +65,7 @@ $interrupted: #004269;
 
 .exceptPlanned{
   background-color: rgba($exceptPlanned, 0.2);
+  max-width: 180px;
 }
 
 .allStatuses{
