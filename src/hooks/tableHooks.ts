@@ -7,10 +7,20 @@ import {
   setSelect,
   setTotalPagination
 } from '../store/reducers/tables/tablesActionCreators';
-import {ITotalPagination} from '../ts/interfaces/IPagination';
+import {IPagination, ITotalPagination} from '../ts/interfaces/IPagination';
 import {ITotalRowsVariants} from '../components/shared/SharedPagination/PaginationField/PaginationField';
+import {Filter} from '../ts/types/Filter';
 
-export function useTable(tableName: TablesEnum) {
+export function useTable(tableName: TablesEnum): {
+  selectedRowsId: string[],
+  filter: Filter,
+  pagination: IPagination,
+  setSelectedRowsId: (select: string[]) => void,
+  setFilter: (newFilterAddition: ActionFilterType) => void,
+  setPagination: (currentPage: number) => void,
+  setDisplayedRows: (displayedRows: ITotalRowsVariants) => void,
+  setTotal: (totalRows: number) => void
+} {
   const {selectedRowsId, filter, pagination} = useAppSelector(state => state.tables[tableName])
   const dispatch = useAppDispatch()
 
