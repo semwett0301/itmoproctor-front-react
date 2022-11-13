@@ -1,8 +1,8 @@
-import React, {FC} from 'react'
+import React, { FC } from 'react'
 import cl from './PaginationField.module.scss'
-import {Select} from '@consta/uikit/Select'
-import {Text} from '@consta/uikit/Text'
-import {Pagination} from '@consta/uikit/Pagination'
+import { Select } from '@consta/uikit/Select'
+import { Text } from '@consta/uikit/Text'
+import { Pagination } from '@consta/uikit/Pagination'
 
 export interface ITotalRowsVariants {
   label: string
@@ -89,7 +89,7 @@ const PaginationField: FC<IPaginationProp> = ({
       />
 
       <Text size={'2xs'} view={'secondary'} className={cl.footerText}>
-        Показано с {startRow} по {endRow} из {totalRows}
+        Показано с {startRow} по {endRow} из {totalRows} записей
       </Text>
     </div>
   )

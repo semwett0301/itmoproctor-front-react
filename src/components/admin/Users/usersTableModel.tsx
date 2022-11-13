@@ -1,7 +1,7 @@
-import {TableColumn} from '@consta/uikit/Table'
-import React, {ReactNode} from 'react'
-import {Checkbox} from '@consta/uikit/Checkbox'
-import {ITableRow} from '../../shared/SharedTable/SharedTable'
+import { TableColumn } from '@consta/uikit/Table'
+import React, { ReactNode } from 'react'
+import { Checkbox } from '@consta/uikit/Checkbox'
+import { ITableRow } from '../../shared/SharedTable/SharedTable'
 
 export interface IUsersTableModel extends ITableRow {
   user: ReactNode
@@ -51,7 +51,7 @@ export const usersColumns: TableColumn<IUsersTableModel>[] = [
   {
     title: 'Университет',
     accessor: 'university',
-    align: 'center'
+    align: 'left'
   },
   {
     title: 'Дата Рег',
