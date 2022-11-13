@@ -1,27 +1,18 @@
-import React, {FC} from 'react'
-import {Text} from '@consta/uikit/Text'
-import dayjs from 'dayjs'
-import cl from './DateCell.module.scss'
+import React, { FC } from 'react';
+import dayjs from 'dayjs';
+import TwoRowCell from '../TwoRowCell/TwoRowCell';
 
 // TYPES
 interface IDateCellProp {
-  date?: string
-  noSecondRow?: boolean
+  date?: string;
+  noSecondRow?: boolean;
 }
 
 const DateCell: FC<IDateCellProp> = ({ date, noSecondRow = false }) => {
   return (
-    <div className={cl.DateCell}>
-      <Text size={'s'} truncate={true}>
-        {dayjs(date).format('DD.MM.YYYY')}
-      </Text>
-      {!noSecondRow && (
-        <Text size={'2xs'} truncate={true} view={'secondary'}>
-          {dayjs(date).format('hh:mm')}
-        </Text>
-      )}
-    </div>
-  )
-}
+    <TwoRowCell firstRow={date ? dayjs(date).format('DD.MM.YYYY') : 'Дата'}
+                secondRow={!noSecondRow && date ? dayjs(date).format('hh:mm') : 'не назначена'} />
+  );
+};
 
-export default DateCell
+export default DateCell;

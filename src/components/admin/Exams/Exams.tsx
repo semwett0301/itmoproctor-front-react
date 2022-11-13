@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useState } from 'react'
 import cl from './Exams.module.scss'
 import { request } from '../../../api/axios/request'
 import { IExamRow } from '../../../ts/interfaces/IExams'
@@ -6,7 +6,6 @@ import TwoRowCell from '../../shared/SharedTable/TwoRowCell/TwoRowCell'
 import TypeBadge from '../../shared/SharedTable/TypeBadge/TypeBadge'
 import { Button } from '@consta/uikit/Button'
 import { IconVideo } from '@consta/uikit/IconVideo'
-import { IconBento } from '@consta/uikit/IconBento'
 import { useOpenTab } from '../Admin'
 import { IconAdd } from '@consta/uikit/IconAdd'
 import { IconEdit } from '@consta/uikit/IconEdit'
@@ -36,12 +35,17 @@ import FilterButton from '../../shared/Filter/FilterButton/FilterButton'
 import OrganizationSelect from '../../shared/Filter/OrganizationSelect/OrganizationSelect'
 import { IOrganization } from '../../../ts/interfaces/IOrganizations'
 import { Layout } from '@consta/uikit/Layout'
-import DateCell from '../../shared/SharedTable/DateCell/DateCell'
 import { getFullName, getProctorName } from '../../../utils/nameHelper'
 import { examsColumn, IExamsTableModel } from './examsTableModel'
+import { useTableRequest } from '../../../hooks/useTableRequest'
+import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
+import dayjs, { Dayjs } from 'dayjs'
+import { Checkbox } from '@consta/uikit/Checkbox'
+import DateCell from '../../shared/SharedTable/DateCell/DateCell'
+import TextWithTooltip from '../../shared/SharedTable/TextWithTooltip/TextWithTooltip'
 
 interface IFilter {
-  date: [Date, Date]
+  date: [Dayjs, Dayjs]
   searchQuery: string | null
   type: typeItem | null
   status: StatusComboboxItem[] | null
@@ -58,7 +62,7 @@ const Exams: FC = () => {
   // filter
   // filterState
   const [filter, setFilter] = useState<IFilter>({
-    date: [new Date(), new Date()],
+    date: [dayjs(), dayjs()],
     searchQuery: null,
     type: null,
     status: [statusList[0]],
@@ -68,17 +72,9 @@ const Exams: FC = () => {
   // filter setters
 
   const setDatePeriod = (value: [Date?, Date?] | null): void => {
-    const newValue: [Date, Date] = [new Date(), new Date()]
-    if (value && value[0]) {
-      newValue[0] = value[0]
-    }
-    if (value && value[1]) {
-      newValue[1] = value[1]
-    }
-
     setFilter((prevState) => ({
       ...prevState,
-      date: newValue
+      date: [dayjs(value && value[0]), dayjs(value && value[1])]
     }))
   }
 
@@ -113,15 +109,14 @@ const Exams: FC = () => {
   const [pagination, setPagination, setTotal] = usePagination()
 
   // Exams table request
-  const [fullRows, setFullRows] = useState<IExamsTableModel[]>([])
   const [selectedRowsId, setSelectedRowsId] = useState<string[]>([])
 
-  useEffect(() => {
-    const getExams = async (): Promise<void> => {
-      await request.exam
+  const { isLoading, rows, setRows } = useTableRequest(
+    () =>
+      request.exam
         .getListOfExams({
-          from: filter.date[0].toISOString(),
-          to: filter.date[1].toISOString(),
+          from: dayjs(filter.date[0]).startOf('D').toISOString(),
+          to: dayjs(filter.date[1]).endOf('D').toISOString(),
           text: filter.searchQuery,
           status: filter.status
             ? filter.status
@@ -143,20 +138,52 @@ const Exams: FC = () => {
           rows: pagination.displayedRows.id
         })
         .then((r) => {
+          setTotal(0)
           setOrganizationsIds(() => r.data.organizations || [])
           setTotal(r.data.total)
+          let obj: IExamsTableModel[] = []
           if (r.data.rows.length > 0) {
-            const obj: IExamsTableModel[] = r.data.rows.map((item: IExamRow) => {
+            obj = r.data.rows.map((item: IExamRow) => {
               const row: IExamsTableModel = {
+                async: item.async,
                 id: item._id,
                 selected: false,
-                listener: getFullName(
-                  item.student.firstname,
-                  item.student.middlename,
-                  item.student.lastname
+                listener: (
+                  <TextWithTooltip
+                    text={getFullName(
+                      item.student.lastname,
+                      item.student.firstname,
+                      item.student.middlename
+                    )}
+                    tooltipText={
+                      'Профиль слушателя – ' +
+                      getFullName(
+                        item.student.lastname,
+                        item.student.firstname,
+                        item.student.middlename
+                      )
+                    }
+                  />
                 ),
-                proctor: getProctorName(item.async, item.inspector, item.expert),
-                exam: <TwoRowCell firstRow={item.subject} secondRow={item.assignment} />,
+                proctor: (
+                  <TextWithTooltip
+                    text={getProctorName(item.async, item.inspector, item.expert).shortName}
+                    tooltipText={
+                      'Профиль проктора – ' +
+                      getProctorName(item.async, item.inspector, item.expert).fullName
+                    }
+                    onClick={() =>
+                      console.log(getProctorName(item.async, item.inspector, item.expert))
+                    }
+                  />
+                ),
+                exam: (
+                  <TwoRowCell
+                    firstRow={item.subject}
+                    secondRow={item.assignment}
+                    tooltipText={'Карточка экзамена – ' + item.subject}
+                  />
+                ),
                 type: <TypeBadge async={item.async} />,
                 start: <DateCell date={item.startDate} />,
                 status: <StatusBadge status={customBadgePropStatus[getExamStatus(item)]} />,
@@ -177,43 +204,55 @@ const Exams: FC = () => {
                   />
                 ),
                 more: (
-                  <Button
-                    size='xs'
-                    onlyIcon
-                    iconRight={IconBento}
-                    view='secondary'
-                    onClick={(e: React.MouseEvent<HTMLElement>) => {
-                      const { x, y } = e.currentTarget.getBoundingClientRect()
-                      setTableMenuPosition((prevState) => {
-                        if (prevState && x === prevState.x && y === prevState.y) {
-                          setIsTableMenuOpen.toogle()
-                        } else {
-                          setIsTableMenuOpen.on()
-                          return { x: x, y: y }
-                        }
-                      })
-                    }}
+                  <MoreButton
+                    items={[
+                      {
+                        label: 'Изменить',
+                        iconLeft: IconEdit
+                      },
+                      {
+                        label: 'Сбросить',
+                        iconLeft: IconRevert
+                      },
+                      {
+                        label: 'Дублировать',
+                        iconLeft: IconCopy
+                      },
+                      {
+                        label: 'Удалить',
+                        iconLeft: IconTrash
+                      }
+                    ]}
                   />
                 )
               }
               return row
             })
-
-            setFullRows(obj)
-          } else setFullRows([])
-        })
+            return obj
+          } else return []
+        }),
+    [filter.date, filter.type, filter.status, filter.organizations, filter.searchQuery],
+    [pagination.displayedRows, pagination.currentPage],
+    () => {
+      setTotal(0)
+      setPagination((prevState) => ({
+        ...prevState,
+        currentPage: 0
+      }))
     }
+  )
 
-    getExams().catch((e) => console.log(e))
-  }, [
-    filter.date,
-    filter.type,
-    filter.status,
-    filter.organizations,
-    filter.searchQuery,
-    pagination.displayedRows,
-    pagination.currentPage
-  ])
+  examsColumn[1].title = (
+    <Checkbox
+      checked={pagination.displayedRows.id === selectedRowsId.length && !!pagination.totalRows}
+      onClick={() =>
+        pagination.displayedRows.id === selectedRowsId.length && !!pagination.totalRows
+          ? setSelectedRowsId([])
+          : setSelectedRowsId(rows.map((item) => item.id))
+      }
+    />
+  )
+
   return (
     <Layout direction={'column'} className={cl.exams}>
       <FilterConstructor
@@ -272,7 +311,7 @@ const Exams: FC = () => {
               {
                 key: 'Status',
                 component: <ExamStatusCombobox value={filter.status} onChange={setStatus} />,
-                flex: 3
+                flex: 4
               },
               {
                 key: 'Organization',
@@ -283,7 +322,7 @@ const Exams: FC = () => {
                     organizationsIds={organizationsIds}
                   />
                 ),
-                flex: 5
+                flex: 4
               }
             ]
           }
@@ -292,9 +331,10 @@ const Exams: FC = () => {
 
       <Layout flex={1} className={cl.tableLayout}>
         <SharedTable<IExamsTableModel>
+          isLoading={isLoading}
           className={cl.table}
-          rows={fullRows}
-          setRows={setFullRows}
+          rows={rows}
+          setRows={setRows}
           columns={examsColumn}
           contextMenuItems={[
             {

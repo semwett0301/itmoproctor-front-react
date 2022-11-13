@@ -1,7 +1,8 @@
-import {AxiosInstance, AxiosResponse} from 'axios'
+import { AxiosInstance, AxiosResponse } from 'axios'
 import axiosConfig from '../../../../config/axiosСonfig'
-import {IExamRow} from '../../../../ts/interfaces/IExams'
-import {IResponseArray} from '../../../../ts/interfaces/IResponseInterfaces';
+import { IExamRow } from '../../../../ts/interfaces/IExams'
+import { IResponseArray } from '../../../../ts/interfaces/IResponseInterfaces'
+import dayjs from 'dayjs'
 
 export interface filterInterface {
   from: string
@@ -24,8 +25,8 @@ export default function (instance: AxiosInstance): IExamsAxios {
   return {
     getListOfExams(
       filter: filterInterface = {
-        from: `2022-07-06T21:00:00.000Z`,
-        to: `2022-10-03T21:00:00.000Z`,
+        from: dayjs().startOf('D').toISOString(),
+        to: dayjs().endOf('D').toISOString(),
         text: null,
         status: null,
         reset: null,

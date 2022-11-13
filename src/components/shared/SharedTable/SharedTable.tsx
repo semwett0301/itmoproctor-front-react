@@ -1,10 +1,13 @@
-import React, {useEffect} from 'react'
-import {Table, TableColumn} from '@consta/uikit/Table'
+import React, { useEffect } from 'react'
+import { Table, TableColumn } from '@consta/uikit/Table'
 import cl from './SharedTable.module.scss'
-import {ContextMenu} from '@consta/uikit/ContextMenu'
-import {Position} from '@consta/uikit/Popover'
-import {ResponsesNothingFound} from '@consta/uikit/ResponsesNothingFound'
-import {IContextMenuItem} from '../CustomHeader/CustomHeader'
+import { ContextMenu } from '@consta/uikit/ContextMenu'
+import { Position } from '@consta/uikit/Popover'
+import { ResponsesNothingFound } from '@consta/uikit/ResponsesNothingFound'
+import { IContextMenuItem } from '../CustomHeader/CustomHeader'
+import { Loader } from '@consta/uikit/Loader'
+import { classJoiner } from '../../../utils/styleClassesUtills'
+import './SharedTable.module.css'
 
 export interface ITableRow {
   id: string
@@ -12,6 +15,7 @@ export interface ITableRow {
 }
 
 interface ISharedTableProps<T extends ITableRow> {
+  isLoading?: boolean
   columns: TableColumn<T>[]
   isMenuOpen: boolean
   menuPosition: Position
@@ -34,30 +38,31 @@ function SharedTable<T extends ITableRow = ITableRow>({
   isMenuOpen,
   menuPosition,
   closeMenu,
-  contextMenuItems
+  contextMenuItems,
+  isLoading
 }: ISharedTableProps<T>): JSX.Element {
   useEffect(() => {
-    console.log('effect')
+    console.log(selectedRows)
     setRows((prevState) => {
       return prevState.map((row) => {
         row.selected = selectedRows && selectedRows.includes(row.id)
         return row
       })
     })
-  }, [selectedRows])
+  }, [selectedRows, setRows])
 
   return (
     <div className={cl.tableWrapper}>
       <Table
-        getCellWrap={() => 'truncate'}
         stickyHeader={true}
+        getCellWrap={() => 'truncate'}
         size='s'
         rows={rows}
         columns={columns}
         zebraStriped={'odd'}
         borderBetweenColumns
         borderBetweenRows
-        className={className || cl.table}
+        className={className ? classJoiner(cl.table, className) : cl.table}
         onCellClick={({ rowId, columnIdx }) => {
           if (columnIdx === 0) {
             if (rowId) {
@@ -70,22 +75,28 @@ function SharedTable<T extends ITableRow = ITableRow>({
                 }
               })
             }
-
-            // toggleSelected(rowId)
           }
         }}
         getAdditionalClassName={({ row }) => (row.selected ? cl.activeRow : '')}
         emptyRowsPlaceholder={
-          <ResponsesNothingFound
-            actions={<></>}
-            description={'Попробуйте изменить критерии поиска'}
-          />
+          isLoading ? (
+            <div>
+              <Loader size={'m'} className={cl.loader} />
+            </div>
+          ) : (
+            <ResponsesNothingFound
+              actions={<></>}
+              description={'Попробуйте изменить критерии поиска'}
+            />
+          )
         }
       />
 
       <ContextMenu
         size='xs'
-        possibleDirections={['leftDown']}
+        direction={'leftCenter'}
+        possibleDirections={['leftCenter']}
+        spareDirection={'leftCenter'}
         className={cl.contextMenu}
         items={contextMenuItems}
         isOpen={isMenuOpen}

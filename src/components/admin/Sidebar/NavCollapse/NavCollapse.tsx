@@ -1,11 +1,10 @@
-import {Card} from '@consta/uikit/Card'
-import React, {FC, useState} from 'react'
-import {Collapse} from '@consta/uikit/Collapse'
-import {NavLink} from 'react-router-dom'
-import {collapseItems, ICollapseItem} from './NavCollapseModel'
+import { Card } from '@consta/uikit/Card'
+import React, { FC, useState } from 'react'
+import { Collapse } from '@consta/uikit/Collapse'
+import { collapseItems, ICollapseItem } from './NavCollapseModel'
 import cl from './NavCollapse.module.scss'
-import {classJoiner, classWatcher} from '../../../../utils/styleClassesUtills'
-import {TabItem} from '../../Admin'
+import { classJoiner, classWatcher } from '../../../../utils/styleClassesUtills'
+import { TabItem } from '../../Admin'
 
 interface NavCollapseProps {
   isOpen: boolean
@@ -18,8 +17,7 @@ const NavCollapse: FC<NavCollapseProps> = ({ isOpen, addTab }) => {
   const navMaker = (item: ICollapseItem, key: string): JSX.Element => {
     if (!item.children) {
       return (
-        <NavLink
-          to={item.path}
+        <div
           className={cl.link}
           key={key}
           onClick={() => {
@@ -30,7 +28,7 @@ const NavCollapse: FC<NavCollapseProps> = ({ isOpen, addTab }) => {
             <item.icon size='s' />
           </div>
           {item.title}
-        </NavLink>
+        </div>
       )
     } else {
       return (
@@ -64,16 +62,12 @@ const NavCollapse: FC<NavCollapseProps> = ({ isOpen, addTab }) => {
                 )}
               >
                 {item.children.map((value) => (
-                  <NavLink
-                    to={value.path}
-                    className={classJoiner(cl.link, cl.collapseLink)}
-                    key={value.title}
-                  >
+                  <div className={classJoiner(cl.link, cl.collapseLink)} key={value.title}>
                     <div className={isOpen ? cl.wideCollapseLinkIcon : cl.collapseLinkIcon}>
                       <value.icon size='xs' />
                     </div>
                     {value.title}
-                  </NavLink>
+                  </div>
                 ))}
               </div>
             </Collapse>
