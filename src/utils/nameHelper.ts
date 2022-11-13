@@ -12,8 +12,8 @@ export const getShortName = (
 ): string => {
   return [
     lastName || null,
-    secondName ? secondName[0] : null,
-    firstname ? firstname[0] : null
+    firstname ? firstname[0] + '.' : null,
+    secondName ? secondName[0] + '.' : null
   ].join(' ')
 }
 
@@ -25,10 +25,10 @@ export const getProctorName = (
   const r = { fullName: 'Не назначен', shortName: 'Не назначен' }
   if (inspector || expert) {
     if (async && expert) {
-      r.shortName = getShortName(expert.lastname, expert.firstname, expert.middlename)
+      r.shortName = getShortName(expert.firstname, expert.middlename, expert.lastname)
       r.fullName = getFullName(expert.lastname, expert.firstname, expert.middlename)
     } else if (!async && inspector) {
-      r.shortName = getShortName(inspector.lastname, inspector.firstname, inspector.middlename)
+      r.shortName = getShortName(inspector.firstname, inspector.middlename, inspector.lastname)
       r.fullName = getFullName(inspector.lastname, inspector.firstname, inspector.middlename)
     }
   }

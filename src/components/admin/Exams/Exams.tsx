@@ -208,7 +208,8 @@ const Exams: FC = () => {
                     items={[
                       {
                         label: 'Изменить',
-                        iconLeft: IconEdit
+                        iconLeft: IconEdit,
+                        onClick: () => console.log(item._id)
                       },
                       {
                         label: 'Сбросить',

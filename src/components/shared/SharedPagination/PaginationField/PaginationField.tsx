@@ -11,6 +11,10 @@ export interface ITotalRowsVariants {
 
 export const totalRowsVariants: ITotalRowsVariants[] = [
   {
+    label: '5',
+    id: 5
+  },
+  {
     label: '50',
     id: 50
   },
