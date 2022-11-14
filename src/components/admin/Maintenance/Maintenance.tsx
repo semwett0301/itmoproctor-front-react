@@ -38,7 +38,7 @@ const Maintenance: FC = () => {
 
   // filter setters
 
-  const setDatePeriod = (value: [Date?, Date?] | null): void => {
+  const setDatePeriod = (value: [Dayjs, Dayjs]): void => {
     const newValue: [Dayjs, Dayjs] = [dayjs(), dayjs()]
     if (value && value[0]) {
       newValue[0] = dayjs(value[0])
@@ -124,7 +124,7 @@ const Maintenance: FC = () => {
               {
                 key: 'date',
                 component: (
-                  <DatePeriodPicker value={date} onChange={({ value }) => setDatePeriod(value)} />
+                  <DatePeriodPicker value={date} onChange={(value) => setDatePeriod(value)} />
                 )
               },
               {
@@ -155,21 +155,21 @@ const Maintenance: FC = () => {
         ]}
       />
       <Layout flex={1}>
-        <SharedTable<IMaintenanceTableModel>
-          className={cl.table}
-          rows={fullRows}
-          setRows={setFullRows}
-          columns={maintenanceColumns}
-          contextMenuItems={[
-            { label: 'Изменить', iconLeft: IconEdit },
-            { label: 'Удалить', iconLeft: IconTrash }
-          ]}
-          isMenuOpen={isTableMenuOpen}
-          menuPosition={tableMenuPosition}
-          closeMenu={setIsTableMenuOpen.off}
-          selectedRows={selectedRowsId}
-          setSelectedRows={setSelectedRowsId}
-        />
+        {/* <SharedTable<IMaintenanceTableModel> */}
+        {/*   className={cl.table} */}
+        {/*   rows={fullRows} */}
+        {/*   setRows={setFullRows} */}
+        {/*   columns={maintenanceColumns} */}
+        {/*   contextMenuItems={[ */}
+        {/*     { label: 'Изменить', iconLeft: IconEdit }, */}
+        {/*     { label: 'Удалить', iconLeft: IconTrash } */}
+        {/*   ]} */}
+        {/*   isMenuOpen={isTableMenuOpen} */}
+        {/*   menuPosition={tableMenuPosition} */}
+        {/*   closeMenu={setIsTableMenuOpen.off} */}
+        {/*   selectedRows={selectedRowsId} */}
+        {/*   setSelectedRows={setSelectedRowsId} */}
+        {/* /> */}
       </Layout>
       <SharedPagination pagination={pagination} setPagination={setPagination} />
     </Layout>

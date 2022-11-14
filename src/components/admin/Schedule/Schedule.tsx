@@ -48,7 +48,7 @@ const Schedule: FC = () => {
 
   // filter setters
 
-  const setDatePeriod = (value: [Date?, Date?] | null): void => {
+  const setDatePeriod = (value: [Dayjs, Dayjs]): void => {
     const newValue: [Dayjs, Dayjs] = [dayjs(), dayjs()]
     if (value && value[0]) {
       newValue[0] = dayjs(value[0])
@@ -139,7 +139,7 @@ const Schedule: FC = () => {
               {
                 key: 'date',
                 component: (
-                  <DatePeriodPicker value={date} onChange={({ value }) => setDatePeriod(value)} />
+                  <DatePeriodPicker value={date} onChange={(value) => setDatePeriod(value)} />
                 )
               },
               {
@@ -171,21 +171,21 @@ const Schedule: FC = () => {
       />
 
       <Layout flex={1} className={cl.tableLayout}>
-        <SharedTable<IScheduleTableModel>
-          className={cl.table}
-          rows={fullRows}
-          setRows={setFullRows}
-          columns={scheduleColumns}
-          contextMenuItems={[
-            { label: 'Изменить', iconLeft: IconEdit },
-            { label: 'Удалить', iconLeft: IconTrash }
-          ]}
-          isMenuOpen={isTableMenuOpen}
-          menuPosition={tableMenuPosition}
-          closeMenu={setIsTableMenuOpen.off}
-          selectedRows={selectedRowsId}
-          setSelectedRows={setSelectedRowsId}
-        />
+        {/* <SharedTable<IScheduleTableModel> */}
+        {/*   className={cl.table} */}
+        {/*   rows={fullRows} */}
+        {/*   setRows={setFullRows} */}
+        {/*   columns={scheduleColumns} */}
+        {/*   contextMenuItems={[ */}
+        {/*     { label: 'Изменить', iconLeft: IconEdit }, */}
+        {/*     { label: 'Удалить', iconLeft: IconTrash } */}
+        {/*   ]} */}
+        {/*   isMenuOpen={isTableMenuOpen} */}
+        {/*   menuPosition={tableMenuPosition} */}
+        {/*   closeMenu={setIsTableMenuOpen.off} */}
+        {/*   selectedRows={selectedRowsId} */}
+        {/*   setSelectedRows={setSelectedRowsId} */}
+        {/* /> */}
       </Layout>
 
       <SharedPagination pagination={pagination} setPagination={setPagination} />

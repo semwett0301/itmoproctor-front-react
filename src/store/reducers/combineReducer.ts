@@ -1,19 +1,21 @@
-import {combineReducers, Reducer} from 'redux'
-import {userReducer} from './userReducer/userReducer'
-import {organizationsReducer} from './organizations/organizationsReducer'
-import {TablesEnum} from '../../config/tablesReducerConfig';
-import {examsTableReducer} from './tables/examsTableReducer/examsTableReducer';
-import {usersTableReducer} from './tables/usersTableReducer/usersTableReducer';
-import {coursesTableReducer} from './tables/courses/coursesTableReducer';
-import {scheduleTableReducer} from './tables/schedule/scheduleTableReducer';
-import {maintenanceTableReducer} from './tables/maintenance/maintenanceTableReducer';
-import {organizationsTableReducer} from './tables/organizations/organizationsTableReducer';
-import {userLoadedReducer} from './userLoaded/userLoadedReducer';
-import {isLoadingReducer} from './isLoading/isLoadingReducer';
-import {osInfoReducer} from './osInfo/osInfoReducer';
-import {selectedModalReducer} from './selectedModal/selectedModalReducer';
 
-const tableReducer = combineReducers<{ [value in TablesEnum]: Reducer} >({
+import { combineReducers, Reducer } from 'redux'
+import { userReducer } from './userReducer/userReducer'
+
+
+import { organizationsReducer } from './organizationsReducer/organizationsReducer'
+import { TablesEnum } from '../../config/tablesReducerConfig'
+import { examsTableReducer } from './tables/examsTableReducer/examsTableReducer'
+import { usersTableReducer } from './tables/usersTableReducer/usersTableReducer'
+import { coursesTableReducer } from './tables/courses/coursesTableReducer'
+import { scheduleTableReducer } from './tables/schedule/scheduleTableReducer'
+import { maintenanceTableReducer } from './tables/maintenance/maintenanceTableReducer'
+import { organizationsTableReducer } from './tables/organizations/organizationsTableReducer'
+import { userLoadedReducer } from './userLoaded/userLoadedReducer'
+import { isLoadingReducer } from './isLoading/isLoadingReducer'
+import { osInfoReducer } from './osInfo/osInfoReducer'
+
+const tableReducer = combineReducers<{ [value in TablesEnum]: Reducer }>({
   exams: examsTableReducer,
   users: usersTableReducer,
   courses: coursesTableReducer,

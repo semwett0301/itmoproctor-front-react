@@ -238,21 +238,21 @@ const Users: FC = () => {
       />
 
       <Layout flex={1} className={cl.tableLayout}>
-        <SharedTable<IUsersTableModel>
-          className={cl.table}
-          rows={fullRows}
-          setRows={setFullRows}
-          columns={usersColumns}
-          contextMenuItems={[
-            { label: 'Изменить', iconLeft: IconEdit },
-            { label: 'Все экзамены', iconLeft: IconAllDone }
-          ]}
-          isMenuOpen={isTableMenuOpen}
-          menuPosition={tableMenuPosition}
-          closeMenu={setIsTableMenuOpen.off}
-          selectedRows={selectedRowsId}
-          setSelectedRows={setSelectedRowsId}
-        />
+        {/* <SharedTable<IUsersTableModel> */}
+        {/*   className={cl.table} */}
+        {/*   rows={fullRows} */}
+        {/*   setRows={setFullRows} */}
+        {/*   columns={usersColumns} */}
+        {/*   contextMenuItems={[ */}
+        {/*     { label: 'Изменить', iconLeft: IconEdit }, */}
+        {/*     { label: 'Все экзамены', iconLeft: IconAllDone } */}
+        {/*   ]} */}
+        {/*   isMenuOpen={isTableMenuOpen} */}
+        {/*   menuPosition={tableMenuPosition} */}
+        {/*   closeMenu={setIsTableMenuOpen.off} */}
+        {/*   selectedRows={selectedRowsId} */}
+        {/*   setSelectedRows={setSelectedRowsId} */}
+        {/* /> */}
       </Layout>
 
       <SharedPagination pagination={pagination} setPagination={setPagination} />

@@ -1,9 +1,9 @@
-import React, {FC} from 'react'
-import {Combobox} from '@consta/uikit/Combobox'
+import React, { FC } from 'react'
+import { Combobox } from '@consta/uikit/Combobox'
 import cl from './ExamStatusCombobox.module.scss'
-import StatusTag, {TagPropStatus} from './StatusTag/StatusTag'
-import {SelectItem} from '@consta/uikit/__internal__/src/components/SelectComponents/SelectItem/SelectItem'
-import {statuses} from './model/statuses'
+import StatusTag, { TagPropStatus } from './StatusTag/StatusTag'
+import { SelectItem } from '@consta/uikit/__internal__/src/components/SelectComponents/SelectItem/SelectItem'
+import { statuses } from './model/statuses'
 
 // TYPES
 
@@ -131,7 +131,7 @@ export const statusList: StatusComboboxItem[] = [
     label: 'Сброшен',
     id: 'reset',
     disabled: false,
-    getStatus: false,
+    getStatus: true,
     groupId: 2,
     className: statuses.reset.className
   },
@@ -139,7 +139,7 @@ export const statusList: StatusComboboxItem[] = [
     label: 'Не сброшен',
     id: 'notReset',
     disabled: false,
-    getStatus: true,
+    getStatus: false,
     groupId: 2,
     className: statuses.notReset.className
   }
@@ -178,8 +178,8 @@ const ExamStatusCombobox: FC<IExamStatusComboboxProp> = ({ value, onChange }) =>
                 statusList[0]
               ]
             } else {
-              if (changeValue.value.filter(item => !item.groupId).length !== 1) {
-                changeValue.value = changeValue.value.filter(item => item.id !== statusList[0].id)
+              if (changeValue.value.filter((item) => !item.groupId).length !== 1) {
+                changeValue.value = changeValue.value.filter((item) => item.id !== statusList[0].id)
               }
             }
           }
