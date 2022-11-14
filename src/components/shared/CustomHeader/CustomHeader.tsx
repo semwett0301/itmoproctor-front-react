@@ -1,15 +1,16 @@
-import React, {FC, ReactElement, useRef, useState} from 'react'
-import {Header, HeaderLogin, HeaderModule} from '@consta/uikit/Header'
+import React, { FC, ReactElement, useRef, useState } from 'react'
+import { Header, HeaderLogin, HeaderModule } from '@consta/uikit/Header'
 import userLogo from '../../../mockData/logos/UserLogo.png'
 import cl from './CustomHeader.module.scss'
-import {ContextMenu} from '@consta/uikit/ContextMenu'
-import {IconComponent} from '@consta/uikit/Icon'
-import {useAppSelector} from '../../../hooks/reduxHooks'
+import { ContextMenu } from '@consta/uikit/ContextMenu'
+import { IconComponent } from '@consta/uikit/Icon'
+import { useAppSelector } from '../../../hooks/reduxHooks'
 
 export type IContextMenuItem = {
   label: string
   onClick?: (params: { e: React.MouseEvent<HTMLDivElement>; item: IContextMenuItem }) => void
   group?: number
+  disabled?: boolean
   iconLeft: IconComponent
 }
 

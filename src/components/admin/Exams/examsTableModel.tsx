@@ -15,9 +15,7 @@ export interface IExamsTableModel extends ITableRow {
   more: ReactNode
 }
 
-type culumns = TableColumn<IExamsTableModel>
-
-export const examsColumn: culumns[] = [
+export const examsColumn: TableColumn<IExamsTableModel>[] = [
   {
     title: '№',
     accessor: 'id',
