@@ -1,5 +1,5 @@
-import { ActionFilterType, TablesEnum } from '../config/tablesReducerConfig'
-import { useAppDispatch, useAppSelector } from './reduxHooks'
+import {ActionFilterType, ActionPayloadTable, TablesEnum} from '../config/tablesReducerConfig'
+import {useAppDispatch, useAppSelector} from './reduxHooks'
 import {
   setCurrentPagination,
   setNewDisplayedRows,
@@ -7,21 +7,23 @@ import {
   setSelect,
   setTotalPagination
 } from '../store/reducers/tables/tablesActionCreators'
-import { IPagination, ITotalPagination } from '../ts/interfaces/IPagination'
-import { ITotalRowsVariants } from '../components/shared/SharedPagination/PaginationField/PaginationField'
-import { Filter } from '../ts/types/Filter'
+import {IPagination, ITotalPagination} from '../ts/interfaces/IPagination'
+import {ITotalRowsVariants} from '../components/shared/SharedPagination/PaginationField/PaginationField'
+import {Filter} from '../ts/types/Filter'
 
-export function useTable(tableName: TablesEnum): {
+export function useTable<T extends Filter>(tableName: TablesEnum): {
   selectedRowsId: string[]
-  filter: Filter
+  filter: T
   pagination: IPagination
   setSelectedRowsId: (rowId: string | string[]) => void
-  setFilter: (newFilterAddition: ActionFilterType) => void
+  setFilter: (newFilterAddition: {
+    [key in keyof T]: T[key]
+  }) => void
   setPagination: (currentPage: number) => void
   setDisplayedRows: (displayedRows: ITotalRowsVariants) => void
   setTotal: (totalRows: number) => void
 } {
-  const { selectedRowsId, filter, pagination } = useAppSelector((state) => state.tables[tableName])
+  const {selectedRowsId, filter, pagination} = useAppSelector((state) => state.tables[tableName])
   const dispatch = useAppDispatch()
 
   const setPagination: (currentPage: number) => void = (currentPage) => {
@@ -57,8 +59,13 @@ export function useTable(tableName: TablesEnum): {
     }
   }
 
-  const setFilter: (newFilterAddition: ActionFilterType) => void = (newFilterAddition) => {
-    dispatch(setNewFilter(newFilterAddition))
+  const setFilter: (newFilterAddition: {
+    [key in keyof T]: T[key]
+  }) => void = (newFilterAddition) => {
+    dispatch(setNewFilter({
+      name: tableName,
+      newFilter: newFilterAddition
+    }))
   }
 
   return {
