@@ -1,11 +1,14 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { ITableRow } from '../components/shared/SharedTable/SharedTable'
+import { Simulate } from 'react-dom/test-utils'
+import select = Simulate.select
 
 export function useTableRequest<ROWS extends ITableRow>(
   request: () => Promise<ROWS[]>,
   filterArray: unknown[],
   paginationArray: unknown[],
-  dropPagination: () => void
+  dropPagination: () => void,
+  selectedRowsId: string[]
 ): {
   isLoading: boolean
   rows: ROWS[]
@@ -22,6 +25,16 @@ export function useTableRequest<ROWS extends ITableRow>(
     setRows(r)
     setIsLoading(false)
   }
+
+  useEffect(() => {
+    setRows((prevState) =>
+      prevState.map((item) =>
+        selectedRowsId.includes(item.id)
+          ? { ...item, selected: true }
+          : { ...item, selected: false }
+      )
+    )
+  }, [rows.length, selectedRowsId.length])
 
   useEffect(() => {
     dropPagination()

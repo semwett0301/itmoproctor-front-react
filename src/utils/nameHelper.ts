@@ -1,8 +1,13 @@
 import { IInspector } from '../ts/interfaces/IInspector'
 import { IExpert } from '../ts/interfaces/IExpert'
+import { IStudent } from '../ts/interfaces/IStudent'
 
 export const getFullName = (...args: string[]): string => {
   return args.join(' ')
+}
+
+export const getStudentName = (student: IStudent): string => {
+  return [student.lastname, student.firstname, student.lastname].join(' ')
 }
 
 export const getShortName = (

@@ -15,42 +15,20 @@ export interface ITableRow {
 }
 
 interface ISharedTableProps<T extends ITableRow> {
-  isLoading?: boolean
-  columns: TableColumn<T>[]
-  isMenuOpen: boolean
-  menuPosition: Position
-  closeMenu: () => void
-  contextMenuItems: IContextMenuItem[]
-  className?: string
   rows: T[]
-  setRows: React.Dispatch<React.SetStateAction<T[]>>
-  selectedRows: string[]
-  setSelectedRows: React.Dispatch<React.SetStateAction<string[]>>
+  onRowSelect: (rowId: string) => void
+  columns: TableColumn<T>[]
+  isLoading?: boolean
+  className?: string
 }
 
 function SharedTable<T extends ITableRow = ITableRow>({
   rows,
-  setRows,
-  selectedRows,
-  setSelectedRows,
-  className,
+  onRowSelect,
   columns,
-  isMenuOpen,
-  menuPosition,
-  closeMenu,
-  contextMenuItems,
-  isLoading
+  isLoading,
+  className
 }: ISharedTableProps<T>): JSX.Element {
-  useEffect(() => {
-    console.log(selectedRows)
-    setRows((prevState) => {
-      return prevState.map((row) => {
-        row.selected = selectedRows && selectedRows.includes(row.id)
-        return row
-      })
-    })
-  }, [selectedRows, setRows])
-
   return (
     <div className={cl.tableWrapper}>
       <Table
@@ -66,14 +44,7 @@ function SharedTable<T extends ITableRow = ITableRow>({
         onCellClick={({ rowId, columnIdx }) => {
           if (columnIdx === 0) {
             if (rowId) {
-              setSelectedRows((prevState) => {
-                if (selectedRows.includes(rowId)) {
-                  const newState = prevState.filter((item) => item != rowId)
-                  return [...newState]
-                } else {
-                  return [...prevState, rowId]
-                }
-              })
+              onRowSelect(rowId)
             }
           }
         }}
@@ -90,20 +61,6 @@ function SharedTable<T extends ITableRow = ITableRow>({
             />
           )
         }
-      />
-
-      <ContextMenu
-        size='xs'
-        direction={'leftCenter'}
-        possibleDirections={['leftCenter']}
-        spareDirection={'leftCenter'}
-        className={cl.contextMenu}
-        items={contextMenuItems}
-        isOpen={isMenuOpen}
-        offset={0}
-        getItemLeftIcon={(item) => item.iconLeft}
-        position={menuPosition}
-        onClickOutside={closeMenu}
       />
     </div>
   )

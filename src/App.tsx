@@ -1,12 +1,17 @@
-import React, {FC} from 'react'
-import {presetGpnDefault, Theme} from '@consta/uikit/Theme'
-import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from 'react-router-dom'
+import React, { FC } from 'react'
+import { presetGpnDefault, Theme } from '@consta/uikit/Theme'
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider
+} from 'react-router-dom'
 import routerHocConfig from './config/routerHocConfig'
-import {createRouter} from './router/createRouter'
-import {useAppDispatch, useAppSelector} from './hooks/reduxHooks'
-import {setUserActionCreator} from './store/reducers/userReducer/userActionCreators'
-import {request} from './api/axios/request'
-import {userLoadedActionCreator} from './store/reducers/userLoaded/userLoadedActionCreators';
+import { createRouter } from './router/createRouter'
+import { useAppDispatch, useAppSelector } from './hooks/reduxHooks'
+import { setUserActionCreator } from './store/reducers/userReducer/userActionCreators'
+import { request } from './api/axios/request'
+import { userLoadedActionCreator } from './store/reducers/userLoaded/userLoadedActionCreators'
 
 export const App: FC = () => {
   const dispatch = useAppDispatch()
