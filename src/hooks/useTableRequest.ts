@@ -1,30 +1,36 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { ITableRow } from '../components/shared/SharedTable/SharedTable'
 
-export function useTableRequest<ROWS>(
+export function useTableRequest<ROWS extends ITableRow>(
   request: () => Promise<ROWS[]>,
   filterArray: unknown[],
   paginationArray: unknown[],
   dropPagination: () => void
-): { isLoading: boolean; rows: ROWS[]; setRows: Dispatch<SetStateAction<ROWS[]>> } {
+): {
+  isLoading: boolean
+  rows: ROWS[]
+  setRows: Dispatch<SetStateAction<ROWS[]>>
+  update: () => Promise<void>
+} {
   const [rows, setRows] = useState<ROWS[]>([])
-  const [flag, setFlag] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
-  const req = async (): Promise<void> => {
-    setFlag(true)
+  const update = async (): Promise<void> => {
+    setIsLoading(true)
     setRows([])
     const r = await request()
     setRows(r)
-    setFlag(false)
+    setIsLoading(false)
   }
 
   useEffect(() => {
     dropPagination()
-    req().catch((e) => console.log(e))
+    update().catch((e) => console.log(e))
   }, filterArray)
 
   useEffect(() => {
-    req().catch((e) => console.log(e))
+    update().catch((e) => console.log(e))
   }, paginationArray)
 
-  return { isLoading: flag, rows: rows, setRows: setRows }
+  return { isLoading, rows, setRows, update }
 }

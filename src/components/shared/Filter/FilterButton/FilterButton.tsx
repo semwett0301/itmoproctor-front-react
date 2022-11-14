@@ -1,9 +1,9 @@
-import React, {FC, useRef, useState} from 'react'
-import {Button} from '@consta/uikit/Button'
-import {IconBento} from '@consta/uikit/IconBento'
-import {ContextMenu} from '@consta/uikit/ContextMenu'
+import React, { FC, useRef, useState } from 'react'
+import { Button } from '@consta/uikit/Button'
+import { IconBento } from '@consta/uikit/IconBento'
+import { ContextMenu } from '@consta/uikit/ContextMenu'
 import cl from '../FilterConstructor.module.scss'
-import {IContextMenuItem} from '../../CustomHeader/CustomHeader'
+import { IContextMenuItem } from '../../CustomHeader/CustomHeader'
 
 interface IFilterButtonProp {
   MenuItems: IContextMenuItem[]
@@ -39,6 +39,7 @@ const FilterButton: FC<IFilterButtonProp> = ({ MenuItems }) => {
         anchorRef={tooltipAnchor}
         getItemLeftIcon={(item) => item.iconLeft}
         getItemOnClick={(item) => item.onClick}
+        getItemDisabled={(item) => item.disabled}
         onClickOutside={() => setIsPopoverVisible(false)}
       />
     </>
