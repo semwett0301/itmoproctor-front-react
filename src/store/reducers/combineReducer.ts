@@ -1,5 +1,7 @@
+
 import { combineReducers, Reducer } from 'redux'
 import { userReducer } from './userReducer/userReducer'
+
 
 import { organizationsReducer } from './organizationsReducer/organizationsReducer'
 import { TablesEnum } from '../../config/tablesReducerConfig'
@@ -28,5 +30,6 @@ export const combineReducer = combineReducers({
   isLoading: isLoadingReducer,
   osInfo: osInfoReducer,
   organizations: organizationsReducer,
-  tables: tableReducer
+  tables: tableReducer,
+  selectedModal: selectedModalReducer
 })
