@@ -48,7 +48,7 @@ const Exams: FC = () => {
   const [organizationsIds, setOrganizationsIds] = useState<string[]>([])
 
   // filter
-  const { pagination, setPagination, setDisplayedRows, setTotal, selectedRowsId, filter, setSelectedRowsId, setFilter } = useTable<ExamFilter>(
+  const { pagination, setCurrentPage, setDisplayedRows, setTotal, selectedRowsId, filter, setSelectedRowsId, setFilter, dropPagination } = useTable<ExamFilter>(
     TablesEnum.EXAMS
   )
 
@@ -178,10 +178,7 @@ const Exams: FC = () => {
       filter.organizations
     ],
     [pagination.displayedRows, pagination.currentPage],
-    () => {
-      setTotal(0)
-      setPagination(0)
-    },
+    dropPagination,
     selectedRowsId
   )
 
@@ -208,7 +205,7 @@ const Exams: FC = () => {
                 component: (
                   <DatePeriodPicker
                     value={filter.date}
-                    onChange={(value) => setFilter({ ...filter, date: value })}
+                    onChange={(value) => setFilter({ date: value })}
                   />
                 )
               },
@@ -217,7 +214,7 @@ const Exams: FC = () => {
                 component: (
                   <SearchField
                     placeholder={'Поиск по экзамену'}
-                    onChange={({ value }) => setFilter({ ...filter, searchQuery: value })}
+                    onChange={({ value }) => setFilter({ searchQuery: value })}
                     value={filter.searchQuery}
                   />
                 ),
@@ -281,7 +278,7 @@ const Exams: FC = () => {
                 component: (
                   <ExamTypeSelect
                     value={filter.type}
-                    onChange={({ value }) => setFilter({ ...filter, type: value })}
+                    onChange={({ value }) => setFilter({ type: value })}
                   />
                 ),
                 flex: 2
@@ -291,7 +288,7 @@ const Exams: FC = () => {
                 component: (
                   <ExamStatusCombobox
                     value={filter.status}
-                    onChange={(value) => setFilter({ ...filter, status: value })}
+                    onChange={(value) => setFilter({ status: value })}
                   />
                 ),
                 flex: 4
@@ -301,7 +298,7 @@ const Exams: FC = () => {
                 component: (
                   <OrganizationSelect
                     value={filter.organizations}
-                    onChange={({ value }) => setFilter({ ...filter, organizations: value })}
+                    onChange={({ value }) => setFilter({ organizations: value })}
                     organizationsIds={organizationsIds}
                   />
                 ),
@@ -322,7 +319,7 @@ const Exams: FC = () => {
         />
       </Layout>
 
-      <SharedPagination pagination={pagination} setPagination={setPagination} setDisplayedRows={setDisplayedRows}/>
+      <SharedPagination pagination={pagination} setCurrentPage={setCurrentPage} setDisplayedRows={setDisplayedRows}/>
     </Layout>
   )
 }

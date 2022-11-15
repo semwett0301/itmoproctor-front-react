@@ -17,7 +17,7 @@ export function useTable<T extends Filter>(tableName: TablesEnum): {
   pagination: IPagination
   setSelectedRowsId: (rowId: string | string[]) => void
   setFilter: (newFilterAddition: {
-    [key in keyof T]: T[key]
+    [key in keyof T]?: T[key]
   }) => void
   setCurrentPage: (currentPage: number) => void
   setDisplayedRows: (displayedRows: ITotalRowsVariants) => void
@@ -70,7 +70,7 @@ export function useTable<T extends Filter>(tableName: TablesEnum): {
   }
 
   const setFilter: (newFilterAddition: {
-    [key in keyof T]: T[key]
+    [key in keyof T]?: T[key]
   }) => void = (newFilterAddition) => {
     dispatch(setNewFilter({
       name: tableName,
