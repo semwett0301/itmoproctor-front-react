@@ -13,7 +13,7 @@ import {IconEdit} from '@consta/uikit/IconEdit'
 import SharedTable from '../../shared/SharedTable/SharedTable'
 import {coursesColumns, ICoursesTableModel} from './coursesTableModel'
 import {request} from '../../../api/axios/request'
-import twoRowCell from '../../shared/SharedTable/TwoRowCell/TwoRowCell'
+import TwoRowCell from '../../shared/SharedTable/TwoRowCell/TwoRowCell'
 import {ICourseRow} from '../../../ts/interfaces/ICourses'
 import DateCell from '../../shared/SharedTable/DateCell/DateCell'
 import {useTableRequest} from '../../../hooks/useTableRequest';
@@ -24,12 +24,6 @@ import {IconCopy} from '@consta/uikit/IconCopy';
 import {closeModal, openModal} from '../../shared/ModalView/ModalView';
 import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit';
 import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton';
-
-// TYPES
-interface IFilter {
-  searchQuery: string | null
-  organizations: IOrganization[] | null
-}
 
 const Courses: FC = () => {
 
@@ -57,7 +51,7 @@ const Courses: FC = () => {
       organizations: item
     })
   }
-  const {isLoading, rows} = useTableRequest(
+  const {isLoading, rows} = useTableRequest<ICoursesTableModel>(
     () => request.courses
       .getListOfCourses({
         text: filter.searchQuery,
@@ -66,7 +60,6 @@ const Courses: FC = () => {
         rows: pagination.displayedRows.id
       })
       .then((r) => {
-        console.log(r)
         setOrganizationsIds(() => r.data.organizations || [])
         setTotal(r.data.total)
         if (r.data.rows.length > 0) {
@@ -74,10 +67,7 @@ const Courses: FC = () => {
             const row: ICoursesTableModel = {
               id: item._id,
               selected: false,
-              name: twoRowCell({
-                firstRow: 'Название курса, Артем добавить и я заменю...',
-                secondRow: '...на тексмт в 2 строках'
-              }),
+              name: <TwoRowCell firstRow={'Название курса, Артем добавить и я заменю...'} secondRow={'...на тексмт в 2 строках'}/>,
               courseCode: item.courseCode,
               sessionCode: item.sessionCode,
               organization: item.organization.shortName,
