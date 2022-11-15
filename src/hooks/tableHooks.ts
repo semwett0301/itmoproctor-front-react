@@ -19,20 +19,30 @@ export function useTable<T extends Filter>(tableName: TablesEnum): {
   setFilter: (newFilterAddition: {
     [key in keyof T]: T[key]
   }) => void
-  setPagination: (currentPage: number) => void
+  setCurrentPage: (currentPage: number) => void
   setDisplayedRows: (displayedRows: ITotalRowsVariants) => void
   setTotal: (totalRows: number) => void
+  dropPagination: () => void
 } {
   const {selectedRowsId, filter, pagination} = useAppSelector((state) => state.tables[tableName])
   const dispatch = useAppDispatch()
 
-  const setPagination: (currentPage: number) => void = (currentPage) => {
+  const setCurrentPage: (currentPage: number) => void = (currentPage) => {
     dispatch(setCurrentPagination(tableName, currentPage))
   }
 
   const setDisplayedRows: (displayedRows: ITotalRowsVariants) => void = (displayedRows) => {
     dispatch(setNewDisplayedRows(tableName, displayedRows))
   }
+
+  const dropPagination: () => void = () => {
+    dispatch(setTotalPagination(tableName, {
+      totalPages: 0,
+      totalRows: 0
+    }))
+    dispatch(setCurrentPagination(tableName, 0))
+  }
+
 
   const setTotal: (totalRows: number) => void = (totalRows) => {
     const totalPagination: ITotalPagination = {
@@ -74,8 +84,9 @@ export function useTable<T extends Filter>(tableName: TablesEnum): {
     pagination,
     setSelectedRowsId,
     setFilter,
-    setPagination,
+    setCurrentPage,
     setDisplayedRows,
-    setTotal
+    setTotal,
+    dropPagination
   }
 }
