@@ -1,13 +1,10 @@
-import React, {Dispatch, FC, SetStateAction} from 'react'
+import React, { FC } from 'react'
 
-import PaginationField, {ITotalRowsVariants, totalRowsVariants} from './PaginationField/PaginationField'
-
-export interface IPagination {
-  displayedRows: ITotalRowsVariants
-  currentPage: number
-  totalRows: number
-  totalPages: number
-}
+import PaginationField, {
+  ITotalRowsVariants,
+  totalRowsVariants
+} from './PaginationField/PaginationField'
+import { IPagination } from '../../../ts/interfaces/IPagination'
 
 interface ISharedPaginationProps {
   pagination: IPagination

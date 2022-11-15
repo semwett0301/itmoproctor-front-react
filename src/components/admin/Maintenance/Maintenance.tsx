@@ -2,7 +2,6 @@ import React, { FC, useEffect, useState } from 'react'
 import cl from './Maintenance.module.scss'
 import { Layout } from '@consta/uikit/Layout'
 import { usePagination } from '../../../hooks/paginationHooks'
-import SharedPagination from '../../shared/SharedPagination/SharedPagination'
 import FilterConstructor from '../../shared/Filter/FilterConstructor'
 import DatePeriodPicker from '../../shared/Filter/DatePeriodPicker/DatePeriodPicker'
 import FilterButton from '../../shared/Filter/FilterButton/FilterButton'
@@ -15,9 +14,8 @@ import { request } from '../../../api/axios/request'
 import { IconBento } from '@consta/uikit/IconBento'
 import { useFlag } from '@consta/uikit/useFlag'
 import { Position } from '@consta/uikit/Popover'
-import { IMaintenanceTableModel, maintenanceColumns } from './maintenanceTableModel'
+import { IMaintenanceTableModel } from './maintenanceTableModel'
 import { IMaintenanceRow } from '../../../ts/interfaces/IMaintenance'
-import SharedTable from '../../shared/SharedTable/SharedTable'
 import DateCell from '../../shared/SharedTable/DateCell/DateCell'
 import dayjs, { Dayjs } from 'dayjs'
 
@@ -171,7 +169,6 @@ const Maintenance: FC = () => {
         {/*   setSelectedRows={setSelectedRowsId} */}
         {/* /> */}
       </Layout>
-      <SharedPagination pagination={pagination} setPagination={setPagination} />
     </Layout>
   )
 }
