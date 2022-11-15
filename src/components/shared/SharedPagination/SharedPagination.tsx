@@ -11,7 +11,7 @@ export interface IPagination {
 
 interface ISharedPaginationProps {
   pagination: IPagination
-  setPagination: (currentPage: number) => void
+  setCurrentPage: (currentPage: number) => void
   setDisplayedRows: (displayedRows: ITotalRowsVariants) => void
 }
 
@@ -22,7 +22,7 @@ const SharedPagination: FC<ISharedPaginationProps> = (props) => {
   }
 
   const setCurrentPage: (value: number) => void = (value) => {
-    props.setPagination(value)
+    props.setCurrentPage(value)
   }
 
   return (
