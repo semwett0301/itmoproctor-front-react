@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from './reduxHooks'
 import { request } from '../api/axios/request'
 import { AppDispatch } from '../store'
-import { setOrganizationActionCreator } from '../store/reducers/organizationsReducer/organizationsActionCreators'
+import { setOrganizationActionCreator } from '../store/reducers/organizations/organizationsActionCreators'
 
 export const useOrganizations = (): {
   loading: boolean
