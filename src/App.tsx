@@ -8,15 +8,12 @@ import {
 } from 'react-router-dom'
 import routerHocConfig from './config/routerHocConfig'
 
-import {createRouter} from './router/createRouter'
-import {useAppDispatch, useAppSelector} from './hooks/reduxHooks'
-import {setUserActionCreator} from './store/reducers/userReducer/userActionCreators'
-import {request} from './api/axios/request'
-import {userLoadedActionCreator} from './store/reducers/userLoaded/userLoadedActionCreators';
-import ModalView from './components/shared/ModalView/ModalView';
-import {Button} from '@consta/uikit/Button';
-import {openModal} from './utils/openModal';
-
+import { createRouter } from './router/createRouter'
+import { useAppDispatch, useAppSelector } from './hooks/reduxHooks'
+import { setUserActionCreator } from './store/reducers/userReducer/userActionCreators'
+import { request } from './api/axios/request'
+import { userLoadedActionCreator } from './store/reducers/userLoaded/userLoadedActionCreators'
+import ModalView from './components/shared/ModalView/ModalView'
 
 export const App: FC = () => {
   const dispatch = useAppDispatch()
@@ -44,7 +41,7 @@ export const App: FC = () => {
 
   return (
     <Theme preset={presetGpnDefault}>
-      <ModalView/>
+      <ModalView />
       <RouterProvider router={router} />
     </Theme>
   )

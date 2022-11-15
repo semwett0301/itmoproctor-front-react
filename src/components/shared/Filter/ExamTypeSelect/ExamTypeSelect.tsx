@@ -1,5 +1,5 @@
-import React, {FC} from 'react'
-import {Select} from '@consta/uikit/Select'
+import React, { FC } from 'react'
+import { Select } from '@consta/uikit/Select'
 
 // TYPES
 export type typeItem = {
@@ -28,7 +28,17 @@ interface IExamTypeSelectProp {
 }
 
 const ExamTypeSelect: FC<IExamTypeSelectProp> = ({ value, onChange }) => {
-  return <Select items={typesList} value={value} onChange={onChange} placeholder='Тип' size='s' />
+  return (
+    <Select
+      items={typesList}
+      value={value}
+      onChange={(p) => {
+        onChange({ value: p.value, e: p.e })
+      }}
+      placeholder='Тип'
+      size='s'
+    />
+  )
 }
 
 export default ExamTypeSelect

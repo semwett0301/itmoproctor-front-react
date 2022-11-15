@@ -39,6 +39,8 @@ import { IconVideo } from '@consta/uikit/IconVideo'
 import { Button } from '@consta/uikit/Button'
 import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
 import { organizationsFormat, resetFormat, statusFormat } from '../../../utils/requestFormatters'
+import { closeModal, openModal } from '../../shared/ModalView/ModalView'
+import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
 
 const Exams: FC = () => {
   const { openTab } = useOpenTab()
@@ -46,17 +48,15 @@ const Exams: FC = () => {
   const [organizationsIds, setOrganizationsIds] = useState<string[]>([])
 
   // filter
-  // filterState
-
   const { selectedRowsId, filter, setSelectedRowsId, setFilter } = useTable<ExamFilter>(
     TablesEnum.EXAMS
   )
+
   // pagination
   const [pagination, setPagination, setTotal] = usePagination()
 
   // Exams table request
-
-  const { isLoading, rows, update } = useTableRequest(
+  const { isLoading, rows } = useTableRequest(
     () =>
       request.exam
         .getListOfExams({
@@ -138,8 +138,7 @@ const Exams: FC = () => {
                     items={[
                       {
                         label: 'Изменить',
-                        iconLeft: IconEdit,
-                        onClick: () => update()
+                        iconLeft: IconEdit
                       },
                       {
                         label: 'Сбросить',
@@ -151,7 +150,17 @@ const Exams: FC = () => {
                       },
                       {
                         label: 'Удалить',
-                        iconLeft: IconTrash
+                        iconLeft: IconTrash,
+                        onClick: () =>
+                          openModal(
+                            <DeleteSubmit
+                              onSubmit={() => {
+                                closeModal()
+                                console.log(row.id)
+                              }}
+                              onCancel={() => closeModal()}
+                            />
+                          )
                       }
                     ]}
                   />
