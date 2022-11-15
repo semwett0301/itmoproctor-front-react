@@ -1,10 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Table, TableColumn } from '@consta/uikit/Table'
 import cl from './SharedTable.module.scss'
-import { ContextMenu } from '@consta/uikit/ContextMenu'
-import { Position } from '@consta/uikit/Popover'
 import { ResponsesNothingFound } from '@consta/uikit/ResponsesNothingFound'
-import { IContextMenuItem } from '../CustomHeader/CustomHeader'
 import { Loader } from '@consta/uikit/Loader'
 import { classJoiner } from '../../../utils/styleClassesUtills'
 import './SharedTable.module.css'
@@ -18,8 +15,8 @@ interface ISharedTableProps<T extends ITableRow> {
   rows: T[]
   onRowSelect: (rowId: string) => void
   columns: TableColumn<T>[]
-  isLoading?: boolean
-  className?: string
+  isLoading: boolean
+  className: string
 }
 
 function SharedTable<T extends ITableRow = ITableRow>({

@@ -25,8 +25,7 @@ export const usersColumns: TableColumn<IUsersTableModel>[] = [
     title: null,
     accessor: 'selected',
     align: 'center',
-    renderCell: (row) => <Checkbox checked={row.selected} />,
-    control: () => <Checkbox checked={true} />
+    renderCell: (row) => <Checkbox checked={row.selected} />
   },
   {
     title: 'Пользователь',
