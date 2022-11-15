@@ -1,4 +1,4 @@
-import {ActionFilterType, ActionPayloadTable, TablesEnum} from '../config/tablesReducerConfig'
+import {TablesEnum} from '../config/tablesReducerConfig'
 import {useAppDispatch, useAppSelector} from './reduxHooks'
 import {
   setCurrentPagination,

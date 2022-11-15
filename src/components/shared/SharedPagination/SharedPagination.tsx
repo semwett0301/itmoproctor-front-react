@@ -11,31 +11,26 @@ export interface IPagination {
 
 interface ISharedPaginationProps {
   pagination: IPagination
-  setPagination: Dispatch<SetStateAction<IPagination>>
+  setPagination: (currentPage: number) => void
+  setDisplayedRows: (displayedRows: ITotalRowsVariants) => void
 }
 
-const SharedPagination: FC<ISharedPaginationProps> = ({ pagination, setPagination }) => {
+const SharedPagination: FC<ISharedPaginationProps> = (props) => {
   // pagination setters
   const setDisplayedRows: (value: ITotalRowsVariants | null) => void = (value) => {
-    setPagination((prevState) => ({
-      ...prevState,
-      displayedRows: value || totalRowsVariants[1]
-    }))
+    props.setDisplayedRows(value || totalRowsVariants[1])
   }
 
   const setCurrentPage: (value: number) => void = (value) => {
-    setPagination((prevState) => ({
-      ...prevState,
-      currentPage: value
-    }))
+    props.setPagination(value)
   }
 
   return (
     <PaginationField
-      totalRows={pagination.totalRows}
-      page={pagination.currentPage}
-      totalPages={pagination.totalPages}
-      displayedRows={pagination.displayedRows}
+      totalRows={props.pagination.totalRows}
+      page={props.pagination.currentPage}
+      totalPages={props.pagination.totalPages}
+      displayedRows={props.pagination.displayedRows}
       setDisplayedRows={setDisplayedRows}
       setCurrentPage={setCurrentPage}
     />

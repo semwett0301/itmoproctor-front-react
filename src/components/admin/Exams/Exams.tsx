@@ -48,12 +48,10 @@ const Exams: FC = () => {
   const [organizationsIds, setOrganizationsIds] = useState<string[]>([])
 
   // filter
-  const { selectedRowsId, filter, setSelectedRowsId, setFilter } = useTable<ExamFilter>(
+  const { pagination, setPagination, setDisplayedRows, setTotal, selectedRowsId, filter, setSelectedRowsId, setFilter } = useTable<ExamFilter>(
     TablesEnum.EXAMS
   )
 
-  // pagination
-  const [pagination, setPagination, setTotal] = usePagination()
 
   // Exams table request
   const { isLoading, rows } = useTableRequest(
@@ -182,10 +180,7 @@ const Exams: FC = () => {
     [pagination.displayedRows, pagination.currentPage],
     () => {
       setTotal(0)
-      setPagination((prevState) => ({
-        ...prevState,
-        currentPage: 0
-      }))
+      setPagination(0)
     },
     selectedRowsId
   )
@@ -327,7 +322,7 @@ const Exams: FC = () => {
         />
       </Layout>
 
-      <SharedPagination pagination={pagination} setPagination={setPagination} />
+      <SharedPagination pagination={pagination} setPagination={setPagination} setDisplayedRows={setDisplayedRows}/>
     </Layout>
   )
 }
