@@ -1,101 +1,59 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useState } from 'react'
 import cl from './Users.module.scss'
 import { Layout } from '@consta/uikit/Layout'
 import FilterConstructor from '../../shared/Filter/FilterConstructor'
 import SearchField from '../../shared/Filter/SearchField/SearchField'
 import FilterButton from '../../shared/Filter/FilterButton/FilterButton'
 import { IconAdd } from '@consta/uikit/IconAdd'
-import { IconEdit } from '@consta/uikit/IconEdit'
 import { IconUpload } from '@consta/uikit/IconUpload'
 import { IconTrash } from '@consta/uikit/IconTrash'
 import OrganizationSelect from '../../shared/Filter/OrganizationSelect/OrganizationSelect'
 import { IOrganization } from '../../../ts/interfaces/IOrganizations'
 import ProviderSelect, { providerItem } from '../../shared/Filter/ProviderSelect/ProviderSelect'
 import { DefaultItem } from '@consta/uikit/__internal__/src/components/Combobox/helpers'
-import { useFlag } from '@consta/uikit/useFlag'
-import { Position } from '@consta/uikit/Popover'
 import RoleCombobox from '../../shared/Filter/RoleCombobox/RoleCombobox'
-import { usePagination } from '../../../hooks/paginationHooks'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
 import { request } from '../../../api/axios/request'
 import { IUsersRow } from '../../../ts/interfaces/IUsers'
-import { Button } from '@consta/uikit/Button'
-import { IconBento } from '@consta/uikit/IconBento'
-import SharedTable from '../../shared/SharedTable/SharedTable'
 import { useTranslation } from 'react-i18next'
-import { IconAllDone } from '@consta/uikit/IconAllDone'
 import { getFullName } from '../../../utils/nameHelper'
 
 import DateCell from '../../shared/SharedTable/DateCell/DateCell'
-import { useOrganizations } from '../../../hooks/organizationsHooks'
-import TwoRowCell from '../../shared/SharedTable/TwoRowCell/TwoRowCell'
 import { IUsersTableModel, usersColumns } from './usersTableModel'
-
-// TYPES
-interface IFilter {
-  searchQuery: string | null
-  organizations: IOrganization[] | null
-  provider: providerItem | null
-  role: DefaultItem[] | null
-}
+import { useTable } from '../../../hooks/tableHooks'
+import { TablesEnum, UserFilter } from '../../../config/tablesReducerConfig'
+import { useOrganizations } from '../../../hooks/organizationsHooks'
+import { useTableRequest } from '../../../hooks/useTableRequest'
+import { IconEdit } from '@consta/uikit/IconEdit'
+import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
+import { IconAllDone } from '@consta/uikit/IconAllDone'
+import SharedTable from '../../shared/SharedTable/SharedTable'
+import { Checkbox } from '@consta/uikit/Checkbox'
 
 const Users: FC = () => {
   const { t } = useTranslation('translation', { keyPrefix: 'admin.users' })
 
-  const [isTableMenuOpen, setIsTableMenuOpen] = useFlag(true)
-  const [tableMenuPosition, setTableMenuPosition] = useState<Position>(undefined)
   const [organizationsIds, setOrganizationsIds] = useState<string[]>([])
 
-  // pagination
-  const [pagination, setPagination, setTotal] = usePagination()
-
-  // Users table request
-  const [fullRows, setFullRows] = useState<IUsersTableModel[]>([])
-  const [selectedRowsId, setSelectedRowsId] = useState<string[]>([])
-
-  const { getOrganization, getOrganizations } = useOrganizations()
+  const { loading, getOrganizations, getOrganization } = useOrganizations()
 
   // filter
-  // filterState
-  const [filter, setFilter] = useState<IFilter>({
-    searchQuery: null,
-    organizations: null,
-    provider: null,
-    role: null
-  })
-
-  // filter setters
-  const setSearchQuery = (query: string | null): void =>
-    setFilter((prevState) => ({
-      ...prevState,
-      searchQuery: query
-    }))
-
-  const setProvider = (item: providerItem | null): void => {
-    setFilter((prevState) => ({
-      ...prevState,
-      provider: item
-    }))
-  }
-
-  const setRole = (item: DefaultItem[] | null): void => {
-    setFilter((prevState) => ({
-      ...prevState,
-      role: item
-    }))
-  }
-
-  const setOrganizations = (item: IOrganization[] | null): void => {
-    setFilter((prevState) => ({
-      ...prevState,
-      organizations: item
-    }))
-  }
+  const {
+    selectedRowsId,
+    filter,
+    pagination,
+    setSelectedRowsId,
+    setFilter,
+    setDisplayedRows,
+    setCurrentPage,
+    setTotal,
+    dropPagination
+  } = useTable<UserFilter>(TablesEnum.USERS)
 
   // Users table request
-  useEffect(() => {
-    const getUsers = async (): Promise<void> => {
-      await request.users
+  const { isLoading, rows } = useTableRequest(
+    () =>
+      request.users
         .getListOfUsers({
           text: filter.searchQuery,
           organization: null,
@@ -103,12 +61,12 @@ const Users: FC = () => {
           page: pagination.currentPage + 1,
           rows: pagination.displayedRows.id
         })
-        .then((r) => {
+        .then((r): IUsersTableModel[] => {
           getOrganizations()
           setOrganizationsIds(() => r.data.organizations || [])
           setTotal(r.data.total)
           if (r.data.rows.length > 0) {
-            const obj: IUsersTableModel[] = r.data.rows.map((item: IUsersRow) => {
+            return r.data.rows.map((item: IUsersRow) => {
               let university = null
               if (item.organization) {
                 university = getOrganization(item.organization)
@@ -121,49 +79,38 @@ const Users: FC = () => {
                 provider: t(`table.providers.${item.provider}`),
                 role: t(`table.roles.${item.role}`),
 
-                university: university
-                  ? university.shortName || (
-                      <TwoRowCell firstRow={'Название отсутствует'} secondRow={`ID:${item._id}`} />
-                    )
-                  : 'kj',
+                university: university ? university.shortName || university.fullName : null,
                 regDate: <DateCell date={item.created} noSecondRow={true} />,
                 lastDate: <DateCell date={item.activityDate} />,
 
                 more: (
-                  <Button
-                    size='xs'
-                    onlyIcon
-                    iconRight={IconBento}
-                    view='secondary'
-                    onClick={(e: React.MouseEvent<HTMLElement>) => {
-                      const { x, y } = e.currentTarget.getBoundingClientRect()
-                      setTableMenuPosition((prevState) => {
-                        if (prevState && x === prevState.x && y === prevState.y) {
-                          setIsTableMenuOpen.toogle()
-                        } else {
-                          setIsTableMenuOpen.on()
-                          return { x: x, y: y }
-                        }
-                      })
-                    }}
+                  <MoreButton
+                    items={[
+                      { label: 'Изменить', iconLeft: IconEdit },
+                      { label: 'Все экзамены', iconLeft: IconAllDone }
+                    ]}
                   />
                 )
               }
             })
+          } else return []
+        }),
+    [filter.searchQuery, filter.role, filter.provider, filter.organizations],
+    [pagination.currentPage, pagination.displayedRows.id],
+    dropPagination,
+    selectedRowsId
+  )
 
-            setFullRows(obj)
-          } else setFullRows([])
-        })
-    }
-    getUsers().catch((e) => console.log(e))
-  }, [
-    filter.searchQuery,
-    filter.role,
-    filter.provider,
-    filter.organizations,
-    pagination.currentPage,
-    pagination.displayedRows.id
-  ])
+  usersColumns[1].title = (
+    <Checkbox
+      checked={pagination.displayedRows.id === selectedRowsId.length && !!pagination.totalRows}
+      onClick={() =>
+        pagination.displayedRows.id === selectedRowsId.length && !!pagination.totalRows
+          ? setSelectedRowsId([])
+          : setSelectedRowsId(rows.map((item) => item.id))
+      }
+    />
+  )
 
   return (
     <Layout direction={'column'} className={cl.users}>
@@ -177,7 +124,7 @@ const Users: FC = () => {
                 component: (
                   <SearchField
                     placeholder={'Поиск пользователя'}
-                    onChange={({ value }) => setSearchQuery(value)}
+                    onChange={({ value }) => setFilter({ ...filter, searchQuery: value })}
                     value={filter.searchQuery}
                   />
                 ),
@@ -188,7 +135,7 @@ const Users: FC = () => {
                 component: (
                   <OrganizationSelect
                     value={filter.organizations}
-                    onChange={({ value }) => setOrganizations(value)}
+                    onChange={({ value }) => setFilter({ ...filter, organizations: value })}
                     organizationsIds={organizationsIds}
                   />
                 ),
@@ -199,7 +146,7 @@ const Users: FC = () => {
                 component: (
                   <ProviderSelect
                     value={filter.provider}
-                    onChange={({ value }) => setProvider(value)}
+                    onChange={({ value }) => setFilter({ ...filter, provider: value })}
                   />
                 ),
                 flex: 1
@@ -207,7 +154,10 @@ const Users: FC = () => {
               {
                 key: 'provider',
                 component: (
-                  <RoleCombobox onChange={({ value }) => setRole(value)} value={filter.role} />
+                  <RoleCombobox
+                    value={filter.role}
+                    onChange={({ value }) => setFilter({ ...filter, role: value })}
+                  />
                 ),
                 flex: 1
               },
@@ -238,24 +188,20 @@ const Users: FC = () => {
       />
 
       <Layout flex={1} className={cl.tableLayout}>
-        {/* <SharedTable<IUsersTableModel> */}
-        {/*   className={cl.table} */}
-        {/*   rows={fullRows} */}
-        {/*   setRows={setFullRows} */}
-        {/*   columns={usersColumns} */}
-        {/*   contextMenuItems={[ */}
-        {/*     { label: 'Изменить', iconLeft: IconEdit }, */}
-        {/*     { label: 'Все экзамены', iconLeft: IconAllDone } */}
-        {/*   ]} */}
-        {/*   isMenuOpen={isTableMenuOpen} */}
-        {/*   menuPosition={tableMenuPosition} */}
-        {/*   closeMenu={setIsTableMenuOpen.off} */}
-        {/*   selectedRows={selectedRowsId} */}
-        {/*   setSelectedRows={setSelectedRowsId} */}
-        {/* /> */}
+        <SharedTable<IUsersTableModel>
+          isLoading={isLoading}
+          className={cl.table}
+          rows={rows}
+          columns={usersColumns}
+          onRowSelect={setSelectedRowsId}
+        />
       </Layout>
 
-      <SharedPagination pagination={pagination} setPagination={setPagination} />
+      <SharedPagination
+        pagination={pagination}
+        setCurrentPage={setCurrentPage}
+        setDisplayedRows={setDisplayedRows}
+      />
     </Layout>
   )
 }

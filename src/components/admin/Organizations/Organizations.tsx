@@ -1,17 +1,13 @@
 import React, { FC, useEffect, useState } from 'react'
-import SharedPagination from '../../shared/SharedPagination/SharedPagination'
 import { usePagination } from '../../../hooks/paginationHooks'
 import { IOrganization } from '../../../ts/interfaces/IOrganizations'
 import { Layout } from '@consta/uikit/Layout'
-import SharedTable from '../../shared/SharedTable/SharedTable'
 import { IconEdit } from '@consta/uikit/IconEdit'
-import { IconRevert } from '@consta/uikit/IconRevert'
-import { IconCopy } from '@consta/uikit/IconCopy'
 import { IconTrash } from '@consta/uikit/IconTrash'
 import { useFlag } from '@consta/uikit/useFlag'
 import { Position } from '@consta/uikit/Popover'
 import { useOrganizations } from '../../../hooks/organizationsHooks'
-import { IOrganizationsTableModel, organizationsColumn } from './organizationsTableData'
+import { IOrganizationsTableModel } from './organizationsTableData'
 import { IconBento } from '@consta/uikit/IconBento'
 import { Button } from '@consta/uikit/Button'
 import cl from './Organizations.module.scss'
@@ -35,8 +31,6 @@ const Organizations: FC = () => {
   const [fullRows, setFullRows] = useState<IOrganizationsTableModel[]>([])
 
   const { loading, getOrganizations } = useOrganizations()
-
-  const [selectedRowsId, setSelectedRowsId] = useState<string[]>([])
 
   const [currentOrganizations, setCurrentOrganizations] = useState<IOrganization[]>([])
 
@@ -186,8 +180,6 @@ const Organizations: FC = () => {
         {/*   setSelectedRows={setSelectedRowsId} */}
         {/* /> */}
       </Layout>
-
-      <SharedPagination pagination={pagination} setPagination={setPagination} />
     </Layout>
   )
 }

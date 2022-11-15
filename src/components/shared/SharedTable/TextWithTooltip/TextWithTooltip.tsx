@@ -13,17 +13,20 @@ interface ITextWithTooltipProp {
 
 const TextWithTooltip: FC<ITextWithTooltipProp> = ({ text, tooltipText, onClick }) => {
   const WithToolTip = withTooltip({
+    mode: 'mouseover',
     content: tooltipText,
     direction: 'upStartLeft',
     possibleDirections: ['upStartRight', 'downLeft'],
     size: 'l'
   })(Text)
-  return (
-    <>
-      <WithToolTip as={'div'} onClick={onClick} size={'s'} truncate={true} className={cl.text}>
-        {text}
-      </WithToolTip>
-    </>
+  return tooltipText ? (
+    <WithToolTip as={'div'} onClick={onClick} size={'s'} truncate={true} className={cl.text}>
+      {text}
+    </WithToolTip>
+  ) : (
+    <Text as={'div'} onClick={onClick} size={'s'} truncate={true} className={cl.text}>
+      {text}
+    </Text>
   )
 }
 
