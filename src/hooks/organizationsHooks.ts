@@ -1,5 +1,5 @@
 import { IOrganization, IOrganizations } from '../ts/interfaces/IOrganizations'
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from './reduxHooks'
 import { request } from '../api/axios/request'
 import { AppDispatch } from '../store'
@@ -7,14 +7,14 @@ import { setOrganizationActionCreator } from '../store/reducers/organizations/or
 
 export const useOrganizations = (): {
   loading: boolean
-  getOrganizations: (ids?: string[]) => IOrganization[]
+  getOrganizations: (ids?: string[]) => Promise<IOrganization[]>
   getOrganization: (id: string) => IOrganization
 } => {
   const [loading, setLoading] = useState(false)
   const organizations: IOrganizations = useAppSelector((state) => state.organizations)
   const dispatch: AppDispatch = useAppDispatch()
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const loadOrganizations: () => Promise<void> = async () => {
       if (Object.keys(organizations).length === 0) {
         setLoading(true)
@@ -29,10 +29,10 @@ export const useOrganizations = (): {
       }
     }
 
-    loadOrganizations()
-  })
+    loadOrganizations().catch((e) => console.log(e))
+  }, [])
 
-  const getOrganizations = (ids?: string[]): IOrganization[] => {
+  const getOrganizations = async (ids?: string[]): Promise<IOrganization[]> => {
     if (ids) {
       return Object.values(organizations).filter((e) => ids.includes(e._id))
     }

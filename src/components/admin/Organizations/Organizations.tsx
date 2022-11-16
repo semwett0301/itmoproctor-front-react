@@ -1,118 +1,126 @@
-import React, { FC, useEffect, useState } from 'react'
-import { usePagination } from '../../../hooks/paginationHooks'
-import { IOrganization } from '../../../ts/interfaces/IOrganizations'
+import React, { FC, useEffect, useLayoutEffect } from 'react'
 import { Layout } from '@consta/uikit/Layout'
 import { IconEdit } from '@consta/uikit/IconEdit'
 import { IconTrash } from '@consta/uikit/IconTrash'
-import { useFlag } from '@consta/uikit/useFlag'
-import { Position } from '@consta/uikit/Popover'
-import { useOrganizations } from '../../../hooks/organizationsHooks'
-import { IOrganizationsTableModel } from './organizationsTableData'
-import { IconBento } from '@consta/uikit/IconBento'
-import { Button } from '@consta/uikit/Button'
+import { IOrganizationsTableModel, organizationsColumn } from './organizationsTableData'
 import cl from './Organizations.module.scss'
 import FilterConstructor from '../../shared/Filter/FilterConstructor'
 import SearchField from '../../shared/Filter/SearchField/SearchField'
 import FilterButton from '../../shared/Filter/FilterButton/FilterButton'
 import { IconAdd } from '@consta/uikit/IconAdd'
-
-interface IFilter {
-  searchQuery: string | null
-}
+import { useTableRequest } from '../../../hooks/useTableRequest'
+import { useTable } from '../../../hooks/tableHooks'
+import { OrganizationsFilter, TablesEnum } from '../../../config/tablesReducerConfig'
+import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
+import { IconRevert } from '@consta/uikit/IconRevert'
+import { IconCopy } from '@consta/uikit/IconCopy'
+import { closeModal, openModal } from '../../shared/ModalView/ModalView'
+import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
+import { useOrganizations } from '../../../hooks/organizationsHooks'
+import SharedTable from '../../shared/SharedTable/SharedTable'
+import SharedPagination from '../../shared/SharedPagination/SharedPagination'
+import { IOrganization } from '../../../ts/interfaces/IOrganizations'
 
 const Organizations: FC = () => {
-  // pagination
-  const [pagination, setPagination, setTotal] = usePagination()
-
-  // table
-  const [isTableMenuOpen, setIsTableMenuOpen] = useFlag(true)
-  const [tableMenuPosition, setTableMenuPosition] = useState<Position>(undefined)
-
-  const [fullRows, setFullRows] = useState<IOrganizationsTableModel[]>([])
+  const {
+    filter,
+    setFilter,
+    pagination,
+    selectedRowsId,
+    setCurrentPage,
+    setDisplayedRows,
+    setSelectedRowsId,
+    setTotal,
+    dropPagination
+  } = useTable<OrganizationsFilter>(TablesEnum.ORGANIZATIONS)
 
   const { loading, getOrganizations } = useOrganizations()
 
-  const [currentOrganizations, setCurrentOrganizations] = useState<IOrganization[]>([])
-
-  // filter
-  // filterState
-  const [{ searchQuery }, setFilter] = useState<IFilter>({
-    searchQuery: null
-  })
-
-  const setSearchQuery = (query: string | null): void =>
-    setFilter((prevState) => ({
-      ...prevState,
-      searchQuery: query
-    }))
-
-  useEffect(() => {
-    if (!loading) {
-      setCurrentOrganizations(getOrganizations())
+  useLayoutEffect(() => {
+    const current = pagination.currentPage
+    if (current < 0) {
+      setCurrentPage(current + 1)
+    } else {
+      setCurrentPage(current - 1)
     }
   }, [loading])
 
-  useEffect(() => {
-    if (searchQuery) {
-      setCurrentOrganizations(
-        getOrganizations().filter((e) => {
-          return (
-            e.shortName?.includes(searchQuery) ||
-            e.fullName?.includes(searchQuery) ||
-            e.code?.includes(searchQuery)
-          )
-        })
+  const { isLoading, rows } = useTableRequest(
+    async () => {
+      const currentRows: IOrganization[] = await getOrganizations().then((o) =>
+        o.filter(
+          (r) =>
+            !filter.searchQuery ||
+            r.fullName?.includes(filter.searchQuery) ||
+            r.shortName?.includes(filter.searchQuery) ||
+            r.code?.includes(filter.searchQuery)
+        )
       )
-    } else {
-      setCurrentOrganizations(getOrganizations())
-    }
 
-    pagination.currentPage = 0
-  }, [searchQuery])
+      const newRows: IOrganizationsTableModel[] = []
 
-  useEffect(() => {
-    const newFullRows: IOrganizationsTableModel[] = []
+      setTotal(currentRows.length)
 
-    setTotal(currentOrganizations.length)
-
-    for (
-      let i = pagination.displayedRows.id * pagination.currentPage;
-      i < pagination.displayedRows.id * pagination.currentPage + pagination.displayedRows.id;
-      i++
-    ) {
-      console.log(currentOrganizations[i])
-      if (currentOrganizations[i]) {
-        newFullRows.push({
-          id: currentOrganizations[i]._id,
-          selected: false,
-          fullName: currentOrganizations[i].fullName,
-          shortName: currentOrganizations[i].shortName,
-          code: currentOrganizations[i].code,
-          more: (
-            <Button
-              size='xs'
-              onlyIcon
-              iconRight={IconBento}
-              view='secondary'
-              onClick={(click: React.MouseEvent<HTMLElement>) => {
-                const { x, y } = click.currentTarget.getBoundingClientRect()
-                setTableMenuPosition((prevState) => {
-                  if (prevState && x === prevState.x && y === prevState.y) {
-                    setIsTableMenuOpen.toogle()
-                  } else {
-                    setIsTableMenuOpen.on()
-                    return { x: x, y: y }
+      for (
+        let i = pagination.displayedRows.id * pagination.currentPage;
+        i < pagination.displayedRows.id * pagination.currentPage + pagination.displayedRows.id;
+        i++
+      ) {
+        if (currentRows[i]) {
+          newRows.push({
+            id: currentRows[i]._id,
+            selected: false,
+            fullName: currentRows[i].fullName,
+            shortName: currentRows[i].shortName,
+            code: currentRows[i].code,
+            more: (
+              <MoreButton
+                items={[
+                  {
+                    label: 'Изменить',
+                    iconLeft: IconEdit
+                  },
+                  {
+                    label: 'Сбросить',
+                    iconLeft: IconRevert
+                  },
+                  {
+                    label: 'Дублировать',
+                    iconLeft: IconCopy
+                  },
+                  {
+                    label: 'Удалить',
+                    iconLeft: IconTrash,
+                    onClick: () =>
+                      openModal(
+                        <DeleteSubmit
+                          onSubmit={() => {
+                            closeModal()
+                          }}
+                          onCancel={() => closeModal()}
+                        />
+                      )
                   }
-                })
-              }}
-            />
-          )
-        })
+                ]}
+              />
+            )
+          })
+        }
       }
-    }
 
-    setFullRows(newFullRows)
-  }, [currentOrganizations, pagination.displayedRows, pagination.currentPage])
+      return newRows
+    },
+    [filter.searchQuery],
+    [pagination.displayedRows, pagination.currentPage],
+    dropPagination,
+    selectedRowsId
+  )
+
+  const setSearchQuery = (query: string | null): void =>
+    setFilter({
+      ...filter,
+      searchQuery: query
+    })
 
   return (
     <Layout direction={'column'} className={cl.organizations}>
@@ -127,7 +135,7 @@ const Organizations: FC = () => {
                   <SearchField
                     placeholder={'Поиск университета'}
                     onChange={({ value }) => setSearchQuery(value)}
-                    value={searchQuery}
+                    value={filter.searchQuery}
                   />
                 ),
                 flex: 1
@@ -150,36 +158,20 @@ const Organizations: FC = () => {
       />
 
       <Layout flex={1} className={cl.tableLayout}>
-        {/* <SharedTable<IOrganizationsTableModel> */}
-        {/*   className={cl.table} */}
-        {/*   rows={fullRows} */}
-        {/*   setRows={setFullRows} */}
-        {/*   columns={organizationsColumn} */}
-        {/*   contextMenuItems={[ */}
-        {/*     { */}
-        {/*       label: 'Изменить', */}
-        {/*       iconLeft: IconEdit */}
-        {/*     }, */}
-        {/*     { */}
-        {/*       label: 'Сбросить', */}
-        {/*       iconLeft: IconRevert */}
-        {/*     }, */}
-        {/*     { */}
-        {/*       label: 'Дублировать', */}
-        {/*       iconLeft: IconCopy */}
-        {/*     }, */}
-        {/*     { */}
-        {/*       label: 'Удалить', */}
-        {/*       iconLeft: IconTrash */}
-        {/*     } */}
-        {/*   ]} */}
-        {/*   isMenuOpen={isTableMenuOpen} */}
-        {/*   menuPosition={tableMenuPosition} */}
-        {/*   closeMenu={setIsTableMenuOpen.off} */}
-        {/*   selectedRows={selectedRowsId} */}
-        {/*   setSelectedRows={setSelectedRowsId} */}
-        {/* /> */}
+        <SharedTable<IOrganizationsTableModel>
+          className={cl.table}
+          rows={rows || isLoading}
+          columns={organizationsColumn}
+          isLoading={loading}
+          onRowSelect={setSelectedRowsId}
+        />
       </Layout>
+
+      <SharedPagination
+        pagination={pagination}
+        setCurrentPage={setCurrentPage}
+        setDisplayedRows={setDisplayedRows}
+      />
     </Layout>
   )
 }
