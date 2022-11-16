@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import cl from './DatePeriodPicker.module.scss'
 import { IconCalendar } from '@consta/uikit/IconCalendar'
-import { DatePicker, DatePickerPropOnChange } from '@consta/uikit/DatePicker'
+import { DatePicker } from '@consta/uikit/DatePicker'
 import dayjs, { Dayjs } from 'dayjs'
 import { minDate } from './DatePickerConfig'
 
@@ -17,7 +17,7 @@ const DatePeriodPicker: FC<IDatePeriodPickerProp> = ({ value, onChange }) => {
       className={cl.datePickerField}
       size={'s'}
       type='date-range'
-      value={[value[0].toDate(), value[1].toDate()]}
+      value={[value[0].toDate(), value[1] ? value[1].toDate() : undefined]}
       onChange={(props) => {
         onChange([
           dayjs(props.value && props.value[0]).startOf('D'),

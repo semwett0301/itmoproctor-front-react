@@ -1,7 +1,6 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC } from 'react'
 import cl from './Maintenance.module.scss'
 import { Layout } from '@consta/uikit/Layout'
-import { usePagination } from '../../../hooks/paginationHooks'
 import FilterConstructor from '../../shared/Filter/FilterConstructor'
 import DatePeriodPicker from '../../shared/Filter/DatePeriodPicker/DatePeriodPicker'
 import FilterButton from '../../shared/Filter/FilterButton/FilterButton'
@@ -11,106 +10,101 @@ import { IconTrash } from '@consta/uikit/IconTrash'
 import { Button } from '@consta/uikit/Button'
 import { IconRestart } from '@consta/uikit/IconRestart'
 import { request } from '../../../api/axios/request'
-import { IconBento } from '@consta/uikit/IconBento'
-import { useFlag } from '@consta/uikit/useFlag'
-import { Position } from '@consta/uikit/Popover'
-import { IMaintenanceTableModel } from './maintenanceTableModel'
+import { IMaintenanceTableModel, maintenanceColumns } from './maintenanceTableModel'
 import { IMaintenanceRow } from '../../../ts/interfaces/IMaintenance'
 import DateCell from '../../shared/SharedTable/DateCell/DateCell'
-import dayjs, { Dayjs } from 'dayjs'
-
-// TYPES
-interface IFilter {
-  date: [Dayjs, Dayjs]
-}
+import { useTable } from '../../../hooks/tableHooks'
+import { MaintenanceFilter, TablesEnum } from '../../../config/tablesReducerConfig'
+import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
+import { closeModal, openModal } from '../../shared/ModalView/ModalView'
+import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
+import { useTableRequest } from '../../../hooks/useTableRequest'
+import { Checkbox } from '@consta/uikit/Checkbox'
+import SharedTable from '../../shared/SharedTable/SharedTable'
+import SharedPagination from '../../shared/SharedPagination/SharedPagination'
 
 const Maintenance: FC = () => {
-  // pagination
-  const [pagination, setPagination, setTotal] = usePagination()
+  const {
+    pagination,
+    setCurrentPage,
+    setDisplayedRows,
+    setTotal,
+    selectedRowsId,
+    filter,
+    setSelectedRowsId,
+    setFilter,
+    dropPagination
+  } = useTable<MaintenanceFilter>(TablesEnum.MAINTENANCE)
 
-  // filter
-  // filterState
-  const [{ date }, setFilter] = useState<IFilter>({
-    date: [dayjs(), dayjs()]
-  })
-
-  // filter setters
-
-  const setDatePeriod = (value: [Dayjs, Dayjs]): void => {
-    const newValue: [Dayjs, Dayjs] = [dayjs(), dayjs()]
-    if (value && value[0]) {
-      newValue[0] = dayjs(value[0])
-    }
-    if (value && value[1]) {
-      newValue[1] = dayjs(value[1])
-    }
-
-    setFilter((prevState) => ({
-      ...prevState,
-      date: newValue
-    }))
-  }
-
-  const [isTableMenuOpen, setIsTableMenuOpen] = useFlag(true)
-  const [tableMenuPosition, setTableMenuPosition] = useState<Position>(undefined)
-
-  // Exams table
-  const [fullRows, setFullRows] = useState<IMaintenanceTableModel[]>([])
-  const [selectedRowsId, setSelectedRowsId] = useState<string[]>([])
-
-  useEffect(() => {
-    const getMaintenance = async (): Promise<void> => {
-      setPagination((prevState) => ({
-        ...prevState,
-        currentPage: 0
-      }))
-      await request.maintenance
+  // Exams table request
+  const { isLoading, rows, update } = useTableRequest(
+    () =>
+      request.maintenance
         .getMaintenance({
-          from: date[0].toISOString(),
-          to: null,
+          from: filter.date[0].toISOString(),
+          to: filter.date[1].toISOString(),
           page: pagination.currentPage + 1,
           rows: pagination.displayedRows.id
         })
-        .then((r) => {
-          console.log(r)
+        .then((r): IMaintenanceTableModel[] => {
           setTotal(r.data.total)
           if (r.data.rows.length > 0) {
-            const obj: IMaintenanceTableModel[] = r.data.rows.map((item: IMaintenanceRow) => {
+            return r.data.rows.map((row: IMaintenanceRow) => {
               return {
-                id: item._id,
+                id: row._id,
                 selected: false,
-                beginDate: <DateCell date={item.beginDate} />,
-                endDate: <DateCell date={item.endDate} />,
-                created: <DateCell date={item.created} />,
-                active: item.active,
+                beginDate: <DateCell date={row.beginDate} />,
+                endDate: <DateCell date={row.endDate} />,
+                created: <DateCell date={row.created} />,
+                active: row.active,
                 more: (
-                  <Button
-                    size='xs'
-                    onlyIcon
-                    iconRight={IconBento}
-                    view='secondary'
-                    onClick={(e: React.MouseEvent<HTMLElement>) => {
-                      const { x, y } = e.currentTarget.getBoundingClientRect()
-                      setTableMenuPosition((prevState) => {
-                        if (prevState && x === prevState.x && y === prevState.y) {
-                          setIsTableMenuOpen.toogle()
-                        } else {
-                          setIsTableMenuOpen.on()
-                          return { x: x, y: y }
-                        }
-                      })
-                    }}
+                  <MoreButton
+                    items={[
+                      {
+                        label: 'Изменить',
+                        iconLeft: IconEdit
+                      },
+                      {
+                        label: 'Удалить',
+                        iconLeft: IconTrash,
+                        onClick: () =>
+                          openModal(
+                            <DeleteSubmit
+                              onSubmit={() => {
+                                closeModal()
+                                console.log(row._id)
+                              }}
+                              onCancel={() => closeModal()}
+                            />
+                          )
+                      }
+                    ]}
                   />
                 )
               }
             })
+          } else return []
+        }),
+    [filter.date[0], filter.date[1]],
+    [pagination.displayedRows, pagination.currentPage],
+    dropPagination,
+    selectedRowsId,
+    setSelectedRowsId
+  )
 
-            setFullRows(obj)
-          } else setFullRows([])
-        })
-    }
-    getMaintenance().catch((e) => console.log(e))
-  }, [date])
+  maintenanceColumns[1].title = (
+    <Checkbox
+      checked={
+        JSON.stringify(rows.map((i) => i.id)) === JSON.stringify(selectedRowsId) &&
+        !!pagination.totalRows
+      }
+      onClick={() =>
+        pagination.displayedRows.id === selectedRowsId.length && !!pagination.totalRows
+          ? setSelectedRowsId([])
+          : setSelectedRowsId(rows.map((item) => item.id))
+      }
+    />
+  )
 
   return (
     <Layout direction={'column'} className={cl.maintenance}>
@@ -122,7 +116,10 @@ const Maintenance: FC = () => {
               {
                 key: 'date',
                 component: (
-                  <DatePeriodPicker value={date} onChange={(value) => setDatePeriod(value)} />
+                  <DatePeriodPicker
+                    value={filter.date}
+                    onChange={(value) => setFilter({ date: value })}
+                  />
                 )
               },
               {
@@ -133,7 +130,16 @@ const Maintenance: FC = () => {
               {
                 key: 'reload_btn',
                 component: (
-                  <Button onlyIcon={true} iconLeft={IconRestart} size={'s'} view={'secondary'} />
+                  <Button
+                    onlyIcon={true}
+                    iconLeft={IconRestart}
+                    size={'s'}
+                    view={'secondary'}
+                    onClick={() => {
+                      setSelectedRowsId([])
+                      update().catch((e) => console.log(e))
+                    }}
+                  />
                 )
               },
               {
@@ -153,22 +159,19 @@ const Maintenance: FC = () => {
         ]}
       />
       <Layout flex={1}>
-        {/* <SharedTable<IMaintenanceTableModel> */}
-        {/*   className={cl.table} */}
-        {/*   rows={fullRows} */}
-        {/*   setRows={setFullRows} */}
-        {/*   columns={maintenanceColumns} */}
-        {/*   contextMenuItems={[ */}
-        {/*     { label: 'Изменить', iconLeft: IconEdit }, */}
-        {/*     { label: 'Удалить', iconLeft: IconTrash } */}
-        {/*   ]} */}
-        {/*   isMenuOpen={isTableMenuOpen} */}
-        {/*   menuPosition={tableMenuPosition} */}
-        {/*   closeMenu={setIsTableMenuOpen.off} */}
-        {/*   selectedRows={selectedRowsId} */}
-        {/*   setSelectedRows={setSelectedRowsId} */}
-        {/* /> */}
+        <SharedTable
+          className={cl.table}
+          rows={rows}
+          columns={maintenanceColumns}
+          onRowSelect={setSelectedRowsId}
+          isLoading={isLoading}
+        />
       </Layout>
+      <SharedPagination
+        pagination={pagination}
+        setCurrentPage={setCurrentPage}
+        setDisplayedRows={setDisplayedRows}
+      />
     </Layout>
   )
 }

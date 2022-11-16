@@ -1,9 +1,9 @@
-import {typeItem} from '../../components/shared/Filter/ExamTypeSelect/ExamTypeSelect';
-import {StatusComboboxItem} from '../../components/shared/Filter/ExamStatusCombobox/ExamStatusCombobox';
-import {IOrganization} from '../interfaces/IOrganizations';
-import {providerItem} from '../../components/shared/Filter/ProviderSelect/ProviderSelect';
-import {DefaultItem} from '@consta/uikit/__internal__/src/components/Combobox/helpers';
-import {Dayjs} from 'dayjs';
+import { typeItem } from '../../components/shared/Filter/ExamTypeSelect/ExamTypeSelect'
+import { StatusComboboxItem } from '../../components/shared/Filter/ExamStatusCombobox/ExamStatusCombobox'
+import { IOrganization } from '../interfaces/IOrganizations'
+import { providerItem } from '../../components/shared/Filter/ProviderSelect/ProviderSelect'
+import { DefaultItem } from '@consta/uikit/__internal__/src/components/Combobox/helpers'
+import { Dayjs } from 'dayjs'
 
 export interface IDateFilter {
   date: [Dayjs, Dayjs]
@@ -22,7 +22,7 @@ export interface IStatusFilter {
 }
 
 export interface IOrganizationFilter {
-  organizations: IOrganization[] | null,
+  organizations: IOrganization[] | null
 }
 
 export interface IProviderFilter {
@@ -34,7 +34,7 @@ export interface IRoleFilter {
 }
 
 export type Filter =
-  IDateFilter
+  | IDateFilter
   | ISearchQueryFilter
   | ITypeFilter
   | IStatusFilter

@@ -47,7 +47,9 @@ const Schedule: FC = () => {
           rows: pagination.displayedRows.id
         })
         .then((r) => {
+          setTotal(0)
           setTotal(r.data.total)
+          console.log(r.data.total)
           if (r.data.rows.length > 0) {
             return r.data.rows.map((item: IScheduleRow) => {
               return {
@@ -77,12 +79,16 @@ const Schedule: FC = () => {
     [filter.searchQuery, filter.date],
     [pagination.currentPage, pagination.displayedRows.id],
     dropPagination,
-    selectedRowsId
+    selectedRowsId,
+    setSelectedRowsId
   )
 
   scheduleColumns[1].title = (
     <Checkbox
-      checked={pagination.displayedRows.id === selectedRowsId.length && !!pagination.totalRows}
+      checked={
+        JSON.stringify(rows.map((i) => i.id)) === JSON.stringify(selectedRowsId) &&
+        !!pagination.totalRows
+      }
       onClick={() =>
         pagination.displayedRows.id === selectedRowsId.length && !!pagination.totalRows
           ? setSelectedRowsId([])
