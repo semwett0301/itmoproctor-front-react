@@ -10,7 +10,6 @@ import { IconUpload } from '@consta/uikit/IconUpload'
 import { IconTrash } from '@consta/uikit/IconTrash'
 import SharedTable from '../../shared/SharedTable/SharedTable'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
-import { usePagination } from '../../../hooks/paginationHooks'
 import ExamStatusCombobox from '../../shared/Filter/ExamStatusCombobox/ExamStatusCombobox'
 import ExamTypeSelect from '../../shared/Filter/ExamTypeSelect/ExamTypeSelect'
 import FilterConstructor from '../../shared/Filter/FilterConstructor'
@@ -48,10 +47,17 @@ const Exams: FC = () => {
   const [organizationsIds, setOrganizationsIds] = useState<string[]>([])
 
   // filter
-  const { pagination, setCurrentPage, setDisplayedRows, setTotal, selectedRowsId, filter, setSelectedRowsId, setFilter, dropPagination } = useTable<ExamFilter>(
-    TablesEnum.EXAMS
-  )
-
+  const {
+    pagination,
+    setCurrentPage,
+    setDisplayedRows,
+    setTotal,
+    selectedRowsId,
+    filter,
+    setSelectedRowsId,
+    setFilter,
+    dropPagination
+  } = useTable<ExamFilter>(TablesEnum.EXAMS)
 
   // Exams table request
   const { isLoading, rows } = useTableRequest(
@@ -179,12 +185,16 @@ const Exams: FC = () => {
     ],
     [pagination.displayedRows, pagination.currentPage],
     dropPagination,
-    selectedRowsId
+    selectedRowsId,
+    setSelectedRowsId
   )
 
   examsColumn[1].title = (
     <Checkbox
-      checked={pagination.displayedRows.id === selectedRowsId.length && !!pagination.totalRows}
+      checked={
+        JSON.stringify(rows.map((i) => i.id)) === JSON.stringify(selectedRowsId) &&
+        !!pagination.totalRows
+      }
       onClick={() =>
         pagination.displayedRows.id === selectedRowsId.length && !!pagination.totalRows
           ? setSelectedRowsId([])
@@ -319,7 +329,11 @@ const Exams: FC = () => {
         />
       </Layout>
 
-      <SharedPagination pagination={pagination} setCurrentPage={setCurrentPage} setDisplayedRows={setDisplayedRows}/>
+      <SharedPagination
+        pagination={pagination}
+        setCurrentPage={setCurrentPage}
+        setDisplayedRows={setDisplayedRows}
+      />
     </Layout>
   )
 }

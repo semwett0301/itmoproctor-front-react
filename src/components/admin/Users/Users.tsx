@@ -8,9 +8,7 @@ import { IconAdd } from '@consta/uikit/IconAdd'
 import { IconUpload } from '@consta/uikit/IconUpload'
 import { IconTrash } from '@consta/uikit/IconTrash'
 import OrganizationSelect from '../../shared/Filter/OrganizationSelect/OrganizationSelect'
-import { IOrganization } from '../../../ts/interfaces/IOrganizations'
-import ProviderSelect, { providerItem } from '../../shared/Filter/ProviderSelect/ProviderSelect'
-import { DefaultItem } from '@consta/uikit/__internal__/src/components/Combobox/helpers'
+import ProviderSelect from '../../shared/Filter/ProviderSelect/ProviderSelect'
 import RoleCombobox from '../../shared/Filter/RoleCombobox/RoleCombobox'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
 import { request } from '../../../api/axios/request'
@@ -29,13 +27,14 @@ import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
 import { IconAllDone } from '@consta/uikit/IconAllDone'
 import SharedTable from '../../shared/SharedTable/SharedTable'
 import { Checkbox } from '@consta/uikit/Checkbox'
+import { organizationsFormat, roleFormat } from '../../../utils/requestFormatters'
 
 const Users: FC = () => {
   const { t } = useTranslation('translation', { keyPrefix: 'admin.users' })
 
   const [organizationsIds, setOrganizationsIds] = useState<string[]>([])
 
-  const { loading, getOrganizations, getOrganization } = useOrganizations()
+  const { getOrganizations, getOrganization } = useOrganizations()
 
   // filter
   const {
@@ -56,8 +55,8 @@ const Users: FC = () => {
       request.users
         .getListOfUsers({
           text: filter.searchQuery,
-          organization: null,
-          role: null,
+          organization: organizationsFormat(filter.organizations),
+          role: roleFormat(filter.role),
           page: pagination.currentPage + 1,
           rows: pagination.displayedRows.id
         })
@@ -98,12 +97,16 @@ const Users: FC = () => {
     [filter.searchQuery, filter.role, filter.provider, filter.organizations],
     [pagination.currentPage, pagination.displayedRows.id],
     dropPagination,
-    selectedRowsId
+    selectedRowsId,
+    setSelectedRowsId
   )
 
   usersColumns[1].title = (
     <Checkbox
-      checked={pagination.displayedRows.id === selectedRowsId.length && !!pagination.totalRows}
+      checked={
+        JSON.stringify(rows.map((i) => i.id)) === JSON.stringify(selectedRowsId) &&
+        !!pagination.totalRows
+      }
       onClick={() =>
         pagination.displayedRows.id === selectedRowsId.length && !!pagination.totalRows
           ? setSelectedRowsId([])

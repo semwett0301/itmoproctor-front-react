@@ -1,7 +1,7 @@
-import {TableColumn} from '@consta/uikit/Table'
-import React, {ReactNode} from 'react'
-import {Checkbox} from '@consta/uikit/Checkbox'
-import {ITableRow} from '../../shared/SharedTable/SharedTable'
+import { TableColumn } from '@consta/uikit/Table'
+import React, { ReactNode } from 'react'
+import { Checkbox } from '@consta/uikit/Checkbox'
+import { ITableRow } from '../../shared/SharedTable/SharedTable'
 
 export interface IMaintenanceTableModel extends ITableRow {
   beginDate: ReactNode
@@ -22,8 +22,7 @@ export const maintenanceColumns: TableColumn<IMaintenanceTableModel>[] = [
     title: null,
     accessor: 'selected',
     align: 'center',
-    renderCell: (row) => <Checkbox checked={row.selected} />,
-    control: () => <Checkbox checked={true} />
+    renderCell: (row) => <Checkbox checked={row.selected} />
   },
   {
     title: 'Начало',

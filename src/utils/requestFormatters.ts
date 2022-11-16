@@ -1,5 +1,6 @@
 import { StatusComboboxItem } from '../components/shared/Filter/ExamStatusCombobox/ExamStatusCombobox'
-import { IOrganization, IOrganizations } from '../ts/interfaces/IOrganizations'
+import { IOrganization } from '../ts/interfaces/IOrganizations'
+import { DefaultItem } from '@consta/uikit/__internal__/src/components/Combobox/helpers'
 
 export const statusFormat = (statuses: StatusComboboxItem[] | null): string | null =>
   statuses
@@ -30,3 +31,6 @@ export const resetFormat = (statuses: StatusComboboxItem[] | null): boolean | nu
 
 export const organizationsFormat = (organizations: IOrganization[] | null): string | null =>
   organizations ? organizations.map((item) => item._id).join(',') : null
+
+export const roleFormat = (roles: DefaultItem[] | null): string | null =>
+  (roles && roles.map((item) => item.id).join(',')) || null
