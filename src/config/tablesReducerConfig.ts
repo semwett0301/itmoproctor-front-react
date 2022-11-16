@@ -1,8 +1,8 @@
-import {ITableParams} from '../ts/interfaces/ITableParams';
+import { ITableParams } from '../ts/interfaces/ITableParams'
 import {
   ITotalRowsVariants,
   totalRowsVariants
-} from '../components/shared/SharedPagination/PaginationField/PaginationField';
+} from '../components/shared/SharedPagination/PaginationField/PaginationField'
 import {
   Filter,
   IDateFilter,
@@ -12,9 +12,8 @@ import {
   ISearchQueryFilter,
   IStatusFilter,
   ITypeFilter
-} from '../ts/types/Filter';
-import {ITotalPagination} from '../ts/interfaces/IPagination';
-
+} from '../ts/types/Filter'
+import { ITotalPagination } from '../ts/interfaces/IPagination'
 
 // Список табличек
 
@@ -27,12 +26,16 @@ export enum TablesEnum {
   ORGANIZATIONS = 'organizations'
 }
 
-
 // Конфигурация IAction в зависимости от таблички (фильтра)
 
-export type ActionPayloadTable<T extends Filter> = ITotalRowsVariants | ITotalPagination | string[] | number | {
-  [key in keyof T]: T[key]
-}
+export type ActionPayloadTable<T extends Filter> =
+  | ITotalRowsVariants
+  | ITotalPagination
+  | string[]
+  | number
+  | {
+      [key in keyof T]: T[key]
+    }
 
 // Конфигурация изначальных значений
 
@@ -42,7 +45,7 @@ export function initialTableParams<T extends Filter>(filter: T): ITableParams<T>
     filter: filter,
     pagination: {
       displayedRows: totalRowsVariants[0],
-      currentPage: 1,
+      currentPage: 0,
       totalPages: 0,
       totalRows: 0
     }
@@ -51,7 +54,11 @@ export function initialTableParams<T extends Filter>(filter: T): ITableParams<T>
 
 // Конфигурация типов для фильтров в зависимости от странички
 
-export type ExamFilter = IDateFilter & ISearchQueryFilter & ITypeFilter & IStatusFilter & IOrganizationFilter
+export type ExamFilter = IDateFilter &
+  ISearchQueryFilter &
+  ITypeFilter &
+  IStatusFilter &
+  IOrganizationFilter
 
 export type UserFilter = ISearchQueryFilter & IOrganizationFilter & IProviderFilter & IRoleFilter
 
@@ -73,42 +80,42 @@ type ExamsActionFilterType = {
 }
 
 type UsersActionFilterType = {
-  name: TablesEnum.USERS,
+  name: TablesEnum.USERS
   newFilter: {
     [key in keyof UserFilter]?: UserFilter[key]
   }
 }
 
 type CoursesActionFilterType = {
-  name: TablesEnum.COURSES,
+  name: TablesEnum.COURSES
   newFilter: {
     [key in keyof CoursesFilter]?: CoursesFilter[key]
   }
 }
 
 type ScheduleActionFilterType = {
-  name: TablesEnum.SCHEDULE,
+  name: TablesEnum.SCHEDULE
   newFilter: {
     [key in keyof ScheduleFilter]?: ScheduleFilter[key]
   }
 }
 
 type MaintenanceActionFilterType = {
-  name: TablesEnum.MAINTENANCE,
+  name: TablesEnum.MAINTENANCE
   newFilter: {
     [key in keyof MaintenanceFilter]?: MaintenanceFilter[key]
   }
 }
 
 type OrganizationsActionFilterType = {
-  name: TablesEnum.ORGANIZATIONS,
+  name: TablesEnum.ORGANIZATIONS
   newFilter: {
     [key in keyof OrganizationsFilter]?: OrganizationsFilter[key]
   }
 }
 
 export type ActionFilterType =
-  ExamsActionFilterType
+  | ExamsActionFilterType
   | UsersActionFilterType
   | CoursesActionFilterType
   | ScheduleActionFilterType
