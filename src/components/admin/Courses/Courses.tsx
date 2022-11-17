@@ -11,19 +11,21 @@ import { IconTrash } from '@consta/uikit/IconTrash'
 import { IOrganization } from '../../../ts/interfaces/IOrganizations'
 import { IconEdit } from '@consta/uikit/IconEdit'
 import SharedTable from '../../shared/SharedTable/SharedTable'
-import {coursesColumns, ICoursesTableModel} from './coursesTableModel'
-import {request} from '../../../api/axios/request'
+import { coursesColumns, ICoursesTableModel } from './coursesTableModel'
+import { request } from '../../../api/axios/request'
 import TwoRowCell from '../../shared/SharedTable/TwoRowCell/TwoRowCell'
-import {ICourseRow} from '../../../ts/interfaces/ICourses'
+import { ICourseRow } from '../../../ts/interfaces/ICourses'
 import DateCell from '../../shared/SharedTable/DateCell/DateCell'
-import {useTableRequest} from '../../../hooks/useTableRequest';
-import {useTable} from '../../../hooks/tableHooks';
-import {CoursesFilter, TablesEnum} from '../../../config/tablesReducerConfig';
-import {IconRevert} from '@consta/uikit/IconRevert';
-import {IconCopy} from '@consta/uikit/IconCopy';
-import {closeModal, openModal} from '../../shared/ModalView/ModalView';
-import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit';
-import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton';
+import { useTableRequest } from '../../../hooks/useTableRequest'
+import { useTable } from '../../../hooks/tableHooks'
+import { CoursesFilter, TablesEnum } from '../../../config/tablesReducerConfig'
+import { IconRevert } from '@consta/uikit/IconRevert'
+import { IconCopy } from '@consta/uikit/IconCopy'
+import { closeModal, openModal } from '../../shared/ModalView/ModalView'
+import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
+import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
+import { Checkbox } from '@consta/uikit/Checkbox'
+import { selectAll } from '../../../utils/selectAll'
 
 const Courses: FC = () => {
   const [organizationsIds, setOrganizationsIds] = useState<string[]>([])
@@ -50,88 +52,82 @@ const Courses: FC = () => {
       organizations: item
     })
   }
-  
-  const {isLoading, rows} = useTableRequest<ICoursesTableModel>(
-    () => request.courses
-      .getListOfCourses({
-        text: filter.searchQuery,
-        organization: filter.organizations?.map((item) => item._id).join(',') || null,
-        page: pagination.currentPage + 1,
-        rows: pagination.displayedRows.id
-      })
-      .then((r) => {
-        setOrganizationsIds(() => r.data.organizations || [])
-        setTotal(r.data.total)
-        if (r.data.rows.length > 0) {
-          const obj: ICoursesTableModel[] = r.data.rows.map((item: ICourseRow) => {
-            const row: ICoursesTableModel = {
-              id: item._id,
-              selected: false,
-              name: <TwoRowCell firstRow={'Название курса, Артем добавить и я заменю...'} secondRow={'...на тексмт в 2 строках'}/>,
-              courseCode: item.courseCode,
-              sessionCode: item.sessionCode,
-              organization: item.organization.shortName,
-              accessAllowed: item.accessAllowed.map((i) => i.shortName).join(', ') || null,
-              updated: <DateCell date={item.updated}/>,
-              more: (
-                <MoreButton
-                  items={[
-                    {
-                      label: 'Изменить',
-                      iconLeft: IconEdit
-                    },
-                    {
-                      label: 'Сбросить',
-                      iconLeft: IconRevert
-                    },
-                    {
-                      label: 'Дублировать',
-                      iconLeft: IconCopy
-                    },
-                    {
-                      label: 'Удалить',
-                      iconLeft: IconTrash,
-                      onClick: () =>
-                        openModal(
-                          <DeleteSubmit
-                            onSubmit={() => {
-                              closeModal()
-                              console.log(row.id)
-                            }}
-                            onCancel={() => closeModal()}
-                          />
-                        )
-                    }
-                  ]}
-                />
-              )
-            }
-            return row
-          })
-          
+
+  const { isLoading, rows } = useTableRequest<ICoursesTableModel>(
+    () =>
+      request.courses
+        .getListOfCourses({
+          text: filter.searchQuery,
+          organization: filter.organizations?.map((item) => item._id).join(',') || null,
+          page: pagination.currentPage + 1,
+          rows: pagination.displayedRows.id
+        })
+        .then((r) => {
+          setOrganizationsIds(() => r.data.organizations || [])
+          setTotal(r.data.total)
+          if (r.data.rows.length > 0) {
+            const obj: ICoursesTableModel[] = r.data.rows.map((item: ICourseRow) => {
+              const row: ICoursesTableModel = {
+                id: item._id,
+                selected: false,
+                name: (
+                  <TwoRowCell
+                    firstRow={'Название курса, Артем добавить и я заменю...'}
+                    secondRow={'...на тексмт в 2 строках'}
+                  />
+                ),
+                courseCode: item.courseCode,
+                sessionCode: item.sessionCode,
+                organization: item.organization.shortName,
+                accessAllowed: item.accessAllowed.map((i) => i.shortName).join(', ') || null,
+                updated: <DateCell date={item.updated} />,
+                more: (
+                  <MoreButton
+                    items={[
+                      {
+                        label: 'Изменить',
+                        iconLeft: IconEdit
+                      },
+                      {
+                        label: 'Сбросить',
+                        iconLeft: IconRevert
+                      },
+                      {
+                        label: 'Дублировать',
+                        iconLeft: IconCopy
+                      },
+                      {
+                        label: 'Удалить',
+                        iconLeft: IconTrash,
+                        onClick: () =>
+                          openModal(
+                            <DeleteSubmit
+                              onSubmit={() => {
+                                closeModal()
+                                console.log(row.id)
+                              }}
+                              onCancel={() => closeModal()}
+                            />
+                          )
+                      }
+                    ]}
+                  />
+                )
+              }
+              return row
+            })
+
             return obj
           } else return []
         }),
     [filter.organizations, filter.searchQuery],
-    [],
+    [pagination.displayedRows, pagination.currentPage],
     dropPagination,
     selectedRowsId,
     setSelectedRowsId
   )
 
-  coursesColumns[1].title = (
-    <Checkbox
-      checked={
-        JSON.stringify(rows.map((i) => i.id)) === JSON.stringify(selectedRowsId) &&
-        !!pagination.totalRows
-      }
-      onClick={() =>
-        pagination.displayedRows.id === selectedRowsId.length && !!pagination.totalRows
-          ? setSelectedRowsId([])
-          : setSelectedRowsId(rows.map((item) => item.id))
-      }
-    />
-  )
+  selectAll(coursesColumns, rows, selectedRowsId, setSelectedRowsId, pagination)
 
   return (
     <Layout direction={'column'} className={cl.courses}>

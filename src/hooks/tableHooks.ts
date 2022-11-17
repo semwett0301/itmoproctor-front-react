@@ -1,5 +1,5 @@
-import {TablesEnum} from '../config/tablesReducerConfig'
-import {useAppDispatch, useAppSelector} from './reduxHooks'
+import { TablesEnum } from '../config/tablesReducerConfig'
+import { useAppDispatch, useAppSelector } from './reduxHooks'
 import {
   setCurrentPagination,
   setNewDisplayedRows,
@@ -7,11 +7,13 @@ import {
   setSelect,
   setTotalPagination
 } from '../store/reducers/tables/tablesActionCreators'
-import {IPagination, ITotalPagination} from '../ts/interfaces/IPagination'
-import {ITotalRowsVariants} from '../components/shared/SharedPagination/PaginationField/PaginationField'
-import {Filter} from '../ts/types/Filter'
+import { IPagination, ITotalPagination } from '../ts/interfaces/IPagination'
+import { ITotalRowsVariants } from '../components/shared/SharedPagination/PaginationField/PaginationField'
+import { Filter } from '../ts/types/Filter'
 
-export function useTable<T extends Filter>(tableName: TablesEnum): {
+export function useTable<T extends Filter>(
+  tableName: TablesEnum
+): {
   selectedRowsId: string[]
   filter: T
   pagination: IPagination
@@ -24,7 +26,7 @@ export function useTable<T extends Filter>(tableName: TablesEnum): {
   setTotal: (totalRows: number) => void
   dropPagination: () => void
 } {
-  const {selectedRowsId, filter, pagination} = useAppSelector((state) => state.tables[tableName])
+  const { selectedRowsId, filter, pagination } = useAppSelector((state) => state.tables[tableName])
   const dispatch = useAppDispatch()
 
   const setCurrentPage: (currentPage: number) => void = (currentPage) => {
@@ -33,16 +35,18 @@ export function useTable<T extends Filter>(tableName: TablesEnum): {
 
   const setDisplayedRows: (displayedRows: ITotalRowsVariants) => void = (displayedRows) => {
     dispatch(setNewDisplayedRows(tableName, displayedRows))
-  }
-
-  const dropPagination: () => void = () => {
-    dispatch(setTotalPagination(tableName, {
-      totalPages: 0,
-      totalRows: 0
-    }))
     dispatch(setCurrentPagination(tableName, 0))
   }
 
+  const dropPagination: () => void = () => {
+    dispatch(
+      setTotalPagination(tableName, {
+        totalPages: 0,
+        totalRows: 0
+      })
+    )
+    dispatch(setCurrentPagination(tableName, 0))
+  }
 
   const setTotal: (totalRows: number) => void = (totalRows) => {
     const totalPagination: ITotalPagination = {
@@ -72,10 +76,12 @@ export function useTable<T extends Filter>(tableName: TablesEnum): {
   const setFilter: (newFilterAddition: {
     [key in keyof T]?: T[key]
   }) => void = (newFilterAddition) => {
-    dispatch(setNewFilter({
-      name: tableName,
-      newFilter: newFilterAddition
-    }))
+    dispatch(
+      setNewFilter({
+        name: tableName,
+        newFilter: newFilterAddition
+      })
+    )
   }
 
   return {

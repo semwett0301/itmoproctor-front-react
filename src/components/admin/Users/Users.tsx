@@ -28,6 +28,8 @@ import { IconAllDone } from '@consta/uikit/IconAllDone'
 import SharedTable from '../../shared/SharedTable/SharedTable'
 import { Checkbox } from '@consta/uikit/Checkbox'
 import { organizationsFormat, roleFormat } from '../../../utils/requestFormatters'
+import { selectAll } from '../../../utils/selectAll'
+import { coursesColumns } from '../Courses/coursesTableModel'
 
 const Users: FC = () => {
   const { t } = useTranslation('translation', { keyPrefix: 'admin.users' })
@@ -101,19 +103,7 @@ const Users: FC = () => {
     setSelectedRowsId
   )
 
-  usersColumns[1].title = (
-    <Checkbox
-      checked={
-        JSON.stringify(rows.map((i) => i.id)) === JSON.stringify(selectedRowsId) &&
-        !!pagination.totalRows
-      }
-      onClick={() =>
-        pagination.displayedRows.id === selectedRowsId.length && !!pagination.totalRows
-          ? setSelectedRowsId([])
-          : setSelectedRowsId(rows.map((item) => item.id))
-      }
-    />
-  )
+  selectAll(usersColumns, rows, selectedRowsId, setSelectedRowsId, pagination)
 
   return (
     <Layout direction={'column'} className={cl.users}>
@@ -138,7 +128,7 @@ const Users: FC = () => {
                 component: (
                   <OrganizationSelect
                     value={filter.organizations}
-                    onChange={({ value }) => setFilter({ ...filter, organizations: value })}
+                    onChange={({ value }) => setFilter({ organizations: value })}
                     organizationsIds={organizationsIds}
                   />
                 ),
@@ -149,7 +139,7 @@ const Users: FC = () => {
                 component: (
                   <ProviderSelect
                     value={filter.provider}
-                    onChange={({ value }) => setFilter({ ...filter, provider: value })}
+                    onChange={({ value }) => setFilter({ provider: value })}
                   />
                 ),
                 flex: 1
@@ -159,7 +149,7 @@ const Users: FC = () => {
                 component: (
                   <RoleCombobox
                     value={filter.role}
-                    onChange={({ value }) => setFilter({ ...filter, role: value })}
+                    onChange={({ value }) => setFilter({ role: value })}
                   />
                 ),
                 flex: 1

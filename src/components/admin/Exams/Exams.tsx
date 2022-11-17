@@ -18,7 +18,6 @@ import SearchField from '../../shared/Filter/SearchField/SearchField'
 import FilterButton from '../../shared/Filter/FilterButton/FilterButton'
 import OrganizationSelect from '../../shared/Filter/OrganizationSelect/OrganizationSelect'
 import { Layout } from '@consta/uikit/Layout'
-import { examsColumn, IExamsTableModel } from './examsTableModel'
 import { useTableRequest } from '../../../hooks/useTableRequest'
 import { Checkbox } from '@consta/uikit/Checkbox'
 import { useTable } from '../../../hooks/tableHooks'
@@ -40,6 +39,9 @@ import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
 import { organizationsFormat, resetFormat, statusFormat } from '../../../utils/requestFormatters'
 import { closeModal, openModal } from '../../shared/ModalView/ModalView'
 import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
+import { examsColumn, IExamsTableModel } from './examsTableModel'
+import { selectAll } from '../../../utils/selectAll'
+import { coursesColumns } from '../Courses/coursesTableModel'
 
 const Exams: FC = () => {
   const { openTab } = useOpenTab()
@@ -189,19 +191,7 @@ const Exams: FC = () => {
     setSelectedRowsId
   )
 
-  examsColumn[1].title = (
-    <Checkbox
-      checked={
-        JSON.stringify(rows.map((i) => i.id)) === JSON.stringify(selectedRowsId) &&
-        !!pagination.totalRows
-      }
-      onClick={() =>
-        pagination.displayedRows.id === selectedRowsId.length && !!pagination.totalRows
-          ? setSelectedRowsId([])
-          : setSelectedRowsId(rows.map((item) => item.id))
-      }
-    />
-  )
+  selectAll(examsColumn, rows, selectedRowsId, setSelectedRowsId, pagination)
 
   return (
     <Layout direction={'column'} className={cl.exams}>

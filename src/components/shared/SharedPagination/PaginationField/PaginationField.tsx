@@ -70,7 +70,7 @@ const PaginationField: FC<IPaginationProp> = ({
 }) => {
   const startRow: number = totalRows ? page * displayedRows.id + 1 : 0,
     endRow: number =
-      totalPages - 1 === page || !totalPages ? totalRows : (page + 1) * displayedRows.id - 1
+      totalPages - 1 === page || !totalPages ? totalRows : (page + 1) * displayedRows.id
   return (
     <div className={cl.pagination}>
       <Select

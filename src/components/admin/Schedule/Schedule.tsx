@@ -20,6 +20,8 @@ import { ScheduleFilter, TablesEnum } from '../../../config/tablesReducerConfig'
 import { useTableRequest } from '../../../hooks/useTableRequest'
 import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
 import { Checkbox } from '@consta/uikit/Checkbox'
+import { selectAll } from '../../../utils/selectAll'
+import { coursesColumns } from '../Courses/coursesTableModel'
 
 const Schedule: FC = () => {
   // filter
@@ -83,19 +85,7 @@ const Schedule: FC = () => {
     setSelectedRowsId
   )
 
-  scheduleColumns[1].title = (
-    <Checkbox
-      checked={
-        JSON.stringify(rows.map((i) => i.id)) === JSON.stringify(selectedRowsId) &&
-        !!pagination.totalRows
-      }
-      onClick={() =>
-        pagination.displayedRows.id === selectedRowsId.length && !!pagination.totalRows
-          ? setSelectedRowsId([])
-          : setSelectedRowsId(rows.map((item) => item.id))
-      }
-    />
-  )
+  selectAll(scheduleColumns, rows, selectedRowsId, setSelectedRowsId, pagination)
 
   return (
     <Layout direction={'column'} className={cl.schedule}>

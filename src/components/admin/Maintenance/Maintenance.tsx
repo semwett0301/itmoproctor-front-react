@@ -22,6 +22,8 @@ import { useTableRequest } from '../../../hooks/useTableRequest'
 import { Checkbox } from '@consta/uikit/Checkbox'
 import SharedTable from '../../shared/SharedTable/SharedTable'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
+import { selectAll } from '../../../utils/selectAll'
+import { coursesColumns } from '../Courses/coursesTableModel'
 
 const Maintenance: FC = () => {
   const {
@@ -92,19 +94,7 @@ const Maintenance: FC = () => {
     setSelectedRowsId
   )
 
-  maintenanceColumns[1].title = (
-    <Checkbox
-      checked={
-        JSON.stringify(rows.map((i) => i.id)) === JSON.stringify(selectedRowsId) &&
-        !!pagination.totalRows
-      }
-      onClick={() =>
-        pagination.displayedRows.id === selectedRowsId.length && !!pagination.totalRows
-          ? setSelectedRowsId([])
-          : setSelectedRowsId(rows.map((item) => item.id))
-      }
-    />
-  )
+  selectAll(maintenanceColumns, rows, selectedRowsId, setSelectedRowsId, pagination)
 
   return (
     <Layout direction={'column'} className={cl.maintenance}>

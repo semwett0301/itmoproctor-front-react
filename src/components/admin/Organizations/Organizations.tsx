@@ -20,6 +20,8 @@ import { useOrganizations } from '../../../hooks/organizationsHooks'
 import SharedTable from '../../shared/SharedTable/SharedTable'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
 import { IOrganization } from '../../../ts/interfaces/IOrganizations'
+import { selectAll } from '../../../utils/selectAll'
+import { coursesColumns } from '../Courses/coursesTableModel'
 
 const Organizations: FC = () => {
   const {
@@ -37,12 +39,8 @@ const Organizations: FC = () => {
   const { loading, getOrganizations } = useOrganizations()
 
   useLayoutEffect(() => {
-    const current = pagination.currentPage
-    if (current < 0) {
-      setCurrentPage(current + 1)
-    } else {
-      setCurrentPage(current - 1)
-    }
+    if (loading) setCurrentPage(1)
+    else setCurrentPage(0)
   }, [loading])
 
   const { isLoading, rows } = useTableRequest(
@@ -113,8 +111,11 @@ const Organizations: FC = () => {
     [filter.searchQuery],
     [pagination.displayedRows, pagination.currentPage],
     dropPagination,
-    selectedRowsId
+    selectedRowsId,
+    setSelectedRowsId
   )
+
+  selectAll(organizationsColumn, rows, selectedRowsId, setSelectedRowsId, pagination)
 
   const setSearchQuery = (query: string | null): void =>
     setFilter({
@@ -160,9 +161,9 @@ const Organizations: FC = () => {
       <Layout flex={1} className={cl.tableLayout}>
         <SharedTable<IOrganizationsTableModel>
           className={cl.table}
-          rows={rows || isLoading}
+          rows={rows}
           columns={organizationsColumn}
-          isLoading={loading}
+          isLoading={loading || isLoading}
           onRowSelect={setSelectedRowsId}
         />
       </Layout>

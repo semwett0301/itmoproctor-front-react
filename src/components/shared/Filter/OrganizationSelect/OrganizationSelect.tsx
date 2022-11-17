@@ -1,7 +1,7 @@
-import React, {FC, useEffect, useState} from 'react'
-import {Combobox} from '@consta/uikit/Combobox'
-import {IOrganization} from '../../../../ts/interfaces/IOrganizations'
-import {useOrganizations} from '../../../../hooks/organizationsHooks'
+import React, { FC, useEffect, useState } from 'react'
+import { Combobox } from '@consta/uikit/Combobox'
+import { IOrganization } from '../../../../ts/interfaces/IOrganizations'
+import { useOrganizations } from '../../../../hooks/organizationsHooks'
 
 interface IOrganizationSelectProp {
   organizationsIds: string[]
@@ -10,13 +10,9 @@ interface IOrganizationSelectProp {
 }
 
 const OrganizationSelect: FC<IOrganizationSelectProp> = ({ value, onChange, organizationsIds }) => {
-  const [items, setItems] = useState<IOrganization[]>([])
+  const [items] = useState<IOrganization[]>([])
 
-  const {loading, getOrganizations} = useOrganizations()
-
-  useEffect(() => {
-    setItems(getOrganizations(organizationsIds))
-  }, [organizationsIds])
+  const { loading } = useOrganizations()
 
   return (
     <Combobox
