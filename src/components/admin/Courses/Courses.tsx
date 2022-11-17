@@ -151,9 +151,10 @@ const Courses: FC = () => {
                 key: 'Organization',
                 component: (
                   <OrganizationSelect
-                    value={filter.organizations}
+                    value={filter.organizations || []}
                     onChange={({ value }) => setOrganizations(value)}
                     organizationsIds={organizationsIds}
+                    isIdsLoading={isLoading}
                   />
                 ),
                 flex: 1

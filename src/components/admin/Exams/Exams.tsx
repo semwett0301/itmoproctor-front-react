@@ -297,9 +297,10 @@ const Exams: FC = () => {
                 key: 'Organization',
                 component: (
                   <OrganizationSelect
-                    value={filter.organizations}
+                    value={filter.organizations || []}
                     onChange={({ value }) => setFilter({ organizations: value })}
                     organizationsIds={organizationsIds}
+                    isIdsLoading={isLoading}
                   />
                 ),
                 flex: 4
