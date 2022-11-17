@@ -12,11 +12,12 @@ export function selectAll<T extends ITableRow>(
   setSelectedRowsId: (arr: string[]) => void,
   pagination: IPagination
 ): void {
-  columns[1].title = (
+  columns[1].title = rows.length ? (
     <Checkbox
       checked={
-        JSON.stringify(rows.map((i) => i.id)) === JSON.stringify(selectedRowsId) &&
-        !!pagination.totalRows
+        selectedRowsId.length > 0 &&
+        rows.length > 0 &&
+        JSON.stringify(rows.map((i) => i.id)) === JSON.stringify(selectedRowsId)
       }
       onClick={() =>
         pagination.displayedRows.id === selectedRowsId.length && !!pagination.totalRows
@@ -24,5 +25,7 @@ export function selectAll<T extends ITableRow>(
           : setSelectedRowsId(Array.from(rows, (r) => r.id))
       }
     />
+  ) : (
+    <></>
   )
 }
