@@ -1,0 +1,18 @@
+.title{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: solid 1px var(--color-bg-border);
+  padding: 9px 16px;
+}
+
+.contentList{
+  display: inline-flex;
+  flex-direction: column;
+  width: 100%;
+  row-gap: 19px;
+}
+
+.wrapper{
+  width: 452px;
+}

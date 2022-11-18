@@ -3,6 +3,7 @@ import axiosConfig from '../../../../config/axiosСonfig'
 import { IExamRow } from '../../../../ts/interfaces/IExams'
 import { IResponseArray } from '../../../../ts/interfaces/IResponseInterfaces'
 import dayjs from 'dayjs'
+import { IExam } from '../../../../ts/interfaces/IExam'
 
 export interface filterInterface {
   from: string
@@ -19,6 +20,7 @@ export interface filterInterface {
 
 export interface IExamsAxios {
   getListOfExams: (filter?: filterInterface) => Promise<AxiosResponse<IResponseArray<IExamRow>>>
+  getExam: (examId: string) => Promise<AxiosResponse<IExam>>
 }
 
 export default function (instance: AxiosInstance): IExamsAxios {
@@ -38,6 +40,9 @@ export default function (instance: AxiosInstance): IExamsAxios {
       }
     ): Promise<AxiosResponse<IResponseArray<IExamRow>>> {
       return instance.get(`${axiosConfig.adminUrl}/exams`, { params: filter })
+    },
+    getExam(examId): Promise<AxiosResponse<IExam>> {
+      return instance.get(`${axiosConfig.studentUrl}/info/${examId}`)
     }
   }
 }

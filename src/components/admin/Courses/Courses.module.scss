@@ -5,8 +5,8 @@
 
 .tableLayout {
   overflow-x: hidden;
-  overflow-y: scroll;
-  height: min-content;
+  overflow-y: auto;
+  height: auto;
 }
 
 .table {

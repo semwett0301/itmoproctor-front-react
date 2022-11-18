@@ -16,7 +16,7 @@ import FilterConstructor from '../../shared/Filter/FilterConstructor'
 import DatePeriodPicker from '../../shared/Filter/DatePeriodPicker/DatePeriodPicker'
 import SearchField from '../../shared/Filter/SearchField/SearchField'
 import FilterButton from '../../shared/Filter/FilterButton/FilterButton'
-import OrganizationSelect from '../../shared/Filter/OrganizationSelect/OrganizationSelect'
+import OrganizationCombobox from '../../shared/Filter/OrganizationCombobox/OrganizationCombobox'
 import { Layout } from '@consta/uikit/Layout'
 import { useTableRequest } from '../../../hooks/useTableRequest'
 import { Checkbox } from '@consta/uikit/Checkbox'
@@ -41,12 +41,15 @@ import { closeModal, openModal } from '../../shared/ModalView/ModalView'
 import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
 import { examsColumn, IExamsTableModel } from './examsTableModel'
 import { selectAll } from '../../../utils/selectAll'
-import { coursesColumns } from '../Courses/coursesTableModel'
+import { SortByProps } from '@consta/uikit/Table'
+import ExamView from '../modals/ExamView/ExamView'
 
 const Exams: FC = () => {
   const { openTab } = useOpenTab()
 
   const [organizationsIds, setOrganizationsIds] = useState<string[]>([])
+
+  const [sortSetting, setSortSetting] = useState<SortByProps<IExamsTableModel> | null>(null)
 
   // filter
   const {
@@ -113,6 +116,7 @@ const Exams: FC = () => {
                     firstRow={item.subject}
                     secondRow={item.assignment}
                     tooltipText={'Карточка экзамена – ' + item.subject}
+                    onClick={() => openModal(<ExamView examId={item._id} />)}
                   />
                 ),
                 type: <TypeBadge async={item.async} />,
@@ -296,7 +300,7 @@ const Exams: FC = () => {
               {
                 key: 'Organization',
                 component: (
-                  <OrganizationSelect
+                  <OrganizationCombobox
                     value={filter.organizations || []}
                     onChange={({ value }) => setFilter({ organizations: value })}
                     organizationsIds={organizationsIds}

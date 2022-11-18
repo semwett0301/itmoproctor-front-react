@@ -2,6 +2,7 @@ import { TableColumn } from '@consta/uikit/Table'
 import React, { ReactNode } from 'react'
 import { Checkbox } from '@consta/uikit/Checkbox'
 import { ITableRow } from '../../shared/SharedTable/SharedTable'
+import HeaderCell from '../../shared/SharedTable/HeaderCell/HeaderCell'
 
 export interface IExamsTableModel extends ITableRow {
   listener: ReactNode
@@ -29,19 +30,22 @@ export const examsColumn: TableColumn<IExamsTableModel>[] = [
     renderCell: (row) => <Checkbox checked={row.selected} />
   },
   {
-    title: 'Слушатель',
+    title: <HeaderCell title={'Слушатель'} />,
     accessor: 'listener',
-    align: 'left'
+    align: 'left',
+    sortable: true
   },
   {
     title: 'Проктор',
     accessor: 'proctor',
-    align: 'left'
+    align: 'left',
+    sortable: true
   },
   {
     title: 'Экзамен',
     accessor: 'exam',
-    align: 'left'
+    align: 'left',
+    sortable: true
   },
   {
     title: 'Тип',

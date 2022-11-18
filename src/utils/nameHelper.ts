@@ -25,8 +25,8 @@ export const getShortName = (
 type proctor = { exists?: true; fullName: string; shortName: string }
 export const getProctorName = (
   async: boolean,
-  inspector: IInspector | undefined,
-  expert: IExpert | undefined
+  inspector: IInspector | undefined | null,
+  expert: IExpert | undefined | null
 ): proctor => {
   const r: proctor = { fullName: 'Не назначен', shortName: 'Не назначен' }
   if (inspector || expert) {

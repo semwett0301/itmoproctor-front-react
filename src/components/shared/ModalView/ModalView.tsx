@@ -29,7 +29,7 @@ const ModalView: FC = () => {
       hasOverlay
       onEsc={closeModal}
       onClickOutside={closeModal}
-      className={classJoiner(cl.Modal, cnMixSpace({ pH: 'm', pV: 's' }))}
+      className={cl.modal}
     >
       {component || <></>}
     </Modal>

@@ -5,7 +5,7 @@ import SharedPagination from '../../shared/SharedPagination/SharedPagination'
 import FilterButton from '../../shared/Filter/FilterButton/FilterButton'
 import FilterConstructor from '../../shared/Filter/FilterConstructor'
 import SearchField from '../../shared/Filter/SearchField/SearchField'
-import OrganizationSelect from '../../shared/Filter/OrganizationSelect/OrganizationSelect'
+import OrganizationCombobox from '../../shared/Filter/OrganizationCombobox/OrganizationCombobox'
 import { IconAdd } from '@consta/uikit/IconAdd'
 import { IconTrash } from '@consta/uikit/IconTrash'
 import { IOrganization } from '../../../ts/interfaces/IOrganizations'
@@ -24,7 +24,6 @@ import { IconCopy } from '@consta/uikit/IconCopy'
 import { closeModal, openModal } from '../../shared/ModalView/ModalView'
 import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
 import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
-import { Checkbox } from '@consta/uikit/Checkbox'
 import { selectAll } from '../../../utils/selectAll'
 
 const Courses: FC = () => {
@@ -48,6 +47,7 @@ const Courses: FC = () => {
     })
 
   const setOrganizations = (item: IOrganization[] | null): void => {
+    console.log(item)
     setFilter({
       organizations: item
     })
@@ -66,14 +66,14 @@ const Courses: FC = () => {
           setOrganizationsIds(() => r.data.organizations || [])
           setTotal(r.data.total)
           if (r.data.rows.length > 0) {
-            const obj: ICoursesTableModel[] = r.data.rows.map((item: ICourseRow) => {
+            return r.data.rows.map((item: ICourseRow) => {
               const row: ICoursesTableModel = {
                 id: item._id,
                 selected: false,
                 name: (
                   <TwoRowCell
-                    firstRow={'Название курса, Артем добавить и я заменю...'}
-                    secondRow={'...на тексмт в 2 строках'}
+                    firstRow={'Название курса, Артем добавит и я заменю...'}
+                    secondRow={'...на текст в 2 строках'}
                   />
                 ),
                 courseCode: item.courseCode,
@@ -116,8 +116,6 @@ const Courses: FC = () => {
               }
               return row
             })
-
-            return obj
           } else return []
         }),
     [filter.organizations, filter.searchQuery],
@@ -150,7 +148,7 @@ const Courses: FC = () => {
               {
                 key: 'Organization',
                 component: (
-                  <OrganizationSelect
+                  <OrganizationCombobox
                     value={filter.organizations || []}
                     onChange={({ value }) => setOrganizations(value)}
                     organizationsIds={organizationsIds}
