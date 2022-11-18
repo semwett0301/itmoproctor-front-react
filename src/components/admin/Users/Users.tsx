@@ -7,8 +7,8 @@ import FilterButton from '../../shared/Filter/FilterButton/FilterButton'
 import { IconAdd } from '@consta/uikit/IconAdd'
 import { IconUpload } from '@consta/uikit/IconUpload'
 import { IconTrash } from '@consta/uikit/IconTrash'
-import OrganizationSelect from '../../shared/Filter/OrganizationSelect/OrganizationSelect'
-import ProviderSelect from '../../shared/Filter/ProviderSelect/ProviderSelect'
+import OrganizationCombobox from '../../shared/Filter/OrganizationCombobox/OrganizationCombobox'
+import ProviderCombobox from '../../shared/Filter/ProviderCombobox/ProviderCombobox'
 import RoleCombobox from '../../shared/Filter/RoleCombobox/RoleCombobox'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
 import { request } from '../../../api/axios/request'
@@ -59,6 +59,7 @@ const Users: FC = () => {
           text: filter.searchQuery,
           organization: organizationsFormat(filter.organizations),
           role: roleFormat(filter.role),
+          provider: filter.provider?.provider || null,
           page: pagination.currentPage + 1,
           rows: pagination.displayedRows.id
         })
@@ -126,7 +127,7 @@ const Users: FC = () => {
               {
                 key: 'Organization',
                 component: (
-                  <OrganizationSelect
+                  <OrganizationCombobox
                     value={filter.organizations || []}
                     onChange={({ value }) => setFilter({ organizations: value })}
                     organizationsIds={organizationsIds}
@@ -138,7 +139,7 @@ const Users: FC = () => {
               {
                 key: 'role',
                 component: (
-                  <ProviderSelect
+                  <ProviderCombobox
                     value={filter.provider}
                     onChange={({ value }) => setFilter({ provider: value })}
                   />

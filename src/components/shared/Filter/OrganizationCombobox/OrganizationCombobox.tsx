@@ -13,7 +13,7 @@ interface IOrganizationSelectProp {
   isIdsLoading: boolean
 }
 
-const OrganizationSelect: FC<IOrganizationSelectProp> = ({
+const OrganizationCombobox: FC<IOrganizationSelectProp> = ({
   value,
   onChange,
   organizationsIds,
@@ -48,4 +48,4 @@ const OrganizationSelect: FC<IOrganizationSelectProp> = ({
   )
 }
 
-export default OrganizationSelect
+export default OrganizationCombobox

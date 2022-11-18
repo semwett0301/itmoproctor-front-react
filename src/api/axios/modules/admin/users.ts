@@ -1,12 +1,13 @@
-import {AxiosInstance, AxiosResponse} from 'axios'
+import { AxiosInstance, AxiosResponse } from 'axios'
 import axiosConfig from '../../../../config/axiosСonfig'
-import {IUsersRow} from '../../../../ts/interfaces/IUsers'
-import {IResponseArray} from '../../../../ts/interfaces/IResponseInterfaces';
+import { IUsersRow } from '../../../../ts/interfaces/IUsers'
+import { IResponseArray } from '../../../../ts/interfaces/IResponseInterfaces'
 
 export interface IUserFilter {
   text: string | null
   organization: string | null
   role: string | null
+  provider: string | null
   page: number
   rows: number
 }
@@ -22,6 +23,7 @@ export default function (instance: AxiosInstance): IUsersAxios {
         text: null,
         organization: null,
         role: null,
+        provider: null,
         page: 1,
         rows: 10
       }

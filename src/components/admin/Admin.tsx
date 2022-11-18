@@ -28,7 +28,7 @@ type AdminOutletContextType = { openTab: (item: TabItem) => void }
 const Admin: FC = () => {
   const [tabItems, setItems] = useState<TabItem[]>([])
 
-  const [activeTab, setActiveTab] = useState<TabItem | null>(tabItems[0])
+  const [activeTab, setActiveTab] = useState<TabItem | null>(null)
 
   const [expandSate, setExpandState] = useState<boolean>(true)
 
@@ -86,6 +86,17 @@ const Admin: FC = () => {
     }
   }, [location.pathname])
 
+  useEffect(() => {
+    console.log(location.pathname)
+    if (location.pathname === '/admin' && !tabItems.length && !activeTab) {
+      openTab({
+        id: 'exams',
+        title: 'Экзамены',
+        path: 'exams',
+        type: 'tab'
+      })
+    }
+  }, [])
   return (
     <Layout className={cl.wrapper} direction={'column'}>
       <Layout>

@@ -1,7 +1,7 @@
 import { typeItem } from '../../components/shared/Filter/ExamTypeSelect/ExamTypeSelect'
 import { StatusComboboxItem } from '../../components/shared/Filter/ExamStatusCombobox/ExamStatusCombobox'
 import { IOrganization } from '../interfaces/IOrganizations'
-import { providerItem } from '../../components/shared/Filter/ProviderSelect/ProviderSelect'
+import { providerItem } from '../../components/shared/Filter/ProviderCombobox/ProviderCombobox'
 import { DefaultItem } from '@consta/uikit/__internal__/src/components/Combobox/helpers'
 import { Dayjs } from 'dayjs'
 

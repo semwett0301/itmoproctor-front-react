@@ -1,20 +1,16 @@
-import React, {FC} from 'react'
-import {Select} from '@consta/uikit/Select'
+import React, { FC } from 'react'
+import { Select } from '@consta/uikit/Select'
+import { Combobox } from '@consta/uikit/Combobox'
 
 // TYPES
 export type providerItem = {
   label: string
   id: number
-  provider: string | null
+  provider: 'local' | 'openedu' | null
 }
 
 // CONSTANTS
 const typesList: providerItem[] = [
-  {
-    label: 'Любой провайдер',
-    id: 1,
-    provider: null
-  },
   {
     label: 'Локальный',
     id: 2,
@@ -32,10 +28,16 @@ interface IProviderSelectProp {
   onChange: (props: { value: providerItem | null; e: React.SyntheticEvent }) => void
 }
 
-const ProviderSelect: FC<IProviderSelectProp> = ({ value, onChange }) => {
+const ProviderCombobox: FC<IProviderSelectProp> = ({ value, onChange }) => {
   return (
-    <Select items={typesList} value={value} onChange={onChange} placeholder='Провайдер' size='s' />
+    <Combobox
+      items={typesList}
+      value={value}
+      onChange={onChange}
+      placeholder='Провайдер'
+      size='s'
+    />
   )
 }
 
-export default ProviderSelect
+export default ProviderCombobox

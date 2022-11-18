@@ -1,6 +1,6 @@
-import React, {FC} from 'react'
-import {Combobox} from '@consta/uikit/Combobox'
-import {DefaultItem} from '@consta/uikit/__internal__/src/components/Combobox/helpers'
+import React, { FC } from 'react'
+import { Combobox } from '@consta/uikit/Combobox'
+import { DefaultItem } from '@consta/uikit/__internal__/src/components/Combobox/helpers'
 
 // CONSTANTS
 const roleList: DefaultItem[] = [
@@ -13,11 +13,11 @@ const roleList: DefaultItem[] = [
     label: 'Проктор'
   },
   {
-    id: 3,
+    id: 'expert',
     label: 'Эксперт'
   },
   {
-    id: 4,
+    id: 3,
     label: 'Администратор'
   }
 ]
