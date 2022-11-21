@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useState } from 'react'
 import cl from './Exams.module.scss'
 import { useOpenTab } from '../Admin'
 import { IconAdd } from '@consta/uikit/IconAdd'
@@ -60,7 +60,7 @@ const Exams: FC = () => {
   } = useTable<ExamFilter>(TablesEnum.EXAMS)
 
   // Exams table request
-  const { isLoading, rows, setRows } = useTableRequest(
+  const { isLoading, rows } = useTableRequest(
     () =>
       request.exam
         .getListOfExams({
@@ -175,45 +175,45 @@ const Exams: FC = () => {
   selectAll(examsColumn, rows, selectedRowsId, setSelectedRowsId, pagination)
 
   // sorting
-  const [sortSetting, setSortSetting] = useState<SortByProps<IExamsTableModel> | null>(null)
+  // const [sortSetting, setSortSetting] = useState<SortByProps<IExamsTableModel> | null>(null)
 
-  useEffect(() => {
-    setRows(
-      rows.sort((a, b) => {
-        switch (sortSetting?.sortingBy) {
-          case 'proctor':
-            const [firstProctorName, secondProctorName]: string[] =
-              sortSetting.sortOrder === 'asc'
-                ? [a.proctor.shortName, b.proctor.shortName]
-                : [b.proctor.shortName, a.proctor.shortName]
-            const compareProctor1 = (secondProctorName < firstProctorName) as unknown
-            const compareProctor2 = (firstProctorName < secondProctorName) as unknown
-            return (compareProctor1 as number) - (compareProctor2 as number)
-          case 'exam':
-            const [firstExamName, secondExamName]: string[] =
-              sortSetting.sortOrder === 'asc'
-                ? [a.exam.subject, b.exam.subject]
-                : [b.exam.subject, a.exam.subject]
-            const compareExam1 = (secondExamName < firstExamName) as unknown
-            const compareExam2 = (firstExamName < secondExamName) as unknown
-            return (compareExam1 as number) - (compareExam2 as number)
-          case 'listener':
-            return sortSetting.sortOrder === 'asc'
-              ? a.listener.toLowerCase().localeCompare(b.listener.toLowerCase())
-              : b.listener.toLowerCase().localeCompare(a.listener.toLowerCase())
-
-          // case 'start':
-          //   return sortSetting.sortOrder === 'asc'
-          //     ? a.start.toLowerCase().localeCompare(b.start.toLowerCase())
-          //     : b.start.toLowerCase().localeCompare(a.start.toLowerCase())
-          default:
-            return 0
-        }
-      })
-    )
-    console.log(rows)
-    console.log(sortSetting)
-  }, [sortSetting])
+  // const sortingFunction: (sortRows: IExamsTableModel[]) => IExamsTableModel[] = (sortRows) => {
+  //   if (sortSetting) {
+  //     return sortRows.sort((a, b) => {
+  //       switch (sortSetting?.sortingBy) {
+  //         case 'proctor':
+  //           const [firstProctorName, secondProctorName]: string[] =
+  //             sortSetting.sortOrder === 'asc'
+  //               ? [a.proctor.shortName, b.proctor.shortName]
+  //               : [b.proctor.shortName, a.proctor.shortName]
+  //           const compareProctor1 = (secondProctorName < firstProctorName) as unknown
+  //           const compareProctor2 = (firstProctorName < secondProctorName) as unknown
+  //           return (compareProctor1 as number) - (compareProctor2 as number)
+  //         case 'exam':
+  //           const [firstExamName, secondExamName]: string[] =
+  //             sortSetting.sortOrder === 'asc'
+  //               ? [a.exam.subject, b.exam.subject]
+  //               : [b.exam.subject, a.exam.subject]
+  //           const compareExam1 = (secondExamName < firstExamName) as unknown
+  //           const compareExam2 = (firstExamName < secondExamName) as unknown
+  //           return (compareExam1 as number) - (compareExam2 as number)
+  //         case 'listener':
+  //           return sortSetting.sortOrder === 'asc'
+  //             ? a.listener.toLowerCase().localeCompare(b.listener.toLowerCase())
+  //             : b.listener.toLowerCase().localeCompare(a.listener.toLowerCase())
+  //
+  //         // case 'start':
+  //         //   return sortSetting.sortOrder === 'asc'
+  //         //     ? a.start.toLowerCase().localeCompare(b.start.toLowerCase())
+  //         //     : b.start.toLowerCase().localeCompare(a.start.toLowerCase())
+  //         default:
+  //           return 0
+  //       }
+  //     })
+  //   }
+  //
+  //   return sortRows
+  // }
 
   return (
     <Layout direction={'column'} className={cl.exams}>
@@ -339,7 +339,8 @@ const Exams: FC = () => {
           rows={rows}
           columns={examsColumn}
           onRowSelect={setSelectedRowsId}
-          onSortByProps={setSortSetting}
+          // onSortByProps={setSortSetting}
+          // sortingFunction={sortingFunction}
         />
       </Layout>
 

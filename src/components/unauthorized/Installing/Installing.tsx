@@ -31,9 +31,7 @@ const Installing: FC = () => {
   return (
     <div className={classes.main_container}>
       <SwitchLanguage />
-      <div className={classes.logo}>
-        <Logo logoWidth={90} logoHeight={82.5} />
-      </div>
+      <Logo />
       <div className={classes.text_proctoring}>
         <Text size={'m'} view={'secondary'} weight={'light'}>
           {t('unauthorized.installing.name')}

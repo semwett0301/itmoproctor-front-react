@@ -45,7 +45,7 @@ export const usersColumns: TableColumn<IUsersTableModel>[] = [
     renderCell: (row) => (
       <TextWithTooltip
         text={getFullName(row.user.lastname, row.user.firstname, row.user.middlename)}
-        tooltipText={'Профиль пользовтеля'}
+        tooltipText={'Профиль пользователя'}
         onClick={() => openModal(<ListenerView profileId={row.user.id} />)}
       />
     ),

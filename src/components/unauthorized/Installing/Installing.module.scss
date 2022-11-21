@@ -5,13 +5,10 @@
   justify-content: flex-start;
 
   background-color: #ecf1f4;
+  background-size: 100% 100%;
+  min-height: 100vh;
 
   width: 100vw;
-  height: 100vh;
-}
-
-.logo {
-  margin-top: 76px;
 }
 
 .version {
