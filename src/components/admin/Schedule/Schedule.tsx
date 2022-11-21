@@ -12,16 +12,12 @@ import SharedPagination from '../../shared/SharedPagination/SharedPagination'
 import SharedTable from '../../shared/SharedTable/SharedTable'
 import { IScheduleTableModel, scheduleColumns } from './scheduleTableModel'
 import { request } from '../../../api/axios/request'
-import { getFullName } from '../../../utils/nameHelper'
 import { IScheduleRow } from '../../../ts/interfaces/IShedule'
-import DateCell from '../../shared/SharedTable/DateCell/DateCell'
 import { useTable } from '../../../hooks/tableHooks'
 import { ScheduleFilter, TablesEnum } from '../../../config/tablesReducerConfig'
 import { useTableRequest } from '../../../hooks/useTableRequest'
 import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
-import { Checkbox } from '@consta/uikit/Checkbox'
 import { selectAll } from '../../../utils/selectAll'
-import { coursesColumns } from '../Courses/coursesTableModel'
 
 const Schedule: FC = () => {
   // filter
@@ -57,11 +53,13 @@ const Schedule: FC = () => {
               return {
                 id: item._id,
                 selected: false,
-                proctor: getFullName(
-                  item.inspector.firstname,
-                  item.inspector.middlename,
-                  item.inspector.lastname
-                ),
+                proctor: {
+                  firstname: item.inspector.firstname,
+                  middlename: item.inspector.middlename,
+                  lastname: item.inspector.lastname,
+                  id: item.inspector._id
+                },
+
                 beginDate: item.beginDate,
                 endDate: item.endDate,
                 concurrent: item.concurrent,
