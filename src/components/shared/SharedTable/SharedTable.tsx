@@ -1,5 +1,5 @@
-import React, { Dispatch } from 'react'
-import { SortByProps, Table, TableColumn } from '@consta/uikit/Table'
+import React from 'react'
+import { Table, TableColumn } from '@consta/uikit/Table'
 import cl from './SharedTable.module.scss'
 import { ResponsesNothingFound } from '@consta/uikit/ResponsesNothingFound'
 import { Loader } from '@consta/uikit/Loader'
@@ -18,7 +18,7 @@ interface ISharedTableProps<T extends ITableRow> {
   columns: TableColumn<T>[]
   isLoading: boolean
   className: string
-  onSortBy?: onSortBy<T>
+  onSortByProps?: onSortBy<T>
 }
 
 function SharedTable<T extends ITableRow = ITableRow>({
@@ -27,7 +27,7 @@ function SharedTable<T extends ITableRow = ITableRow>({
   columns,
   isLoading,
   className,
-  onSortBy
+  onSortByProps
 }: ISharedTableProps<T>): JSX.Element {
   return (
     <div className={cl.tableWrapper}>
@@ -61,7 +61,7 @@ function SharedTable<T extends ITableRow = ITableRow>({
             />
           )
         }
-        onSortBy={onSortBy}
+        onSortBy={onSortByProps}
       />
     </div>
   )

@@ -22,10 +22,8 @@ import { useTableRequest } from '../../../hooks/useTableRequest'
 import { useTable } from '../../../hooks/tableHooks'
 import { ExamFilter, TablesEnum } from '../../../config/tablesReducerConfig'
 import { request } from '../../../api/axios/request'
-import TextWithTooltip from '../../shared/SharedTable/TextWithTooltip/TextWithTooltip'
 import { IExamRow } from '../../../ts/interfaces/IExams'
 import { getProctor, getStudentName } from '../../../utils/nameHelper'
-import TwoRowCell from '../../shared/SharedTable/TwoRowCell/TwoRowCell'
 import TypeBadge from '../../shared/SharedTable/TypeBadge/TypeBadge'
 import StatusBadge, {
   customBadgePropStatus,
@@ -39,20 +37,12 @@ import { closeModal, openModal } from '../../shared/ModalView/ModalView'
 import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
 import { examsColumn, IExamsTableModel } from './examsTableModel'
 import { selectAll } from '../../../utils/selectAll'
-import ExamView from '../modals/ExamView/ExamView'
-
-import ProctorView from '../modals/ProctorView/ProctorView'
-import ListenerView from '../modals/ListenerView/ListenerView'
-import dayjs from 'dayjs'
-
-import { log } from 'util'
-
+import { SortByProps } from '@consta/uikit/Table'
 
 const Exams: FC = () => {
   const { openTab } = useOpenTab()
 
   const [organizationsIds, setOrganizationsIds] = useState<string[]>([])
-
 
   // const [sortSetting, setSortSetting] = useState<SortByProps<IExamsTableModel> | null>(null)
 
@@ -100,14 +90,14 @@ const Exams: FC = () => {
                 id: item._id,
                 selected: false,
                 listener: studentName,
-                proctor: proctorName,
+                proctor: proctor,
                 exam: {
                   _id: item._id,
                   assigment: item.assignment,
                   subject: item.subject
                 },
                 type: <TypeBadge async={item.async} />,
-                start: item.startDate || '',
+                start: { startDate: item.startDate, beginDate: item.beginDate },
                 status: (
                   <StatusBadge
                     status={customBadgePropStatus[getExamStatus(item)]}
@@ -212,10 +202,10 @@ const Exams: FC = () => {
               ? a.listener.toLowerCase().localeCompare(b.listener.toLowerCase())
               : b.listener.toLowerCase().localeCompare(a.listener.toLowerCase())
 
-          case 'start':
-            return sortSetting.sortOrder === 'asc'
-              ? a.start.toLowerCase().localeCompare(b.start.toLowerCase())
-              : b.start.toLowerCase().localeCompare(a.start.toLowerCase())
+          // case 'start':
+          //   return sortSetting.sortOrder === 'asc'
+          //     ? a.start.toLowerCase().localeCompare(b.start.toLowerCase())
+          //     : b.start.toLowerCase().localeCompare(a.start.toLowerCase())
           default:
             return 0
         }
@@ -349,7 +339,7 @@ const Exams: FC = () => {
           rows={rows}
           columns={examsColumn}
           onRowSelect={setSelectedRowsId}
-          onSortBy={setSortSetting}
+          onSortByProps={setSortSetting}
         />
       </Layout>
 
