@@ -68,9 +68,9 @@ const Organizations: FC = () => {
           newRows.push({
             id: currentRows[i]._id,
             selected: false,
-            fullName: currentRows[i].fullName,
-            shortName: currentRows[i].shortName,
-            code: currentRows[i].code,
+            fullName: currentRows[i].fullName || '',
+            shortName: currentRows[i].shortName || '',
+            code: currentRows[i].code || '',
             more: (
               <MoreButton
                 items={[

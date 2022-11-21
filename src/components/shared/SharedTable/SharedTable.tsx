@@ -18,7 +18,8 @@ interface ISharedTableProps<T extends ITableRow> {
   columns: TableColumn<T>[]
   isLoading: boolean
   className: string
-  onSortByProps?: onSortBy<T>
+  // onSortByProps?: onSortBy<T>
+  // sortingFunction?: (rows: T[]) => T[]
 }
 
 function SharedTable<T extends ITableRow = ITableRow>({
@@ -26,9 +27,10 @@ function SharedTable<T extends ITableRow = ITableRow>({
   onRowSelect,
   columns,
   isLoading,
-  className,
-  onSortByProps
-}: ISharedTableProps<T>): JSX.Element {
+  className
+}: // onSortByProps,
+// sortingFunction
+ISharedTableProps<T>): JSX.Element {
   return (
     <div className={cl.tableWrapper}>
       <Table
@@ -61,7 +63,7 @@ function SharedTable<T extends ITableRow = ITableRow>({
             />
           )
         }
-        onSortBy={onSortByProps}
+        // onSortBy={onSortByProps}
       />
     </div>
   )
