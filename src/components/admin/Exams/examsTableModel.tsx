@@ -3,12 +3,12 @@ import React, { ReactNode } from 'react'
 import { Checkbox } from '@consta/uikit/Checkbox'
 import { ITableRow } from '../../shared/SharedTable/SharedTable'
 import HeaderCell from '../../shared/SharedTable/HeaderCell/HeaderCell'
-import DateCell from '../../shared/SharedTable/DateCell/DateCell'
 import TwoRowCell from '../../shared/SharedTable/TwoRowCell/TwoRowCell'
 import { openModal } from '../../shared/ModalView/ModalView'
 import ExamView from '../modals/ExamView/ExamView'
 import { proctor } from '../../../utils/nameHelper'
 import TextWithTooltip from '../../shared/SharedTable/TextWithTooltip/TextWithTooltip'
+import dayjs from 'dayjs'
 
 export interface IExamsTableModel extends ITableRow {
   listener: string
@@ -20,7 +20,7 @@ export interface IExamsTableModel extends ITableRow {
   }
   type: ReactNode
   async: ReactNode
-  start: string
+  start: { startDate?: string; beginDate?: string }
   status: ReactNode
   video: ReactNode
   more: ReactNode
@@ -90,7 +90,16 @@ export const examsColumn: TableColumn<IExamsTableModel>[] = [
     title: <HeaderCell title={'Начало'} />,
     accessor: 'start',
     align: 'left',
-    renderCell: (row) => <DateCell date={row.start} />,
+    renderCell: (row) =>
+      row.start.beginDate && (
+        <TwoRowCell
+          firstRow={dayjs(row.start.beginDate).format('DD.MM.YYYY')}
+          secondRow={
+            dayjs(row.start.beginDate).format('hh:mm') +
+            (row.start.startDate ? dayjs(row.start.startDate).format(' (hh:mm)') : '')
+          }
+        />
+      ),
     sortable: true
   },
   {

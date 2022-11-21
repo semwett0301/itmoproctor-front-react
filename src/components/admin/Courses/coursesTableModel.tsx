@@ -49,7 +49,7 @@ export const coursesColumns: TableColumn<ICoursesTableModel>[] = [
   {
     title: <HeaderCell title={'Правообладатель'} />,
     accessor: 'organization',
-    align: 'left'
+    align: 'left',
     sortable: true
   },
   {
