@@ -4,9 +4,13 @@ import { Checkbox } from '@consta/uikit/Checkbox'
 import { ITableRow } from '../../shared/SharedTable/SharedTable'
 import HeaderCell from '../../shared/SharedTable/HeaderCell/HeaderCell'
 import DateCell from '../../shared/SharedTable/DateCell/DateCell'
+import TextWithTooltip from '../../shared/SharedTable/TextWithTooltip/TextWithTooltip'
+import { getFullName } from '../../../utils/nameHelper'
+import { openModal } from '../../shared/ModalView/ModalView'
+import ProctorView from '../modals/ProctorView/ProctorView'
 
 export interface IScheduleTableModel extends ITableRow {
-  proctor: ReactNode
+  proctor: { firstname: string; middlename: string; lastname: string; id: string }
   beginDate: string
   endDate: string
   concurrent: ReactNode
@@ -31,6 +35,13 @@ export const scheduleColumns: TableColumn<IScheduleTableModel>[] = [
     title: <HeaderCell title={'Проктор'} />,
     accessor: 'proctor',
     align: 'left',
+    renderCell: ({ proctor }) => (
+      <TextWithTooltip
+        text={getFullName(proctor.firstname, proctor.middlename, proctor.lastname)}
+        tooltipText={'Профиль проктора'}
+        onClick={() => openModal(<ProctorView profileId={proctor.id} />)}
+      />
+    ),
     sortable: true
   },
   {

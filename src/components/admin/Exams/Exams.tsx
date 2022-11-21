@@ -232,7 +232,7 @@ const Exams: FC = () => {
                 )
               },
               {
-                key: 'search;',
+                key: 'search',
                 component: (
                   <SearchField
                     placeholder={'Поиск по экзамену'}

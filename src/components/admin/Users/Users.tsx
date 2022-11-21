@@ -14,9 +14,6 @@ import SharedPagination from '../../shared/SharedPagination/SharedPagination'
 import { request } from '../../../api/axios/request'
 import { IUsersRow } from '../../../ts/interfaces/IUsers'
 import { useTranslation } from 'react-i18next'
-import { getFullName } from '../../../utils/nameHelper'
-
-import DateCell from '../../shared/SharedTable/DateCell/DateCell'
 import { IUsersTableModel, usersColumns } from './usersTableModel'
 import { useTable } from '../../../hooks/tableHooks'
 import { TablesEnum, UserFilter } from '../../../config/tablesReducerConfig'
@@ -74,7 +71,12 @@ const Users: FC = () => {
               return {
                 id: item._id,
                 selected: false,
-                user: getFullName(item.lastname, item.firstname, item.middlename),
+                user: {
+                  lastname: item.lastname,
+                  firstname: item.firstname,
+                  middlename: item.middlename,
+                  id: item._id
+                },
                 login: item.username,
                 provider: t(`shared.providers.${item.provider}`),
                 role: t(`shared.roles.${item.role}`),

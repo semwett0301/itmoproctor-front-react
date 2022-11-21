@@ -3,9 +3,10 @@ import React, { ReactNode } from 'react'
 import { Checkbox } from '@consta/uikit/Checkbox'
 import { ITableRow } from '../../shared/SharedTable/SharedTable'
 import HeaderCell from '../../shared/SharedTable/HeaderCell/HeaderCell'
+import TextWithTooltip from '../../shared/SharedTable/TextWithTooltip/TextWithTooltip'
 
 export interface IOrganizationsTableModel extends ITableRow {
-  fullName: ReactNode
+  fullName: string | undefined
   shortName: ReactNode
   code: ReactNode
   more: ReactNode
@@ -28,6 +29,7 @@ export const organizationsColumn: TableColumn<IOrganizationsTableModel>[] = [
     title: <HeaderCell title={'Полное название'} />,
     accessor: 'fullName',
     align: 'left',
+    renderCell: (row) => <TextWithTooltip text={row.fullName || ''} tooltipText={row.fullName} />,
     sortable: true
   },
   {
