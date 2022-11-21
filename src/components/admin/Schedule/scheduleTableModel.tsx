@@ -2,6 +2,7 @@ import { TableColumn } from '@consta/uikit/Table'
 import React, { ReactNode } from 'react'
 import { Checkbox } from '@consta/uikit/Checkbox'
 import { ITableRow } from '../../shared/SharedTable/SharedTable'
+import HeaderCell from '../../shared/SharedTable/HeaderCell/HeaderCell'
 import DateCell from '../../shared/SharedTable/DateCell/DateCell'
 
 export interface IScheduleTableModel extends ITableRow {
@@ -27,39 +28,39 @@ export const scheduleColumns: TableColumn<IScheduleTableModel>[] = [
     renderCell: (row) => <Checkbox checked={row.selected} />
   },
   {
-    title: 'Проктор',
+    title: <HeaderCell title={'Проктор'} />,
     accessor: 'proctor',
     align: 'left',
     sortable: true
   },
   {
-    title: 'Начало работа',
+    title: <HeaderCell title={'Начало работа'} />,
     accessor: 'beginDate',
     align: 'left',
     renderCell: (row) => <DateCell date={row.beginDate} />,
     sortable: true
   },
   {
-    title: 'Окончание работы',
+    title: <HeaderCell title={'Окончание работы'} />,
     accessor: 'endDate',
     align: 'left',
     renderCell: (row) => <DateCell date={row.endDate} />,
     sortable: true
   },
   {
-    title: 'Количество сессий',
+    title: <HeaderCell title={'Количество сессий'} />,
     accessor: 'concurrent',
     align: 'left',
     sortable: true
   },
   {
-    title: 'Старты',
+    title: <HeaderCell title={'Старты'} />,
     accessor: 'maxExamsBeginnings',
     align: 'left',
     sortable: true
   },
   {
-    title: '',
+    title: null,
     accessor: 'more',
     align: 'left'
   }

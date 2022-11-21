@@ -49,7 +49,7 @@ export const examsColumn: TableColumn<IExamsTableModel>[] = [
     sortable: true
   },
   {
-    title: 'Проктор',
+    title: <HeaderCell title={'Проктор'} />,
     accessor: 'proctor',
     align: 'left',
     renderCell: (row) => (
@@ -66,7 +66,7 @@ export const examsColumn: TableColumn<IExamsTableModel>[] = [
     sortable: true
   },
   {
-    title: 'Экзамен',
+    title: <HeaderCell title={'Экзамен'} />,
     accessor: 'exam',
     align: 'left',
     renderCell: (row) => {
@@ -82,29 +82,29 @@ export const examsColumn: TableColumn<IExamsTableModel>[] = [
     sortable: true
   },
   {
-    title: 'Тип',
+    title: <HeaderCell title={'Тип'} />,
     accessor: 'type',
     align: 'center'
   },
   {
-    title: 'Начало',
+    title: <HeaderCell title={'Начало'} />,
     accessor: 'start',
     align: 'left',
     renderCell: (row) => <DateCell date={row.start} />,
     sortable: true
   },
   {
-    title: 'Статус',
+    title: <HeaderCell title={'Статус'} />,
     accessor: 'status',
     align: 'left'
   },
   {
-    title: '',
+    title: null,
     accessor: 'video',
     align: 'center'
   },
   {
-    title: '',
+    title: null,
     accessor: 'more',
     align: 'center'
   }

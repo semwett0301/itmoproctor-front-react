@@ -1,27 +1,27 @@
 import React, { FC } from 'react'
-import { Layout } from '@consta/uikit/Layout'
 import { Text } from '@consta/uikit/Text'
+import cl from './TwoBlockModalRow.module.scss'
 
 // TYPES
 interface ITwoBlockModalRowProp {
   title: string
-  content: string
+  content: string | number | JSX.Element
 }
 
 const TwoBlockModalRow: FC<ITwoBlockModalRowProp> = ({ title, content }) => {
   return (
-    <Layout direction={'row'}>
-      <Layout flex={1}>
+    <tr className={cl.tableRow}>
+      <td className={cl.titleColumn}>
         <Text size={'s'} align={'left'} view={'ghost'}>
           {title}
         </Text>
-      </Layout>
-      <Layout flex={1}>
+      </td>
+      <td className={cl.contentColumn}>
         <Text size={'s'} align={'left'}>
           {content}
         </Text>
-      </Layout>
-    </Layout>
+      </td>
+    </tr>
   )
 }
 

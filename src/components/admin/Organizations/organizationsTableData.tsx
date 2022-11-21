@@ -2,6 +2,7 @@ import { TableColumn } from '@consta/uikit/Table'
 import React, { ReactNode } from 'react'
 import { Checkbox } from '@consta/uikit/Checkbox'
 import { ITableRow } from '../../shared/SharedTable/SharedTable'
+import HeaderCell from '../../shared/SharedTable/HeaderCell/HeaderCell'
 
 export interface IOrganizationsTableModel extends ITableRow {
   fullName: ReactNode
@@ -18,31 +19,31 @@ export const organizationsColumn: TableColumn<IOrganizationsTableModel>[] = [
     hidden: true
   },
   {
-    title: '',
+    title: null,
     accessor: 'selected',
     align: 'center',
     renderCell: (row) => <Checkbox checked={row.selected} />
   },
   {
-    title: 'Полное название',
+    title: <HeaderCell title={'Полное название'} />,
     accessor: 'fullName',
     align: 'left',
     sortable: true
   },
   {
-    title: 'Короткое название',
+    title: <HeaderCell title={'Короткое название'} />,
     accessor: 'shortName',
     align: 'left',
     sortable: true
   },
   {
-    title: 'Код',
+    title: <HeaderCell title={'Код'} />,
     accessor: 'code',
     align: 'left',
     sortable: true
   },
   {
-    title: '',
+    title: null,
     accessor: 'more',
     align: 'left'
   }

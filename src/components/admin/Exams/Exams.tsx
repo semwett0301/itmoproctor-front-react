@@ -24,10 +24,9 @@ import { ExamFilter, TablesEnum } from '../../../config/tablesReducerConfig'
 import { request } from '../../../api/axios/request'
 import TextWithTooltip from '../../shared/SharedTable/TextWithTooltip/TextWithTooltip'
 import { IExamRow } from '../../../ts/interfaces/IExams'
-import { getProctorName, getStudentName } from '../../../utils/nameHelper'
+import { getProctor, getStudentName } from '../../../utils/nameHelper'
 import TwoRowCell from '../../shared/SharedTable/TwoRowCell/TwoRowCell'
 import TypeBadge from '../../shared/SharedTable/TypeBadge/TypeBadge'
-import DateCell from '../../shared/SharedTable/DateCell/DateCell'
 import StatusBadge, {
   customBadgePropStatus,
   getExamStatus
@@ -40,14 +39,22 @@ import { closeModal, openModal } from '../../shared/ModalView/ModalView'
 import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
 import { examsColumn, IExamsTableModel } from './examsTableModel'
 import { selectAll } from '../../../utils/selectAll'
-import { SortByProps } from '@consta/uikit/Table'
 import ExamView from '../modals/ExamView/ExamView'
+
+import ProctorView from '../modals/ProctorView/ProctorView'
+import ListenerView from '../modals/ListenerView/ListenerView'
+import dayjs from 'dayjs'
+
 import { log } from 'util'
+
 
 const Exams: FC = () => {
   const { openTab } = useOpenTab()
 
   const [organizationsIds, setOrganizationsIds] = useState<string[]>([])
+
+
+  // const [sortSetting, setSortSetting] = useState<SortByProps<IExamsTableModel> | null>(null)
 
   // filter
   const {
@@ -86,7 +93,7 @@ const Exams: FC = () => {
           let obj: IExamsTableModel[] = []
           if (r.data.rows.length > 0) {
             obj = r.data.rows.map((item: IExamRow) => {
-              const proctorName = getProctorName(item.async, item.inspector, item.expert),
+              const proctor = getProctor(item.async, item.inspector, item.expert),
                 studentName = getStudentName(item.student)
               const row: IExamsTableModel = {
                 async: item.async,

@@ -26,13 +26,11 @@ import { IconEdit } from '@consta/uikit/IconEdit'
 import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
 import { IconAllDone } from '@consta/uikit/IconAllDone'
 import SharedTable from '../../shared/SharedTable/SharedTable'
-import { Checkbox } from '@consta/uikit/Checkbox'
 import { organizationsFormat, roleFormat } from '../../../utils/requestFormatters'
 import { selectAll } from '../../../utils/selectAll'
-import { coursesColumns } from '../Courses/coursesTableModel'
 
 const Users: FC = () => {
-  const { t } = useTranslation('translation', { keyPrefix: 'admin.users' })
+  const { t } = useTranslation('translation')
 
   const [organizationsIds, setOrganizationsIds] = useState<string[]>([])
 
@@ -78,9 +76,8 @@ const Users: FC = () => {
                 selected: false,
                 user: getFullName(item.lastname, item.firstname, item.middlename),
                 login: item.username,
-                provider: t(`table.providers.${item.provider}`),
-                role: t(`table.roles.${item.role}`),
-
+                provider: t(`shared.providers.${item.provider}`),
+                role: t(`shared.roles.${item.role}`),
                 university: university ? university.shortName || university.fullName : null,
                 regDate: item.created || '',
                 lastDate: item.activityDate || '',
