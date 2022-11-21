@@ -1,12 +1,12 @@
-import {TableColumn} from '@consta/uikit/Table'
-import React, {ReactNode} from 'react'
-import {Checkbox} from '@consta/uikit/Checkbox'
-import {ITableRow} from '../../shared/SharedTable/SharedTable'
+import { TableColumn } from '@consta/uikit/Table'
+import React, { ReactNode } from 'react'
+import { Checkbox } from '@consta/uikit/Checkbox'
+import { ITableRow } from '../../shared/SharedTable/SharedTable'
 
 export interface IOrganizationsTableModel extends ITableRow {
-  fullName: ReactNode,
-  shortName: ReactNode,
-  code: ReactNode,
+  fullName: ReactNode
+  shortName: ReactNode
+  code: ReactNode
   more: ReactNode
 }
 
@@ -21,22 +21,25 @@ export const organizationsColumn: TableColumn<IOrganizationsTableModel>[] = [
     title: '',
     accessor: 'selected',
     align: 'center',
-    renderCell: (row) => <Checkbox checked={row.selected}/>
+    renderCell: (row) => <Checkbox checked={row.selected} />
   },
   {
     title: 'Полное название',
     accessor: 'fullName',
-    align: 'left'
+    align: 'left',
+    sortable: true
   },
   {
     title: 'Короткое название',
     accessor: 'shortName',
-    align: 'left'
+    align: 'left',
+    sortable: true
   },
   {
     title: 'Код',
     accessor: 'code',
-    align: 'left'
+    align: 'left',
+    sortable: true
   },
   {
     title: '',

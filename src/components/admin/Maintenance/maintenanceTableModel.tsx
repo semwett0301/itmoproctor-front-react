@@ -2,12 +2,13 @@ import { TableColumn } from '@consta/uikit/Table'
 import React, { ReactNode } from 'react'
 import { Checkbox } from '@consta/uikit/Checkbox'
 import { ITableRow } from '../../shared/SharedTable/SharedTable'
+import DateCell from '../../shared/SharedTable/DateCell/DateCell'
 
 export interface IMaintenanceTableModel extends ITableRow {
-  beginDate: ReactNode
-  endDate: ReactNode
+  beginDate: string
+  endDate: string
   active: ReactNode
-  created: ReactNode
+  created: string
   more: ReactNode
 }
 
@@ -27,22 +28,29 @@ export const maintenanceColumns: TableColumn<IMaintenanceTableModel>[] = [
   {
     title: 'Начало',
     accessor: 'beginDate',
-    align: 'left'
+    align: 'left',
+    renderCell: (row) => <DateCell date={row.beginDate} />,
+    sortable: true
   },
   {
     title: 'Окончание',
     accessor: 'endDate',
-    align: 'left'
+    align: 'left',
+    renderCell: (row) => <DateCell date={row.endDate} />,
+    sortable: true
   },
   {
     title: 'Активный',
     accessor: 'active',
-    align: 'left'
+    align: 'left',
+    sortable: true
   },
   {
     title: 'Создано',
     accessor: 'created',
-    align: 'left'
+    align: 'left',
+    renderCell: (row) => <DateCell date={row.created} />,
+    sortable: true
   },
   {
     title: '',

@@ -22,7 +22,11 @@ export const getShortName = (
   ].join(' ')
 }
 
-type proctor = { exists?: true; fullName: string; shortName: string }
+export type proctor = {
+  exists?: true
+  fullName: string
+  shortName: string
+}
 export const getProctorName = (
   async: boolean,
   inspector: IInspector | undefined | null,

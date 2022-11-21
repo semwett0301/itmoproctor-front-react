@@ -80,7 +80,7 @@ const Courses: FC = () => {
                 sessionCode: item.sessionCode,
                 organization: item.organization.shortName,
                 accessAllowed: item.accessAllowed.map((i) => i.shortName).join(', ') || null,
-                updated: <DateCell date={item.updated} />,
+                updated: item.updated,
                 more: (
                   <MoreButton
                     items={[

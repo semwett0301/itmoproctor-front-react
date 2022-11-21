@@ -1,10 +1,11 @@
-import React from 'react'
-import { Table, TableColumn } from '@consta/uikit/Table'
+import React, { Dispatch } from 'react'
+import { SortByProps, Table, TableColumn } from '@consta/uikit/Table'
 import cl from './SharedTable.module.scss'
 import { ResponsesNothingFound } from '@consta/uikit/ResponsesNothingFound'
 import { Loader } from '@consta/uikit/Loader'
 import { classJoiner } from '../../../utils/styleClassesUtills'
 import './SharedTable.module.css'
+import { onSortBy } from '@consta/uikit/__internal__/src/components/Table/filtering'
 
 export interface ITableRow {
   id: string
@@ -17,6 +18,7 @@ interface ISharedTableProps<T extends ITableRow> {
   columns: TableColumn<T>[]
   isLoading: boolean
   className: string
+  onSortBy?: onSortBy<T>
 }
 
 function SharedTable<T extends ITableRow = ITableRow>({
@@ -24,7 +26,8 @@ function SharedTable<T extends ITableRow = ITableRow>({
   onRowSelect,
   columns,
   isLoading,
-  className
+  className,
+  onSortBy
 }: ISharedTableProps<T>): JSX.Element {
   return (
     <div className={cl.tableWrapper}>
@@ -58,6 +61,7 @@ function SharedTable<T extends ITableRow = ITableRow>({
             />
           )
         }
+        onSortBy={onSortBy}
       />
     </div>
   )
