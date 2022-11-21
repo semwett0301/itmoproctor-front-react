@@ -3,3 +3,4 @@
 *.css
 *.pcss
 .eslintrc.json
+/src/i18n/localizations/ruLocalization.ts

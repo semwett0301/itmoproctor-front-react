@@ -13,7 +13,6 @@ import { IconEdit } from '@consta/uikit/IconEdit'
 import SharedTable from '../../shared/SharedTable/SharedTable'
 import { coursesColumns, ICoursesTableModel } from './coursesTableModel'
 import { request } from '../../../api/axios/request'
-import TwoRowCell from '../../shared/SharedTable/TwoRowCell/TwoRowCell'
 import { ICourseRow } from '../../../ts/interfaces/ICourses'
 import DateCell from '../../shared/SharedTable/DateCell/DateCell'
 import { useTableRequest } from '../../../hooks/useTableRequest'
@@ -70,12 +69,7 @@ const Courses: FC = () => {
               const row: ICoursesTableModel = {
                 id: item._id,
                 selected: false,
-                name: (
-                  <TwoRowCell
-                    firstRow={'Название курса, Артем добавит и я заменю...'}
-                    secondRow={'...на текст в 2 строках'}
-                  />
-                ),
+                name: 'Название курса',
                 courseCode: item.courseCode,
                 sessionCode: item.sessionCode,
                 organization: item.organization.shortName,

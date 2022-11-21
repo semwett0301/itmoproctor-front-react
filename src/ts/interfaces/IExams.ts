@@ -1,7 +1,7 @@
-import {ICourse} from './ICourse'
-import {IStudent} from './IStudent'
-import {IInspector} from './IInspector'
-import {IExpert} from './IExpert'
+import { ICourse } from './ICourse'
+import { IStudent } from './IStudent'
+import { IInspector } from './IInspector'
+import { IExpert } from './IExpert'
 
 export interface IExamRow {
   _id: string

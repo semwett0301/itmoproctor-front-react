@@ -36,39 +36,39 @@ export const examsColumn: TableColumn<IExamsTableModel>[] = [
     sortable: true
   },
   {
-    title: 'Проктор',
+    title: <HeaderCell title={'Проктор'} />,
     accessor: 'proctor',
     align: 'left',
     sortable: true
   },
   {
-    title: 'Экзамен',
+    title: <HeaderCell title={'Экзамен'} />,
     accessor: 'exam',
     align: 'left',
     sortable: true
   },
   {
-    title: 'Тип',
+    title: <HeaderCell title={'Тип'} />,
     accessor: 'type',
     align: 'center'
   },
   {
-    title: 'Начало',
+    title: <HeaderCell title={'Начало'} />,
     accessor: 'start',
     align: 'left'
   },
   {
-    title: 'Статус',
+    title: <HeaderCell title={'Статус'} />,
     accessor: 'status',
     align: 'left'
   },
   {
-    title: '',
+    title: null,
     accessor: 'video',
     align: 'center'
   },
   {
-    title: '',
+    title: null,
     accessor: 'more',
     align: 'center'
   }

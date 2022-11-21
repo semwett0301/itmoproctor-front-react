@@ -2,6 +2,7 @@ import { TableColumn } from '@consta/uikit/Table'
 import React, { ReactNode } from 'react'
 import { Checkbox } from '@consta/uikit/Checkbox'
 import { ITableRow } from '../../shared/SharedTable/SharedTable'
+import HeaderCell from '../../shared/SharedTable/HeaderCell/HeaderCell'
 
 export interface IScheduleTableModel extends ITableRow {
   proctor: ReactNode
@@ -26,32 +27,32 @@ export const scheduleColumns: TableColumn<IScheduleTableModel>[] = [
     renderCell: (row) => <Checkbox checked={row.selected} />
   },
   {
-    title: 'Проктор',
+    title: <HeaderCell title={'Проктор'} />,
     accessor: 'proctor',
     align: 'left'
   },
   {
-    title: 'Начало работа',
+    title: <HeaderCell title={'Начало работа'} />,
     accessor: 'beginDate',
     align: 'left'
   },
   {
-    title: 'Окончание работы',
+    title: <HeaderCell title={'Окончание работы'} />,
     accessor: 'endDate',
     align: 'left'
   },
   {
-    title: 'Количество сессий',
+    title: <HeaderCell title={'Количество сессий'} />,
     accessor: 'concurrent',
     align: 'left'
   },
   {
-    title: 'Старты',
+    title: <HeaderCell title={'Старты'} />,
     accessor: 'maxExamsBeginnings',
     align: 'left'
   },
   {
-    title: '',
+    title: null,
     accessor: 'more',
     align: 'left'
   }

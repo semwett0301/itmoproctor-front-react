@@ -4,6 +4,7 @@ import { IExamRow } from '../../../../ts/interfaces/IExams'
 import { IResponseArray } from '../../../../ts/interfaces/IResponseInterfaces'
 import dayjs from 'dayjs'
 import { IExam } from '../../../../ts/interfaces/IExam'
+import { IUser } from '../../../../ts/interfaces/IUser'
 
 export interface filterInterface {
   from: string
@@ -21,12 +22,13 @@ export interface filterInterface {
 export interface IExamsAxios {
   getListOfExams: (filter?: filterInterface) => Promise<AxiosResponse<IResponseArray<IExamRow>>>
   getExam: (examId: string) => Promise<AxiosResponse<IExam>>
+  getProfile: (proctorId: string) => Promise<AxiosResponse<IUser>>
 }
 
 export default function (instance: AxiosInstance): IExamsAxios {
   return {
     getListOfExams(
-      filter: filterInterface = {
+      filter = {
         from: dayjs().startOf('D').toISOString(),
         to: dayjs().endOf('D').toISOString(),
         text: null,
@@ -38,11 +40,14 @@ export default function (instance: AxiosInstance): IExamsAxios {
         page: 1,
         rows: 10
       }
-    ): Promise<AxiosResponse<IResponseArray<IExamRow>>> {
+    ) {
       return instance.get(`${axiosConfig.adminUrl}/exams`, { params: filter })
     },
-    getExam(examId): Promise<AxiosResponse<IExam>> {
+    getExam(examId) {
       return instance.get(`${axiosConfig.studentUrl}/info/${examId}`)
+    },
+    getProfile(profileId) {
+      return instance.get(`${axiosConfig.baseUrl}profile/${profileId}`)
     }
   }
 }

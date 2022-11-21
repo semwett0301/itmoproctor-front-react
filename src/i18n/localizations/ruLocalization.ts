@@ -24,25 +24,37 @@ export const ruLocalization: ILocalization = {
     },
     proctor: {},
     admin: {
-      users: {
-        table: {
-          roles: {
-            1: 'Слушатель',
-            2: 'Проктор',
-            3: 'Администратор',
-            expert: 'Эксперт'
-          },
-          providers: {
-            local: 'Локальный',
-            openedu: 'OpenEdu'
-          }
-        }
-      }
+      users: {}
     },
     shared: {
       examTypes: {
         true: 'Асинхронный',
         false: 'Синхронный'
+      },
+      minutesPlurals: {
+        counter_zero: '{{count}} минут',
+        counter_one: '{{count}} минута',
+        counter_two: '{{count}} минуты',
+        counter_few: '{{count}} минуты',
+        counter_many: '{{count}} минут'
+      },
+      genders: {
+        male: 'Мужской',
+        female: 'Женский'
+      },
+      providers: {
+        local: 'Локальный',
+        openedu: 'OpenEdu'
+      },
+      roles: {
+        1: 'Слушатель',
+        2: 'Проктор',
+        3: 'Администратор',
+        expert: 'Эксперт'
+      },
+      active: {
+        true: 'Активный',
+        false: 'Не активный'
       }
     }
   }

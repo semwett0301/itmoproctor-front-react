@@ -2,6 +2,7 @@ import { TableColumn } from '@consta/uikit/Table'
 import React, { ReactNode } from 'react'
 import { Checkbox } from '@consta/uikit/Checkbox'
 import { ITableRow } from '../../shared/SharedTable/SharedTable'
+import HeaderCell from '../../shared/SharedTable/HeaderCell/HeaderCell'
 
 export interface IUsersTableModel extends ITableRow {
   user: ReactNode
@@ -28,42 +29,42 @@ export const usersColumns: TableColumn<IUsersTableModel>[] = [
     renderCell: (row) => <Checkbox checked={row.selected} />
   },
   {
-    title: 'Пользователь',
+    title: <HeaderCell title={'Пользователь'} />,
     accessor: 'user',
     align: 'left'
   },
   {
-    title: 'Логин',
+    title: <HeaderCell title={'Логин'} />,
     accessor: 'login',
     align: 'left'
   },
   {
-    title: 'Провайдер',
+    title: <HeaderCell title={'Провайдер'} />,
     accessor: 'provider',
     align: 'left'
   },
   {
-    title: 'Роль',
+    title: <HeaderCell title={'Роль'} />,
     accessor: 'role',
     align: 'center'
   },
   {
-    title: 'Университет',
+    title: <HeaderCell title={'Университет'} />,
     accessor: 'university',
     align: 'left'
   },
   {
-    title: 'Дата Рег',
+    title: <HeaderCell title={'Дата Рег'} />,
     accessor: 'regDate',
     align: 'center'
   },
   {
-    title: 'Посл Вход',
+    title: <HeaderCell title={'Посл Вход'} />,
     accessor: 'lastDate',
     align: 'center'
   },
   {
-    title: '',
+    title: null,
     accessor: 'more',
     align: 'center'
   }

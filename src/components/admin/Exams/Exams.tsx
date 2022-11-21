@@ -19,16 +19,14 @@ import FilterButton from '../../shared/Filter/FilterButton/FilterButton'
 import OrganizationCombobox from '../../shared/Filter/OrganizationCombobox/OrganizationCombobox'
 import { Layout } from '@consta/uikit/Layout'
 import { useTableRequest } from '../../../hooks/useTableRequest'
-import { Checkbox } from '@consta/uikit/Checkbox'
 import { useTable } from '../../../hooks/tableHooks'
 import { ExamFilter, TablesEnum } from '../../../config/tablesReducerConfig'
 import { request } from '../../../api/axios/request'
 import TextWithTooltip from '../../shared/SharedTable/TextWithTooltip/TextWithTooltip'
 import { IExamRow } from '../../../ts/interfaces/IExams'
-import { getProctorName, getStudentName } from '../../../utils/nameHelper'
+import { getProctor, getStudentName } from '../../../utils/nameHelper'
 import TwoRowCell from '../../shared/SharedTable/TwoRowCell/TwoRowCell'
 import TypeBadge from '../../shared/SharedTable/TypeBadge/TypeBadge'
-import DateCell from '../../shared/SharedTable/DateCell/DateCell'
 import StatusBadge, {
   customBadgePropStatus,
   getExamStatus
@@ -41,15 +39,17 @@ import { closeModal, openModal } from '../../shared/ModalView/ModalView'
 import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
 import { examsColumn, IExamsTableModel } from './examsTableModel'
 import { selectAll } from '../../../utils/selectAll'
-import { SortByProps } from '@consta/uikit/Table'
 import ExamView from '../modals/ExamView/ExamView'
+import ProctorView from '../modals/ProctorView/ProctorView'
+import ListenerView from '../modals/ListenerView/ListenerView'
+import dayjs from 'dayjs'
 
 const Exams: FC = () => {
   const { openTab } = useOpenTab()
 
   const [organizationsIds, setOrganizationsIds] = useState<string[]>([])
 
-  const [sortSetting, setSortSetting] = useState<SortByProps<IExamsTableModel> | null>(null)
+  // const [sortSetting, setSortSetting] = useState<SortByProps<IExamsTableModel> | null>(null)
 
   // filter
   const {
@@ -88,7 +88,7 @@ const Exams: FC = () => {
           let obj: IExamsTableModel[] = []
           if (r.data.rows.length > 0) {
             obj = r.data.rows.map((item: IExamRow) => {
-              const proctorName = getProctorName(item.async, item.inspector, item.expert),
+              const proctor = getProctor(item.async, item.inspector, item.expert),
                 studentName = getStudentName(item.student)
               const row: IExamsTableModel = {
                 async: item.async,
@@ -98,17 +98,18 @@ const Exams: FC = () => {
                   <TextWithTooltip
                     text={studentName}
                     tooltipText={'Профиль слушателя – ' + studentName}
+                    onClick={() => openModal(<ListenerView profileId={item.student._id} />)}
                   />
                 ),
                 proctor: (
                   <TextWithTooltip
-                    text={proctorName.shortName}
+                    text={proctor.shortName}
                     tooltipText={
-                      proctorName.exists
-                        ? 'Профиль проктора – ' + proctorName.fullName
+                      proctor.exists
+                        ? 'Профиль проктора – ' + proctor.fullName
                         : 'Проктор на экзамен не назначен'
                     }
-                    onClick={() => console.log(proctorName)}
+                    onClick={() => openModal(<ProctorView profileId={proctor.id} />)}
                   />
                 ),
                 exam: (
@@ -120,7 +121,15 @@ const Exams: FC = () => {
                   />
                 ),
                 type: <TypeBadge async={item.async} />,
-                start: <DateCell date={item.startDate} />,
+                start: item.beginDate && (
+                  <TwoRowCell
+                    firstRow={dayjs(item.beginDate).format('DD.MM.YYYY')}
+                    secondRow={
+                      dayjs(item.beginDate).format('hh:mm') +
+                      (item.startDate ? dayjs(item.startDate).format(' (hh:mm)') : '')
+                    }
+                  />
+                ),
                 status: (
                   <StatusBadge
                     status={customBadgePropStatus[getExamStatus(item)]}

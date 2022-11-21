@@ -1,7 +1,8 @@
-import {TableColumn} from '@consta/uikit/Table'
-import React, {ReactNode} from 'react'
-import {Checkbox} from '@consta/uikit/Checkbox'
-import {ITableRow} from '../../shared/SharedTable/SharedTable'
+import { TableColumn } from '@consta/uikit/Table'
+import React, { ReactNode } from 'react'
+import { Checkbox } from '@consta/uikit/Checkbox'
+import { ITableRow } from '../../shared/SharedTable/SharedTable'
+import HeaderCell from '../../shared/SharedTable/HeaderCell/HeaderCell'
 
 export interface ICoursesTableModel extends ITableRow {
   name: ReactNode
@@ -21,43 +22,43 @@ export const coursesColumns: TableColumn<ICoursesTableModel>[] = [
     hidden: true
   },
   {
-    title: '',
+    title: null,
     accessor: 'selected',
     align: 'center',
     renderCell: (row) => <Checkbox checked={row.selected} />
   },
   {
-    title: 'Название курса',
+    title: <HeaderCell title={'Название курса'} />,
     accessor: 'name',
     align: 'left'
   },
   {
-    title: 'Код курса',
+    title: <HeaderCell title={'Код курса'} />,
     accessor: 'courseCode',
     align: 'left'
   },
   {
-    title: 'Код сессии',
+    title: <HeaderCell title={'Код сессии'} />,
     accessor: 'sessionCode',
     align: 'left'
   },
   {
-    title: 'Правообладатель',
+    title: <HeaderCell title={'Правообладатель'} />,
     accessor: 'organization',
-    align: 'center'
+    align: 'left'
   },
   {
-    title: 'Есть доступ',
+    title: <HeaderCell title={'Есть доступ'} />,
     accessor: 'accessAllowed',
     align: 'left'
   },
   {
-    title: 'Обновлен',
+    title: <HeaderCell title={'Обновлен'} />,
     accessor: 'updated',
     align: 'center'
   },
   {
-    title: '',
+    title: null,
     accessor: 'more',
     align: 'center'
   }
