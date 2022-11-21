@@ -62,8 +62,8 @@ const Schedule: FC = () => {
                   item.inspector.middlename,
                   item.inspector.lastname
                 ),
-                beginDate: <DateCell date={item.beginDate} />,
-                endDate: <DateCell date={item.endDate} />,
+                beginDate: item.beginDate,
+                endDate: item.endDate,
                 concurrent: item.concurrent,
                 maxExamsBeginnings: item.maxExamsBeginnings,
                 more: (

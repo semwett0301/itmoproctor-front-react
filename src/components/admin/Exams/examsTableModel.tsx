@@ -3,14 +3,24 @@ import React, { ReactNode } from 'react'
 import { Checkbox } from '@consta/uikit/Checkbox'
 import { ITableRow } from '../../shared/SharedTable/SharedTable'
 import HeaderCell from '../../shared/SharedTable/HeaderCell/HeaderCell'
+import DateCell from '../../shared/SharedTable/DateCell/DateCell'
+import TwoRowCell from '../../shared/SharedTable/TwoRowCell/TwoRowCell'
+import { openModal } from '../../shared/ModalView/ModalView'
+import ExamView from '../modals/ExamView/ExamView'
+import { proctor } from '../../../utils/nameHelper'
+import TextWithTooltip from '../../shared/SharedTable/TextWithTooltip/TextWithTooltip'
 
 export interface IExamsTableModel extends ITableRow {
-  listener: ReactNode
-  proctor: ReactNode
-  exam: ReactNode
+  listener: string
+  proctor: proctor
+  exam: {
+    _id: string
+    subject: string
+    assigment: string
+  }
   type: ReactNode
   async: ReactNode
-  start: ReactNode
+  start: string
   status: ReactNode
   video: ReactNode
   more: ReactNode
@@ -33,18 +43,42 @@ export const examsColumn: TableColumn<IExamsTableModel>[] = [
     title: <HeaderCell title={'Слушатель'} />,
     accessor: 'listener',
     align: 'left',
+    renderCell: (row) => (
+      <TextWithTooltip text={row.listener} tooltipText={'Профиль слушателя – ' + row.listener} />
+    ),
     sortable: true
   },
   {
     title: <HeaderCell title={'Проктор'} />,
     accessor: 'proctor',
     align: 'left',
+    renderCell: (row) => (
+      <TextWithTooltip
+        text={row.proctor.shortName}
+        tooltipText={
+          row.proctor.exists
+            ? 'Профиль проктора – ' + row.proctor.fullName
+            : 'Проктор на экзамен не назначен'
+        }
+        onClick={() => console.log(row.proctor)}
+      />
+    ),
     sortable: true
   },
   {
     title: <HeaderCell title={'Экзамен'} />,
     accessor: 'exam',
     align: 'left',
+    renderCell: (row) => {
+      return (
+        <TwoRowCell
+          firstRow={row.exam.subject}
+          secondRow={row.exam.assigment}
+          tooltipText={'Карточка экзамена – ' + row.exam.subject}
+          onClick={() => openModal(<ExamView examId={row.exam._id} />)}
+        />
+      )
+    },
     sortable: true
   },
   {
@@ -55,7 +89,9 @@ export const examsColumn: TableColumn<IExamsTableModel>[] = [
   {
     title: <HeaderCell title={'Начало'} />,
     accessor: 'start',
-    align: 'left'
+    align: 'left',
+    renderCell: (row) => <DateCell date={row.start} />,
+    sortable: true
   },
   {
     title: <HeaderCell title={'Статус'} />,

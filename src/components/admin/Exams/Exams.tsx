@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import cl from './Exams.module.scss'
 import { useOpenTab } from '../Admin'
 import { IconAdd } from '@consta/uikit/IconAdd'
@@ -40,14 +40,19 @@ import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
 import { examsColumn, IExamsTableModel } from './examsTableModel'
 import { selectAll } from '../../../utils/selectAll'
 import ExamView from '../modals/ExamView/ExamView'
+
 import ProctorView from '../modals/ProctorView/ProctorView'
 import ListenerView from '../modals/ListenerView/ListenerView'
 import dayjs from 'dayjs'
+
+import { log } from 'util'
+
 
 const Exams: FC = () => {
   const { openTab } = useOpenTab()
 
   const [organizationsIds, setOrganizationsIds] = useState<string[]>([])
+
 
   // const [sortSetting, setSortSetting] = useState<SortByProps<IExamsTableModel> | null>(null)
 
@@ -65,7 +70,7 @@ const Exams: FC = () => {
   } = useTable<ExamFilter>(TablesEnum.EXAMS)
 
   // Exams table request
-  const { isLoading, rows } = useTableRequest(
+  const { isLoading, rows, setRows } = useTableRequest(
     () =>
       request.exam
         .getListOfExams({
@@ -94,42 +99,15 @@ const Exams: FC = () => {
                 async: item.async,
                 id: item._id,
                 selected: false,
-                listener: (
-                  <TextWithTooltip
-                    text={studentName}
-                    tooltipText={'Профиль слушателя – ' + studentName}
-                    onClick={() => openModal(<ListenerView profileId={item.student._id} />)}
-                  />
-                ),
-                proctor: (
-                  <TextWithTooltip
-                    text={proctor.shortName}
-                    tooltipText={
-                      proctor.exists
-                        ? 'Профиль проктора – ' + proctor.fullName
-                        : 'Проктор на экзамен не назначен'
-                    }
-                    onClick={() => openModal(<ProctorView profileId={proctor.id} />)}
-                  />
-                ),
-                exam: (
-                  <TwoRowCell
-                    firstRow={item.subject}
-                    secondRow={item.assignment}
-                    tooltipText={'Карточка экзамена – ' + item.subject}
-                    onClick={() => openModal(<ExamView examId={item._id} />)}
-                  />
-                ),
+                listener: studentName,
+                proctor: proctorName,
+                exam: {
+                  _id: item._id,
+                  assigment: item.assignment,
+                  subject: item.subject
+                },
                 type: <TypeBadge async={item.async} />,
-                start: item.beginDate && (
-                  <TwoRowCell
-                    firstRow={dayjs(item.beginDate).format('DD.MM.YYYY')}
-                    secondRow={
-                      dayjs(item.beginDate).format('hh:mm') +
-                      (item.startDate ? dayjs(item.startDate).format(' (hh:mm)') : '')
-                    }
-                  />
-                ),
+                start: item.startDate || '',
                 status: (
                   <StatusBadge
                     status={customBadgePropStatus[getExamStatus(item)]}
@@ -205,6 +183,47 @@ const Exams: FC = () => {
   )
 
   selectAll(examsColumn, rows, selectedRowsId, setSelectedRowsId, pagination)
+
+  // sorting
+  const [sortSetting, setSortSetting] = useState<SortByProps<IExamsTableModel> | null>(null)
+
+  useEffect(() => {
+    setRows(
+      rows.sort((a, b) => {
+        switch (sortSetting?.sortingBy) {
+          case 'proctor':
+            const [firstProctorName, secondProctorName]: string[] =
+              sortSetting.sortOrder === 'asc'
+                ? [a.proctor.shortName, b.proctor.shortName]
+                : [b.proctor.shortName, a.proctor.shortName]
+            const compareProctor1 = (secondProctorName < firstProctorName) as unknown
+            const compareProctor2 = (firstProctorName < secondProctorName) as unknown
+            return (compareProctor1 as number) - (compareProctor2 as number)
+          case 'exam':
+            const [firstExamName, secondExamName]: string[] =
+              sortSetting.sortOrder === 'asc'
+                ? [a.exam.subject, b.exam.subject]
+                : [b.exam.subject, a.exam.subject]
+            const compareExam1 = (secondExamName < firstExamName) as unknown
+            const compareExam2 = (firstExamName < secondExamName) as unknown
+            return (compareExam1 as number) - (compareExam2 as number)
+          case 'listener':
+            return sortSetting.sortOrder === 'asc'
+              ? a.listener.toLowerCase().localeCompare(b.listener.toLowerCase())
+              : b.listener.toLowerCase().localeCompare(a.listener.toLowerCase())
+
+          case 'start':
+            return sortSetting.sortOrder === 'asc'
+              ? a.start.toLowerCase().localeCompare(b.start.toLowerCase())
+              : b.start.toLowerCase().localeCompare(a.start.toLowerCase())
+          default:
+            return 0
+        }
+      })
+    )
+    console.log(rows)
+    console.log(sortSetting)
+  }, [sortSetting])
 
   return (
     <Layout direction={'column'} className={cl.exams}>
@@ -330,6 +349,7 @@ const Exams: FC = () => {
           rows={rows}
           columns={examsColumn}
           onRowSelect={setSelectedRowsId}
+          onSortBy={setSortSetting}
         />
       </Layout>
 

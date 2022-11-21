@@ -22,8 +22,7 @@ export const getShortName = (
   ].join(' ')
 }
 
-type proctor = { exists: boolean; fullName: string; shortName: string; id: string }
-export const getProctor = (
+export const getProctorName = (
   async: boolean,
   inspector: IInspector | undefined | null,
   expert: IExpert | undefined | null

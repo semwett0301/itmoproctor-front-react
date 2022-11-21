@@ -27,17 +27,20 @@ export const organizationsColumn: TableColumn<IOrganizationsTableModel>[] = [
   {
     title: <HeaderCell title={'Полное название'} />,
     accessor: 'fullName',
-    align: 'left'
+    align: 'left',
+    sortable: true
   },
   {
     title: <HeaderCell title={'Короткое название'} />,
     accessor: 'shortName',
-    align: 'left'
+    align: 'left',
+    sortable: true
   },
   {
     title: <HeaderCell title={'Код'} />,
     accessor: 'code',
-    align: 'left'
+    align: 'left',
+    sortable: true
   },
   {
     title: null,

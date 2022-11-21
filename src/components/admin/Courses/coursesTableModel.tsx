@@ -3,6 +3,7 @@ import React, { ReactNode } from 'react'
 import { Checkbox } from '@consta/uikit/Checkbox'
 import { ITableRow } from '../../shared/SharedTable/SharedTable'
 import HeaderCell from '../../shared/SharedTable/HeaderCell/HeaderCell'
+import DateCell from '../../shared/SharedTable/DateCell/DateCell'
 
 export interface ICoursesTableModel extends ITableRow {
   name: ReactNode
@@ -10,7 +11,7 @@ export interface ICoursesTableModel extends ITableRow {
   sessionCode: ReactNode
   organization: ReactNode
   accessAllowed: ReactNode
-  updated: ReactNode
+  updated: string
   more: ReactNode
 }
 
@@ -30,32 +31,39 @@ export const coursesColumns: TableColumn<ICoursesTableModel>[] = [
   {
     title: <HeaderCell title={'Название курса'} />,
     accessor: 'name',
-    align: 'left'
+    align: 'left',
+    sortable: true
   },
   {
     title: <HeaderCell title={'Код курса'} />,
     accessor: 'courseCode',
-    align: 'left'
+    align: 'left',
+    sortable: true
   },
   {
     title: <HeaderCell title={'Код сессии'} />,
     accessor: 'sessionCode',
-    align: 'left'
+    align: 'left',
+    sortable: true
   },
   {
     title: <HeaderCell title={'Правообладатель'} />,
     accessor: 'organization',
     align: 'left'
+    sortable: true
   },
   {
     title: <HeaderCell title={'Есть доступ'} />,
     accessor: 'accessAllowed',
-    align: 'left'
+    align: 'left',
+    sortable: true
   },
   {
     title: <HeaderCell title={'Обновлен'} />,
     accessor: 'updated',
-    align: 'center'
+    align: 'center',
+    renderCell: (row) => <DateCell date={row.updated} />,
+    sortable: true
   },
   {
     title: null,

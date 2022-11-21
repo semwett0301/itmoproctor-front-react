@@ -79,8 +79,8 @@ const Users: FC = () => {
                 provider: t(`shared.providers.${item.provider}`),
                 role: t(`shared.roles.${item.role}`),
                 university: university ? university.shortName || university.fullName : null,
-                regDate: <DateCell date={item.created} noSecondRow={true} />,
-                lastDate: <DateCell date={item.activityDate} />,
+                regDate: item.created || '',
+                lastDate: item.activityDate || '',
 
                 more: (
                   <MoreButton

@@ -12,18 +12,15 @@ import { IconRestart } from '@consta/uikit/IconRestart'
 import { request } from '../../../api/axios/request'
 import { IMaintenanceTableModel, maintenanceColumns } from './maintenanceTableModel'
 import { IMaintenanceRow } from '../../../ts/interfaces/IMaintenance'
-import DateCell from '../../shared/SharedTable/DateCell/DateCell'
 import { useTable } from '../../../hooks/tableHooks'
 import { MaintenanceFilter, TablesEnum } from '../../../config/tablesReducerConfig'
 import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
 import { closeModal, openModal } from '../../shared/ModalView/ModalView'
 import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
 import { useTableRequest } from '../../../hooks/useTableRequest'
-import { Checkbox } from '@consta/uikit/Checkbox'
 import SharedTable from '../../shared/SharedTable/SharedTable'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
 import { selectAll } from '../../../utils/selectAll'
-import { coursesColumns } from '../Courses/coursesTableModel'
 
 const Maintenance: FC = () => {
   const {
@@ -55,9 +52,9 @@ const Maintenance: FC = () => {
               return {
                 id: row._id,
                 selected: false,
-                beginDate: <DateCell date={row.beginDate} />,
-                endDate: <DateCell date={row.endDate} />,
-                created: <DateCell date={row.created} />,
+                beginDate: row.beginDate,
+                endDate: row.endDate,
+                created: row.created,
                 active: row.active,
                 more: (
                   <MoreButton
