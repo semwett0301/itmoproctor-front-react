@@ -18,6 +18,8 @@ import { ScheduleFilter, TablesEnum } from '../../../config/tablesReducerConfig'
 import { useTableRequest } from '../../../hooks/useTableRequest'
 import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
 import { selectAll } from '../../../utils/selectAll'
+import { openModal } from '../../shared/ModalView/ModalView'
+import AddEditSchedule from '../modals/AddEditSchedule/AddEditSchedule'
 
 const Schedule: FC = () => {
   // filter
@@ -37,7 +39,7 @@ const Schedule: FC = () => {
   const { isLoading, rows } = useTableRequest(
     () =>
       request.schedule
-        .getSchedule({
+        .getSchedules({
           from: filter.date[0].toISOString(),
           to: filter.date[1].toISOString(),
           text: filter.searchQuery,
@@ -67,7 +69,11 @@ const Schedule: FC = () => {
                 more: (
                   <MoreButton
                     items={[
-                      { label: 'Изменить', iconLeft: IconEdit },
+                      {
+                        label: 'Изменить',
+                        iconLeft: IconEdit,
+                        onClick: () => openModal(<AddEditSchedule scheduleId={item._id} />)
+                      },
                       { label: 'Удалить', iconLeft: IconTrash }
                     ]}
                   />
@@ -117,7 +123,11 @@ const Schedule: FC = () => {
                 component: (
                   <FilterButton
                     MenuItems={[
-                      { label: 'Добавить', iconLeft: IconAdd },
+                      {
+                        label: 'Добавить',
+                        iconLeft: IconAdd,
+                        onClick: () => openModal(<AddEditSchedule />)
+                      },
                       { label: 'Изменить', iconLeft: IconEdit },
                       { label: 'Удалить', iconLeft: IconTrash }
                     ]}

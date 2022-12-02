@@ -16,7 +16,8 @@ const TextWithTooltip: FC<ITextWithTooltipProp> = ({ text, tooltipText, onClick 
     mode: 'mouseover',
     content: tooltipText,
     direction: 'upStartLeft',
-    possibleDirections: ['upStartRight', 'downLeft'],
+    appearTimeout: 400,
+    possibleDirections: ['upStartRight'],
     size: 'l'
   })(Text)
   return tooltipText ? (

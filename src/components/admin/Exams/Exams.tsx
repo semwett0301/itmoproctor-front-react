@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import cl from './Exams.module.scss'
 import { useOpenTab } from '../Admin'
 import { IconAdd } from '@consta/uikit/IconAdd'
@@ -38,6 +38,7 @@ import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
 import { examsColumn, IExamsTableModel } from './examsTableModel'
 import { selectAll } from '../../../utils/selectAll'
 import { SortByProps } from '@consta/uikit/Table'
+import { socket } from '../../../api/socket/socket'
 
 const Exams: FC = () => {
   const { openTab } = useOpenTab()
@@ -45,6 +46,79 @@ const Exams: FC = () => {
   const [organizationsIds, setOrganizationsIds] = useState<string[]>([])
 
   // const [sortSetting, setSortSetting] = useState<SortByProps<IExamsTableModel> | null>(null)
+
+  const castToTableRow: (item: IExamRow) => IExamsTableModel = (item) => {
+    const proctor = getProctor(item.async, item.inspector, item.expert),
+      studentName = getStudentName(item.student)
+
+    return {
+      async: item.async,
+      id: item._id,
+      selected: false,
+      listener: studentName,
+      proctor: proctor,
+      exam: {
+        _id: item._id,
+        assigment: item.assignment,
+        subject: item.subject
+      },
+      type: <TypeBadge async={item.async} />,
+      start: { startDate: item.startDate, beginDate: item.beginDate },
+      status: (
+        <StatusBadge
+          status={customBadgePropStatus[getExamStatus(item)]}
+          reset={!item.examId || !item.examId.startsWith('course-v1')}
+        />
+      ),
+      // Если есть фактическая дата начала(startDate), то отображать
+      video: item.startDate && (
+        <Button
+          size='xs'
+          onlyIcon
+          iconRight={IconVideo}
+          onClick={() =>
+            openTab({
+              id: item._id,
+              title: item._id,
+              path: `exam/${item._id}`,
+              type: 'exam'
+            })
+          }
+        />
+      ),
+      more: (
+        <MoreButton
+          items={[
+            {
+              label: 'Изменить',
+              iconLeft: IconEdit
+            },
+            {
+              label: 'Сбросить',
+              iconLeft: IconRevert
+            },
+            {
+              label: 'Дублировать',
+              iconLeft: IconCopy
+            },
+            {
+              label: 'Удалить',
+              iconLeft: IconTrash,
+              onClick: () =>
+                openModal(
+                  <DeleteSubmit
+                    onSubmit={() => {
+                      closeModal()
+                    }}
+                    onCancel={() => closeModal()}
+                  />
+                )
+            }
+          ]}
+        />
+      )
+    }
+  }
 
   // filter
   const {
@@ -60,7 +134,7 @@ const Exams: FC = () => {
   } = useTable<ExamFilter>(TablesEnum.EXAMS)
 
   // Exams table request
-  const { isLoading, rows } = useTableRequest(
+  const { isLoading, rows, setRows } = useTableRequest<IExamsTableModel>(
     () =>
       request.exam
         .getListOfExams({
@@ -83,76 +157,7 @@ const Exams: FC = () => {
           let obj: IExamsTableModel[] = []
           if (r.data.rows.length > 0) {
             obj = r.data.rows.map((item: IExamRow) => {
-              const proctor = getProctor(item.async, item.inspector, item.expert),
-                studentName = getStudentName(item.student)
-              const row: IExamsTableModel = {
-                async: item.async,
-                id: item._id,
-                selected: false,
-                listener: studentName,
-                proctor: proctor,
-                exam: {
-                  _id: item._id,
-                  assigment: item.assignment,
-                  subject: item.subject
-                },
-                type: <TypeBadge async={item.async} />,
-                start: { startDate: item.startDate, beginDate: item.beginDate },
-                status: (
-                  <StatusBadge
-                    status={customBadgePropStatus[getExamStatus(item)]}
-                    reset={!item.examId || !item.examId.startsWith('course-v1')}
-                  />
-                ),
-                // Если есть фактическая дата начала(startDate), то отображать
-                video: item.startDate && (
-                  <Button
-                    size='xs'
-                    onlyIcon
-                    iconRight={IconVideo}
-                    onClick={() =>
-                      openTab({
-                        id: item._id,
-                        title: item._id,
-                        path: `exam/${item._id}`,
-                        type: 'exam'
-                      })
-                    }
-                  />
-                ),
-                more: (
-                  <MoreButton
-                    items={[
-                      {
-                        label: 'Изменить',
-                        iconLeft: IconEdit
-                      },
-                      {
-                        label: 'Сбросить',
-                        iconLeft: IconRevert
-                      },
-                      {
-                        label: 'Дублировать',
-                        iconLeft: IconCopy
-                      },
-                      {
-                        label: 'Удалить',
-                        iconLeft: IconTrash,
-                        onClick: () =>
-                          openModal(
-                            <DeleteSubmit
-                              onSubmit={() => {
-                                closeModal()
-                                console.log(row.id)
-                              }}
-                              onCancel={() => closeModal()}
-                            />
-                          )
-                      }
-                    ]}
-                  />
-                )
-              }
+              const row: IExamsTableModel = castToTableRow(item)
               return row
             })
             return obj
@@ -174,14 +179,14 @@ const Exams: FC = () => {
 
   selectAll(examsColumn, rows, selectedRowsId, setSelectedRowsId, pagination)
 
-  // sorting
+  // // sorting
   // const [sortSetting, setSortSetting] = useState<SortByProps<IExamsTableModel> | null>(null)
-
+  //
   // const sortingFunction: (sortRows: IExamsTableModel[]) => IExamsTableModel[] = (sortRows) => {
   //   if (sortSetting) {
   //     return sortRows.sort((a, b) => {
   //       switch (sortSetting?.sortingBy) {
-  //         case 'proctor':
+  //         case 'proctor': {
   //           const [firstProctorName, secondProctorName]: string[] =
   //             sortSetting.sortOrder === 'asc'
   //               ? [a.proctor.shortName, b.proctor.shortName]
@@ -189,7 +194,9 @@ const Exams: FC = () => {
   //           const compareProctor1 = (secondProctorName < firstProctorName) as unknown
   //           const compareProctor2 = (firstProctorName < secondProctorName) as unknown
   //           return (compareProctor1 as number) - (compareProctor2 as number)
-  //         case 'exam':
+  //         }
+  //
+  //         case 'exam': {
   //           const [firstExamName, secondExamName]: string[] =
   //             sortSetting.sortOrder === 'asc'
   //               ? [a.exam.subject, b.exam.subject]
@@ -197,11 +204,12 @@ const Exams: FC = () => {
   //           const compareExam1 = (secondExamName < firstExamName) as unknown
   //           const compareExam2 = (firstExamName < secondExamName) as unknown
   //           return (compareExam1 as number) - (compareExam2 as number)
-  //         case 'listener':
+  //         }
+  //         case 'listener': {
   //           return sortSetting.sortOrder === 'asc'
   //             ? a.listener.toLowerCase().localeCompare(b.listener.toLowerCase())
   //             : b.listener.toLowerCase().localeCompare(a.listener.toLowerCase())
-  //
+  //         }
   //         // case 'start':
   //         //   return sortSetting.sortOrder === 'asc'
   //         //     ? a.start.toLowerCase().localeCompare(b.start.toLowerCase())
@@ -214,6 +222,25 @@ const Exams: FC = () => {
   //
   //   return sortRows
   // }
+
+  useEffect(() => {
+    socket.exams.subscribe((newRow) => {
+      const newTableRow = castToTableRow(newRow)
+      const currentRows = rows.map((e) => {
+        if (e.id === newTableRow.id) {
+          return newTableRow
+        } else {
+          return e
+        }
+      })
+      console.log(currentRows)
+      setRows(currentRows)
+    })
+
+    return () => {
+      socket.exams.unsubscribe()
+    }
+  }, [rows.length])
 
   return (
     <Layout direction={'column'} className={cl.exams}>

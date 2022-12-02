@@ -1,8 +1,8 @@
-import {IHocConfig} from '../ts/interfaces/IHocConfig'
-import {IRoute} from '../ts/interfaces/IRoute'
-import {Route} from 'react-router-dom'
+import { IHocConfig } from '../ts/interfaces/IHocConfig'
+import { IRoute } from '../ts/interfaces/IRoute'
+import { Route } from 'react-router-dom'
 import React from 'react'
-import {HocParameter} from '../ts/types/HocParameter'
+import { HocParameter } from '../ts/types/HocParameter'
 
 const routeHelper: (
   hocs: HocParameter[],
@@ -11,7 +11,7 @@ const routeHelper: (
 ) => JSX.Element | JSX.Element[] = (hocs, condition, route) => {
   let hocBackup: HocParameter[] = []
 
-  const hocHelper = () => {
+  const hocHelper = (): JSX.Element => {
     if (hocs.length !== 0) {
       const hocParameter: HocParameter = hocs[0]
       hocs = hocs.slice(1, hocs.length)

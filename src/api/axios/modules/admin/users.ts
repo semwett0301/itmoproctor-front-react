@@ -2,18 +2,20 @@ import { AxiosInstance, AxiosResponse } from 'axios'
 import axiosConfig from '../../../../config/axiosСonfig'
 import { IUsersRow } from '../../../../ts/interfaces/IUsers'
 import { IResponseArray } from '../../../../ts/interfaces/IResponseInterfaces'
+import { IUser } from '../../../../ts/interfaces/IUser'
 
 export interface IUserFilter {
-  text: string | null
-  organization: string | null
-  role: string | null
-  provider: string | null
-  page: number
-  rows: number
+  text?: string | null
+  organization?: string | null
+  role?: string | null
+  provider?: string | null
+  page?: number
+  rows?: number
 }
 
 export interface IUsersAxios {
   getListOfUsers: (filter?: IUserFilter) => Promise<AxiosResponse<IResponseArray<IUsersRow>>>
+  getUser: (userId: string) => Promise<AxiosResponse<IUser>>
 }
 
 export default function (instance: AxiosInstance): IUsersAxios {
@@ -27,8 +29,11 @@ export default function (instance: AxiosInstance): IUsersAxios {
         page: 1,
         rows: 10
       }
-    ): Promise<AxiosResponse<IResponseArray<IUsersRow>>> {
+    ) {
       return instance.get(`${axiosConfig.adminUrl}/users`, { params: filter })
+    },
+    getUser(userId) {
+      return instance.get(`${axiosConfig.baseUrl}user/${userId}`)
     }
   }
 }

@@ -22,46 +22,54 @@ const AuthPage: FC = () => {
   const [remember, setRemember] = useState<boolean>(false)
 
   return (
-    <div className={classes.main_container}>
-      <SwitchLanguage />
-      <Logo />
-      <div className={classes.auth_container}>
-        <div className={classes.input_wrapper}>
-          <Text view={'secondary'} size={'m'} weight={'light'}>
-            Логин
-          </Text>
-          <TextField value={username} onChange={loginChange} className={classes.input} size={'s'} />
+    <div className={classes.whole_container}>
+      <div className={classes.header}>
+        <SwitchLanguage />
+      </div>
+      <div className={classes.main_container}>
+        <Logo />
+
+        <div className={classes.auth_container}>
+          <div className={classes.input_fields_wrapper}>
+            <div className={classes.input_wrapper}>
+              <Text view={'secondary'} size={'m'} weight={'light'}>
+                {t('unauthorized.auth.login')}
+              </Text>
+              <TextField
+                value={username}
+                onChange={loginChange}
+                className={classes.input}
+                size={'s'}
+              />
+            </div>
+            <div className={classes.input_wrapper}>
+              <Text view={'secondary'} size={'m'} weight={'light'}>
+                {t('unauthorized.auth.password')}
+              </Text>
+              <TextField
+                type='password'
+                value={pass}
+                onChange={passChange}
+                className={classes.input}
+                size={'s'}
+              />
+            </div>
+          </div>
+
+          <div className={classes.button_wrapper}>
+            <Button
+              className={classes.button}
+              size={'m'}
+              view={'primary'}
+              label={t('unauthorized.auth.signIn')}
+              onClick={login}
+            />
+          </div>
         </div>
-        <div className={classes.input_wrapper}>
-          <Text view={'secondary'} size={'m'} weight={'light'}>
-            Пароль
-          </Text>
-          <TextField
-            type='password'
-            value={pass}
-            onChange={passChange}
-            className={classes.input}
-            size={'s'}
-          />
-        </div>
-        <Checkbox
-          onChange={(val) => setRemember(val.checked)}
-          checked={remember}
-          label={'Запомнить меня'}
-          size={'m'}
-          view={'primary'}
-          align={'center'}
-          className={classes.checkbox}
-        />
-        <div className={classes.button_wrapper}>
-          <Button
-            className={classes.button}
-            size={'m'}
-            view={'primary'}
-            label={'Войти'}
-            onClick={login}
-          />
-        </div>
+
+        <Text className={classes.link_name} size={'m'} view={'secondary'}>
+          {t('unauthorized.auth.or')} <span>{t('unauthorized.auth.openEdu')}</span>
+        </Text>
       </div>
     </div>
   )

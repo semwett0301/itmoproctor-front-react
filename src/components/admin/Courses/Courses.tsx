@@ -14,7 +14,6 @@ import SharedTable from '../../shared/SharedTable/SharedTable'
 import { coursesColumns, ICoursesTableModel } from './coursesTableModel'
 import { request } from '../../../api/axios/request'
 import { ICourseRow } from '../../../ts/interfaces/ICourses'
-import DateCell from '../../shared/SharedTable/DateCell/DateCell'
 import { useTableRequest } from '../../../hooks/useTableRequest'
 import { useTable } from '../../../hooks/tableHooks'
 import { CoursesFilter, TablesEnum } from '../../../config/tablesReducerConfig'
@@ -24,6 +23,7 @@ import { closeModal, openModal } from '../../shared/ModalView/ModalView'
 import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
 import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
 import { selectAll } from '../../../utils/selectAll'
+import AddEditCourse from '../modals/AddEditCourse/AddEditCourse'
 
 const Courses: FC = () => {
   const [organizationsIds, setOrganizationsIds] = useState<string[]>([])
@@ -80,7 +80,8 @@ const Courses: FC = () => {
                     items={[
                       {
                         label: 'Изменить',
-                        iconLeft: IconEdit
+                        iconLeft: IconEdit,
+                        onClick: () => openModal(<AddEditCourse courseId={item._id} />)
                       },
                       {
                         label: 'Сбросить',
@@ -158,7 +159,8 @@ const Courses: FC = () => {
                     MenuItems={[
                       {
                         label: 'Добавить',
-                        iconLeft: IconAdd
+                        iconLeft: IconAdd,
+                        onClick: () => openModal(<AddEditCourse />)
                       },
                       {
                         label: 'Изменить',

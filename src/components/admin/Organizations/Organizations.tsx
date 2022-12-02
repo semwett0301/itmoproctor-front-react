@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useLayoutEffect } from 'react'
+import React, { FC, useLayoutEffect } from 'react'
 import { Layout } from '@consta/uikit/Layout'
 import { IconEdit } from '@consta/uikit/IconEdit'
 import { IconTrash } from '@consta/uikit/IconTrash'
@@ -12,8 +12,6 @@ import { useTableRequest } from '../../../hooks/useTableRequest'
 import { useTable } from '../../../hooks/tableHooks'
 import { OrganizationsFilter, TablesEnum } from '../../../config/tablesReducerConfig'
 import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
-import { IconRevert } from '@consta/uikit/IconRevert'
-import { IconCopy } from '@consta/uikit/IconCopy'
 import { closeModal, openModal } from '../../shared/ModalView/ModalView'
 import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
 import { useOrganizations } from '../../../hooks/organizationsHooks'
@@ -21,7 +19,8 @@ import SharedTable from '../../shared/SharedTable/SharedTable'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
 import { IOrganization } from '../../../ts/interfaces/IOrganizations'
 import { selectAll } from '../../../utils/selectAll'
-import { coursesColumns } from '../Courses/coursesTableModel'
+import AddEditOrganization from '../modals/AddEditOrganization/AddEditOrganization'
+import { request } from '../../../api/axios/request'
 
 const Organizations: FC = () => {
   const {
@@ -76,15 +75,14 @@ const Organizations: FC = () => {
                 items={[
                   {
                     label: 'Изменить',
-                    iconLeft: IconEdit
-                  },
-                  {
-                    label: 'Сбросить',
-                    iconLeft: IconRevert
-                  },
-                  {
-                    label: 'Дублировать',
-                    iconLeft: IconCopy
+                    iconLeft: IconEdit,
+                    onClick: () =>
+                      openModal(
+                        <AddEditOrganization
+                          organizationId={currentRows[i]._id}
+                          onSubmit={() => console.log('submit')}
+                        />
+                      )
                   },
                   {
                     label: 'Удалить',
@@ -93,7 +91,10 @@ const Organizations: FC = () => {
                       openModal(
                         <DeleteSubmit
                           onSubmit={() => {
-                            closeModal()
+                            request.organizations
+                              .deleteOrganization(currentRows[i]._id)
+                              .then(() => closeModal())
+                              .catch((e) => console.log(e))
                           }}
                           onCancel={() => closeModal()}
                         />
@@ -146,9 +147,43 @@ const Organizations: FC = () => {
                 component: (
                   <FilterButton
                     MenuItems={[
-                      { label: 'Добавить', iconLeft: IconAdd },
-                      { label: 'Изменить', iconLeft: IconEdit },
-                      { label: 'Удалить', iconLeft: IconTrash }
+                      {
+                        label: 'Добавить',
+                        iconLeft: IconAdd,
+                        onClick: () =>
+                          openModal(
+                            <AddEditOrganization
+                              onSubmit={() => {
+                                console.log('submit')
+                              }}
+                            />
+                          )
+                      },
+                      {
+                        label: 'Изменить',
+                        iconLeft: IconEdit,
+                        disabled: !(selectedRowsId.length === 1)
+                      },
+                      {
+                        label: 'Удалить',
+                        iconLeft: IconTrash,
+                        onClick: () =>
+                          openModal(
+                            <DeleteSubmit
+                              onSubmit={() => {
+                                Promise.all(
+                                  selectedRowsId.map((id) =>
+                                    request.organizations.deleteOrganization(id)
+                                  )
+                                )
+                                  .then(() => closeModal())
+                                  .catch((e) => console.log(e))
+                              }}
+                              onCancel={() => closeModal()}
+                            />
+                          ),
+                        disabled: !selectedRowsId.length
+                      }
                     ]}
                   />
                 )

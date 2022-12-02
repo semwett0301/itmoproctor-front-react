@@ -7,8 +7,6 @@ import {
   setVisibleActionCreator
 } from '../../../store/reducers/selectedModal/selectedModalActionCreators'
 import store from '../../../store'
-import { cnMixSpace } from '@consta/uikit/MixSpace'
-import { classJoiner } from '../../../utils/styleClassesUtills'
 import cl from './ModalView.module.scss'
 
 export function openModal(component: JSX.Element): void {
