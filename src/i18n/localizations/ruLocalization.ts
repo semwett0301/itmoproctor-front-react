@@ -6,7 +6,9 @@ export const ruLocalization: ILocalization = {
       auth: {
         login: 'Логин',
         password: 'Пароль',
-        signIn: 'Войти'
+        signIn: 'Войти',
+        or: 'или',
+        openEdu: 'войти через “Открытое образование”'
       },
       installing: {
         name: 'Система прокторинга от ИТМО',

@@ -1,10 +1,10 @@
-import {Socket} from 'socket.io-client'
-import {SocketCallback} from '../../../ts/types/SocketCallback'
-import {IResponseArray} from '../../../ts/interfaces/IResponseInterfaces';
-import {IExamRow} from '../../../ts/interfaces/IExams';
+import { Socket } from 'socket.io-client'
+import { SocketCallback } from '../../../ts/types/SocketCallback'
+import { IResponseArray } from '../../../ts/interfaces/IResponseInterfaces'
+import { IExamRow } from '../../../ts/interfaces/IExams'
 
 export interface IExamsSocket {
-  subscribe: (callback: SocketCallback<IResponseArray<IExamRow>>) => void
+  subscribe: (callback: SocketCallback<IExamRow>) => void
   unsubscribe: () => void
 }
 
