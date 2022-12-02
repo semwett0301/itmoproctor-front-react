@@ -11,7 +11,7 @@ import { Button } from '@consta/uikit/Button'
 import { IconRestart } from '@consta/uikit/IconRestart'
 import { request } from '../../../api/axios/request'
 import { IMaintenanceTableModel, maintenanceColumns } from './maintenanceTableModel'
-import { IMaintenanceRow } from '../../../ts/interfaces/IMaintenance'
+import { IMaintenance } from '../../../ts/interfaces/IMaintenance'
 import { useTable } from '../../../hooks/tableHooks'
 import { MaintenanceFilter, TablesEnum } from '../../../config/tablesReducerConfig'
 import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
@@ -21,6 +21,7 @@ import { useTableRequest } from '../../../hooks/useTableRequest'
 import SharedTable from '../../shared/SharedTable/SharedTable'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
 import { selectAll } from '../../../utils/selectAll'
+import AddEditMaintenance from '../modals/AddEditMaintenance/AddEditMaintenance'
 
 const Maintenance: FC = () => {
   const {
@@ -39,7 +40,7 @@ const Maintenance: FC = () => {
   const { isLoading, rows, update } = useTableRequest(
     () =>
       request.maintenance
-        .getMaintenance({
+        .getMaintenances({
           from: filter.date[0].toISOString(),
           to: filter.date[1].toISOString(),
           page: pagination.currentPage + 1,
@@ -47,21 +48,32 @@ const Maintenance: FC = () => {
         })
         .then((r): IMaintenanceTableModel[] => {
           setTotal(r.data.total)
+          console.log(
+            filter.date[0].format('DD.MM.YYYY hh:mm'),
+            filter.date[1].format('DD.MM.YYYY hh:mm')
+          )
           if (r.data.rows.length > 0) {
-            return r.data.rows.map((row: IMaintenanceRow) => {
+            return r.data.rows.map((row: IMaintenance) => {
               return {
                 id: row._id,
                 selected: false,
                 beginDate: row.beginDate,
                 endDate: row.endDate,
                 created: row.created,
-                active: row.active,
+                active: row.active ? 'Да' : 'Нет',
                 more: (
                   <MoreButton
                     items={[
                       {
                         label: 'Изменить',
-                        iconLeft: IconEdit
+                        iconLeft: IconEdit,
+                        onClick: () =>
+                          openModal(
+                            <AddEditMaintenance
+                              maintenanceId={row._id}
+                              onSubmit={() => console.log('edit')}
+                            />
+                          )
                       },
                       {
                         label: 'Удалить',
@@ -70,8 +82,10 @@ const Maintenance: FC = () => {
                           openModal(
                             <DeleteSubmit
                               onSubmit={() => {
-                                closeModal()
-                                console.log(row._id)
+                                request.maintenance
+                                  .deleteMaintenance(row._id)
+                                  .then(() => closeModal())
+                                  .catch((e) => console.log(e))
                               }}
                               onCancel={() => closeModal()}
                             />
@@ -134,9 +148,43 @@ const Maintenance: FC = () => {
                 component: (
                   <FilterButton
                     MenuItems={[
-                      { label: 'Добавить', iconLeft: IconAdd },
-                      { label: 'Изменить', iconLeft: IconEdit },
-                      { label: 'Удалить', iconLeft: IconTrash }
+                      {
+                        label: 'Добавить',
+                        iconLeft: IconAdd,
+                        onClick: () => openModal(<AddEditMaintenance />)
+                      },
+                      {
+                        label: 'Изменить',
+                        iconLeft: IconEdit,
+                        disabled: !(selectedRowsId.length === 1),
+                        onClick: () =>
+                          openModal(
+                            <AddEditMaintenance
+                              maintenanceId={selectedRowsId[0]}
+                              onSubmit={() => console.log('edit')}
+                            />
+                          )
+                      },
+                      {
+                        label: 'Удалить',
+                        iconLeft: IconTrash,
+                        disabled: !selectedRowsId.length,
+                        onClick: () =>
+                          openModal(
+                            <DeleteSubmit
+                              onSubmit={() => {
+                                Promise.all(
+                                  selectedRowsId.map((id) =>
+                                    request.maintenance.deleteMaintenance(id)
+                                  )
+                                )
+                                  .then(() => closeModal())
+                                  .catch((e) => console.log(e))
+                              }}
+                              onCancel={() => closeModal()}
+                            />
+                          )
+                      }
                     ]}
                   />
                 )

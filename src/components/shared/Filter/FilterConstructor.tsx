@@ -8,6 +8,8 @@ interface IFilterComponent {
   key: string | number
   component: ReactNode
   flex?: number
+  className?: string
+  direction?: 'row' | 'column'
 }
 
 interface IFilterComponentArray {
@@ -34,7 +36,7 @@ const FilterConstructor: FC<IFilterConstructorProps> = ({ items }) => {
 
   if (items.length === 1) {
     return (
-      <Layout direction={'row'} className={classJoiner(blockClass, rowClass)}>
+      <Layout className={classJoiner(blockClass, rowClass)}>
         {items[0].components.map((item) => (
           <Layout flex={item.flex} key={item.key}>
             {item.component}
@@ -48,7 +50,12 @@ const FilterConstructor: FC<IFilterConstructorProps> = ({ items }) => {
         {items.map((row) => (
           <Layout direction={'row'} key={row.key} className={rowClass}>
             {row.components.map((item) => (
-              <Layout flex={item.flex} key={item.key}>
+              <Layout
+                flex={item.flex}
+                key={item.key}
+                className={item.className}
+                direction={item.direction || 'column'}
+              >
                 {item.component}
               </Layout>
             ))}

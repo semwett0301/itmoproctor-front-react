@@ -1,32 +1,32 @@
-import React, { FC, useEffect, useLayoutEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { Combobox } from '@consta/uikit/Combobox'
 import { IOrganization } from '../../../../ts/interfaces/IOrganizations'
 import { useOrganizations } from '../../../../hooks/organizationsHooks'
-import set = Reflect.set
-import { Simulate } from 'react-dom/test-utils'
-import load = Simulate.load
 
 interface IOrganizationSelectProp {
-  value: IOrganization[]
-  organizationsIds: string[]
+  value: IOrganization[] | null
+  organizationsIds?: string[]
   onChange: (props: { value: IOrganization[] | null; e: React.SyntheticEvent }) => void
   isIdsLoading: boolean
+  placeholder?: string
+  label?: string
 }
 
 const OrganizationCombobox: FC<IOrganizationSelectProp> = ({
   value,
   onChange,
   organizationsIds,
-  isIdsLoading
+  isIdsLoading,
+  placeholder,
+  label
 }) => {
   const [items, setItems] = useState<IOrganization[]>([])
 
   const { loading, getOrganizations } = useOrganizations()
 
   useEffect(() => {
-    const setAll: () => Promise<IOrganization[]> = async () => {
-      return await getOrganizations(organizationsIds)
-    }
+    const setAll: () => Promise<IOrganization[]> = async () =>
+      organizationsIds ? await getOrganizations(organizationsIds) : await getOrganizations()
 
     setAll().then((r) => setItems(r))
   }, [isIdsLoading, loading])
@@ -42,8 +42,14 @@ const OrganizationCombobox: FC<IOrganizationSelectProp> = ({
       getItemLabel={(item) =>
         item.shortName || item.fullName || `Отсутствует название \n ID:${item._id}`
       }
-      placeholder='Правообладатель'
+      placeholder={placeholder ?? 'Правообладатель'}
+      label={label}
       size='s'
+      searchFunction={(item, searchValue) =>
+        (item.fullName.toLowerCase().includes(searchValue.toLowerCase()) ||
+          item.shortName?.toLowerCase().includes(searchValue.toLowerCase())) ??
+        false
+      }
     />
   )
 }

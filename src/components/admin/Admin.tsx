@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useLayoutEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { Layout } from '@consta/uikit/Layout'
 import cl from './Admin.module.scss'
 import Sidebar from './Sidebar/Sidebar'
@@ -15,6 +15,8 @@ import { useLogout } from '../../hooks/authHooks'
 import NavTabs from '../shared/NavTabs/NavTabs'
 import { classWatcher } from '../../utils/styleClassesUtills'
 import { collapseItems } from './Sidebar/NavCollapse/NavCollapseModel'
+import { openModal } from '../shared/ModalView/ModalView'
+import EditProfile from './modals/EditProfile/EditProfile'
 
 export interface TabItem {
   id: number | string
@@ -107,7 +109,8 @@ const Admin: FC = () => {
             {
               label: 'Профиль',
               group: 1,
-              iconLeft: IconUser
+              iconLeft: IconUser,
+              onClick: () => openModal(<EditProfile />)
             },
             {
               label: 'Настройки',

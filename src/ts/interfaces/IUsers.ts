@@ -2,7 +2,7 @@ export interface IUsersRow {
   _id: string
   role: number
   active: boolean
-  activityDate: string
+  activityDate?: string
   username: string
   firstname: string
   lastname: string

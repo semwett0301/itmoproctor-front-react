@@ -5,7 +5,6 @@ import { ITableRow } from '../../shared/SharedTable/SharedTable'
 import HeaderCell from '../../shared/SharedTable/HeaderCell/HeaderCell'
 import DateCell from '../../shared/SharedTable/DateCell/DateCell'
 
-
 export interface IMaintenanceTableModel extends ITableRow {
   beginDate: string
   endDate: string
@@ -44,8 +43,7 @@ export const maintenanceColumns: TableColumn<IMaintenanceTableModel>[] = [
   {
     title: <HeaderCell title={'Активный'} />,
     accessor: 'active',
-    align: 'left',
-    sortable: true
+    align: 'left'
   },
   {
     title: <HeaderCell title={'Создано'} />,

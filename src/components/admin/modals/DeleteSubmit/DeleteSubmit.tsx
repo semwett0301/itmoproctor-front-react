@@ -3,8 +3,10 @@ import cl from './DeleteSubmit.module.scss'
 import { Text } from '@consta/uikit/Text'
 import { Button } from '@consta/uikit/Button'
 import { cnMixSpace } from '@consta/uikit/MixSpace'
-import { IconClose } from '@consta/uikit/IconClose'
 import { classJoiner } from '../../../../utils/styleClassesUtills'
+import ModalTitle from '../../../shared/ModalView/ModalTitle/ModalTitle'
+import { Layout } from '@consta/uikit/Layout'
+import { DatePicker } from '@consta/uikit/DatePicker'
 
 // TYPES
 interface IDeleteSubmitProp {
@@ -15,14 +17,18 @@ interface IDeleteSubmitProp {
 const DeleteSubmit: FC<IDeleteSubmitProp> = ({ onSubmit, onCancel }) => {
   return (
     <div className={cl.wrapper}>
-      <div className={cl.firstRow}>
-        <Button onlyIcon={true} iconLeft={IconClose} view={'clear'} size={'xs'} />
+      <ModalTitle title={'submit'} />
+      <Text size={'s'} className={cnMixSpace({ p: 's' })}>
+        Вы уверены, что хотите удалить этот экзамен?
+      </Text>
+      <div className={classJoiner(cnMixSpace({ pH: '2xl', pT: '3xs', pB: 'm' }), cl.buttonBlock)}>
+        <Button label={'Удалить'} onClick={() => onSubmit()} size={'s'} />
+        <Button label={'Отменить'} onClick={onCancel} view={'secondary'} size={'s'} />
       </div>
-      <Text className={cnMixSpace({ mV: 'l' })}>Вы уверены, что хотите удалить этот экзамен?</Text>
-      <div className={classJoiner(cnMixSpace({ mT: 's' }), cl.firstRow)}>
-        <Button label={'Удалить'} onClick={() => onSubmit()} view={'secondary'} />
-        <Button label={'Отменить'} onClick={onCancel} />
-      </div>
+
+      <Layout direction={'row'}>
+        <DatePicker label={'Label date'} type={'date-time-range'} labelPosition={'left'} />
+      </Layout>
     </div>
   )
 }

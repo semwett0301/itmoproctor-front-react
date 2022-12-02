@@ -8,21 +8,26 @@ import { useTranslation } from 'react-i18next'
 import { request } from '../../../../api/axios/request'
 import { getFullName } from '../../../../utils/nameHelper'
 import { getStrDate } from '../../../../utils/dateUtils'
+import { Button } from '@consta/uikit/Button'
+import { TabItem } from '../../Admin'
 
 // TYPES
 interface IListenerViewProp {
   profileId: string
+  openTab?: (item: TabItem) => void
 }
 
-const ListenerView: FC<IListenerViewProp> = ({ profileId }) => {
+const ListenerView: FC<IListenerViewProp> = ({ profileId, openTab }) => {
   const { t } = useTranslation('translation', { keyPrefix: 'shared' })
 
   const [isLoad, setIsLoad] = useState<boolean>(true)
   const [items, setItems] = useState<IRowViewItem[]>([])
-
+  const [userId, setUseId] = useState<string>('')
+  console.log(userId)
   useEffect(() => {
     request.exam.getProfile(profileId).then((r) => {
       const data = r.data
+      setUseId(data._id)
       console.log(data)
       const ii: IRowViewItem[] = [
         {
@@ -98,7 +103,19 @@ const ListenerView: FC<IListenerViewProp> = ({ profileId }) => {
         <SkeletonText rows={10} fontSize='s' lineHeight={'l'} />
       ) : (
         <div className={cnMixSpace({ pH: 'm', pV: 's' })}>
-          <ModalViewConstructor items={items} />
+          <>
+            <ModalViewConstructor items={items} />
+            {openTab && (
+              <Button
+                label={'Все экзамены'}
+                view={'secondary'}
+                size={'s'}
+                onClick={() => {
+                  console.log('В процесее разработки')
+                }}
+              />
+            )}
+          </>
         </div>
       )}
     </div>

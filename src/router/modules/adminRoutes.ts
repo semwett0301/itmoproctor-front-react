@@ -6,8 +6,8 @@ import Maintenance from '../../components/admin/Maintenance/Maintenance'
 import Users from '../../components/admin/Users/Users'
 import Organizations from '../../components/admin/Organizations/Organizations'
 import NotFound from '../../components/shared/errors/NotFound/NotFound'
-import Exams from '../../components/admin/exams/Exams'
-// import Exams from '../../components/admin/Exams/Exams'
+import Exams from '../../components/admin/Exams/Exams'
+import UserExams from '../../components/admin/UserExams/UserExams'
 
 export const adminRoutes: IRoute[] = [
   {
@@ -16,6 +16,7 @@ export const adminRoutes: IRoute[] = [
     component: Admin,
     children: [
       { id: 1, path: 'exams', component: Exams },
+      { id: 21, path: 'exams/:id', component: UserExams },
       { id: 21, path: 'exam/:id', component: NotFound },
       { id: 2, path: 'users', component: Users },
       { id: 3, path: 'schedule', component: Schedule },
