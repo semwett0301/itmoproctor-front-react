@@ -8,7 +8,12 @@ import CloseModalButton from '../../../admin/modals/CloseModalButton/CloseModalB
 const ModalTitles = {
   exam: 'Карточка экзамена',
   proctor: 'Профиль пользователя',
-  listener: 'Профиль пользователя'
+  listener: 'Профиль пользователя',
+  maintenance: 'Технические работы',
+  schedule: 'Планирование расписания',
+  course: 'Карточка курса',
+  submit: 'Подтверждение',
+  user: 'Профиль пользователя'
 }
 
 export type ModalTitlesList = keyof typeof ModalTitles
@@ -20,7 +25,10 @@ interface IModalTitleProp {
 const ModalTitle: FC<IModalTitleProp> = ({ title }) => {
   return (
     <div className={cl.title}>
-      <Text size={'s'}>{ModalTitles[title]}</Text> <CloseModalButton />
+      <Text weight={'semibold'} size={'s'}>
+        {ModalTitles[title]}
+      </Text>
+      <CloseModalButton />
     </div>
   )
 }

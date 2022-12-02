@@ -1,7 +1,7 @@
 import i18n from 'i18next'
-import {initReactI18next} from 'react-i18next'
-import {ruLocalization} from './localizations/ruLocalization'
-import {engLocalization} from './localizations/engLocalization'
+import { initReactI18next } from 'react-i18next'
+import { ruLocalization } from './localizations/ruLocalization'
+import { engLocalization } from './localizations/engLocalization'
 
 const resources: any = {
   ru: ruLocalization,

@@ -14,7 +14,7 @@ import SharedPagination from '../../shared/SharedPagination/SharedPagination'
 import { request } from '../../../api/axios/request'
 import { IUsersRow } from '../../../ts/interfaces/IUsers'
 import { useTranslation } from 'react-i18next'
-import { IUsersTableModel, usersColumns } from './usersTableModel'
+import { getUserColumns, IUsersTableModel, usersColumns } from './usersTableModel'
 import { useTable } from '../../../hooks/tableHooks'
 import { TablesEnum, UserFilter } from '../../../config/tablesReducerConfig'
 import { useOrganizations } from '../../../hooks/organizationsHooks'
@@ -25,6 +25,9 @@ import { IconAllDone } from '@consta/uikit/IconAllDone'
 import SharedTable from '../../shared/SharedTable/SharedTable'
 import { organizationsFormat, roleFormat } from '../../../utils/requestFormatters'
 import { selectAll } from '../../../utils/selectAll'
+import AddEditUser from '../modals/AddEditUser/AddEditUser'
+import { openModal } from '../../shared/ModalView/ModalView'
+import { useOpenTab } from '../Admin'
 
 const Users: FC = () => {
   const { t } = useTranslation('translation')
@@ -32,6 +35,8 @@ const Users: FC = () => {
   const [organizationsIds, setOrganizationsIds] = useState<string[]>([])
 
   const { getOrganizations, getOrganization } = useOrganizations()
+
+  const { openTab } = useOpenTab()
 
   // filter
   const {
@@ -87,7 +92,11 @@ const Users: FC = () => {
                 more: (
                   <MoreButton
                     items={[
-                      { label: 'Изменить', iconLeft: IconEdit },
+                      {
+                        label: 'Изменить',
+                        iconLeft: IconEdit,
+                        onClick: () => openModal(<AddEditUser userId={item._id} />)
+                      },
                       { label: 'Все экзамены', iconLeft: IconAllDone }
                     ]}
                   />
@@ -162,7 +171,8 @@ const Users: FC = () => {
                     MenuItems={[
                       {
                         label: 'Добавить',
-                        iconLeft: IconAdd
+                        iconLeft: IconAdd,
+                        onClick: () => openModal(<AddEditUser />)
                       },
                       {
                         label: 'Импоорт',
@@ -186,7 +196,7 @@ const Users: FC = () => {
           isLoading={isLoading}
           className={cl.table}
           rows={rows}
-          columns={usersColumns}
+          columns={getUserColumns(openTab)}
           onRowSelect={setSelectedRowsId}
         />
       </Layout>

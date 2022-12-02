@@ -1,0 +1,14 @@
+.footer{
+  display: flex;
+  flex-direction: row-reverse;
+  padding: 0 16px 16px 16px;
+}
+
+.content{
+  width: 512px;
+}
+
+.skeleton{
+  box-sizing: border-box;
+  padding: var(--space-m);
+}

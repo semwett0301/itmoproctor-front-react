@@ -2,3 +2,7 @@
   display: inline-flex;
   column-gap: var(--space-s);
 }
+
+.component {
+  align-items: flex-end;
+}

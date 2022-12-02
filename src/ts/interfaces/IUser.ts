@@ -25,6 +25,5 @@ export interface IUser {
   role: RoleEnum
   _id: string
   __v?: number
-  // это поле не учитывать
   attach?: unknown[]
 }

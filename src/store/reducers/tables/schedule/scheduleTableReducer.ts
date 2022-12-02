@@ -1,25 +1,32 @@
-import {Reducer} from 'redux';
-import {ITableParams} from '../../../../ts/interfaces/ITableParams';
-import {ActionPayloadTable, initialTableParams, ScheduleFilter} from '../../../../config/tablesReducerConfig';
-import {IAction} from '../../../../ts/interfaces/IAction';
-import {ITotalRowsVariants} from '../../../../components/shared/SharedPagination/PaginationField/PaginationField';
-import {ITotalPagination} from '../../../../ts/interfaces/IPagination';
-import {ScheduleTableActionTypes} from './scheduleTableActionTypes';
-import dayjs from 'dayjs';
+import { Reducer } from 'redux'
+import { ITableParams } from '../../../../ts/interfaces/ITableParams'
+import {
+  ActionPayloadTable,
+  initialTableParams,
+  ScheduleFilter
+} from '../../../../config/tablesReducerConfig'
+import { IAction } from '../../../../ts/interfaces/IAction'
+import { ITotalRowsVariants } from '../../../../components/shared/SharedPagination/PaginationField/PaginationField'
+import { ITotalPagination } from '../../../../ts/interfaces/IPagination'
+import { ScheduleTableActionTypes } from './scheduleTableActionTypes'
+import { getInitialDateRange } from '../../../../utils/dateUtils'
 
 const initialState: ITableParams<ScheduleFilter> = initialTableParams<ScheduleFilter>({
   searchQuery: null,
-  date: [dayjs(), dayjs()],
+  date: getInitialDateRange()
 })
 
-export const scheduleTableReducer: Reducer<ITableParams<ScheduleFilter>> = (state = initialState, action: IAction<ScheduleTableActionTypes, ActionPayloadTable<ScheduleFilter>>) => {
+export const scheduleTableReducer: Reducer<ITableParams<ScheduleFilter>> = (
+  state = initialState,
+  action: IAction<ScheduleTableActionTypes, ActionPayloadTable<ScheduleFilter>>
+) => {
   switch (action.type) {
     case ScheduleTableActionTypes.schedule_set_total_pagination:
       return {
         ...state,
         pagination: {
           ...state.pagination,
-          ...action.payload as ITotalPagination
+          ...(action.payload as ITotalPagination)
         }
       }
     case ScheduleTableActionTypes.schedule_set_displayed_rows:
@@ -50,7 +57,7 @@ export const scheduleTableReducer: Reducer<ITableParams<ScheduleFilter>> = (stat
         ...state,
         filter: {
           ...state.filter,
-          ...action.payload as ScheduleFilter
+          ...(action.payload as ScheduleFilter)
         }
       }
 
@@ -58,4 +65,3 @@ export const scheduleTableReducer: Reducer<ITableParams<ScheduleFilter>> = (stat
       return state
   }
 }
-
