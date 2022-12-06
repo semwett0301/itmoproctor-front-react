@@ -35,10 +35,10 @@ import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
 import { organizationsFormat, resetFormat, statusFormat } from '../../../utils/requestFormatters'
 import { closeModal, openModal } from '../../shared/ModalView/ModalView'
 import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
-import { examsColumn, IExamsTableModel } from './examsTableModel'
 import { selectAll } from '../../../utils/selectAll'
 import { SortByProps } from '@consta/uikit/Table'
 import { socket } from '../../../api/socket/socket'
+import { examsColumn, IExamsTableModel } from './examsTableModel'
 
 const Exams: FC = () => {
   const { openTab } = useOpenTab()
