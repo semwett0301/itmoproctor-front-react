@@ -81,12 +81,12 @@ const Admin: FC = () => {
         type: title ? 'tab' : 'exam'
       }
 
-      if (tabItems.filter((e) => e.id === currentItem.id).length === 0) {
+      if (!tabItems.find((e) => e.id === currentItem.id)) {
         setItems([...tabItems, currentItem])
       }
       setActiveTab(currentItem)
     }
-  }, [location.pathname])
+  }, [])
 
   useEffect(() => {
     console.log(location.pathname)
@@ -99,6 +99,7 @@ const Admin: FC = () => {
       })
     }
   }, [])
+
   return (
     <Layout className={cl.wrapper} direction={'column'}>
       <Layout>

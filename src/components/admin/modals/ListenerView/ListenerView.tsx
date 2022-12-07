@@ -9,6 +9,7 @@ import { request } from '../../../../api/axios/request'
 import { getFullName } from '../../../../utils/nameHelper'
 import { getStrDate } from '../../../../utils/dateUtils'
 import { Button } from '@consta/uikit/Button'
+import { closeModal } from '../../../shared/ModalView/ModalView'
 import { TabItem } from '../../Admin'
 
 // TYPES
@@ -23,12 +24,12 @@ const ListenerView: FC<IListenerViewProp> = ({ profileId, openTab }) => {
   const [isLoad, setIsLoad] = useState<boolean>(true)
   const [items, setItems] = useState<IRowViewItem[]>([])
   const [userId, setUseId] = useState<string>('')
-  console.log(userId)
+
   useEffect(() => {
     request.exam.getProfile(profileId).then((r) => {
       const data = r.data
       setUseId(data._id)
-      console.log(data)
+      console.log(data._id)
       const ii: IRowViewItem[] = [
         {
           title: 'Логин',
@@ -111,7 +112,15 @@ const ListenerView: FC<IListenerViewProp> = ({ profileId, openTab }) => {
                 view={'secondary'}
                 size={'s'}
                 onClick={() => {
-                  console.log('В процесее разработки')
+                  if (openTab) {
+                    openTab({
+                      id: `userExams/${userId}`,
+                      title: `Экзамены-${userId}`,
+                      path: `userExams/${userId}`,
+                      type: 'tab'
+                    })
+                  }
+                  closeModal()
                 }}
               />
             )}
