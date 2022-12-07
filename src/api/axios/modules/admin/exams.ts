@@ -19,8 +19,23 @@ export interface filterInterface {
   rows: number
 }
 
+export interface IUserFilter {
+  userId: string
+  from: string
+  to: string
+  text: string | null
+  status: string | null
+  reset: boolean | null
+  organization: string | null
+  myStudents: boolean
+  async: boolean | null
+  page: number
+  rows: number
+}
+
 export interface IExamsAxios {
   getListOfExams: (filter?: filterInterface) => Promise<AxiosResponse<IResponseArray<IExamRow>>>
+  getUserExams: (filter: IUserFilter) => Promise<AxiosResponse<IResponseArray<IExamRow>>>
   getExam: (examId: string) => Promise<AxiosResponse<IExam>>
   getProfile: (proctorId: string) => Promise<AxiosResponse<IUser>>
 }
@@ -41,6 +56,10 @@ export default function (instance: AxiosInstance): IExamsAxios {
         rows: 10
       }
     ) {
+      return instance.get(`${axiosConfig.adminUrl}/exams`, { params: filter })
+    },
+    getUserExams(filter) {
+      console.log(filter)
       return instance.get(`${axiosConfig.adminUrl}/exams`, { params: filter })
     },
     getExam(examId) {

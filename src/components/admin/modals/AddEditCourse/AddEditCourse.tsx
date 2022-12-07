@@ -92,7 +92,6 @@ const AddEditCourse: FC<IAddEditCourseProp> = ({ courseId, onSubmit }) => {
         return r
       })
       .then((organizations) => {
-        console.log(organizations[0])
         if (courseId) {
           request.courses.getCourse(courseId).then((r) => {
             console.log(r.data)

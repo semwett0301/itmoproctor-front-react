@@ -98,7 +98,7 @@ export const usersColumns: TableColumn<IUsersTableModel>[] = [
 ]
 
 export const getUserColumns = (
-  openTab: (item: TabItem) => void
+  openTab: (itemId: TabItem) => void
 ): TableColumn<IUsersTableModel>[] => {
   return [
     {
