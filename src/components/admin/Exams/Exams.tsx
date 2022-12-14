@@ -236,7 +236,6 @@ const Exams: FC = () => {
       console.log(currentRows)
       setRows(currentRows)
     })
-
     return () => {
       socket.exams.unsubscribe()
     }
