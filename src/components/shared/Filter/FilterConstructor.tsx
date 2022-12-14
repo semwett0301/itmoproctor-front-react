@@ -38,7 +38,7 @@ const FilterConstructor: FC<IFilterConstructorProps> = ({ items }) => {
     return (
       <Layout className={classJoiner(blockClass, rowClass)}>
         {items[0].components.map((item) => (
-          <Layout flex={item.flex} key={item.key}>
+          <Layout flex={item.flex} key={item.key} direction={'column'}>
             {item.component}
           </Layout>
         ))}

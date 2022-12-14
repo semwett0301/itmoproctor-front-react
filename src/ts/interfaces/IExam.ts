@@ -3,6 +3,7 @@ import { IStudent } from './IStudent'
 import { IInspector } from './IInspector'
 import { IExpert } from './IExpert'
 import { ICourse } from './ICourse'
+import { VerificationType } from '../types/Verifications'
 
 export type IVerified = {
   _id: string
@@ -11,6 +12,8 @@ export type IVerified = {
 }
 
 export interface IExam {
+  examCode: string
+
   _id: string
   examId: string
   organization: IOrganization
@@ -21,7 +24,7 @@ export interface IExam {
   inspector: IInspector
   expert: IExpert | null
   async?: boolean
-  verifications: string[] | null
+  verifications: VerificationType[] | null
   platformURL: string
   duration: number
   leftDate: string
