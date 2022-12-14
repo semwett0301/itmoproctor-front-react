@@ -36,8 +36,10 @@ export interface IUserFilter {
 export interface IExamsAxios {
   getListOfExams: (filter?: filterInterface) => Promise<AxiosResponse<IResponseArray<IExamRow>>>
   getUserExams: (filter: IUserFilter) => Promise<AxiosResponse<IResponseArray<IExamRow>>>
-  getExam: (examId: string) => Promise<AxiosResponse<IExam>>
   getProfile: (proctorId: string) => Promise<AxiosResponse<IUser>>
+  getExam: (examId: string) => Promise<AxiosResponse<IExam>>
+  addExam: (data: unknown) => Promise<AxiosResponse<IExam>>
+  editExam: (data: unknown, examId: string) => Promise<AxiosResponse<IExam>>
 }
 
 export default function (instance: AxiosInstance): IExamsAxios {
@@ -62,11 +64,17 @@ export default function (instance: AxiosInstance): IExamsAxios {
       console.log(filter)
       return instance.get(`${axiosConfig.adminUrl}/exams`, { params: filter })
     },
-    getExam(examId) {
-      return instance.get(`${axiosConfig.studentUrl}/info/${examId}`)
-    },
     getProfile(profileId) {
       return instance.get(`${axiosConfig.baseUrl}profile/${profileId}`)
+    },
+    getExam(examId) {
+      return instance.get(`${axiosConfig.baseUrl}exam/${examId}`)
+    },
+    addExam(data) {
+      return instance.post(`${axiosConfig.baseUrl}exam`, data)
+    },
+    editExam(data, examId) {
+      return instance.put(`${axiosConfig.baseUrl}exam/${examId}`, data)
     }
   }
 }

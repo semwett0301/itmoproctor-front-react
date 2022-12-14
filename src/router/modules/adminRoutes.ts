@@ -8,6 +8,7 @@ import Organizations from '../../components/admin/Organizations/Organizations'
 import Exams from '../../components/admin/Exams/Exams'
 import UserExams from '../../components/admin/UserExams/UserExams'
 import ExamProtocol from '../../components/admin/ExamProtocol/ExamProtocol'
+import NotFound from '../../components/shared/errors/NotFound/NotFound'
 
 export const adminRoutes: IRoute[] = [
   {
@@ -22,7 +23,8 @@ export const adminRoutes: IRoute[] = [
       { id: 3, path: 'schedule', component: Schedule },
       { id: 4, path: 'courses', component: Courses },
       { id: 5, path: 'maintenance', component: Maintenance },
-      { id: 6, path: 'organizations', component: Organizations }
+      { id: 6, path: 'organizations', component: Organizations },
+      { id: 999, path: '*', component: NotFound }
     ]
   }
 ]

@@ -20,7 +20,7 @@ interface ISharedTableProps<T extends ITableRow> {
   // sortingFunction?: (rows: T[]) => T[]
 }
 
-function SharedTable<T extends ITableRow = ITableRow>({
+function SharedTable<T extends ITableRow>({
   rows,
   onRowSelect,
   columns,

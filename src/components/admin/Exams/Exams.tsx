@@ -35,10 +35,10 @@ import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
 import { organizationsFormat, resetFormat, statusFormat } from '../../../utils/requestFormatters'
 import { closeModal, openModal } from '../../shared/ModalView/ModalView'
 import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
-import { selectAll } from '../../../utils/selectAll'
-import { SortByProps } from '@consta/uikit/Table'
-import { socket } from '../../../api/socket/socket'
 import { examsColumn, IExamsTableModel } from './examsTableModel'
+import { selectAll } from '../../../utils/selectAll'
+import { socket } from '../../../api/socket/socket'
+import AddEditExam from '../modals/AddEditExam/AddEditExam'
 
 const Exams: FC = () => {
   const { openTab } = useOpenTab()
@@ -78,7 +78,7 @@ const Exams: FC = () => {
           iconRight={IconVideo}
           onClick={() =>
             openTab({
-              id: item._id,
+              id: `exam/${item._id}`,
               title: item._id,
               path: `exam/${item._id}`,
               type: 'exam'
@@ -91,7 +91,8 @@ const Exams: FC = () => {
           items={[
             {
               label: 'Изменить',
-              iconLeft: IconEdit
+              iconLeft: IconEdit,
+              onClick: () => openModal(<AddEditExam examId={item._id} />)
             },
             {
               label: 'Сбросить',
@@ -157,8 +158,7 @@ const Exams: FC = () => {
           let obj: IExamsTableModel[] = []
           if (r.data.rows.length > 0) {
             obj = r.data.rows.map((item: IExamRow) => {
-              const row: IExamsTableModel = castToTableRow(item)
-              return row
+              return castToTableRow(item)
             })
             return obj
           } else return []
@@ -277,7 +277,7 @@ const Exams: FC = () => {
                       {
                         label: 'Добавить',
                         iconLeft: IconAdd,
-                        onClick: () => console.log('OpenModal')
+                        onClick: () => openModal(<AddEditExam />)
                       },
                       {
                         label: 'Изменить',
