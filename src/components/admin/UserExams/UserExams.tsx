@@ -5,7 +5,6 @@ import { Layout } from '@consta/uikit/Layout'
 import SharedTable from '../../shared/SharedTable/SharedTable'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
 import FilterConstructor from '../../shared/Filter/FilterConstructor'
-import { examsColumn, IExamsTableModel } from '../Exams/examsTableModel'
 import { useOpenTab } from '../Admin'
 import { useTable } from '../../../hooks/tableHooks'
 import { ExamFilter, TablesEnum } from '../../../config/tablesReducerConfig'
@@ -38,6 +37,7 @@ import { IconUpload } from '@consta/uikit/IconUpload'
 import ExamTypeSelect from '../../shared/Filter/ExamTypeSelect/ExamTypeSelect'
 import ExamStatusCombobox from '../../shared/Filter/ExamStatusCombobox/ExamStatusCombobox'
 import OrganizationCombobox from '../../shared/Filter/OrganizationCombobox/OrganizationCombobox'
+import { examsColumn, IExamsTableModel } from '../exams/examsTableModel'
 // TYPES
 
 // CONSTANTS
