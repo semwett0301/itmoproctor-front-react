@@ -1,0 +1,21 @@
+.wrapper {
+  margin: 0 16px;
+}
+
+.wrapper > * {
+  margin-top: 16px;
+}
+
+.wrapper > *:last-child {
+  margin-bottom: 22px;
+}
+
+.resolution {
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.resolution > div {
+  width: 256px;
+}

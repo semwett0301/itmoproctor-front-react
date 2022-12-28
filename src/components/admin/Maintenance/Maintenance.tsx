@@ -98,7 +98,7 @@ const Maintenance: FC = () => {
             })
           } else return []
         }),
-    [filter.date[0], filter.date[1]],
+    [filter.date[0]],
     [pagination.displayedRows, pagination.currentPage],
     dropPagination,
     selectedRowsId,
@@ -118,7 +118,7 @@ const Maintenance: FC = () => {
                 key: 'date',
                 component: (
                   <DatePeriodPicker
-                    value={filter.date}
+                    value={[filter.date[0]]}
                     onChange={(value) => setFilter({ date: value })}
                   />
                 )

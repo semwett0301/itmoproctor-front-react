@@ -13,7 +13,8 @@ const ModalTitles = {
   schedule: 'Планирование расписания',
   course: 'Карточка курса',
   submit: 'Подтверждение',
-  user: 'Профиль пользователя'
+  user: 'Профиль пользователя',
+  settings: 'Настройки'
 }
 
 export type ModalTitlesList = keyof typeof ModalTitles
