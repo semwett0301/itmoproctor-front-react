@@ -4,6 +4,7 @@ import { Select } from '@consta/uikit/Select'
 import { Item } from '../../../../../ts/types/Item'
 import { TextField } from '@consta/uikit/TextField'
 import cl from './VideoSettings.module.scss'
+import CheckingConnection from '../CheckingConnection/CheckingConnection'
 
 const items: Item[] = [
   {
@@ -27,8 +28,8 @@ const VideoSettings: FC = () => {
   }
   return (
     <Layout className={cl.wrapper} direction={'column'}>
-      <Layout flex={6}>
-        <div></div>
+      <Layout flex={6} className={cl.video}>
+        <CheckingConnection />
       </Layout>
       <Layout flex={1}>
         <Select size={'s'} label={'Камера'} items={items} onChange={() => {}} />

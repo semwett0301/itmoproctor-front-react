@@ -6,8 +6,16 @@
   margin-top: 16px;
 }
 
+.wrapper > *:first-child {
+  margin-top: 14px;
+}
+
 .wrapper > *:last-child {
   margin-bottom: 22px;
+}
+
+.video {
+  margin-bottom: 4px;
 }
 
 .resolution {
