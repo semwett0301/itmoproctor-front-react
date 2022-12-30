@@ -3,10 +3,10 @@ import ModalTitle from '../../../shared/ModalView/ModalTitle/ModalTitle'
 import ModalSidebar, {
   ModalSidebarButton
 } from '../../../shared/ModalView/ModalSidebar/ModalSidebar'
-import { IconVideo } from '@consta/uikit/IconVideo'
-import { IconScreen } from '@consta/uikit/IconScreen'
-import { IconWorldFilled } from '@consta/uikit/IconWorldFilled'
-import { IconInfo } from '@consta/uikit/IconInfo'
+import { IconVideo } from '@consta/icons/IconVideo'
+import { IconScreenFilled } from '@consta/icons/IconScreenFilled'
+import { IconWorldFilled } from '@consta/icons/IconWorldFilled'
+import { IconInfo } from '@consta/icons/IconInfo'
 import VideoSettings from './VideoSettings/VideoSettings'
 
 import cl from './SettingsView.module.scss'
@@ -20,28 +20,28 @@ type SettingsConfig = {
   [key: string]: SettingsConfigElement
 }
 
-const settingsConfig: SettingsConfig = {
-  video: {
-    title: 'Веб-камера',
-    logo: IconVideo,
-    component: <VideoSettings />
-  },
-  screen: {
-    title: 'Экран',
-    logo: IconScreen
-  },
-  network: {
-    title: 'Сеть',
-    logo: IconWorldFilled
-  },
-  system: {
-    title: 'Система',
-    logo: IconInfo
-  }
-}
-
 const SettingsView: FC = () => {
   const [chosenButton, setChosenButton] = useState<string>('video')
+
+  const settingsConfig: SettingsConfig = {
+    video: {
+      title: 'Веб-камера',
+      logo: <IconVideo size={'s'} view={chosenButton === 'video' ? 'brand' : 'secondary'} />,
+      component: <VideoSettings />
+    },
+    screen: {
+      title: 'Экран',
+      logo: <IconScreenFilled size={'s'} view={chosenButton === 'screen' ? 'brand' : 'secondary'} />
+    },
+    network: {
+      title: 'Сеть',
+      logo: <IconWorldFilled size={'s'} view={chosenButton === 'network' ? 'brand' : 'secondary'} />
+    },
+    system: {
+      title: 'Система',
+      logo: <IconInfo size={'s'} view={chosenButton === 'system' ? 'brand' : 'secondary'} />
+    }
+  }
 
   return (
     // <div className={cl.wrapper}>

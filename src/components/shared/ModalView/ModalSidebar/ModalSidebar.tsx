@@ -1,10 +1,12 @@
 import { Button } from '@consta/uikit/Button'
 import React, { Dispatch, FC } from 'react'
 import cl from './ModalSidebar.module.scss'
+import SidebarItem from './SidebarItem/SidebarItem'
+import { IconComponent } from '@consta/icons/Icon'
 
 export interface ModalSidebarButton {
   title: string
-  logo: FC
+  logo: JSX.Element
 }
 
 type ModalSidebarProps = {
@@ -19,15 +21,13 @@ const ModalSidebar: FC<ModalSidebarProps> = ({ config, chosenButton, setChosenBu
   return (
     <div className={cl.wrapper}>
       {Object.keys(config).map((e) => (
-        <Button
-          className={cl.button}
-          size={'m'}
-          key={e}
-          label={config[e].title}
-          iconLeft={config[e].logo}
-          iconSize={'s'}
-          view={e === chosenButton ? 'ghost' : 'clear'}
+        <SidebarItem
+          logo={config[e].logo}
+          text={config[e].title}
           onClick={() => setChosenButton(e)}
+          chosen={e === chosenButton}
+          className={cl.button}
+          key={e}
         />
       ))}
     </div>
