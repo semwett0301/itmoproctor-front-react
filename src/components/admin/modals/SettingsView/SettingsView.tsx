@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useMemo, useState } from 'react'
 import ModalTitle from '../../../shared/ModalView/ModalTitle/ModalTitle'
 import ModalSidebar, {
   ModalSidebarButton
@@ -23,25 +23,31 @@ type SettingsConfig = {
 const SettingsView: FC = () => {
   const [chosenButton, setChosenButton] = useState<string>('video')
 
-  const settingsConfig: SettingsConfig = {
-    video: {
-      title: 'Веб-камера',
-      logo: <IconVideo size={'s'} view={chosenButton === 'video' ? 'brand' : 'secondary'} />,
-      component: <VideoSettings />
-    },
-    screen: {
-      title: 'Экран',
-      logo: <IconScreenFilled size={'s'} view={chosenButton === 'screen' ? 'brand' : 'secondary'} />
-    },
-    network: {
-      title: 'Сеть',
-      logo: <IconWorldFilled size={'s'} view={chosenButton === 'network' ? 'brand' : 'secondary'} />
-    },
-    system: {
-      title: 'Система',
-      logo: <IconInfo size={'s'} view={chosenButton === 'system' ? 'brand' : 'secondary'} />
+  const settingsConfig: SettingsConfig = useMemo<SettingsConfig>(() => {
+    return {
+      video: {
+        title: 'Веб-камера',
+        logo: <IconVideo size={'s'} view={chosenButton === 'video' ? 'brand' : 'secondary'} />,
+        component: <VideoSettings />
+      },
+      screen: {
+        title: 'Экран',
+        logo: (
+          <IconScreenFilled size={'s'} view={chosenButton === 'screen' ? 'brand' : 'secondary'} />
+        )
+      },
+      network: {
+        title: 'Сеть',
+        logo: (
+          <IconWorldFilled size={'s'} view={chosenButton === 'network' ? 'brand' : 'secondary'} />
+        )
+      },
+      system: {
+        title: 'Система',
+        logo: <IconInfo size={'s'} view={chosenButton === 'system' ? 'brand' : 'secondary'} />
+      }
     }
-  }
+  }, [chosenButton])
 
   return (
     // <div className={cl.wrapper}>
