@@ -32,13 +32,34 @@ const VideoSettings: FC = () => {
         <CheckingConnection />
       </Layout>
       <Layout flex={1}>
-        <Select size={'s'} label={'Камера'} items={items} onChange={() => {}} />
+        <Select
+          size={'s'}
+          label={'Камера'}
+          items={items}
+          onChange={() => {
+            console.log()
+          }}
+        />
       </Layout>
       <Layout flex={1}>
-        <Select size={'s'} label={'Микрофон'} items={items} onChange={() => {}} />
+        <Select
+          size={'s'}
+          label={'Микрофон'}
+          items={items}
+          onChange={() => {
+            console.log()
+          }}
+        />
       </Layout>
       <Layout className={cl.resolution} flex={1}>
-        <Select size={'s'} label={'Разрешение'} items={items} onChange={() => {}} />
+        <Select
+          size={'s'}
+          label={'Разрешение'}
+          items={items}
+          onChange={() => {
+            console.log()
+          }}
+        />
         <TextField
           size={'s'}
           label={'Частота кадров'}

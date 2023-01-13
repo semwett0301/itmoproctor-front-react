@@ -1,10 +1,10 @@
-import React, {FC, useState} from 'react';
-import cl from '../ConnectionVideoSettings.module.scss';
-import {Layout} from '@consta/uikit/Layout';
-import CheckingConnection from '../../CheckingConnection/CheckingConnection';
-import {Select} from '@consta/uikit/Select';
-import {TextField} from '@consta/uikit/TextField';
-import {Item} from '../../../../../../ts/types/Item';
+import React, { FC, useState } from 'react'
+import cl from '../ConnectionVideoSettings.module.scss'
+import { Layout } from '@consta/uikit/Layout'
+import CheckingConnection from '../../CheckingConnection/CheckingConnection'
+import { Select } from '@consta/uikit/Select'
+import { TextField } from '@consta/uikit/TextField'
+import { Item } from '../../../../../../ts/types/Item'
 
 const items: Item[] = [
   {
@@ -33,10 +33,24 @@ const ScreenSettings: FC = () => {
         <CheckingConnection />
       </Layout>
       <Layout flex={2}>
-          <Select size={'s'} label={'Номер экрана'} items={items} onChange={() => {}} />
+        <Select
+          size={'s'}
+          label={'Номер экрана'}
+          items={items}
+          onChange={() => {
+            console.log('')
+          }}
+        />
       </Layout>
       <Layout className={cl.resolution} flex={4.5}>
-        <Select size={'s'} label={'Разрешение'} items={items} onChange={() => {}} />
+        <Select
+          size={'s'}
+          label={'Разрешение'}
+          items={items}
+          onChange={() => {
+            console.log()
+          }}
+        />
         <TextField
           size={'s'}
           label={'Частота кадров'}
@@ -49,7 +63,7 @@ const ScreenSettings: FC = () => {
         />
       </Layout>
     </Layout>
-  );
-};
+  )
+}
 
-export default ScreenSettings;
+export default ScreenSettings

@@ -8,7 +8,7 @@ import Organizations from '../../components/admin/Organizations/Organizations'
 import UserExams from '../../components/admin/UserExams/UserExams'
 import ExamProtocol from '../../components/admin/ExamProtocol/ExamProtocol'
 import NotFound from '../../components/shared/errors/NotFound/NotFound'
-import Exams from '../../components/admin/Exams/Exams';
+import Exams from '../../components/admin/Exams/Exams'
 
 export const adminRoutes: IRoute[] = [
   {
