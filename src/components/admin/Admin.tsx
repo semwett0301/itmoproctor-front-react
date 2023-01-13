@@ -141,11 +141,6 @@ const Admin: FC = () => {
               onClick: () => openModal(<SettingsView />)
             },
             {
-              label: 'Проверка',
-              group: 1,
-              iconLeft: IconScreen
-            },
-            {
               label: 'Выход',
               onClick: async () => {
                 await outHandler()

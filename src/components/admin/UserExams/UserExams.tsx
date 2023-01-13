@@ -37,7 +37,7 @@ import { IconUpload } from '@consta/uikit/IconUpload'
 import ExamTypeSelect from '../../shared/Filter/ExamTypeSelect/ExamTypeSelect'
 import ExamStatusCombobox from '../../shared/Filter/ExamStatusCombobox/ExamStatusCombobox'
 import OrganizationCombobox from '../../shared/Filter/OrganizationCombobox/OrganizationCombobox'
-import { examsColumn, IExamsTableModel } from '../exams/examsTableModel'
+import {examsColumn, IExamsTableModel } from '../Exams/examsTableModel'
 // TYPES
 
 // CONSTANTS
