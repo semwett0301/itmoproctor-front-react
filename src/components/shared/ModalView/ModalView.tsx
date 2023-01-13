@@ -27,9 +27,10 @@ const ModalView: FC = () => {
       hasOverlay
       onEsc={closeModal}
       onClickOutside={closeModal}
+      style={{ zIndex: 1000 }}
       className={cl.modal}
     >
-      {component || <></>}
+      {component ?? <></>}
     </Modal>
   )
 }

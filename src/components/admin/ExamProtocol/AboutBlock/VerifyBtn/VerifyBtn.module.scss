@@ -1,0 +1,21 @@
+.btn{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-content: center;
+  padding: 1px 2px;
+
+
+  background-color: var(--color-control-bg-secondary);
+  border: var(--control-border-width) solid var(--color-control-bg-border-secondary);
+  color: var(--color-control-typo-secondary);
+
+  border-radius: 3px;
+  box-sizing: border-box;
+  cursor: pointer;
+
+  &:hover{
+    --color-hover: var(--color-control-typo-secondary-hover);
+    border-color: var(--color-hover);
+    color: var(--color-hover);
+  }
+}

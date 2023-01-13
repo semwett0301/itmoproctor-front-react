@@ -9,9 +9,14 @@ import schedule, { IScheduleAxios } from './modules/admin/schedule'
 import courses, { ICoursesAxios } from './modules/admin/сourses'
 import maintenance, { IMaintenanceAxios } from './modules/admin/maintenance'
 import studentExams, { IStudentExamsAxios } from './modules/student/studentExams'
+import ExpertExams, { IExpertExamsAxios } from './modules/expert/exams'
 
 export interface IStudentRequestAxios {
   exams: IStudentExamsAxios
+}
+
+export interface IExpertRequestAxios {
+  exams: IExpertExamsAxios
 }
 
 export interface IRequestAxios {
@@ -25,6 +30,7 @@ export interface IRequestAxios {
   dist: IDistAxios
   organizations: IOrganizationsAxios
   student: IStudentRequestAxios
+  expert: IExpertRequestAxios
 }
 
 export const request: IRequestAxios = {
@@ -39,5 +45,8 @@ export const request: IRequestAxios = {
   organizations: organizations(mainInstance),
   student: {
     exams: studentExams(mainInstance)
+  },
+  expert: {
+    exams: ExpertExams(mainInstance)
   }
 }

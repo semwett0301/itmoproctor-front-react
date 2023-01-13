@@ -5,6 +5,7 @@ import { IResponseArray } from '../../../../ts/interfaces/IResponseInterfaces'
 import dayjs from 'dayjs'
 import { IExam } from '../../../../ts/interfaces/IExam'
 import { IUser } from '../../../../ts/interfaces/IUser'
+import { IVerify } from '../../../../ts/interfaces/IVerify'
 
 export interface filterInterface {
   from: string
@@ -40,6 +41,7 @@ export interface IExamsAxios {
   getExam: (examId: string) => Promise<AxiosResponse<IExam>>
   addExam: (data: unknown) => Promise<AxiosResponse<IExam>>
   editExam: (data: unknown, examId: string) => Promise<AxiosResponse<IExam>>
+  getVerify: (verifyId: string) => Promise<AxiosResponse<IVerify>>
 }
 
 export default function (instance: AxiosInstance): IExamsAxios {
@@ -75,6 +77,9 @@ export default function (instance: AxiosInstance): IExamsAxios {
     },
     editExam(data, examId) {
       return instance.put(`${axiosConfig.baseUrl}exam/${examId}`, data)
+    },
+    getVerify(verifyId) {
+      return instance.get(`${axiosConfig.baseUrl}verify/${verifyId}`)
     }
   }
 }

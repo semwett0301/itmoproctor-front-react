@@ -7,7 +7,7 @@ interface IResolutionText {
 
 const ResolutionText: FC<IResolutionText> = ({ resolution }) => {
   return (
-    <Text size={'s'} align={'left'} view={resolution ? 'alert' : 'success'}>
+    <Text size={'s'} align={'left'} view={!resolution ? 'alert' : 'success'}>
       {resolution ? (resolution ? 'Принят' : 'Прерван') : null}
     </Text>
   )

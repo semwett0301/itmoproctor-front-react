@@ -1,0 +1,21 @@
+.aboutExam{
+  height: auto;
+  display: grid;
+  grid-template-rows: auto;
+  align-items: center;
+  row-gap: 6px;
+
+  .studentRow{
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.spinner{
+  grid-row-start: 1;
+  grid-row-end: 6;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

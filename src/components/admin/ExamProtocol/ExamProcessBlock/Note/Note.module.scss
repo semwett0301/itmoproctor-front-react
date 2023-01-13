@@ -1,0 +1,30 @@
+.note {
+  box-sizing: border-box;
+  width: 100%;
+  height: auto;
+  margin: 5px 0;
+  padding: 0 8px;
+  display: grid;
+  grid-template-columns: 31px auto;
+  column-gap: 8px;
+
+  .message{
+    display: inline-flex;
+    grid-auto-flow: column;
+    column-gap: var(--space-2xs);
+
+    .messageContent{
+      display: grid;
+      max-width: inherit;
+
+      .messageAttach{
+        display: grid;
+        grid-template-columns: auto auto;
+
+        .attach{
+          width: min-content;
+        }
+      }
+    }
+  }
+}
