@@ -12,6 +12,7 @@ import VideoSettings from './ConnectionVideoSettings/VideoSettings/VideoSettings
 import cl from './SettingsView.module.scss'
 import {Layout} from '@consta/uikit/Layout'
 import ScreenSettings from './ConnectionVideoSettings/ScreenSettings/ScreenSettings';
+import SystemSettings from './SystemSettings/SystemSettings';
 
 interface SettingsConfigElement extends ModalSidebarButton {
   component?: JSX.Element
@@ -46,7 +47,8 @@ const SettingsView: FC = () => {
       },
       system: {
         title: 'Система',
-        logo: <IconInfo size={'s'} view={chosenButton === 'system' ? 'brand' : 'secondary'}/>
+        logo: <IconInfo size={'s'} view={chosenButton === 'system' ? 'brand' : 'secondary'}/>,
+        component: <SystemSettings/>
       }
     }
   }, [chosenButton])
