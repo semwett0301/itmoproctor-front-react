@@ -35,10 +35,10 @@ import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
 import { organizationsFormat, resetFormat, statusFormat } from '../../../utils/requestFormatters'
 import { closeModal, openModal } from '../../shared/ModalView/ModalView'
 import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
-import { examsColumn, IExamsTableModel } from './examsTableModel'
 import { selectAll } from '../../../utils/selectAll'
 import { socket } from '../../../api/socket/socket'
 import AddEditExam from '../modals/AddEditExam/AddEditExam'
+import { examsColumn, IExamsTableModel } from './examsTableModel'
 
 const Exams: FC = () => {
   const { openTab } = useOpenTab()
@@ -155,7 +155,8 @@ const Exams: FC = () => {
           setOrganizationsIds(() => r.data.organizations || [])
           setTotal(r.data.total)
 
-          let obj: IExamsTableModel[] = []
+          let obj: IExamsTableModel[]
+          obj = []
           if (r.data.rows.length > 0) {
             obj = r.data.rows.map((item: IExamRow) => {
               return castToTableRow(item)

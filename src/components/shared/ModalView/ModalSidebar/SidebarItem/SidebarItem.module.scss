@@ -1,0 +1,28 @@
+.wrapper {
+  width: 161px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  margin-right: 14px;
+
+  display: flex;
+  align-items: center;
+}
+
+.text {
+  font-family: 'Inter';
+  font-size: 16px;
+  user-select: none;
+}
+
+.typical_element {
+  color: #667985;
+}
+
+.chosen_element {
+  color: #1849C7;
+}

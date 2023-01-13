@@ -17,6 +17,7 @@ import { classWatcher } from '../../utils/styleClassesUtills'
 import { collapseItems } from './Sidebar/NavCollapse/NavCollapseModel'
 import { openModal } from '../shared/ModalView/ModalView'
 import EditProfile from './modals/EditProfile/EditProfile'
+import SettingsView from './modals/SettingsView/SettingsView'
 
 export interface TabItem {
   id: number | string
@@ -136,12 +137,8 @@ const Admin: FC = () => {
             {
               label: 'Настройки',
               group: 1,
-              iconLeft: IconSettings
-            },
-            {
-              label: 'Проверка',
-              group: 1,
-              iconLeft: IconScreen
+              iconLeft: IconSettings,
+              onClick: () => openModal(<SettingsView />)
             },
             {
               label: 'Выход',

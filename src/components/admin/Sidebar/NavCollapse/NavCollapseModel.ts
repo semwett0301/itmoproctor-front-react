@@ -1,18 +1,19 @@
-import {IconBag} from '@consta/uikit/IconBag'
-import {IconLayers} from '@consta/uikit/IconLayers'
-import {IconCalendar} from '@consta/uikit/IconCalendar'
-import {IconFolders} from '@consta/uikit/IconFolders'
-import {IconLineAndBarChart} from '@consta/uikit/IconLineAndBarChart'
-import {IconTeam} from '@consta/uikit/IconTeam'
-import {IconOperators} from '@consta/uikit/IconOperators'
-import {IconComponent} from '@consta/uikit/Icon'
-import {IconWrench} from '@consta/uikit/IconWrench'
+import { IconBag } from '@consta/uikit/IconBag'
+import { IconLayers } from '@consta/uikit/IconLayers'
+import { IconCalendar } from '@consta/uikit/IconCalendar'
+import { IconFolders } from '@consta/uikit/IconFolders'
+import { IconLineAndBarChart } from '@consta/uikit/IconLineAndBarChart'
+import { IconTeam } from '@consta/uikit/IconTeam'
+import { IconOperators } from '@consta/uikit/IconOperators'
+import { IconComponent } from '@consta/uikit/Icon'
+import { IconWrench } from '@consta/uikit/IconWrench'
 
 export type ICollapseItem = {
   path: string
   icon: IconComponent
   title: string
   children?: ICollapseItem[]
+  condition?: string
 }
 
 export const collapseItems: ICollapseItem[] = [
@@ -21,7 +22,7 @@ export const collapseItems: ICollapseItem[] = [
   { path: 'schedule', icon: IconCalendar, title: 'Расписание' },
   { path: 'courses', icon: IconLayers, title: 'Курсы' },
   { path: 'organizations', icon: IconBag, title: 'Университеты' },
-  { path: 'maintenance', icon: IconWrench, title: 'Тех.Работы' },
+  { path: 'maintenance', icon: IconWrench, title: 'Тех.Работы', condition: 'system' },
   {
     path: '',
     icon: IconLineAndBarChart,
