@@ -56,6 +56,7 @@
     ]
   },
   "devDependencies": {
+    "@types/video.js": "^7.3.50",
     "@typescript-eslint/eslint-plugin": "^5.39.0",
     "@typescript-eslint/parser": "^5.39.0",
     "eslint": "^8.22.0",
@@ -63,6 +64,7 @@
     "eslint-import-resolver-typescript": "^3.5.1",
     "eslint-plugin-react": "^7.31.8",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "prettier": "2.7.1"
+    "prettier": "2.7.1",
+    "video.js": "^7.20.3"
   }
 }

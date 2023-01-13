@@ -13,7 +13,7 @@ export interface IUser {
   documentNumber: string
   documentType: string
   description: string
-  active: boolean
+  active: boolean | string
   activityDate?: string
   address: string
   created: string

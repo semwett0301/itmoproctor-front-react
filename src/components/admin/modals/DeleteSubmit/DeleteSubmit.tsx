@@ -5,8 +5,6 @@ import { Button } from '@consta/uikit/Button'
 import { cnMixSpace } from '@consta/uikit/MixSpace'
 import { classJoiner } from '../../../../utils/styleClassesUtills'
 import ModalTitle from '../../../shared/ModalView/ModalTitle/ModalTitle'
-import { Layout } from '@consta/uikit/Layout'
-import { DatePicker } from '@consta/uikit/DatePicker'
 
 // TYPES
 interface IDeleteSubmitProp {
@@ -17,7 +15,7 @@ interface IDeleteSubmitProp {
 const DeleteSubmit: FC<IDeleteSubmitProp> = ({ onSubmit, onCancel }) => {
   return (
     <div className={cl.wrapper}>
-      <ModalTitle title={'submit'} />
+      <ModalTitle title={'deleteSubmit'} />
       <Text size={'s'} className={cnMixSpace({ p: 's' })}>
         Вы уверены, что хотите удалить этот экзамен?
       </Text>
@@ -25,10 +23,6 @@ const DeleteSubmit: FC<IDeleteSubmitProp> = ({ onSubmit, onCancel }) => {
         <Button label={'Удалить'} onClick={() => onSubmit()} size={'s'} />
         <Button label={'Отменить'} onClick={onCancel} view={'secondary'} size={'s'} />
       </div>
-
-      <Layout direction={'row'}>
-        <DatePicker label={'Label date'} type={'date-time-range'} labelPosition={'left'} />
-      </Layout>
     </div>
   )
 }

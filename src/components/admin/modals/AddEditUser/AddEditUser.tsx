@@ -8,7 +8,7 @@ import { SkeletonText } from '@consta/uikit/Skeleton'
 import SaveButton from '../../../shared/ModalView/SaveButton/SaveButton'
 import FilterConstructor from '../../../shared/Filter/FilterConstructor'
 import { TextField } from '@consta/uikit/TextField'
-import { Controller, useForm } from 'react-hook-form'
+import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
 import { date, object, string } from 'yup'
 import { DefaultItem, Select } from '@consta/uikit/Select'
@@ -28,22 +28,24 @@ import { getDocumentTypeItem } from '../../../shared/SmartSelect/Items/documents
 import { getGender } from '../../../shared/SmartSelect/Items/genders'
 import { getProviderItem } from '../../../shared/SmartSelect/Items/providers'
 import { getRoleItem } from '../../../shared/SmartSelect/Items/roles'
-import { Button } from '@consta/uikit/Button'
+import { IUser } from '../../../../ts/interfaces/IUser'
+import { IProfilePost } from '../../../../api/axios/modules/profile'
+import { closeModal } from '../../../shared/ModalView/ModalView'
 
 // TYPES
 interface IUserForm {
   active: DefaultItem
-  address: string | null
+  address: string
   birthday: Date
   citizenship: DefaultItem | null
   description: string
-  documentIssueDate: Date
+  documentIssueDate: Date | null
   documentNumber: string
   documentType: DefaultItem | null
   email: string
-  expert: DefaultItem | null
+  expert: DefaultItem
   firstname: string
-  gender: DefaultItem | null
+  gender: DefaultItem
   lastname: string
   middlename: string
   organization: IOrganization
@@ -55,7 +57,7 @@ interface IUserForm {
 
 interface IAddEditUserProp {
   userId?: string
-  onSubmit?: string
+  onSubmit?: () => void
 }
 
 // CONSTANTS
@@ -107,24 +109,62 @@ const editUserSchema = object({
 
 // DEFAULT FUNCTIONS
 
+const toRequestData = (form: IUserForm, previousUser: IUser | null): IProfilePost => {
+  const userData = {
+    active: form.active.id.toString(),
+    address: form.address,
+    birthday: dayjs(form.birthday).format('MM.DD.YYYY'),
+    citizenship: form.citizenship ? form.citizenship.id.toString() : null,
+    description: form.description,
+    documentIssueDate: dayjs(form.documentIssueDate).format('MM.DD.YYYY'),
+    documentNumber: form.documentNumber,
+    documentType: form.documentType ? form.documentType.id.toString() : null,
+    email: form.email,
+    firstname: form.firstname,
+    gender: form.gender.id.toString(),
+    lastname: form.lastname,
+    middlename: form.middlename,
+    organization: form.organization._id,
+    provider: form.provider.id.toString(),
+    role: form.role.id.toString(),
+    username: form.username,
+
+    expert: 'false',
+    password: form.password
+  }
+
+  return previousUser
+    ? Object.assign(userData, {
+        __v: previousUser.__v,
+        _id: previousUser._id,
+        attach: previousUser.attach,
+        created: previousUser.created,
+        expert: String(!!previousUser.expert)
+      })
+    : userData
+}
+
 const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
-  const [isLoading, setIsLoading] = useState<boolean>()
-  const user = useAppSelector((state) => state.user)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const profile = useAppSelector((state) => state.user)
+
+  const [user, setUser] = useState<IUser | null>(null)
+
   const { getOrganizations } = useOrganizations()
   const [organizationList, setOrganizationList] = useState<IOrganization[]>([])
 
-  const { control, formState, reset } = useForm<IUserForm>({
+  const { control, formState, reset, handleSubmit } = useForm<IUserForm>({
     mode: 'all',
     resolver: yupResolver(userId ? editUserSchema : addUserSchema)
   })
 
   useEffect(() => {
-    console.log(userId)
+    setIsLoading(true)
 
     getOrganizations()
       .then((r) => {
-        if (user.role === RoleEnum.ADMIN && user.organization) {
-          setOrganizationList(r.filter((i) => i.code === user.organization.code))
+        if (profile.role === RoleEnum.ADMIN && profile.organization) {
+          setOrganizationList(r.filter((i) => i.code === profile.organization.code))
         } else {
           setOrganizationList(
             r
@@ -138,36 +178,58 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
         }
         return r
       })
-      .then((organizations) => {
-        console.log(userId)
+      .then(() => {
         if (userId) {
-          request.users.getUser(userId).then((r) => {
-            console.log(r.data)
-            setOrganizationList((prevState) => [...prevState, r.data.organization])
-            reset({
-              active: getUserStatusItem(String(r.data.active)),
-              address: r.data.address,
-              birthday: dayjs(user.birthday, 'MM.DD.YYYY').toDate(),
-              citizenship: getCitizenItem(r.data.citizenship),
-              description: r.data.description,
-              documentIssueDate: new Date(r.data.documentIssueDate),
-              documentNumber: r.data.documentNumber,
-              documentType: getDocumentTypeItem(r.data.documentType),
-              email: r.data.email,
-              expert: { id: String(r.data.expert), label: 'Нет' },
-              firstname: r.data.firstname,
-              gender: getGender(r.data.gender),
-              lastname: r.data.lastname,
-              middlename: r.data.middlename,
-              organization: r.data.organization,
-              provider: getProviderItem(r.data.provider),
-              role: getRoleItem(r.data.role.toString()),
-              username: r.data.username
+          request.users
+            .getUser(userId)
+            .then((r) => r.data)
+            .then((userProfile) => {
+              setUser(userProfile)
+              console.log(userProfile)
+              setOrganizationList((prevState) => [...prevState, userProfile.organization])
+
+              reset({
+                active: getUserStatusItem(String(userProfile.active)),
+                address: userProfile.address,
+                birthday: dayjs(userProfile.birthday, 'DD.MM.YYYY').toDate(),
+                citizenship: getCitizenItem(userProfile.citizenship),
+                description: userProfile.description,
+                documentIssueDate: userProfile.documentIssueDate
+                  ? dayjs(userProfile.documentIssueDate).toDate()
+                  : null,
+                documentNumber: userProfile.documentNumber,
+                documentType: getDocumentTypeItem(userProfile.documentType),
+                email: userProfile.email,
+                expert: { id: String(userProfile.expert), label: 'Нет' },
+                firstname: userProfile.firstname,
+                gender: getGender(userProfile.gender),
+                lastname: userProfile.lastname,
+                middlename: userProfile.middlename,
+                organization: userProfile.organization,
+                provider: getProviderItem(userProfile.provider),
+                role: getRoleItem(userProfile.role.toString()),
+                username: userProfile.username
+              })
             })
-          })
         }
+        setIsLoading(false)
       })
   }, [userId])
+
+  const onFormSubmit: SubmitHandler<IUserForm> = (data) => {
+    Promise.resolve(
+      user
+        ? request.profile.updateProfile(user._id, toRequestData(data, user))
+        : request.profile.addProfile(toRequestData(data, user))
+    )
+      .then(() => {
+        if (onSubmit) {
+          onSubmit()
+        }
+        closeModal()
+      })
+      .catch((e) => console.log(e))
+  }
 
   return (
     <>
@@ -176,7 +238,7 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
         {isLoading ? (
           <SkeletonText rows={15} />
         ) : (
-          <form noValidate onSubmit={(data) => console.log(data)}>
+          <form noValidate onSubmit={handleSubmit(onFormSubmit)}>
             <FilterConstructor
               items={[
                 {
@@ -373,7 +435,7 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                         <Controller
                           name={'middlename'}
                           control={control}
-                          render={({ field, fieldState }) => (
+                          render={({ field }) => (
                             <>
                               <EmptyLabel />
                               <TextField
@@ -390,6 +452,52 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                         />
                       )
                     }
+                  ]
+                },
+                {
+                  key: 33,
+                  components: [
+                    {
+                      key: 331,
+                      flex: 1,
+                      component: (
+                        <Controller
+                          name={'gender'}
+                          control={control}
+                          render={({ field, fieldState }) => (
+                            <SmartSelect
+                              withLabel
+                              value={field.value}
+                              onChange={({ value }) => field.onChange(value)}
+                              itemsType={'genders'}
+                              status={fieldState.error ? 'alert' : undefined}
+                              caption={fieldState.error?.message}
+                            />
+                          )}
+                        />
+                      )
+                    },
+                    {
+                      key: 332,
+                      flex: 1,
+                      component: (
+                        <Controller
+                          name={'birthday'}
+                          control={control}
+                          render={({ field, fieldState }) => (
+                            <DatePicker
+                              size='s'
+                              label={'Дата рождения'}
+                              value={field.value}
+                              onChange={({ value }) => field.onChange(value)}
+                              status={fieldState.error ? 'alert' : undefined}
+                              caption={fieldState.error ? 'Укажите дату рождения' : undefined}
+                            />
+                          )}
+                        />
+                      )
+                    },
+                    { key: 333, flex: 1, component: <></> }
                   ]
                 },
                 {
@@ -462,7 +570,7 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                         <Controller
                           name={'address'}
                           control={control}
-                          render={({ field, fieldState }) => (
+                          render={({ field }) => (
                             <TextField
                               id={field.name}
                               name={field.name}
@@ -488,7 +596,7 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                         <Controller
                           name={'citizenship'}
                           control={control}
-                          render={({ field, fieldState }) => (
+                          render={({ field }) => (
                             <SmartSelect
                               id={field.name}
                               name={field.name}
@@ -508,7 +616,7 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                         <Controller
                           name={'documentType'}
                           control={control}
-                          render={({ field, fieldState }) => (
+                          render={({ field }) => (
                             <SmartSelect
                               id={field.name}
                               name={field.name}
@@ -533,7 +641,7 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                         <Controller
                           name={'documentNumber'}
                           control={control}
-                          render={({ field, fieldState }) => (
+                          render={({ field }) => (
                             <TextField
                               id={field.name}
                               name={field.name}
@@ -555,7 +663,7 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                         <Controller
                           name={'documentIssueDate'}
                           control={control}
-                          render={({ field, fieldState }) => (
+                          render={({ field }) => (
                             <DatePicker
                               id={field.name}
                               name={field.name}
@@ -581,7 +689,7 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                         <Controller
                           name={'description'}
                           control={control}
-                          render={({ field, fieldState }) => (
+                          render={({ field }) => (
                             <TextField
                               id={field.name}
                               name={field.name}
@@ -605,15 +713,9 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                 }
               ]}
             />
-
             <SaveButton valid={formState.isValid} />
           </form>
         )}
-        <Button
-          onClick={() => {
-            console.log(formState.isValid)
-          }}
-        />
       </div>
     </>
   )

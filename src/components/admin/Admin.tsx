@@ -69,24 +69,44 @@ const Admin: FC = () => {
 
   useEffect(() => {
     const pathParts: string[] = location.pathname.split('/')
+    console.log(pathParts.length)
     const path: string = pathParts[pathParts.length - 1]
 
-    if (pathParts.length > 2) {
+    let currentItem: TabItem = {
+      id: 'notFound',
+      title: 'Экзамены',
+      path: 'notFound',
+      type: 'tab'
+    }
+
+    if (pathParts.length === 3) {
       const title: string | undefined = collapseItems.filter((e) => e.path === path)[0]?.title
 
-      const currentItem: TabItem = {
+      currentItem = {
         id: path,
         title: title,
         path: path,
         type: title ? 'tab' : 'exam'
       }
+    } else if (pathParts.length === 4) {
+      const pathWidthId = pathParts.slice(2, 4).join('/')
+      console.log(pathParts[2])
+      const title =
+        pathParts[2] === 'exam' ? `Протокол – ${pathParts[3]}` : `Экзамены – ${pathParts[3]}`
 
-      if (tabItems.filter((e) => e.id === currentItem.id).length === 0) {
-        setItems([...tabItems, currentItem])
+      currentItem = {
+        id: pathWidthId,
+        title: title,
+        path: pathWidthId,
+        type: title ? 'tab' : 'exam'
       }
+    }
+
+    if (!tabItems.find((e) => e.id === currentItem.id)) {
+      setItems([...tabItems, currentItem])
       setActiveTab(currentItem)
     }
-  }, [location.pathname])
+  }, [location])
 
   useEffect(() => {
     console.log(location.pathname)
@@ -98,7 +118,8 @@ const Admin: FC = () => {
         type: 'tab'
       })
     }
-  }, [])
+  })
+
   return (
     <Layout className={cl.wrapper} direction={'column'}>
       <Layout>

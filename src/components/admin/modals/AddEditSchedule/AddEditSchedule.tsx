@@ -93,7 +93,7 @@ const AddEditSchedule: FC<IAddEditScheduleProp> = ({ scheduleId, onSubmit }) => 
       .then(() => {
         setIsLoading(false)
       })
-  }, [scheduleId])
+  }, [reset, scheduleId])
 
   const onFormSubmit: SubmitHandler<IFormInput> = (data) => {
     console.log(data, scheduleId)
@@ -192,9 +192,9 @@ const AddEditSchedule: FC<IAddEditScheduleProp> = ({ scheduleId, onSubmit }) => 
                               size={'s'}
                               type={'date-time'}
                               format={'dd.MM.yyyy HH:mm'}
+                              multiplicitySeconds={0}
                               placeholder='ММ.ДД.ГГГГ ЧЧ:ММ'
                               label={'Дата начала'}
-                              multiplicitySeconds={0}
                               rightSide={IconCalendar}
                               value={field.value}
                               inputRef={field.ref}
