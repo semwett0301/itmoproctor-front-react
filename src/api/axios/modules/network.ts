@@ -8,8 +8,8 @@ export type IpInfo = {
 export interface INetworkAxios {
   getIpInfo: () => Promise<AxiosResponse<IpInfo>>,
   checkPing: () => Promise<AxiosResponse<void>>
-  getRX: (onDownloadProgress?: (event: ProgressEvent) => void) => Promise<AxiosResponse<number>>
-  getTX: (onDownloadProgress?: (event: ProgressEvent) => void) => Promise<AxiosResponse<number>>
+  getRX: (onDownloadProgress?: (event: ProgressEvent) => void) => Promise<AxiosResponse<void>>
+  getTX: (onDownloadProgress?: (event: ProgressEvent) => void) => Promise<AxiosResponse<void>>
 }
 
 export default function (instance: AxiosInstance): INetworkAxios {
@@ -20,12 +20,12 @@ export default function (instance: AxiosInstance): INetworkAxios {
     checkPing(): Promise<AxiosResponse<void>> {
       return instance.get('tools/ping')
     },
-    getRX(onDownloadProgress): Promise<AxiosResponse<number>> {
+    getRX(onDownloadProgress): Promise<AxiosResponse<void>> {
       return instance.get('tools/rx', {
         onDownloadProgress: onDownloadProgress
       })
     },
-    getTX(onDownloadProgress): Promise<AxiosResponse<number>> {
+    getTX(onDownloadProgress): Promise<AxiosResponse<void>> {
       return instance.get('tools/tx', {
         onDownloadProgress: onDownloadProgress
       })
