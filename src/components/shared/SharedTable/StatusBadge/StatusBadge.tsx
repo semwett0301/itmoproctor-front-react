@@ -51,6 +51,22 @@ export const customBadgePropStatus = [
   'review'
 ] as const
 
+export const customBadgePropStatusObject = {
+  0: 'unplanned',
+  1: 'planned',
+  2: 'waiting',
+  3: 'withoutProctor',
+  4: 'success',
+  5: 'rejected',
+  6: 'missed',
+  7: 'withProctor',
+  8: 'noAppearance',
+  9: 'async',
+  10: 'conclusionWaiting',
+  11: 'forming',
+  12: 'review'
+}
+
 export type CustomBadgePropStatus = typeof customBadgePropStatus[number]
 
 export type statusObject = {
@@ -62,7 +78,7 @@ export type badgeStatusesDeclaration = {
   [key in CustomBadgePropStatus]: statusObject
 }
 
-const statuses: badgeStatusesDeclaration = {
+export const statuses: badgeStatusesDeclaration = {
   unplanned: { label: 'Не запланирован', className: cl.unplanned },
   missed: { label: 'Пропущен', className: cl.missed },
   planned: { label: 'Запланирован', className: cl.planned },
@@ -74,7 +90,7 @@ const statuses: badgeStatusesDeclaration = {
   forming: { label: 'Формируется', className: cl.forming },
   review: { label: 'На проверке', className: cl.review },
   withoutProctor: { label: 'Без проктора', className: cl.withoutProctor },
-  rejected: { label: 'Отклонен', className: cl.rejected },
+  rejected: { label: 'Прерван', className: cl.rejected },
   noAppearance: { label: 'Неявка', className: cl.noAppearance }
 }
 
@@ -86,7 +102,7 @@ interface StatusBadgeProps {
 const StatusBadge: FC<StatusBadgeProps> = ({ status, reset }) => {
   return (
     <Badge
-      style={{width: 'fit-content'}}
+      style={{ width: 'fit-content' }}
       view={'stroked'}
       className={statuses[status].className}
       label={statuses[status].label}

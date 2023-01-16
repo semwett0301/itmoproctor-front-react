@@ -12,8 +12,11 @@ const ModalTitles = {
   maintenance: 'Технические работы',
   schedule: 'Планирование расписания',
   course: 'Карточка курса',
-  submit: 'Подтверждение',
-  user: 'Профиль пользователя'
+  deleteSubmit: 'Подтверждение',
+  downloadSubmit: 'Загрузка видео',
+  user: 'Профиль пользователя',
+  verify: 'Идентификация личности',
+  settings: 'Настройки'
 }
 
 export type ModalTitlesList = keyof typeof ModalTitles

@@ -4,6 +4,7 @@ import { IResponseArray } from '../../../../ts/interfaces/IResponseInterfaces'
 import { ICourseRow } from '../../../../ts/interfaces/ICourses'
 import { VerificationType } from '../../../../ts/types/Verifications'
 import { IGetCourse } from '../../../../ts/interfaces/ICourse'
+import { ISessionCode } from '../../../../components/admin/modals/AddEditExam/AddEditExam'
 
 export interface ICoursesFilter {
   text: string | null
@@ -25,6 +26,13 @@ export interface ICoursesAxios {
   getCourse: (courseId: string) => Promise<AxiosResponse<IGetCourse>>
   addCourse: (course: ICoursePost) => Promise<AxiosResponse<ICourseRow>>
   editCourse: (course: ICoursePost, courseId: string) => Promise<AxiosResponse<ICourseRow>>
+  getCourseCodesByOrganizationId: (
+    organizationId: string
+  ) => Promise<AxiosResponse<{ rows: string[] }>>
+  getSessionCodes: (
+    organization: string,
+    courseCode: string
+  ) => Promise<AxiosResponse<{ rows: ISessionCode[] }>>
 }
 
 export default function (instance: AxiosInstance): ICoursesAxios {
@@ -47,6 +55,16 @@ export default function (instance: AxiosInstance): ICoursesAxios {
     },
     editCourse(course, courseId) {
       return instance.put(`${axiosConfig.baseUrl}course/${courseId}`, course)
+    },
+    getCourseCodesByOrganizationId(id) {
+      return instance.get(`${axiosConfig.adminUrl}/course/courseCodes`, {
+        params: { organization: id }
+      })
+    },
+    getSessionCodes(id, courseCode) {
+      return instance.get(`${axiosConfig.adminUrl}/course/sessionCodes`, {
+        params: { organization: id, courseCode: courseCode }
+      })
     }
   }
 }

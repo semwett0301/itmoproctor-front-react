@@ -5,6 +5,7 @@ import { collapseItems, ICollapseItem } from './NavCollapseModel'
 import cl from './NavCollapse.module.scss'
 import { classJoiner, classWatcher } from '../../../../utils/styleClassesUtills'
 import { TabItem } from '../../Admin'
+import { useAppSelector } from '../../../../hooks/reduxHooks'
 
 interface NavCollapseProps {
   isOpen: boolean
@@ -13,6 +14,7 @@ interface NavCollapseProps {
 
 const NavCollapse: FC<NavCollapseProps> = ({ isOpen, addTab }) => {
   const [collapseState, setCollapseState] = useState<boolean>(false)
+  const system = useAppSelector((state) => state.user.system)
 
   const navMaker = (item: ICollapseItem, key: string): JSX.Element => {
     if (!item.children) {
@@ -78,7 +80,11 @@ const NavCollapse: FC<NavCollapseProps> = ({ isOpen, addTab }) => {
   }
 
   return (
-    <div className={cl.navWrapper}>{collapseItems.map((item) => navMaker(item, item.path))}</div>
+    <div className={cl.navWrapper}>
+      {collapseItems.map((item) =>
+        item.condition && item.condition === 'system' && !system ? <></> : navMaker(item, item.path)
+      )}
+    </div>
   )
 }
 

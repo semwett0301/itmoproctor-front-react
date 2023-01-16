@@ -23,7 +23,7 @@ const ExamView: FC<IExamViewProp> = ({ examId }) => {
   const [items, setItems] = useState<IRowViewItem[]>([])
 
   useEffect(() => {
-    request.exam.getExam(examId).then((r) => {
+    request.student.exams.getExamInfo(examId).then((r) => {
       const data = r.data
       console.log(data)
       const ii: IRowViewItem[] = [

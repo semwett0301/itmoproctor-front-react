@@ -1,0 +1,157 @@
+.fa {
+  line-height: 1.4em;
+  text-decoration: none;
+  background: none;
+}
+
+.video-js video {
+  width: 100% !important;
+}
+.vjs-error .vjs-error-display::before {
+  display: none;
+}
+/* progress bar */
+.video-js .vjs-progress-holder {
+  background-color: rgba(115,133,159,.4);
+}
+.video-js .vjs-progress-control {
+  position: absolute;
+  bottom: 30px;
+  left: 0;
+  height: 20px;
+  width: 100%;
+  z-index: 1;
+}
+.video-js .vjs-progress-holder,
+.video-js .vjs-play-progress,
+.video-js .vjs-load-progress {
+  height: 8px;
+}
+.video-js .vjs-slider-bar {
+  background-color: #a9bec8 !important;
+}
+.video-js .vjs-play-progress:before {
+  font-size: 12px;
+  top: -2px;
+  text-shadow: 0 0 2px black;
+}
+.video-js .vjs-time-tooltip {
+  font-size: 11px !important;
+}
+/* control bar */
+.video-js .vjs-control-bar {
+  display: flex !important;
+  background-color: rgba(43,51,63,.5);
+  padding: 0 10px;
+}
+.video-js .vjs-control-bar > button {
+  width: 44px !important;
+}
+.video-js button.vjs-control:hover,
+.video-js .vjs-playback-rate:hover .vjs-playback-rate-value {
+  text-shadow: 0 0 1em white;
+  transition: text-shadow 0.1s;
+  cursor: pointer;
+}
+
+.withShadow:hover span:after{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  content: '';
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  box-shadow: 0 0 1.5em 4px white;
+  transition: box-shadow 0.2s;
+}
+
+.video-js .vjs-playback-rate.vjs-hover {
+  z-index: 1;
+}
+/* control bar (left part) */
+.video-js .vjs-play-control {
+  order: 1;
+}
+.video-js .vjs-volume-panel {
+  order: 2;
+  width: 10em;
+}
+.video-js .vjs-volume-control.vjs-volume-horizontal {
+  display: block;
+  opacity: 1;
+}
+.video-js .vjs-current-time {
+  order: 3;
+}
+.video-js .vjs-time-control {
+  display: block;
+  order: 4;
+}
+.video-js .vjs-current-time {
+  padding-right: 0;
+}
+.video-js .vjs-time-divider {
+  padding: 0;
+  min-width: 16px;
+  text-align: center;
+}
+.video-js .vjs-duration {
+  padding: 0;
+  margin-right: auto;
+}
+.video-js .vjs-remaining-time {
+  display: none;
+}
+/* control bar (right part) */
+.video-js .seek-backward {
+  order: 95;
+}
+.video-js .seek-forward {
+  order: 96;
+}
+.video-js .vjs-playback-rate {
+  order: 97;
+  font-size: 11px;
+}
+
+.vjs-playback-rate .vjs-playback-rate-value{
+  font-size: 1.3em;
+  line-height: 2;
+}
+.video-js .download {
+  position: relative;
+  order: 98;
+}
+.video-js .vjs-picture-in-picture-control {
+  order: 99;
+}
+.video-js .vjs-fullscreen-control {
+  order: 100;
+}
+/* active video info panel */
+.video-info {
+  width: 100%;
+  position: absolute !important;
+  bottom: 0;
+}
+.video-js.video-info-enabled video {
+  padding-bottom: 38px;
+}
+.video-js.video-info-enabled .vjs-control-bar {
+  bottom: 38px;
+  font-size: 1em;
+}
+.video-js.wide-video-info-enabled video {
+  padding-bottom: 55px;
+}
+.video-js.wide-video-info-enabled .vjs-control-bar {
+  bottom: 55px;
+}
+
+.message-item, .note-item, .member-item {
+  padding-bottom: 2px;
+}
+.show-violation-btn {
+  margin-left: 7px;
+}

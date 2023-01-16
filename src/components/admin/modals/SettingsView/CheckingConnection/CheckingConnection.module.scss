@@ -1,0 +1,45 @@
+.wrapper {
+  width: 100%;
+  height: 100%;
+
+  //margin-right: 5%;
+  //margin-left: 5%;
+
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.video {
+  padding-bottom: 7.5px;
+  margin-bottom: 7.5px;
+}
+
+.mainFrame {
+  width: 100%;
+  height: 309px;
+  background-color: #303030;
+  margin-top: 24px;
+}
+
+.extraFrame {
+  width: 33%;
+  height: 105px;
+  background-color: #4F4F4F;
+
+  position: absolute;
+  top: 0;
+  right: 18px;
+
+  z-index: 100;
+}
+
+.downPanel {
+  width: 100%;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

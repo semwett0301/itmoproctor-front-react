@@ -1,7 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { ITableRow } from '../components/shared/SharedTable/SharedTable'
 
-export function useTableRequest<ROWS extends ITableRow>(
+export function useTableRequest<ROWS extends { id: string }>(
   request: () => Promise<ROWS[]>,
   filterArray: unknown[],
   paginationArray: unknown[],

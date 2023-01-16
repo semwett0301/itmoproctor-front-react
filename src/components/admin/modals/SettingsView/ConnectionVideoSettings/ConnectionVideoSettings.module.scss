@@ -1,0 +1,32 @@
+.wrapper {
+  margin-right: 16px;
+}
+
+.wrapper > * > * > * {
+  color: #002033;
+}
+
+.wrapper > * {
+  margin-top: 16px;
+}
+
+.wrapper > *:first-child {
+  margin-top: 14px;
+}
+
+.wrapper > *:last-child {
+  margin-bottom: 22px;
+}
+
+.video {
+  margin-bottom: 4px;
+}
+
+.resolution {
+  display: flex;
+  justify-content: space-between;
+}
+
+.resolution > div {
+  width: 48.5%;
+}

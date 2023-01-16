@@ -8,6 +8,8 @@ import citizenships from './Items/citizenships'
 import userStatuses from './Items/userStatuses'
 import roles from './Items/roles'
 import providers from './Items/providers'
+import examTypes from './Items/examTypes'
+import resolutions from './Items/resolutions'
 
 // TYPES
 
@@ -42,6 +44,16 @@ export const SmartSelectProps = {
     placeholder: 'Провайдер авторизации',
     label: 'Провайдер',
     selectItems: providers
+  },
+  examTypes: {
+    placeholder: 'Тип экзамена',
+    label: 'Тип',
+    selectItems: examTypes
+  },
+  resolutions: {
+    placeholder: 'Заключение',
+    label: 'Заключение',
+    selectItems: resolutions
   }
 }
 // DEFAULT FUNCTIONS

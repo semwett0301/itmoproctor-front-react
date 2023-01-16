@@ -1,13 +1,23 @@
-import auth, {IAuthAxios} from './modules/auth'
-import profile, {IProfileAxios} from './modules/profile'
-import exams, {IExamsAxios} from './modules/admin/exams'
-import dist, {IDistAxios} from './modules/dist'
+import auth, { IAuthAxios } from './modules/auth'
+import profile, { IProfileAxios } from './modules/profile'
+import exams, { IExamsAxios } from './modules/admin/exams'
+import dist, { IDistAxios } from './modules/dist'
 import mainInstance from './init/mainInstance'
-import organizations, {IOrganizationsAxios} from './modules/admin/organizations'
-import users, {IUsersAxios} from './modules/admin/users'
-import schedule, {IScheduleAxios} from './modules/admin/schedule'
-import courses, {ICoursesAxios} from './modules/admin/сourses'
-import maintenance, {IMaintenanceAxios} from './modules/admin/maintenance'
+import organizations, { IOrganizationsAxios } from './modules/admin/organizations'
+import users, { IUsersAxios } from './modules/admin/users'
+import schedule, { IScheduleAxios } from './modules/admin/schedule'
+import courses, { ICoursesAxios } from './modules/admin/сourses'
+import maintenance, { IMaintenanceAxios } from './modules/admin/maintenance'
+import studentExams, { IStudentExamsAxios } from './modules/student/studentExams'
+import ExpertExams, { IExpertExamsAxios } from './modules/expert/exams'
+
+export interface IStudentRequestAxios {
+  exams: IStudentExamsAxios
+}
+
+export interface IExpertRequestAxios {
+  exams: IExpertExamsAxios
+}
 
 export interface IRequestAxios {
   auth: IAuthAxios
@@ -19,6 +29,8 @@ export interface IRequestAxios {
   maintenance: IMaintenanceAxios
   dist: IDistAxios
   organizations: IOrganizationsAxios
+  student: IStudentRequestAxios
+  expert: IExpertRequestAxios
 }
 
 export const request: IRequestAxios = {
@@ -30,5 +42,11 @@ export const request: IRequestAxios = {
   courses: courses(mainInstance),
   maintenance: maintenance(mainInstance),
   dist: dist(mainInstance),
-  organizations: organizations(mainInstance)
+  organizations: organizations(mainInstance),
+  student: {
+    exams: studentExams(mainInstance)
+  },
+  expert: {
+    exams: ExpertExams(mainInstance)
+  }
 }

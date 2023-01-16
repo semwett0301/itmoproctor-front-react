@@ -66,7 +66,7 @@ const EditProfile: FC = () => {
   const dispatch = useAppDispatch()
   console.log(user)
 
-  const { control, handleSubmit, formState, reset } = useForm<IProfileForm>({
+  const { control, handleSubmit, formState } = useForm<IProfileForm>({
     mode: 'all',
     resolver: yupResolver(profileSchema),
     defaultValues: {
@@ -74,7 +74,7 @@ const EditProfile: FC = () => {
       firstname: user.firstname,
       middlename: user.middlename,
       gender: getGender(user.gender),
-      birthday: dayjs(user.birthday, 'MM.DD.YYYY').toDate(),
+      birthday: dayjs(user.birthday, 'DD.MM.YYYY').toDate(),
       email: user.email,
       organization: user.organization
     }
