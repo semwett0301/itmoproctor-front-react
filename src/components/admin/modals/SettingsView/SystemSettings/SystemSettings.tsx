@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useLayoutEffect, useState } from 'react'
+import React, { FC, useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import { Text } from '@consta/uikit/Text'
 import { Radio } from '@consta/uikit/Radio'
 import { findLang, languages } from '../../../../../utils/findItem'
@@ -11,6 +11,8 @@ import { IDistMetadata } from '../../../../../api/axios/modules/dist'
 import { request } from '../../../../../api/axios/request'
 import dayjs from 'dayjs'
 import AsyncWaiting from '../../../../shared/AsyncWaiting/AsyncWaiting'
+import axiosConfig from '../../../../../config/axiosСonfig'
+import { IArchive } from '../../../../../ts/interfaces/IVersion'
 
 const SystemSettings: FC = () => {
   const [lang, setLang] = useState<string>(findLang(i18n.language).id)
@@ -24,6 +26,10 @@ const SystemSettings: FC = () => {
   }
 
   const system = useAppSelector<IOsInfo>((state) => state.osInfo)
+
+  const currentArchive = useMemo<IArchive | undefined>(() => {
+    return versions?.versions[0].archives.filter((e) => e.arch === Number(system.detectedArch))[0]
+  }, [versions, versions?.versions, system.detectedArch, versions?.versions[0].archives])
 
   useLayoutEffect(() => {
     const fetchInfo: () => Promise<void> = async () => {
@@ -84,9 +90,11 @@ const SystemSettings: FC = () => {
               {versions?.versions[0].version || ''} (
               {dayjs(versions?.versions[0].date).format('DD.MM.YYYY').toString() || ''})
             </Text>
-            <Text view={'primary'} size={'m'}>
-              itmoproctor-win-x64.zip
-            </Text>
+            <a href={axiosConfig.baseUrl + '/' + currentArchive?.path}>
+              <Text className={cl.linkText} decoration={'underline'} view={'primary'} size={'m'}>
+                {currentArchive?.path.split('/')[1]}
+              </Text>
+            </a>
           </div>
         </div>
       </AsyncWaiting>

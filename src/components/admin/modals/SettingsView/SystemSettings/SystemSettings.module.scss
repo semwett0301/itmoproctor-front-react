@@ -25,4 +25,8 @@
   margin-right: 12px;
 }
 
+.linkText:hover {
+  color:var(--color-typo-link);
 
+  cursor: pointer;
+}
