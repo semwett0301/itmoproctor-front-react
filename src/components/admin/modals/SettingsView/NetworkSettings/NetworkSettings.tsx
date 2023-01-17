@@ -20,6 +20,7 @@ const NetworkSettings: FC = () => {
 
   const [rxProgress, setRxProgress] = useState<number | undefined>(undefined)
   const [txProgress, setTxProgress] = useState<number | undefined>(undefined)
+  const controller = useMemo(() => new AbortController(), [isLoading])
 
   const resetData = useCallback<() => void>(() => {
     setIpInfo(undefined)
@@ -40,19 +41,16 @@ const NetworkSettings: FC = () => {
 
   useEffect(() => {
     const getIpInfo = async () => {
-      const res = await request.network.getIpInfo()
+      const res = await request.network.getIpInfo(controller)
       setIpInfo(res.data)
     }
 
     const getPing = async () => {
-      const currentTime: number = dayjs().unix()
-      console.log(currentTime)
+      const currentTime = performance.now()
 
-      await request.network.checkPing().then(() => console.log(dayjs().unix()))
+      await request.network.checkPing(controller)
 
-      console.log(dayjs().unix())
-      const currentPing = dayjs().unix() - currentTime
-      setPing(currentPing)
+      setPing(Math.floor(performance.now() - currentTime))
     }
 
     const setResOrProgress = (
@@ -64,29 +62,40 @@ const NetworkSettings: FC = () => {
       const currentProgress = Math.floor((progress.loaded / progress.total) * 100)
 
       if (currentProgress < 100) {
-        setProgress(currentProgress)
-      } else {
-        const currentPing = ping ?? 0
-        const diff = dayjs().unix() - previousTime - currentPing || 1
-        setRes(Number(((8 * 1000 * 8) / diff).toFixed(2)))
-        setProgress(undefined)
+        if (currentProgress < 99) {
+          setProgress(currentProgress)
+        }
       }
     }
 
     const checkTX = async () => {
-      const currentTime = dayjs().unix()
+      const currentTime = performance.now()
 
-      await request.network.getTX(buffer, (progress) => {
-        setResOrProgress(setTxProgress, setTx, progress, currentTime)
-      })
+      await request.network.getTX(
+        buffer,
+        (progress) => {
+          setResOrProgress(setTxProgress, setTx, progress, currentTime)
+        },
+        controller
+      )
+
+      const currentPing = ping ?? 0
+      const diff = performance.now().valueOf() - currentTime - currentPing || 1
+      setTx(Number(((8 * 1000 * 8) / diff).toFixed(2)))
+      setTxProgress(undefined)
     }
 
     const checkRX = async () => {
-      const currentTime = dayjs().unix()
+      const currentTime = performance.now()
 
       await request.network.getRX((progress) => {
         setResOrProgress(setRxProgress, setRx, progress, currentTime)
-      })
+      }, controller)
+
+      const currentPing = ping ?? 0
+      const diff = performance.now() - currentTime - currentPing || 1
+      setRx(Number(((8 * 1000 * 8) / diff).toFixed(2)))
+      setRxProgress(undefined)
     }
 
     if (isLoading) {
@@ -122,7 +131,7 @@ const NetworkSettings: FC = () => {
             {ipInfo?.ip || '-'}
           </Text>
           <Text view={'primary'} size={'s'}>
-            {ipInfo ? `${ipInfo.country}, ${ipInfo.city}` : '-'}
+            {ipInfo?.country ?? '-'}, {ipInfo?.city ?? '-'}
           </Text>
           <Text view={'primary'} size={'s'}>
             {ping !== undefined ? `${ping} мс` : '-'}
@@ -130,7 +139,7 @@ const NetworkSettings: FC = () => {
           {txProgress ? (
             <ProgressLine value={txProgress} className={cl.progress} />
           ) : (
-            <Text view={'primary'} size={'s'}>
+            <Text view={tx ? (tx > 1 ? 'success' : 'alert') : 'primary'} size={'s'}>
               {tx !== undefined ? `${tx} Мбит/с` : '-'}
             </Text>
           )}
@@ -138,7 +147,7 @@ const NetworkSettings: FC = () => {
           {rxProgress ? (
             <ProgressLine value={rxProgress} className={cl.progress} />
           ) : (
-            <Text view={'primary'} size={'s'}>
+            <Text view={rx ? (rx > 1 ? 'success' : 'alert') : 'primary'} size={'s'}>
               {rx !== undefined ? `${rx} Мбит/с` : '-'}
             </Text>
           )}
@@ -160,6 +169,7 @@ const NetworkSettings: FC = () => {
             view={'primary'}
             label={'Остановить'}
             onClick={() => {
+              controller.abort()
               setIsLoading(false)
               resetData()
             }}

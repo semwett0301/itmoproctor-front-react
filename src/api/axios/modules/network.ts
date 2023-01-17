@@ -7,40 +7,49 @@ export type IpInfo = {
 }
 
 export interface INetworkAxios {
-  getIpInfo: () => Promise<AxiosResponse<IpInfo>>
-  checkPing: () => Promise<AxiosResponse<void>>
-  getRX: (onUploadProgress?: (event: ProgressEvent) => void) => Promise<AxiosResponse<void>>
+  getIpInfo: (controller?: AbortController) => Promise<AxiosResponse<IpInfo>>
+  checkPing: (controller?: AbortController) => Promise<AxiosResponse<void>>
+  getRX: (
+    onUploadProgress?: (event: ProgressEvent) => void,
+    controller?: AbortController
+  ) => Promise<AxiosResponse<void>>
   getTX: (
     data: string,
-    onUploadProgress?: (event: ProgressEvent) => void
+    onUploadProgress?: (event: ProgressEvent) => void,
+    controller?: AbortController
   ) => Promise<AxiosResponse<void>>
 }
 
 export default function (instance: AxiosInstance): INetworkAxios {
   return {
-    getIpInfo(): Promise<AxiosResponse<IpInfo>> {
-      return instance.get('tools/ip')
+    getIpInfo(controller): Promise<AxiosResponse<IpInfo>> {
+      return instance.get('tools/ip', { signal: controller?.signal })
     },
-    checkPing(): Promise<AxiosResponse<void>> {
-      return instance.get('tools/ping', { headers: { 'Cache-Control': 'no-cache' } })
+    checkPing(controller): Promise<AxiosResponse<void>> {
+      return instance.get('tools/ping', {
+        headers: { 'Cache-Control': 'no-cache' },
+        signal: controller?.signal
+      })
     },
-    getRX(onUploadProgress): Promise<AxiosResponse<void>> {
+    getRX(onUploadProgress, controller): Promise<AxiosResponse<void>> {
       return instance.post(
         'tools/rx',
         {},
         {
-          onUploadProgress: onUploadProgress,
-          headers: { 'Cache-Control': 'no-cache' }
+          onDownloadProgress: onUploadProgress,
+          headers: { 'Cache-Control': 'no-cache' },
+          signal: controller?.signal
         }
       )
     },
-    getTX(data, onUploadProgress): Promise<AxiosResponse<void>> {
+    getTX(data, onUploadProgress, controller): Promise<AxiosResponse<void>> {
       return instance.post('tools/tx', data, {
         onUploadProgress: onUploadProgress,
         headers: {
           'Content-Type': 'application/octet-stream',
           'Cache-Control': 'no-cache'
-        }
+        },
+        signal: controller?.signal
       })
     }
   }

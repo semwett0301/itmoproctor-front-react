@@ -1,16 +1,16 @@
-import React, {FC, useEffect, useLayoutEffect, useState} from 'react'
-import {Text} from '@consta/uikit/Text'
-import {Radio} from '@consta/uikit/Radio'
-import {findLang, languages} from '../../../../../utils/findItem'
+import React, { FC, useEffect, useLayoutEffect, useState } from 'react'
+import { Text } from '@consta/uikit/Text'
+import { Radio } from '@consta/uikit/Radio'
+import { findLang, languages } from '../../../../../utils/findItem'
 import cl from './SystemSettings.module.scss'
 import i18n from 'i18next'
-import {useAppSelector} from '../../../../../hooks/reduxHooks';
-import {IOsInfo} from '../../../../../store/reducers/osInfo/osInfoReducer';
-import {osMatcher} from '../../../../../utils/osMatcher';
-import {IDistMetadata} from '../../../../../api/axios/modules/dist';
-import {request} from '../../../../../api/axios/request';
+import { useAppSelector } from '../../../../../hooks/reduxHooks'
+import { IOsInfo } from '../../../../../store/reducers/osInfo/osInfoReducer'
+import { osMatcher } from '../../../../../utils/osMatcher'
+import { IDistMetadata } from '../../../../../api/axios/modules/dist'
+import { request } from '../../../../../api/axios/request'
 import dayjs from 'dayjs'
-import AsyncWaiting from '../../../../shared/AsyncWaiting/AsyncWaiting';
+import AsyncWaiting from '../../../../shared/AsyncWaiting/AsyncWaiting'
 
 const SystemSettings: FC = () => {
   const [lang, setLang] = useState<string>(findLang(i18n.language).id)
@@ -23,16 +23,16 @@ const SystemSettings: FC = () => {
     await i18n.changeLanguage(newLang).then()
   }
 
-  const system = useAppSelector<IOsInfo>(state => state.osInfo)
+  const system = useAppSelector<IOsInfo>((state) => state.osInfo)
 
   useLayoutEffect(() => {
     const fetchInfo: () => Promise<void> = async () => {
-      await request.dist.getInfo().then(r => {
+      await request.dist.getInfo().then((r) => {
         setVersions(r.data)
       })
     }
 
-    fetchInfo().catch(e => console.log(e))
+    fetchInfo().catch((e) => console.log(e))
   }, [])
 
   return (
@@ -81,7 +81,8 @@ const SystemSettings: FC = () => {
               />
             </div>
             <Text view={'primary'} size={'m'}>
-              {versions?.versions[0].version || ''} ({dayjs(versions?.versions[0].date).format('DD.MM.YYYY').toString() || ''})
+              {versions?.versions[0].version || ''} (
+              {dayjs(versions?.versions[0].date).format('DD.MM.YYYY').toString() || ''})
             </Text>
             <Text view={'primary'} size={'m'}>
               itmoproctor-win-x64.zip
