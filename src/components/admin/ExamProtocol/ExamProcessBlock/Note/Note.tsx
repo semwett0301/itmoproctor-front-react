@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { INote } from '../../../../../ts/interfaces/INotes'
 import cn from './Note.module.scss'
 import { Text } from '@consta/uikit/Text'
@@ -7,6 +7,7 @@ import { openModal } from '../../../../shared/ModalView/ModalView'
 import { Button } from '@consta/uikit/Button'
 import { IconAlert } from '@consta/uikit/IconAlert'
 import dayjs from 'dayjs'
+import { stat } from 'fs'
 
 // TYPES
 interface INoteProp {
@@ -14,6 +15,11 @@ interface INoteProp {
 }
 
 const Note: FC<INoteProp> = ({ note }) => {
+  const [status, setStatus] = useState(0)
+
+  useEffect(() => {
+    setStatus(Math.random())
+  }, [])
   return (
     <div className={cn.note}>
       <Text view={'secondary'} weight={'bold'} size={'xs'}>
@@ -21,7 +27,7 @@ const Note: FC<INoteProp> = ({ note }) => {
       </Text>
 
       <div className={cn.message}>
-        {Math.random() < 0.5 && (
+        {status > 0.5 && (
           <Text size={'xs'}>
             <IconAlert size='xs' view={'warning'} />
           </Text>

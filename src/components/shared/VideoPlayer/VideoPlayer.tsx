@@ -6,6 +6,8 @@ import { backwardIcon, downloadIcon, forwardIcon } from './IconsHTML'
 import { openModal } from '../ModalView/ModalView'
 import DownloadSubmit from '../../admin/modals/DownloadSubmit/DownloadSubmit'
 import { IExam } from '../../../ts/interfaces/IExam'
+import { IconArrowRight } from '@consta/icons/IconArrowRight'
+import { IconArrowLeft } from '@consta/uikit/IconArrowLeft'
 
 // TYPES
 export interface SourceObject {
@@ -100,25 +102,24 @@ const VideoPlayer: FC<IVideoPlayerProp> = ({ source, onReady, exam }) => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         clickHandler: function (): void {
-          exam &&
-            openModal(
-              <DownloadSubmit
-                href={source.src}
-                onSubmit={() => {
-                  // const tag = document.createElement('a')
-                  // tag.target = '_blank'
-                  // if (exam?.student) {
-                  //   tag.href = 'stream/' + exam._id + '.webm'
-                  //   tag.download = exam._id + '-' + exam.student.username + '.webm'
-                  //   console.log(tag.href)
-                  //   console.log(tag.download)
-                  // }
-                  // document.body.appendChild(tag)
-                  // tag.click()
-                  // document.body.removeChild(tag)
-                }}
-              />
-            )
+          openModal(
+            <DownloadSubmit
+              href={source.src}
+              onSubmit={() => {
+                // const tag = document.createElement('a')
+                // tag.target = '_blank'
+                // if (exam?.student) {
+                //   tag.href = 'stream/' + exam._id + '.webm'
+                //   tag.download = exam._id + '-' + exam.student.username + '.webm'
+                //   console.log(tag.href)
+                //   console.log(tag.download)
+                // }
+                // document.body.appendChild(tag)
+                // tag.click()
+                // document.body.removeChild(tag)
+              }}
+            />
+          )
           videojs.log('download')
         },
         controlText: 'download',

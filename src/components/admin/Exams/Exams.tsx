@@ -155,8 +155,7 @@ const Exams: FC = () => {
           setOrganizationsIds(() => r.data.organizations || [])
           setTotal(r.data.total)
 
-          let obj: IExamsTableModel[]
-          obj = []
+          let obj: IExamsTableModel[] = []
           if (r.data.rows.length > 0) {
             obj = r.data.rows.map((item: IExamRow) => {
               return castToTableRow(item)

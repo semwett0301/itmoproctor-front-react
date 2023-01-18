@@ -1,19 +1,12 @@
-import React, {FC} from 'react'
-import {ProgressSpin} from '@consta/uikit/ProgressSpin'
-import {useAppSelector} from '../../../hooks/reduxHooks'
+import React, { FC } from 'react'
+import cn from './Loading.module.scss'
+import { ProgressSpin } from '@consta/uikit/ProgressSpin'
+import { Loader } from '@consta/uikit/Loader'
 
 const Loading: FC = () => {
-  const isLoading = useAppSelector((state) => state.isLoading)
-
-  if (!isLoading) {
-    return <></>
-  }
-
   return (
-    <div
-      style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}
-    >
-      <ProgressSpin animation size='xl' />
+    <div className={cn.wrapper}>
+      <Loader size='m' />
     </div>
   )
 }

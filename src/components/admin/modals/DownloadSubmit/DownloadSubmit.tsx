@@ -21,13 +21,9 @@ const DownloadSubmit: FC<IDownloadSubmitProp> = ({ onSubmit, href }) => {
         Загрузить видео экзамена?
       </Text>
 
-      <a href={href} download={''}>
-        ССылочка
-      </a>
       <div className={classJoiner(cnMixSpace({ pH: '2xl', pT: '3xs', pB: 'm' }), cl.buttonBlock)}>
         <Button
           as={'a'}
-          target={'_blank'}
           href={href}
           download={'Exam.webm'}
           label={'Загрузить'}

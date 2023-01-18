@@ -7,6 +7,12 @@ interface IShortUser {
   middlename: string
 }
 
+export interface IPostNote {
+  text: string
+  editable: true
+  attach: IAttach[]
+}
+
 export interface INote {
   _id: string
   exam: string

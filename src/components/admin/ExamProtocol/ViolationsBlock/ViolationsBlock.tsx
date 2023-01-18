@@ -55,7 +55,10 @@ const ViolationsBlock: FC<IViolationsBlockProp> = ({ report }) => {
                 {item.violations.map((violation, i) => (
                   <div key={i} className={cn.violation}>
                     <ViolationIcon violationName={violation.name} />
-                    <Text size={'xs'}>{violationsTitles[violation.name]}</Text>
+                    <Text size={'xs'}>
+                      {violationsTitles[violation.name]}({(violation.probability * 100).toFixed(0)}
+                      %)
+                    </Text>
                   </div>
                 ))}
               </div>
