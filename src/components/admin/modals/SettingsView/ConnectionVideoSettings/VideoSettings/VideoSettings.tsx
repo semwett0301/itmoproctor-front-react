@@ -37,7 +37,7 @@ const VideoSettings: FC = () => {
           label={'Камера'}
           items={items}
           onChange={() => {
-            null
+            console.log()
           }}
         />
       </Layout>
@@ -47,7 +47,7 @@ const VideoSettings: FC = () => {
           label={'Микрофон'}
           items={items}
           onChange={() => {
-            null
+            console.log()
           }}
         />
       </Layout>
@@ -57,7 +57,7 @@ const VideoSettings: FC = () => {
           label={'Разрешение'}
           items={items}
           onChange={() => {
-            null
+            console.log()
           }}
         />
         <TextField

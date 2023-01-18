@@ -1,11 +1,21 @@
 .wrapper {
   width: 756px;
-  height: 694px;
+  height: 716px;
 }
 
 .content {
   height: 100%;
   width: 100%;
+}
+
+.sidebarWrapper {
+  height: 100%;
+  width: 100%;
+}
+
+.content > div {
+  margin-top: 21px;
+  margin-left: 16px;
 }
 
 .sidebar {
