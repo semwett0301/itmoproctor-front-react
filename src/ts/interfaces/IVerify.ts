@@ -1,6 +1,7 @@
 export interface IAttach {
   filename: string
   fileId: string
+  description: string
   // ISO Date
   created: string
 }

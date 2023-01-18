@@ -21,7 +21,7 @@ import ProtocolVerifiedModal from './ProtocolVerifiedModal/ProtocolVerifiedModal
 // DEFAULT FUNCTIONS
 
 interface IAboutBlockProp {
-  exam?: IExam
+  exam: IExam
 }
 
 const AboutBlock: FC<IAboutBlockProp> = ({ exam }) => {

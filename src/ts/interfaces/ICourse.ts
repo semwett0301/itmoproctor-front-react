@@ -3,6 +3,7 @@ export interface ICourse {
   accessAllowed?: string[]
   courseCode: string
   sessionCode: string
+  name?: string
 }
 
 export interface IGetCourse {

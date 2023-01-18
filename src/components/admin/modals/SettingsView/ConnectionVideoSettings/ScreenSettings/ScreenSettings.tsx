@@ -23,7 +23,7 @@ const items: Item[] = [
 
 const ScreenSettings: FC = () => {
   const [frequency, setFrequency] = useState<string | null>('15')
-  const changeFrequency = ({ value }: { value: string | null }) => {
+  const changeFrequency = ({ value }: { value: string | null }): void => {
     if (Number(value)) setFrequency(value)
   }
 
@@ -48,7 +48,6 @@ const ScreenSettings: FC = () => {
           label={'Разрешение'}
           items={items}
           onChange={() => {
-            console.log()
           }}
         />
         <TextField
