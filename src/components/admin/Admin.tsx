@@ -70,7 +70,7 @@ const Admin: FC = () => {
   }
 
   useEffect(() => {
-    const tabWatcher = async (): void => {
+    const tabWatcher = async (): Promise<void> => {
       const pathParts: string[] = location.pathname.split('/')
       console.log(pathParts.length)
       const path: string = pathParts[pathParts.length - 1]
