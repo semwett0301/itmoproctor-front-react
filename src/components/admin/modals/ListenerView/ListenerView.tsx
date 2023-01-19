@@ -6,11 +6,12 @@ import { cnMixSpace } from '@consta/uikit/MixSpace'
 import ModalViewConstructor, { IRowViewItem } from '../TwoBlockModalRow/ModalViewConstructor'
 import { useTranslation } from 'react-i18next'
 import { request } from '../../../../api/axios/request'
-import { getFullName } from '../../../../utils/nameHelper'
+import { getFullName, getShortName } from '../../../../utils/nameHelper'
 import { getStrDate } from '../../../../utils/dateUtils'
 import { Button } from '@consta/uikit/Button'
 import { closeModal } from '../../../shared/ModalView/ModalView'
 import { TabItem } from '../../Admin'
+import { IUser } from '../../../../ts/interfaces/IUser'
 
 // TYPES
 interface IListenerViewProp {
@@ -23,12 +24,12 @@ const ListenerView: FC<IListenerViewProp> = ({ profileId, openTab }) => {
 
   const [isLoad, setIsLoad] = useState<boolean>(true)
   const [items, setItems] = useState<IRowViewItem[]>([])
-  const [userId, setUseId] = useState<string>('')
+  const [user, setUser] = useState<IUser>()
 
   useEffect(() => {
     request.exam.getProfile(profileId).then((r) => {
       const data = r.data
-      setUseId(data._id)
+      setUser(data)
       console.log(data._id)
       const ii: IRowViewItem[] = [
         {
@@ -100,7 +101,7 @@ const ListenerView: FC<IListenerViewProp> = ({ profileId, openTab }) => {
   return (
     <div className={cl.wrapper}>
       <ModalTitle title={'listener'} />
-      {isLoad ? (
+      {isLoad && !user ? (
         <SkeletonText rows={10} fontSize='s' lineHeight={'l'} />
       ) : (
         <div className={cnMixSpace({ pH: 'm', pV: 's' })}>
@@ -114,9 +115,13 @@ const ListenerView: FC<IListenerViewProp> = ({ profileId, openTab }) => {
                 onClick={() => {
                   if (openTab) {
                     openTab({
-                      id: `userExams/${userId}`,
-                      title: `Экзамены-${userId}`,
-                      path: `userExams/${userId}`,
+                      id: `userExams/${user?._id}`,
+                      title: `Экзамены-${getShortName(
+                        user?.firstname,
+                        user?.middlename,
+                        user?.lastname
+                      )}`,
+                      path: `userExams/${user?._id}`,
                       type: 'tab'
                     })
                   }

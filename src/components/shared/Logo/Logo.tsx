@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import { Text } from '@consta/uikit/Text'
 import classes from './Logo.module.scss'
+import axiosConfig from '../../../config/axiosСonfig'
 
 const Logo: FC = () => {
   return (
@@ -16,7 +17,8 @@ const Logo: FC = () => {
     >
       <img
         style={{ width: 100, height: 100 }}
-        src={'https://de-dev.itmo.ru/images/logo-128x116.png'}
+        src={axiosConfig.baseUrl + 'images/logo-128x116.png'}
+        alt={'Логотип'}
       />
       <Text className={classes.text} view={'linkMinor'} size={'2xl'} weight={'bold'}>
         ITMOproctor

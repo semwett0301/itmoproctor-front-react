@@ -17,6 +17,8 @@ import { getSidebarItems } from './Sidebar/NavCollapse/NavCollapseModel'
 import { openModal } from '../shared/ModalView/ModalView'
 import EditProfile from './modals/EditProfile/EditProfile'
 import SettingsView from './modals/SettingsView/SettingsView'
+import { request } from '../../api/axios/request'
+import { getShortName } from '../../utils/nameHelper'
 
 export interface TabItem {
   id: number | string
@@ -68,44 +70,61 @@ const Admin: FC = () => {
   }
 
   useEffect(() => {
-    const pathParts: string[] = location.pathname.split('/')
-    console.log(pathParts.length)
-    const path: string = pathParts[pathParts.length - 1]
+    const tabWatcher = async (): void => {
+      const pathParts: string[] = location.pathname.split('/')
+      console.log(pathParts.length)
+      const path: string = pathParts[pathParts.length - 1]
 
-    let currentItem: TabItem = {
-      id: 'notFound',
-      title: 'Экзамены',
-      path: 'notFound',
-      type: 'tab'
-    }
-
-    if (pathParts.length === 3) {
-      const title: string | undefined = getSidebarItems().filter((e) => e.path === path)[0]?.title
-
-      currentItem = {
-        id: path,
-        title: title,
-        path: path,
-        type: title ? 'tab' : 'exam'
+      let currentItem: TabItem = {
+        id: 'notFound',
+        title: 'Экзамены',
+        path: 'notFound',
+        type: 'tab'
       }
-    } else if (pathParts.length === 4) {
-      const pathWidthId = pathParts.slice(2, 4).join('/')
-      console.log(pathParts[2])
-      const title =
-        pathParts[2] === 'exam' ? `Протокол – ${pathParts[3]}` : `Экзамены – ${pathParts[3]}`
 
-      currentItem = {
-        id: pathWidthId,
-        title: title,
-        path: pathWidthId,
-        type: title ? 'tab' : 'exam'
+      if (pathParts.length === 3) {
+        const title: string | undefined = getSidebarItems().filter((e) => e.path === path)[0]?.title
+
+        currentItem = {
+          id: path,
+          title: title,
+          path: path,
+          type: title ? 'tab' : 'exam'
+        }
+      } else if (pathParts.length === 4) {
+        const pathWidthId = pathParts.slice(2, 4).join('/')
+        console.log(pathParts[2])
+        let title = ''
+        // pathParts[2] === 'exam' ? `Протокол – ${pathParts[3]}` : `Экзамены – ${pathParts[3]}`
+
+        if (pathParts[2] === 'exam') {
+          const { firstname, lastname, middlename } = await request.expert.exams
+            .getExam(pathParts[3])
+            .then((r) => r.data.student)
+
+          title = 'Протокол – ' + getShortName(firstname, middlename, lastname)
+        } else if (pathParts[2] === 'userExams') {
+          const { firstname, lastname, middlename } = await request.users
+            .getUser(pathParts[3])
+            .then((r) => r.data)
+          title = 'Экзамены – ' + getShortName(firstname, middlename, lastname)
+        }
+
+        currentItem = {
+          id: pathWidthId,
+          title: title,
+          path: pathWidthId,
+          type: title ? 'tab' : 'exam'
+        }
+      }
+
+      if (!tabItems.find((e) => e.id === currentItem.id)) {
+        setItems([...tabItems, currentItem])
+        setActiveTab(currentItem)
       }
     }
 
-    if (!tabItems.find((e) => e.id === currentItem.id)) {
-      setItems([...tabItems, currentItem])
-      setActiveTab(currentItem)
-    }
+    tabWatcher()
   }, [location, tabItems])
 
   useEffect(() => {

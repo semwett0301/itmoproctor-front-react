@@ -18,6 +18,7 @@ import ExamProcessBlock from './ExamProcessBlock/ExamProcessBlock'
 import Player = videojs.Player
 import Loading from '../../shared/loading/Loading'
 import NotFound from '../../shared/errors/NotFound/NotFound'
+import axiosConfig from '../../../config/axiosСonfig'
 
 // TYPES
 
@@ -51,7 +52,7 @@ const ExamProtocol: FC = () => {
   }
 
   const source = {
-    src: `https://de-dev.itmo.ru/stream/${id}.webm`,
+    src: `${axiosConfig.baseUrl}stream/${id}.webm`,
     type: 'video/webm'
   }
 
