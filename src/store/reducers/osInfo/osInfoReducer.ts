@@ -1,6 +1,6 @@
 import {Reducer} from 'redux';
 
-interface IOsInfo {
+export interface IOsInfo {
   detectedOS: string,
   detectedArch: string
 }

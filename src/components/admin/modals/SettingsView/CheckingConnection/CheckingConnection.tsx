@@ -13,7 +13,6 @@ const CheckingConnection: FC = () => {
 
   useEffect(() => {
     if (videoRef.current?.offsetWidth && videoRef.current?.offsetHeight) {
-      console.log(videoRef.current.offsetWidth)
       setLeftBound((-videoRef.current.offsetWidth * 2) / 3 + 8)
       setBottomBound((videoRef.current.offsetHeight * 2) / 3 + 8)
     }

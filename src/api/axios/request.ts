@@ -10,6 +10,7 @@ import courses, { ICoursesAxios } from './modules/admin/сourses'
 import maintenance, { IMaintenanceAxios } from './modules/admin/maintenance'
 import studentExams, { IStudentExamsAxios } from './modules/student/studentExams'
 import ExpertExams, { IExpertExamsAxios } from './modules/expert/exams'
+import network, {INetworkAxios} from './modules/network';
 
 export interface IStudentRequestAxios {
   exams: IStudentExamsAxios
@@ -31,6 +32,7 @@ export interface IRequestAxios {
   organizations: IOrganizationsAxios
   student: IStudentRequestAxios
   expert: IExpertRequestAxios
+  network: INetworkAxios
 }
 
 export const request: IRequestAxios = {
@@ -48,5 +50,6 @@ export const request: IRequestAxios = {
   },
   expert: {
     exams: ExpertExams(mainInstance)
-  }
+  },
+  network: network(mainInstance)
 }
