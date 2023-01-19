@@ -1,11 +1,10 @@
 import { Card } from '@consta/uikit/Card'
 import React, { FC, useState } from 'react'
 import { Collapse } from '@consta/uikit/Collapse'
-import { collapseItems, ICollapseItem } from './NavCollapseModel'
+import { getSidebarItems, ICollapseItem } from './NavCollapseModel'
 import cl from './NavCollapse.module.scss'
 import { classJoiner, classWatcher } from '../../../../utils/styleClassesUtills'
 import { TabItem } from '../../Admin'
-import { useAppSelector } from '../../../../hooks/reduxHooks'
 
 interface NavCollapseProps {
   isOpen: boolean
@@ -14,14 +13,13 @@ interface NavCollapseProps {
 
 const NavCollapse: FC<NavCollapseProps> = ({ isOpen, addTab }) => {
   const [collapseState, setCollapseState] = useState<boolean>(false)
-  const system = useAppSelector((state) => state.user.system)
-
   const navMaker = (item: ICollapseItem, key: string): JSX.Element => {
     if (!item.children) {
+      console.log(item.path)
       return (
         <div
           className={cl.link}
-          key={key}
+          key={item.title + item.path}
           onClick={() => {
             addTab({ id: key, title: item.title, path: item.path, type: 'tab' })
           }}
@@ -34,7 +32,7 @@ const NavCollapse: FC<NavCollapseProps> = ({ isOpen, addTab }) => {
       )
     } else {
       return (
-        <Card key={key} form='square' shadow={false} className={cl.collapseContent}>
+        <Card key={item.path} form='square' shadow={false} className={cl.collapseContent}>
           <div
             className={classWatcher(
               collapseState,
@@ -81,9 +79,7 @@ const NavCollapse: FC<NavCollapseProps> = ({ isOpen, addTab }) => {
 
   return (
     <div className={cl.navWrapper}>
-      {collapseItems.map((item) =>
-        item.condition && item.condition === 'system' && !system ? <></> : navMaker(item, item.path)
-      )}
+      {getSidebarItems().map((item) => navMaker(item, item.path))}
     </div>
   )
 }

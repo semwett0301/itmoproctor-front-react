@@ -9,12 +9,11 @@ import HeaderLogoModule from '../shared/CustomHeader/HeaderLogoModule/HeaderLogo
 import HeaderTimeDateModule from '../shared/CustomHeader/HeaderTimeDateModule/HeaderTimeDateModule'
 import { IconUser } from '@consta/uikit/IconUser'
 import { IconSettings } from '@consta/uikit/IconSettings'
-import { IconScreen } from '@consta/uikit/IconScreen'
 import { IconExit } from '@consta/uikit/IconExit'
 import { useLogout } from '../../hooks/authHooks'
 import NavTabs from '../shared/NavTabs/NavTabs'
 import { classWatcher } from '../../utils/styleClassesUtills'
-import { collapseItems } from './Sidebar/NavCollapse/NavCollapseModel'
+import { getSidebarItems } from './Sidebar/NavCollapse/NavCollapseModel'
 import { openModal } from '../shared/ModalView/ModalView'
 import EditProfile from './modals/EditProfile/EditProfile'
 import SettingsView from './modals/SettingsView/SettingsView'
@@ -81,7 +80,7 @@ const Admin: FC = () => {
     }
 
     if (pathParts.length === 3) {
-      const title: string | undefined = collapseItems.filter((e) => e.path === path)[0]?.title
+      const title: string | undefined = getSidebarItems().filter((e) => e.path === path)[0]?.title
 
       currentItem = {
         id: path,
@@ -107,7 +106,7 @@ const Admin: FC = () => {
       setItems([...tabItems, currentItem])
       setActiveTab(currentItem)
     }
-  }, [location])
+  }, [location, tabItems])
 
   useEffect(() => {
     console.log(location.pathname)
