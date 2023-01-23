@@ -84,7 +84,7 @@ export const usersColumns: TableColumn<IUsersTableModel>[] = [
     sortable: true
   },
   {
-    title: <HeaderCell title={'Посл Вход'} />,
+    title: <HeaderCell title={'Дата входа'} />,
     accessor: 'lastDate',
     align: 'center',
     renderCell: (row) => <DateCell date={row.lastDate} />,
@@ -141,7 +141,6 @@ export const getUserColumns = (
     {
       title: <HeaderCell title={'Роль'} />,
       accessor: 'role',
-      align: 'center',
       sortable: true
     },
     {
@@ -153,14 +152,12 @@ export const getUserColumns = (
     {
       title: <HeaderCell title={'Дата Рег'} />,
       accessor: 'regDate',
-      align: 'center',
       renderCell: (row) => <DateCell date={row.regDate} />,
       sortable: true
     },
     {
       title: <HeaderCell title={'Посл Вход'} />,
       accessor: 'lastDate',
-      align: 'center',
       renderCell: (row) => <DateCell date={row.lastDate} />,
       sortable: true
     },

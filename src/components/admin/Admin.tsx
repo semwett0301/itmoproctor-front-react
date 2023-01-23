@@ -75,6 +75,15 @@ const Admin: FC = () => {
       console.log(pathParts.length)
       const path: string = pathParts[pathParts.length - 1]
 
+      if (pathParts.includes('about')) {
+        const aboutItem: TabItem = {
+          id: 'about',
+          title: 'О системе',
+          path: 'about',
+          type: 'tab'
+        }
+      }
+
       let currentItem: TabItem = {
         id: 'notFound',
         title: 'Экзамены',
@@ -83,7 +92,9 @@ const Admin: FC = () => {
       }
 
       if (pathParts.length === 3) {
-        const title: string | undefined = getSidebarItems().filter((e) => e.path === path)[0]?.title
+        const title: string | undefined = getSidebarItems()
+          .concat({ path: 'about', icon: IconUser, title: 'О системе' })
+          .filter((e) => e.path === path)[0]?.title
 
         currentItem = {
           id: path,

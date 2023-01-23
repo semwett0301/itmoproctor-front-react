@@ -7,7 +7,6 @@ import ModalViewConstructor, { IRowViewItem } from '../TwoBlockModalRow/ModalVie
 import { useTranslation } from 'react-i18next'
 import { request } from '../../../../api/axios/request'
 import { getFullName, getShortName } from '../../../../utils/nameHelper'
-import { getStrDate } from '../../../../utils/dateUtils'
 import { Button } from '@consta/uikit/Button'
 import { closeModal } from '../../../shared/ModalView/ModalView'
 import { TabItem } from '../../Admin'
@@ -58,7 +57,7 @@ const ListenerView: FC<IListenerViewProp> = ({ profileId, openTab }) => {
         },
         {
           title: 'Дата рождения',
-          content: getStrDate(data.birthday, 'DD.MM.YYYY')
+          content: data.birthday
         },
         {
           title: 'Электронная почта',

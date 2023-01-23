@@ -7,7 +7,7 @@ export const getFullName = (...args: string[]): string => {
 }
 
 export const getStudentName = (student: IStudent): string => {
-  return [student.lastname, student.firstname, student.lastname].join(' ')
+  return [student.lastname, student.firstname, student.middlename].join(' ')
 }
 
 export const getShortName = (

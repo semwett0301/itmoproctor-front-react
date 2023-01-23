@@ -4,7 +4,6 @@ import { classJoiner } from '../../../../utils/styleClassesUtills'
 import { cnMixSpace } from '@consta/uikit/MixSpace'
 import cn from './AboutBlock.module.scss'
 import { Card } from '@consta/uikit/Card'
-import { ProgressSpin } from '@consta/uikit/ProgressSpin'
 import { Text } from '@consta/uikit/Text'
 import { Button } from '@consta/uikit/Button'
 import { IconDocBlank } from '@consta/uikit/IconDocBlank'
@@ -33,37 +32,29 @@ const AboutBlock: FC<IAboutBlockProp> = ({ exam }) => {
       verticalSpace='xs'
       className={classJoiner(cnMixSpace({ mB: 's', mT: 'xs' }), cn.aboutExam)}
     >
-      {exam ? (
-        <>
-          <div className={cn.studentRow}>
-            <UserRow user={exam.student} isStudent />
-            <VerifyBtn
-              view={exam.verified ? 'normal' : 'disabled'}
-              onClick={
-                exam.verified ? () => openModal(<ProtocolVerifiedModal exam={exam} />) : undefined
-              }
-            />
-          </div>
-          <UserRow user={exam.expert || exam.inspector} />
-          <Text size='xs' view='secondary'>
-            Правила:
-          </Text>
-          <ExamRules factors={exam.factors} />
-          <div>
-            <Button
-              label='Карточка экзамена'
-              iconLeft={IconDocBlank}
-              view='secondary'
-              size='xs'
-              onClick={() => openModal(<ExamView examId={exam._id} />)}
-            />
-          </div>
-        </>
-      ) : (
-        <div className={cn.spinner}>
-          <ProgressSpin />
-        </div>
-      )}
+      <div className={cn.studentRow}>
+        <UserRow user={exam.student} isStudent />
+        <VerifyBtn
+          view={exam.verified ? 'normal' : 'disabled'}
+          onClick={
+            exam.verified ? () => openModal(<ProtocolVerifiedModal exam={exam} />) : undefined
+          }
+        />
+      </div>
+      <UserRow user={exam.expert || exam.inspector} />
+      <Text size='xs' view='secondary'>
+        Правила:
+      </Text>
+      <ExamRules factors={exam.factors} />
+      <div>
+        <Button
+          label='Карточка экзамена'
+          iconLeft={IconDocBlank}
+          view='secondary'
+          size='xs'
+          onClick={() => openModal(<ExamView examId={exam._id} />)}
+        />
+      </div>
     </Card>
   )
 }

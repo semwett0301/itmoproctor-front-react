@@ -1,6 +1,9 @@
 export const getTime = (seconds: number): string => {
-  const sec = seconds % 60
-  let min = Math.floor(seconds / 60)
+  const newSec = Math.ceil(seconds)
+  console.log(seconds, newSec)
+
+  const sec = Math.floor(newSec % 60)
+  let min = Math.floor(newSec / 60)
 
   if (min === 0) return `00:${sec}`
 

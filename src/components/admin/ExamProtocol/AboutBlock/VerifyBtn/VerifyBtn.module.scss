@@ -3,7 +3,7 @@
   grid-template-columns: 1fr 1fr;
   align-content: center;
   padding: 1px 2px;
-
+  transition: background-color 0.3s;
 
   background-color: var(--color-control-bg-secondary);
   border: var(--control-border-width) solid var(--color-control-bg-border-secondary);
@@ -17,5 +17,17 @@
     --color-hover: var(--color-control-typo-secondary-hover);
     border-color: var(--color-hover);
     color: var(--color-hover);
+  }
+
+  &[disabled]{
+    cursor: unset;
+    color: var(--color-control-bg-disable);
+    border:var(--control-border-width) solid var(--color-control-bg-disable);
+
+    &:hover {
+      color: rgba(2, 51, 80, 0.1);
+      border:var(--control-border-width) solid rgba(2, 51, 80, 0.1);
+      transition: background-color 0.3s;
+    }
   }
 }

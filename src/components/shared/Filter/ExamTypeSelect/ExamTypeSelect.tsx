@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Select } from '@consta/uikit/Select'
+import { Combobox } from '@consta/uikit/Combobox'
 
 // TYPES
 export type typeItem = {
@@ -29,7 +29,7 @@ interface IExamTypeSelectProp {
 
 const ExamTypeSelect: FC<IExamTypeSelectProp> = ({ value, onChange }) => {
   return (
-    <Select
+    <Combobox
       items={typesList}
       value={value}
       onChange={(p) => {

@@ -1,25 +1,51 @@
 import React, { FC, useState } from 'react'
 import classes from './AuthPage.module.scss'
 import { useTranslation } from 'react-i18next'
-import { useLogin } from '../../../hooks/authHooks'
 import SwitchLanguage from '../../shared/SwitchLanguage/SwitchLanguage'
 import Logo from '../../shared/Logo/Logo'
 import { TextField } from '@consta/uikit/TextField'
 import { Text } from '@consta/uikit/Text'
-import { Checkbox } from '@consta/uikit/Checkbox'
 import { Button } from '@consta/uikit/Button'
+import { Controller, SubmitHandler, useForm } from 'react-hook-form'
+import { AppDispatch } from '../../../store'
+import { useAppDispatch } from '../../../hooks/reduxHooks'
+import { Location, NavigateFunction, useLocation, useNavigate } from 'react-router-dom'
+import { request } from '../../../api/axios/request'
+import { setUserActionCreator } from '../../../store/reducers/userReducer/userActionCreators'
+import { Informer } from '@consta/uikit/Informer'
+import { cnMixSpace } from '@consta/uikit/MixSpace'
+
+type LogPassType = {
+  login: string
+  password: string
+}
 
 const AuthPage: FC = () => {
-  const [username, setUsername] = useState<string | null>('')
-  const loginChange = ({ value }: { value: string | null }): void => setUsername(value)
-  const [pass, setPass] = useState<string | null>('')
-  const passChange = ({ value }: { value: string | null }): void => setPass(value)
+  const dispatch: AppDispatch = useAppDispatch()
+  const navigateFunction: NavigateFunction = useNavigate()
+  const location: Location = useLocation()
 
-  const login = useLogin(username, pass)
+  const [requestError, setRequestError] = useState<unknown>(null)
+
+  const { formState, handleSubmit, control, resetField } = useForm<LogPassType>({
+    mode: 'all'
+  })
 
   const { t } = useTranslation()
 
-  const [remember, setRemember] = useState<boolean>(false)
+  const onFormSubmit: SubmitHandler<LogPassType> = (form) => {
+    console.log(form)
+    request.auth
+      .login({ username: form.login, password: form.password })
+      .then(async (r) => {
+        await dispatch(setUserActionCreator(r.data))
+        location.state.from?.pathname
+          ? navigateFunction(location.state.from.pathname)
+          : navigateFunction('/')
+      })
+      .catch(setRequestError)
+    resetField('password')
+  }
 
   return (
     <div className={classes.whole_container}>
@@ -29,42 +55,79 @@ const AuthPage: FC = () => {
       <div className={classes.main_container}>
         <Logo />
 
-        <div className={classes.auth_container}>
-          <div className={classes.input_fields_wrapper}>
-            <div className={classes.input_wrapper}>
-              <Text view={'secondary'} size={'m'} weight={'light'}>
-                {t('unauthorized.auth.login')}
-              </Text>
-              <TextField
-                value={username}
-                onChange={loginChange}
-                className={classes.input}
-                size={'s'}
-              />
-            </div>
-            <div className={classes.input_wrapper}>
-              <Text view={'secondary'} size={'m'} weight={'light'}>
-                {t('unauthorized.auth.password')}
-              </Text>
-              <TextField
-                type='password'
-                value={pass}
-                onChange={passChange}
-                className={classes.input}
-                size={'s'}
-              />
-            </div>
-          </div>
+        <div className={cnMixSpace({ mT: '4xl' })}>
+          <>
+            {requestError && (
+              <Informer label={'Неверный логин или пароль'} status={'alert'} view={'bordered'} />
+            )}
+            <form className={classes.auth_container} onSubmit={handleSubmit(onFormSubmit)}>
+              <div>
+                <Text view={'secondary'} size={'m'} weight={'light'}>
+                  {t('unauthorized.auth.login')}
+                </Text>
+                <Controller
+                  rules={{ required: 'Заполните поле' }}
+                  control={control}
+                  name={'login'}
+                  render={({ field, fieldState }) => (
+                    <TextField
+                      autoComplete={'username'}
+                      id={'login'}
+                      name={field.name}
+                      value={field.value}
+                      onChange={({ value }) => {
+                        setRequestError(null)
+                        field.onChange(value)
+                      }}
+                      className={classes.input}
+                      size={'s'}
+                      caption={fieldState.error?.message}
+                      status={fieldState.error ? 'alert' : undefined}
+                    />
+                  )}
+                />
+              </div>
 
-          <div className={classes.button_wrapper}>
-            <Button
-              className={classes.button}
-              size={'m'}
-              view={'primary'}
-              label={t('unauthorized.auth.signIn')}
-              onClick={login}
-            />
-          </div>
+              <div>
+                <Text view={'secondary'} size={'m'} weight={'light'}>
+                  {t('unauthorized.auth.password')}
+                </Text>
+                <Controller
+                  rules={{ required: 'Заполните поле' }}
+                  control={control}
+                  name={'password'}
+                  render={({ field, fieldState }) => (
+                    <TextField
+                      autoComplete={'current-password'}
+                      id={'password'}
+                      name={field.name}
+                      type='password'
+                      value={field.value}
+                      onChange={({ value }) => {
+                        setRequestError(null)
+                        field.onChange(value)
+                      }}
+                      className={classes.input}
+                      size={'s'}
+                      caption={fieldState.error?.message}
+                      status={fieldState.error ? 'alert' : undefined}
+                    />
+                  )}
+                />
+              </div>
+
+              <div className={classes.button_wrapper}>
+                <Button
+                  className={classes.button}
+                  size={'m'}
+                  view={'primary'}
+                  label={t('unauthorized.auth.signIn')}
+                  type={'submit'}
+                  disabled={!!formState.errors.login || !!formState.errors.login}
+                />
+              </div>
+            </form>
+          </>
         </div>
 
         <Text className={classes.link_name} size={'m'} view={'secondary'}>

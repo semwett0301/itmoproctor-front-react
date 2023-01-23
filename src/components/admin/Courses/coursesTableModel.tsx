@@ -61,7 +61,6 @@ export const coursesColumns: TableColumn<ICoursesTableModel>[] = [
   {
     title: <HeaderCell title={'Обновлен'} />,
     accessor: 'updated',
-    align: 'center',
     renderCell: (row) => <DateCell date={row.updated} />,
     sortable: true
   },

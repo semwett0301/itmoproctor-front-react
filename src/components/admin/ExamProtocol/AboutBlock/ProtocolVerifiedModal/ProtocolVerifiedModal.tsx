@@ -48,7 +48,7 @@ const ProtocolVerifiedModal: FC<IProtocolVerifiedModalProp> = ({ exam }) => {
       <ModalTitle title={'verify'} />
       <div className={classJoiner(cnMixSpace({ m: 's' }), cn.content)}>
         {!verify ? (
-          <Loader size='s' />
+          <Loader size='m' className={cn.loader} />
         ) : (
           <>
             <div className={classWatcher(isInfoOpen, cn.hiddenInfo, cn.activeInfo, cn.infoBlock)}>
