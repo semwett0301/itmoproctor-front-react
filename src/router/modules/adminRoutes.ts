@@ -2,7 +2,6 @@ import { IRoute } from '../../ts/interfaces/IRoute'
 import Admin from '../../components/admin/Admin'
 import Schedule from '../../components/admin/Schedule/Schedule'
 import Courses from '../../components/admin/Courses/Courses'
-import Maintenance from '../../components/admin/Maintenance/Maintenance'
 import Users from '../../components/admin/Users/Users'
 import Organizations from '../../components/admin/Organizations/Organizations'
 import UserExams from '../../components/admin/UserExams/UserExams'
@@ -23,6 +22,7 @@ export const adminRoutes: IRoute[] = [
       { id: 3, path: 'schedule', component: Schedule },
       { id: 4, path: 'courses', component: Courses },
       { id: 6, path: 'organizations', component: Organizations },
+      { id: 7, path: 'about', component: NotFound },
       { id: 999, path: '*', component: NotFound }
     ]
   }

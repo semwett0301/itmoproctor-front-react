@@ -1,8 +1,11 @@
-import {request} from '../api/axios/request'
-import {useAppDispatch, useAppSelector} from './reduxHooks'
-import {Location, NavigateFunction, useLocation, useNavigate} from 'react-router-dom'
-import {AppDispatch} from '../store'
-import {dropUserActionCreator, setUserActionCreator} from '../store/reducers/userReducer/userActionCreators'
+import { request } from '../api/axios/request'
+import { useAppDispatch, useAppSelector } from './reduxHooks'
+import { Location, NavigateFunction, useLocation, useNavigate } from 'react-router-dom'
+import { AppDispatch } from '../store'
+import {
+  dropUserActionCreator,
+  setUserActionCreator
+} from '../store/reducers/userReducer/userActionCreators'
 
 type LogPass = string | null
 
@@ -28,6 +31,7 @@ export const useLogin: (username: LogPass, password: LogPass) => () => void = (
   const location: Location = useLocation()
 
   return () => {
+    console.log(password, username)
     if (username !== null && password !== null) {
       request.auth.login({ username: username, password: password }).then(async (r) => {
         await dispatch(setUserActionCreator(r.data))

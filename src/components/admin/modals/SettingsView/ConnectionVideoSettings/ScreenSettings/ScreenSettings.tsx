@@ -48,6 +48,7 @@ const ScreenSettings: FC = () => {
           label={'Разрешение'}
           items={items}
           onChange={() => {
+            null
           }}
         />
         <TextField

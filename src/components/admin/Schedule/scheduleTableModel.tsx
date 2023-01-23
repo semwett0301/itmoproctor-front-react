@@ -45,7 +45,7 @@ export const scheduleColumns: TableColumn<IScheduleTableModel>[] = [
     sortable: true
   },
   {
-    title: <HeaderCell title={'Начало работа'} />,
+    title: <HeaderCell title={'Начало работы'} />,
     accessor: 'beginDate',
     align: 'left',
     renderCell: (row) => <DateCell date={row.beginDate} />,

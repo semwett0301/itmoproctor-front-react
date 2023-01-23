@@ -18,6 +18,7 @@ import ExamProcessBlock from './ExamProcessBlock/ExamProcessBlock'
 import Player = videojs.Player
 import Loading from '../../shared/loading/Loading'
 import NotFound from '../../shared/errors/NotFound/NotFound'
+import axiosConfig from '../../../config/axiosСonfig'
 
 // TYPES
 
@@ -51,7 +52,7 @@ const ExamProtocol: FC = () => {
   }
 
   const source = {
-    src: `https://de-dev.itmo.ru/stream/${id}.webm`,
+    src: `${axiosConfig.baseUrl}stream/${id}.webm`,
     type: 'video/webm'
   }
 
@@ -125,15 +126,15 @@ const ExamProtocol: FC = () => {
                 <ViolationsBlock report={exam?.report} />
               </div>
             </Layout>
-            <Layout flex={1} className={cn.aboutExamBlock} direction={'column'}>
-              <Layout direction={'column'} flex={1}>
+            <Layout className={cn.aboutExamBlock} direction={'column'}>
+              <Layout direction={'column'}>
                 <Text view={'secondary'} size={'s'}>
                   Об экзамене
                 </Text>
                 <AboutBlock exam={exam} />
               </Layout>
 
-              <Layout flex={4} direction={'column'}>
+              <Layout flex={10} direction={'column'}>
                 <Text view={'secondary'} size={'s'}>
                   Ход экзамена
                 </Text>

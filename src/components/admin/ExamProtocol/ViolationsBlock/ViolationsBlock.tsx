@@ -18,6 +18,7 @@ interface IViolationsBlockProp {
 }
 
 const ViolationsBlock: FC<IViolationsBlockProp> = ({ report }) => {
+  console.log(report)
   return !report ? (
     <Loader />
   ) : (

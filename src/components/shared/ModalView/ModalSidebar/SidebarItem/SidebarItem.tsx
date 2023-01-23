@@ -1,5 +1,6 @@
-import React, { FC, useMemo } from 'react'
+import React, { FC } from 'react'
 import cl from './SidebarItem.module.scss'
+import { classWatcher } from '../../../../../utils/styleClassesUtills'
 
 type SidebarItemProps = {
   logo: JSX.Element
@@ -10,15 +11,13 @@ type SidebarItemProps = {
 }
 
 const SidebarItem: FC<SidebarItemProps> = ({ logo, text, onClick, chosen, className }) => {
-  const textClass: string = useMemo<string>(
-    () => (chosen ? cl.chosen_element : cl.typical_element),
-    [chosen]
-  )
-
   return (
-    <div className={cl.wrapper + ' ' + className} onClick={onClick}>
+    <div
+      className={classWatcher(chosen, cl.typical_element, cl.chosen_element, cl.wrapper, className)}
+      onClick={onClick}
+    >
       <div className={cl.logo}>{logo}</div>
-      <span className={cl.text + ' ' + textClass}>{text}</span>
+      <span className={cl.text}>{text}</span>
     </div>
   )
 }

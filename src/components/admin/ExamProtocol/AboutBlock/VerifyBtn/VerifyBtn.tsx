@@ -13,9 +13,9 @@ interface IVerifyBtnProp {
   view: 'disabled' | 'normal'
 }
 
-const VerifyBtn: FC<IVerifyBtnProp> = ({ onClick }) => {
+const VerifyBtn: FC<IVerifyBtnProp> = ({ onClick, view }) => {
   return (
-    <button className={cn.btn} onClick={onClick}>
+    <button className={cn.btn} onClick={onClick} disabled={view === 'disabled'}>
       <IconUser size={'xs'} />
       <IconAlignLeft size={'xs'} />
     </button>

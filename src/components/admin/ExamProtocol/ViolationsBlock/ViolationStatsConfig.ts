@@ -1,4 +1,5 @@
 import { IVideos } from '../../../../ts/interfaces/IExam'
+import { getTime } from '../../../../utils/times'
 
 export interface violationsStatsConfig {
   title: string
@@ -7,8 +8,6 @@ export interface violationsStatsConfig {
   value: string | number
 }
 
-export type Violations = { ViolationsNames: string }
-
 export const violationsTitles = {
   noFaces: 'Отсутствие лиц',
   severalFaces: 'Несколько лиц',
@@ -16,8 +15,9 @@ export const violationsTitles = {
 }
 
 export const getViolationsStatsConfig = (videos: IVideos): violationsStatsConfig[] => {
-  const totalViolationsPart = videos.stats.noFaces + videos.stats.noFaces + videos.stats.noFaces
-  const totalViolationsTime = totalViolationsPart + videos.totalTime
+  const totalViolationsPart =
+    videos.stats.noFaces + videos.stats.noSounds + videos.stats.severalFaces
+  const totalViolationsTime = videos.totalTime
 
   return [
     {
@@ -30,7 +30,7 @@ export const getViolationsStatsConfig = (videos: IVideos): violationsStatsConfig
       title: 'Длительность нарушений',
       tooltipContent: '',
       withIcon: false,
-      value: `${Math.floor(totalViolationsTime / 60)}:${Math.floor(totalViolationsTime % 60)}`
+      value: getTime(totalViolationsTime)
     },
     {
       title: 'Отсутствие звуков',

@@ -25,26 +25,24 @@
 }
 
 .auth_container {
-  height: 232px;
+  //height: 232px;
   width: 328px;
+  padding: 16px;
+
+  display: grid;
+  row-gap: 16px;
 
   background: #FFFFFF;
   border: 1px solid rgba(0, 65, 102, 0.2);
-  box-shadow: 0px 2px 2px rgba(0, 32, 51, 0.02), 0px 2px 8px rgba(0, 32, 51, 0.16);
+  box-shadow: 0 2px 2px rgba(0, 32, 51, 0.02), 0 2px 8px rgba(0, 32, 51, 0.16);
   border-radius: 8px;
 
-  margin-top: 60px;
-  padding: 0 1%;
+  margin-top: 12px;
 }
 
 .input_fields_wrapper {
   display: flex;
   flex-direction: column;
-  padding: 0 10.5px;
-}
-
-.input_fields_wrapper > * {
-  margin-top: 16px;
 }
 
 .link_name {
@@ -64,10 +62,8 @@
 .button_wrapper {
   display: flex;
   justify-content: center;
-
-  margin-top: 16px;
 }
 
 .button {
-  width: 44.818%;
+  width: 147px;
 }

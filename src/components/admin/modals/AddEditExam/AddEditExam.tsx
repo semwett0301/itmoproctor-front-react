@@ -154,7 +154,7 @@ interface IAddEditExamProp {
 }
 
 const AddEditExam: FC<IAddEditExamProp> = ({ examId, onSubmit }) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const [organizationsList, setOrganizationsList] = useState<IOrganization[]>([])
   const [courseCodes, setCourseCodes] = useState<string[]>([])
   const [sessionCodes, setSessionCodes] = useState<ISessionCode[]>([])
@@ -177,7 +177,6 @@ const AddEditExam: FC<IAddEditExamProp> = ({ examId, onSubmit }) => {
       resolver: yupResolver(examSchema),
       defaultValues: {
         examId: 'course-v1',
-        duration: 1,
         async: { id: 'true', label: 'Асинхронный' },
         resolution: resolutions[2],
         verifications: [fullVerificationItems[4]]
@@ -230,6 +229,7 @@ const AddEditExam: FC<IAddEditExamProp> = ({ examId, onSubmit }) => {
     getProctors('')
     getStudents('')
 
+    setIsLoading(true)
     getOrganizations()
       .then((r) => r.filter((i) => i.code && i.code !== 'global' && i.code !== 'notStudent'))
       .then((r) => {
@@ -238,6 +238,7 @@ const AddEditExam: FC<IAddEditExamProp> = ({ examId, onSubmit }) => {
           if (organization.length) {
             setValue('organization', organization[0])
           }
+          setIsLoading(false)
           return organization
         }
         return r
@@ -282,6 +283,7 @@ const AddEditExam: FC<IAddEditExamProp> = ({ examId, onSubmit }) => {
             info: exam.info,
             note: exam.note
           })
+          setIsLoading(false)
         }
       })
   }, [])

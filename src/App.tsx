@@ -14,6 +14,9 @@ import { setUserActionCreator } from './store/reducers/userReducer/userActionCre
 import { request } from './api/axios/request'
 import { userLoadedActionCreator } from './store/reducers/userLoaded/userLoadedActionCreators'
 import ModalView from './components/shared/ModalView/ModalView'
+import dayjs from 'dayjs'
+require('dayjs/locale/ru')
+dayjs.locale('ru')
 
 export const App: FC = () => {
   const dispatch = useAppDispatch()
