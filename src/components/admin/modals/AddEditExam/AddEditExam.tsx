@@ -108,7 +108,7 @@ const examSchema = object({
     .max(600, 'Максимальная длительность экзамена 600 минут')
     .integer('Длительность экзамена не может быть отрицательной')
     .required('Укажите длительность экзамена'),
-  student: object().required('Укажите слушателя'),
+  student: object().nullable().required('Укажите слушателя'),
   expertOrInspector: object().nullable(),
   resolution: object().nullable(),
   comment: string().nullable(),
@@ -118,7 +118,7 @@ const examSchema = object({
 
 // DEFAULT FUNCTIONS
 
-const toRequestData = (data: IExamForm, examId?: string) => {
+const toRequestData = (data: IExamForm, examId?: string): unknown => {
   console.log(data.verifications)
   return {
     assignment: data.assignment,
@@ -171,17 +171,16 @@ const AddEditExam: FC<IAddEditExamProp> = ({ examId, onSubmit }) => {
 
   const { getOrganizations } = useOrganizations()
 
-  const { control, setValue, reset, handleSubmit, resetField, formState, getValues } =
-    useForm<IExamForm>({
-      mode: 'all',
-      resolver: yupResolver(examSchema),
-      defaultValues: {
-        examId: 'course-v1',
-        async: { id: 'true', label: 'Асинхронный' },
-        resolution: resolutions[2],
-        verifications: [fullVerificationItems[4]]
-      }
-    })
+  const { control, setValue, reset, handleSubmit, resetField, getValues } = useForm<IExamForm>({
+    mode: 'all',
+    resolver: yupResolver(examSchema),
+    defaultValues: {
+      examId: 'course-v1',
+      async: { id: 'true', label: 'Асинхронный' },
+      resolution: resolutions[2],
+      verifications: [fullVerificationItems[4]]
+    }
+  })
 
   const getCourseCodes = (organizationId: string): void => {
     request.courses.getCourseCodesByOrganizationId(organizationId).then((r) => {
@@ -243,7 +242,10 @@ const AddEditExam: FC<IAddEditExamProp> = ({ examId, onSubmit }) => {
         }
         return r
       })
-      .then((r) => setOrganizationsList(r))
+      .then((r) => {
+        setIsLoading(false)
+        setOrganizationsList(r)
+      })
       .then(() => (examId ? request.exam.getExam(examId).then((r) => r.data) : null))
       .then((exam) => {
         console.log(exam)
@@ -289,7 +291,6 @@ const AddEditExam: FC<IAddEditExamProp> = ({ examId, onSubmit }) => {
   }, [])
 
   const onFormSubmit: SubmitHandler<IExamForm> = (data) => {
-    console.log(data.verifications)
     Promise.resolve(
       examId
         ? request.exam.editExam(toRequestData(data, examId), examId)
@@ -504,6 +505,7 @@ const AddEditExam: FC<IAddEditExamProp> = ({ examId, onSubmit }) => {
                               itemsType={'examTypes'}
                               value={field.value}
                               onChange={({ value }) => {
+                                resetField('expertOrInspector')
                                 if (value) setExamType(value.id === 'true')
                                 field.onChange(value)
                               }}
@@ -710,7 +712,14 @@ const AddEditExam: FC<IAddEditExamProp> = ({ examId, onSubmit }) => {
                               label='Длительность'
                               required
                               value={String(field.value)}
-                              onChange={({ value }) => field.onChange(Number(value))}
+                              onChange={({ value }) => {
+                                console.log(typeof value, value)
+                                if (value === 'NaN') {
+                                  field.onChange(1)
+                                } else {
+                                  field.onChange(Number(value))
+                                }
+                              }}
                               status={fieldState.error ? 'alert' : undefined}
                               caption={fieldState.error?.message}
                             />
@@ -900,7 +909,7 @@ const AddEditExam: FC<IAddEditExamProp> = ({ examId, onSubmit }) => {
                 }
               ]}
             />
-            <SaveButton valid={formState.isValid} />
+            <SaveButton valid={true} />
           </form>
         )}
       </div>
