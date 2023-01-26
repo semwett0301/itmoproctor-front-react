@@ -53,7 +53,7 @@ const ExamView: FC<IExamViewProp> = ({ examId }) => {
         },
         {
           title: 'Испытание',
-          content: data.assignment
+          content: data.assignment || ''
         },
         {
           title: 'Ссылка',
@@ -110,7 +110,15 @@ const ExamView: FC<IExamViewProp> = ({ examId }) => {
         },
         {
           title: 'Комментарий',
-          content: data.comment
+          content: data.comment || ''
+        },
+        {
+          title: 'Комментарий для администратора',
+          content: data.note ?? null
+        },
+        {
+          title: 'Информация',
+          content: data.info ?? null
         }
       ]
       setIsLoad(false)

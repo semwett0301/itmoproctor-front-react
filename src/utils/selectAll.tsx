@@ -1,5 +1,4 @@
 import { TableColumn } from '@consta/uikit/Table'
-import { coursesColumns, ICoursesTableModel } from '../components/admin/Courses/coursesTableModel'
 import { ITableRow } from '../components/shared/SharedTable/SharedTable'
 import { Checkbox } from '@consta/uikit/Checkbox'
 import React from 'react'
@@ -12,6 +11,8 @@ export function selectAll<T extends ITableRow>(
   setSelectedRowsId: (arr: string[]) => void,
   pagination: IPagination
 ): void {
+  console.log(rows.length)
+  console.log(columns[1].title)
   columns[1].title = rows.length ? (
     <Checkbox
       checked={
@@ -19,11 +20,13 @@ export function selectAll<T extends ITableRow>(
         rows.length > 0 &&
         JSON.stringify(rows.map((i) => i.id)) === JSON.stringify(selectedRowsId)
       }
-      onClick={() =>
-        pagination.displayedRows.id === selectedRowsId.length && !!pagination.totalRows
-          ? setSelectedRowsId([])
-          : setSelectedRowsId(Array.from(rows, (r) => r.id))
-      }
+      onClick={() => {
+        if (JSON.stringify(rows.map((i) => i.id)) === JSON.stringify(selectedRowsId)) {
+          setSelectedRowsId([])
+        } else {
+          setSelectedRowsId(Array.from(rows, (r) => r.id))
+        }
+      }}
     />
   ) : (
     <></>

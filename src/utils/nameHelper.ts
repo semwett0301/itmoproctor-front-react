@@ -10,16 +10,13 @@ export const getStudentName = (student: IStudent): string => {
   return [student.lastname, student.firstname, student.middlename].join(' ')
 }
 
-export const getShortName = (
-  firstname?: string,
-  secondName?: string,
-  lastName?: string
-): string => {
-  return [
-    lastName || null,
-    firstname ? firstname[0] + '.' : null,
-    secondName ? secondName[0] + '.' : null
-  ].join(' ')
+export const getShortName = (firstname: string, secondName: string, lastName?: string): string => {
+  let name = lastName + ' ' + firstname[0]
+
+  if (secondName) {
+    name += `. ${secondName[0]}.`
+  }
+  return name
 }
 
 export type proctor = { exists: boolean; fullName: string; shortName: string; id: string }

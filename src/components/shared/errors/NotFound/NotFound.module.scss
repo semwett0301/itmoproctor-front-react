@@ -1,9 +1,6 @@
 .wrapper{
+  height: 90%;
   display: flex;
-  height: calc(100% - 40px);
-  box-sizing: border-box;
-  padding-bottom: 30%;
-  align-items: center;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;
 }

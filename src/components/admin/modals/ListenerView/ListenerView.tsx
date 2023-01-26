@@ -21,7 +21,6 @@ interface IListenerViewProp {
 const ListenerView: FC<IListenerViewProp> = ({ profileId, openTab }) => {
   const { t } = useTranslation('translation', { keyPrefix: 'shared' })
 
-  const [isLoad, setIsLoad] = useState<boolean>(true)
   const [items, setItems] = useState<IRowViewItem[]>([])
   const [user, setUser] = useState<IUser>()
 
@@ -93,14 +92,13 @@ const ListenerView: FC<IListenerViewProp> = ({ profileId, openTab }) => {
           content: data.description
         }
       ]
-      setIsLoad(false)
       setItems(ii)
     })
   }, [profileId, t])
   return (
     <div className={cl.wrapper}>
       <ModalTitle title={'listener'} />
-      {isLoad && !user ? (
+      {!user ? (
         <SkeletonText rows={10} fontSize='s' lineHeight={'l'} />
       ) : (
         <div className={cnMixSpace({ pH: 'm', pV: 's' })}>
@@ -116,8 +114,8 @@ const ListenerView: FC<IListenerViewProp> = ({ profileId, openTab }) => {
                     openTab({
                       id: `userExams/${user?._id}`,
                       title: `Экзамены-${getShortName(
-                        user?.firstname,
-                        user?.middlename,
+                        user.firstname,
+                        user.middlename,
                         user?.lastname
                       )}`,
                       path: `userExams/${user?._id}`,

@@ -20,7 +20,7 @@ interface IViolationsBlockProp {
 const ViolationsBlock: FC<IViolationsBlockProp> = ({ report }) => {
   console.log(report)
   return !report ? (
-    <Loader />
+    <></>
   ) : (
     <div className={cn.wrapper}>
       <Layout className={cn.layout}>

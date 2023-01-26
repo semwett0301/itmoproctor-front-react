@@ -1,4 +1,4 @@
-import {IOrganization} from './IOrganizations'
+import { IOrganization } from './IOrganizations'
 
 export interface ICourseRow {
   _id: string
@@ -8,5 +8,6 @@ export interface ICourseRow {
   accessAllowed: IOrganization[]
   verifications: string[]
   updated: string
+  name?: string
   __v?: number
 }

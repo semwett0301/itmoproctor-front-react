@@ -113,7 +113,7 @@ const Admin: FC = () => {
             .getExam(pathParts[3])
             .then((r) => r.data.student)
 
-          title = 'Протокол – ' + getShortName(firstname, middlename, lastname)
+          title = getShortName(firstname, middlename, lastname)
         } else if (pathParts[2] === 'userExams') {
           const { firstname, lastname, middlename } = await request.users
             .getUser(pathParts[3])

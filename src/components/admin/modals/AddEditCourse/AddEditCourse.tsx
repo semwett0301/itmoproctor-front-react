@@ -20,10 +20,13 @@ import { request } from '../../../../api/axios/request'
 import { closeModal } from '../../../shared/ModalView/ModalView'
 import { ICoursePost } from '../../../../api/axios/modules/admin/сourses'
 import { RoleEnum } from '../../../../config/authСonfig'
+import { ICoursesTableModel } from '../../Courses/coursesTableModel'
+import { SkeletonText } from '@consta/uikit/Skeleton'
 
 // TYPES
 interface ICourseForm {
   accessAllowed: IOrganization[] | null
+  name: string
   courseCode: string
   organization: IOrganization
   sessionCode: string
@@ -32,7 +35,7 @@ interface ICourseForm {
 
 interface IAddEditCourseProp {
   courseId?: string
-  onSubmit?: () => void
+  onSubmit: () => Promise<ICoursesTableModel[]>
 }
 
 // CONSTANTS
@@ -40,6 +43,7 @@ const courseSchema = object({
   organization: object().required('Укажите организацию'),
   courseCode: string().required('Укажите код курса'),
   sessionCode: string().required('Укажите код сессии'),
+  name: string().nullable(),
   accessAllowed: array(object()).nullable(),
   verifications: array(object()).nullable()
 })
@@ -50,12 +54,14 @@ const toRequestData = ({
   courseCode,
   organization,
   sessionCode,
-  verifications
+  verifications,
+  name
 }: ICourseForm): ICoursePost => ({
   accessAllowed: accessAllowed ? accessAllowed.map((i) => i._id) : null,
   courseCode: courseCode,
   organization: organization._id,
   sessionCode: sessionCode,
+  name: name ?? null,
   verifications: verifications ? verifications.map((i) => i.id) : null
 })
 
@@ -64,19 +70,18 @@ const AddEditCourse: FC<IAddEditCourseProp> = ({ courseId, onSubmit }) => {
   const [organizationList, setOrganizationList] = useState<IOrganization[]>([])
   const { loading, getOrganizations, getOrganization } = useOrganizations()
 
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+
   const { control, handleSubmit, formState, reset } = useForm<ICourseForm>({
-    mode: 'onBlur',
+    mode: 'all',
     resolver: yupResolver(courseSchema),
     defaultValues: { verifications: verificationItems }
   })
 
   useEffect(() => {
-    console.log(courseId)
-    console.log(user)
-
     getOrganizations()
       .then((r) => {
-        if (user.role === RoleEnum.ADMIN && user.organization) {
+        if (user.role !== RoleEnum.ADMIN && user.organization) {
           setOrganizationList(r.filter((i) => i.code === user.organization.code))
         } else {
           setOrganizationList(
@@ -92,14 +97,18 @@ const AddEditCourse: FC<IAddEditCourseProp> = ({ courseId, onSubmit }) => {
         return r
       })
       .then((organizations) => {
+        setIsLoading(false)
         if (courseId) {
+          setIsLoading(true)
           request.courses.getCourse(courseId).then((r) => {
+            setIsLoading(false)
             console.log(r.data)
             setOrganizationList((prevState) => [...prevState, getOrganization(r.data.organization)])
             reset({
               organization: organizations.find((item) => item._id === r.data.organization),
               sessionCode: r.data.sessionCode,
               courseCode: r.data.courseCode,
+              name: r.data.name,
               verifications: verificationItems.filter((item) =>
                 r.data.verifications.includes(item.id)
               ),
@@ -111,165 +120,189 @@ const AddEditCourse: FC<IAddEditCourseProp> = ({ courseId, onSubmit }) => {
   }, [courseId])
 
   const onFormSubmit: SubmitHandler<ICourseForm> = (data) => {
-    console.log(toRequestData(data))
     Promise.resolve(
       courseId
         ? request.courses.editCourse(toRequestData(data), courseId)
         : request.courses.addCourse(toRequestData(data))
     )
-      .then(() => {
-        if (onSubmit) {
-          onSubmit()
-        }
-        closeModal()
-      })
-      .catch((e) => console.log(e))
+      .then(closeModal)
+      .then(onSubmit)
+      .catch(console.log)
   }
 
   return (
     <>
       <ModalTitle title={'course'} />
       <div className={classJoiner(cnMixSpace({ pH: '2xs' }), cl.wrapper)}>
-        <form noValidate onSubmit={handleSubmit(onFormSubmit)}>
-          <FilterConstructor
-            items={[
-              {
-                key: 1,
-                components: [
-                  {
-                    key: 1,
-                    flex: 1,
-                    component: (
-                      <Controller
-                        control={control}
-                        name='organization'
-                        render={({ field, fieldState }) => (
-                          <Select
-                            required
-                            items={organizationList}
-                            placeholder={'Универсиетет'}
-                            size={'s'}
-                            label={'Университет'}
-                            // disabled={user.organization.code === 'global'}
-                            value={field.value}
-                            onChange={({ value }) => field.onChange(value)}
-                            isLoading={loading}
-                            getItemKey={(item) => item._id}
-                            getItemLabel={(item) => item.shortName ?? (item.fullName || item._id)}
-                            status={fieldState.error ? 'alert' : undefined}
-                            caption={fieldState.error?.message}
-                          />
-                        )}
-                      />
-                    )
-                  }
-                ]
-              },
-              {
-                key: 2,
-                components: [
-                  {
-                    key: 21,
-                    flex: 2,
-                    component: (
-                      <Controller
-                        name='courseCode'
-                        control={control}
-                        render={({ field, fieldState }) => (
-                          <TextField
-                            required
-                            label={'Код курса'}
-                            placeholder={'Пример: WEBDEV'}
-                            width='full'
-                            size='s'
-                            value={field.value}
-                            onChange={({ e }) => field.onChange(e)}
-                            status={fieldState.error ? 'alert' : undefined}
-                            caption={fieldState.error?.message}
-                          />
-                        )}
-                      />
-                    )
-                  },
-                  {
-                    key: 22,
-                    flex: 3,
-                    component: (
-                      <Controller
-                        name='sessionCode'
-                        control={control}
-                        render={({ field, fieldState }) => (
-                          <TextField
-                            label={'Код сессии'}
-                            placeholder={'Пример: spring_2022'}
-                            required
-                            width='full'
-                            size='s'
-                            value={field.value}
-                            onChange={({ e }) => field.onChange(e)}
-                            status={fieldState.error ? 'alert' : undefined}
-                            caption={fieldState.error?.message}
-                          />
-                        )}
-                      />
-                    )
-                  }
-                ]
-              },
-              {
-                key: 3,
-                components: [
-                  {
-                    key: 31,
-                    flex: 1,
-                    component: (
-                      <Controller
-                        name='accessAllowed'
-                        control={control}
-                        render={({ field }) => (
-                          <OrganizationCombobox
-                            label={'Разрешен доступ'}
-                            placeholder={'Разрешен доступ'}
-                            value={field.value}
-                            onChange={({ value }) => field.onChange(value)}
-                            isIdsLoading={false}
-                          />
-                        )}
-                      />
-                    )
-                  }
-                ]
-              },
-              {
-                key: 4,
-                components: [
-                  {
-                    key: 41,
-                    flex: 1,
-                    component: (
-                      <Controller
-                        name='verifications'
-                        control={control}
-                        render={({ field }) => (
-                          <Combobox
-                            label={'Верификации'}
-                            placeholder={'Виды верификации'}
-                            size={'s'}
-                            multiple
-                            items={verificationItems}
-                            value={field.value}
-                            onChange={({ value }) => field.onChange(value)}
-                          />
-                        )}
-                      />
-                    )
-                  }
-                ]
-              }
-            ]}
-          />
-          <SaveButton valid={formState.isValid} onClick={(e) => console.log(e)} />
-        </form>
+        {isLoading || loading ? (
+          <SkeletonText fontSize='l' rows={6} />
+        ) : (
+          <form noValidate onSubmit={handleSubmit(onFormSubmit)}>
+            <FilterConstructor
+              items={[
+                {
+                  key: 1,
+                  components: [
+                    {
+                      key: 1,
+                      flex: 1,
+                      component: (
+                        <Controller
+                          control={control}
+                          name='organization'
+                          render={({ field, fieldState }) => (
+                            <Select
+                              required
+                              items={organizationList}
+                              placeholder={'Универсиетет'}
+                              size={'s'}
+                              label={'Университет'}
+                              // disabled={user.organization.code === 'global'}
+                              value={field.value}
+                              onChange={({ value }) => field.onChange(value)}
+                              isLoading={loading}
+                              getItemKey={(item) => item._id}
+                              getItemLabel={(item) => item.shortName ?? (item.fullName || item._id)}
+                              status={fieldState.error ? 'alert' : undefined}
+                              caption={fieldState.error?.message}
+                            />
+                          )}
+                        />
+                      )
+                    }
+                  ]
+                },
+                {
+                  key: 2,
+                  components: [
+                    {
+                      key: 21,
+                      flex: 2,
+                      component: (
+                        <Controller
+                          name='courseCode'
+                          control={control}
+                          render={({ field, fieldState }) => (
+                            <TextField
+                              required
+                              label={'Код курса'}
+                              placeholder={'Пример: WEBDEV'}
+                              width='full'
+                              size='s'
+                              value={field.value}
+                              onChange={({ e }) => field.onChange(e)}
+                              status={fieldState.error ? 'alert' : undefined}
+                              caption={fieldState.error?.message}
+                            />
+                          )}
+                        />
+                      )
+                    },
+                    {
+                      key: 22,
+                      flex: 3,
+                      component: (
+                        <Controller
+                          name='sessionCode'
+                          control={control}
+                          render={({ field, fieldState }) => (
+                            <TextField
+                              label={'Код сессии'}
+                              placeholder={'Пример: spring_2022'}
+                              required
+                              width='full'
+                              size='s'
+                              value={field.value}
+                              onChange={({ e }) => field.onChange(e)}
+                              status={fieldState.error ? 'alert' : undefined}
+                              caption={fieldState.error?.message}
+                            />
+                          )}
+                        />
+                      )
+                    }
+                  ]
+                },
+                {
+                  key: 22,
+                  components: [
+                    {
+                      key: 221,
+                      flex: 2,
+                      component: (
+                        <Controller
+                          name='name'
+                          control={control}
+                          render={({ field }) => (
+                            <TextField
+                              label={'Название курса'}
+                              placeholder={'Название курса'}
+                              width='full'
+                              size='s'
+                              value={field.value}
+                              onChange={({ e }) => field.onChange(e)}
+                            />
+                          )}
+                        />
+                      )
+                    }
+                  ]
+                },
+                {
+                  key: 3,
+                  components: [
+                    {
+                      key: 31,
+                      flex: 1,
+                      component: (
+                        <Controller
+                          name='accessAllowed'
+                          control={control}
+                          render={({ field }) => (
+                            <OrganizationCombobox
+                              label={'Разрешен доступ'}
+                              placeholder={'Разрешен доступ'}
+                              value={field.value}
+                              onChange={({ value }) => field.onChange(value)}
+                              isIdsLoading={false}
+                            />
+                          )}
+                        />
+                      )
+                    }
+                  ]
+                },
+                {
+                  key: 4,
+                  components: [
+                    {
+                      key: 41,
+                      flex: 1,
+                      component: (
+                        <Controller
+                          name='verifications'
+                          control={control}
+                          render={({ field }) => (
+                            <Combobox
+                              label={'Верификации'}
+                              placeholder={'Виды верификации'}
+                              size={'s'}
+                              multiple
+                              items={verificationItems}
+                              value={field.value}
+                              onChange={({ value }) => field.onChange(value)}
+                            />
+                          )}
+                        />
+                      )
+                    }
+                  ]
+                }
+              ]}
+            />
+            <SaveButton valid={formState.isValid} />
+          </form>
+        )}
       </div>
     </>
   )

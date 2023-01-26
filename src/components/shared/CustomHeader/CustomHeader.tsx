@@ -5,6 +5,7 @@ import cl from './CustomHeader.module.scss'
 import { ContextMenu } from '@consta/uikit/ContextMenu'
 import { IconComponent } from '@consta/uikit/Icon'
 import { useAppSelector } from '../../../hooks/reduxHooks'
+import { getShortName } from '../../../utils/nameHelper'
 
 export type IContextMenuItem = {
   label: string
@@ -42,13 +43,13 @@ const CustomHeader: FC<ICustomHeader> = ({ leftSide, rightSide, contextMenuItems
             {rightSide?.map((item) => (
               <item.component key={item.key} />
             ))}
-            <HeaderModule indent={'m'}>
+            <HeaderModule indent={'l'}>
               <HeaderLogin
                 ref={menuRef}
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className={cl.headerLogin}
                 isLogged={isLogged}
-                personName={`${user.lastname} ${user.firstname}`}
+                personName={getShortName(user.firstname, user.middlename, user.lastname)}
                 personInfo={user.username}
                 personStatus='available'
                 personAvatarUrl={userLogo}
