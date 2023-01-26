@@ -23,7 +23,7 @@ import { useTable } from '../../../hooks/tableHooks'
 import { ExamFilter, TablesEnum } from '../../../config/tablesReducerConfig'
 import { request } from '../../../api/axios/request'
 import { IExamRow } from '../../../ts/interfaces/IExams'
-import { getProctor, getStudentName } from '../../../utils/nameHelper'
+import { getProctor, getShortName, getStudentName } from '../../../utils/nameHelper'
 import TypeBadge from '../../shared/SharedTable/TypeBadge/TypeBadge'
 import StatusBadge, {
   customBadgePropStatus,
@@ -49,7 +49,12 @@ const Exams: FC = () => {
 
   const castToTableRow: (item: IExamRow) => IExamsTableModel = (item) => {
     const proctor = getProctor(item.async, item.inspector, item.expert),
-      studentName = getStudentName(item.student)
+      studentName = getStudentName(item.student),
+      studentShortName = getShortName(
+        item.student.firstname,
+        item.student.middlename,
+        item.student.lastname
+      )
 
     return {
       async: item.async,
@@ -78,8 +83,8 @@ const Exams: FC = () => {
           iconRight={IconVideo}
           onClick={() =>
             openTab({
-              id: `exam/${item._id}`,
-              title: item._id,
+              id: `exam/${item._id}${studentShortName}`,
+              title: studentShortName,
               path: `exam/${item._id}`,
               type: 'exam'
             })

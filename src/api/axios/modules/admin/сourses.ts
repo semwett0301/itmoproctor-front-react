@@ -18,6 +18,7 @@ export interface ICoursePost {
   courseCode: string
   organization: string
   sessionCode: string
+  name: string
   verifications: VerificationType[] | null
 }
 
@@ -26,6 +27,7 @@ export interface ICoursesAxios {
   getCourse: (courseId: string) => Promise<AxiosResponse<IGetCourse>>
   addCourse: (course: ICoursePost) => Promise<AxiosResponse<ICourseRow>>
   editCourse: (course: ICoursePost, courseId: string) => Promise<AxiosResponse<ICourseRow>>
+  deleteCourse: (courseId: string) => Promise<AxiosResponse<ICourseRow>>
   getCourseCodesByOrganizationId: (
     organizationId: string
   ) => Promise<AxiosResponse<{ rows: string[] }>>
@@ -55,6 +57,9 @@ export default function (instance: AxiosInstance): ICoursesAxios {
     },
     editCourse(course, courseId) {
       return instance.put(`${axiosConfig.baseUrl}course/${courseId}`, course)
+    },
+    deleteCourse(courseId) {
+      return instance.delete(`${axiosConfig.baseUrl}course/${courseId}`)
     },
     getCourseCodesByOrganizationId(id) {
       return instance.get(`${axiosConfig.adminUrl}/course/courseCodes`, {

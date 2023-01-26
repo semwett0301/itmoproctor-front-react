@@ -35,7 +35,7 @@ const AboutBlock: FC<IAboutBlockProp> = ({ exam }) => {
       <div className={cn.studentRow}>
         <UserRow user={exam.student} isStudent />
         <VerifyBtn
-          view={exam.verified ? 'normal' : 'disabled'}
+          view={exam.verified && exam.verifications?.length ? 'normal' : 'disabled'}
           onClick={
             exam.verified ? () => openModal(<ProtocolVerifiedModal exam={exam} />) : undefined
           }

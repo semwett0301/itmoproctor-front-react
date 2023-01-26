@@ -11,6 +11,7 @@ export interface IGetCourse {
   organization: string
   courseCode: string
   sessionCode: string
+  name?: string
   accessAllowed: string[]
   verifications: string[]
   updated: string

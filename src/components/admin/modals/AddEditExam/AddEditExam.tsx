@@ -171,16 +171,17 @@ const AddEditExam: FC<IAddEditExamProp> = ({ examId, onSubmit }) => {
 
   const { getOrganizations } = useOrganizations()
 
-  const { control, setValue, reset, handleSubmit, resetField, getValues } = useForm<IExamForm>({
-    mode: 'all',
-    resolver: yupResolver(examSchema),
-    defaultValues: {
-      examId: 'course-v1',
-      async: { id: 'true', label: 'Асинхронный' },
-      resolution: resolutions[2],
-      verifications: [fullVerificationItems[4]]
-    }
-  })
+  const { control, setValue, reset, handleSubmit, resetField, getValues, formState } =
+    useForm<IExamForm>({
+      mode: 'all',
+      resolver: yupResolver(examSchema),
+      defaultValues: {
+        examId: 'course-v1',
+        async: { id: 'true', label: 'Асинхронный' },
+        resolution: resolutions[2],
+        verifications: [fullVerificationItems[4]]
+      }
+    })
 
   const getCourseCodes = (organizationId: string): void => {
     request.courses.getCourseCodesByOrganizationId(organizationId).then((r) => {
@@ -225,9 +226,6 @@ const AddEditExam: FC<IAddEditExamProp> = ({ examId, onSubmit }) => {
   }
 
   useEffect(() => {
-    getProctors('')
-    getStudents('')
-
     setIsLoading(true)
     getOrganizations()
       .then((r) => r.filter((i) => i.code && i.code !== 'global' && i.code !== 'notStudent'))
@@ -747,9 +745,9 @@ const AddEditExam: FC<IAddEditExamProp> = ({ examId, onSubmit }) => {
                               items={studentsList}
                               value={field.value}
                               onChange={({ value }) => field.onChange(value)}
-                              onInputChange={(vale) => {
-                                console.log(vale)
-                                vale.value && getStudents(vale.value)
+                              onInputChange={({ value }) => {
+                                console.log(value)
+                                value && value.length >= 5 && getStudents(value)
                               }}
                               getItemLabel={(item) =>
                                 getFullName(
@@ -909,7 +907,7 @@ const AddEditExam: FC<IAddEditExamProp> = ({ examId, onSubmit }) => {
                 }
               ]}
             />
-            <SaveButton valid={true} />
+            <SaveButton valid={formState.isValid} />
           </form>
         )}
       </div>

@@ -17,13 +17,16 @@ import { ICourseRow } from '../../../ts/interfaces/ICourses'
 import { useTableRequest } from '../../../hooks/useTableRequest'
 import { useTable } from '../../../hooks/tableHooks'
 import { CoursesFilter, TablesEnum } from '../../../config/tablesReducerConfig'
-import { IconRevert } from '@consta/uikit/IconRevert'
-import { IconCopy } from '@consta/uikit/IconCopy'
 import { closeModal, openModal } from '../../shared/ModalView/ModalView'
 import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
 import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
 import { selectAll } from '../../../utils/selectAll'
 import AddEditCourse from '../modals/AddEditCourse/AddEditCourse'
+import { AxiosResponse } from 'axios'
+
+// DEFAULT FUNCTIONS
+const deleteSelected = async (selected: string[]): Promise<AxiosResponse[]> =>
+  Promise.all(selected.map((item) => request.courses.deleteCourse(item)))
 
 const Courses: FC = () => {
   const [organizationsIds, setOrganizationsIds] = useState<string[]>([])
@@ -52,7 +55,7 @@ const Courses: FC = () => {
     })
   }
 
-  const { isLoading, rows } = useTableRequest<ICoursesTableModel>(
+  const { isLoading, rows, update } = useTableRequest<ICoursesTableModel>(
     () =>
       request.courses
         .getListOfCourses({
@@ -69,7 +72,7 @@ const Courses: FC = () => {
               const row: ICoursesTableModel = {
                 id: item._id,
                 selected: false,
-                name: 'Название курса',
+                name: item.name ?? '',
                 courseCode: item.courseCode,
                 sessionCode: item.sessionCode,
                 organization: item.organization.shortName,
@@ -81,15 +84,8 @@ const Courses: FC = () => {
                       {
                         label: 'Изменить',
                         iconLeft: IconEdit,
-                        onClick: () => openModal(<AddEditCourse courseId={item._id} />)
-                      },
-                      {
-                        label: 'Сбросить',
-                        iconLeft: IconRevert
-                      },
-                      {
-                        label: 'Дублировать',
-                        iconLeft: IconCopy
+                        onClick: () =>
+                          openModal(<AddEditCourse courseId={item._id} onSubmit={update} />)
                       },
                       {
                         label: 'Удалить',
@@ -98,8 +94,11 @@ const Courses: FC = () => {
                           openModal(
                             <DeleteSubmit
                               onSubmit={() => {
-                                closeModal()
-                                console.log(row.id)
+                                request.courses
+                                  .deleteCourse(item._id)
+                                  .then(closeModal)
+                                  .then(update)
+                                  .catch(console.log)
                               }}
                               onCancel={() => closeModal()}
                             />
@@ -160,15 +159,13 @@ const Courses: FC = () => {
                       {
                         label: 'Добавить',
                         iconLeft: IconAdd,
-                        onClick: () => openModal(<AddEditCourse />)
-                      },
-                      {
-                        label: 'Изменить',
-                        iconLeft: IconEdit
+                        onClick: () => openModal(<AddEditCourse onSubmit={update} />)
                       },
                       {
                         label: 'Удалить',
-                        iconLeft: IconTrash
+                        iconLeft: IconTrash,
+                        disabled: !selectedRowsId.length,
+                        onClick: () => deleteSelected(selectedRowsId).then(() => update())
                       }
                     ]}
                   />

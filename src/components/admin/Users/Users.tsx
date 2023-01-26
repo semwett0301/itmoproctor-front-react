@@ -34,7 +34,7 @@ const Users: FC = () => {
 
   const [organizationsIds, setOrganizationsIds] = useState<string[]>([])
 
-  const { getOrganizations, getOrganization } = useOrganizations()
+  const { getOrganizations, getOrganization, loading } = useOrganizations()
 
   const { openTab } = useOpenTab()
 
@@ -54,17 +54,18 @@ const Users: FC = () => {
   // Users table request
   const { isLoading, rows } = useTableRequest(
     () =>
-      request.users
-        .getListOfUsers({
-          text: filter.searchQuery,
-          organization: organizationsFormat(filter.organizations),
-          role: roleFormat(filter.role),
-          provider: filter.provider?.provider || null,
-          page: pagination.currentPage + 1,
-          rows: pagination.displayedRows.id
-        })
+      getOrganizations()
+        .then(() =>
+          request.users.getListOfUsers({
+            text: filter.searchQuery,
+            organization: organizationsFormat(filter.organizations),
+            role: roleFormat(filter.role),
+            provider: filter.provider?.provider || null,
+            page: pagination.currentPage + 1,
+            rows: pagination.displayedRows.id
+          })
+        )
         .then((r): IUsersTableModel[] => {
-          getOrganizations()
           setOrganizationsIds(() => r.data.organizations || [])
           setTotal(r.data.total)
           if (r.data.rows.length > 0) {
@@ -105,7 +106,7 @@ const Users: FC = () => {
             })
           } else return []
         }),
-    [filter.searchQuery, filter.role, filter.provider, filter.organizations],
+    [filter.searchQuery, filter.role, filter.provider, filter.organizations, loading],
     [pagination.currentPage, pagination.displayedRows.id],
     dropPagination,
     selectedRowsId,
@@ -193,7 +194,7 @@ const Users: FC = () => {
 
       <Layout flex={1} className={cl.tableLayout}>
         <SharedTable<IUsersTableModel>
-          isLoading={isLoading}
+          isLoading={isLoading || loading}
           className={cl.table}
           rows={rows}
           columns={getUserColumns(openTab)}

@@ -87,9 +87,9 @@ const ExamProtocol: FC = () => {
         <>
           <div className={cn.examTitle}>
             <div>
-              <Text>{exam.name ? exam.name : exam.subject}</Text>
+              <Text>{exam.name ?? exam.subject}</Text>
               <Text view={'secondary'} size={'s'} lineHeight={'l'}>
-                {exam.course?.name ? exam.course.name : ''}
+                {exam.course?.name ?? ''}
               </Text>
             </div>
             <Button label={'Приступить к проверке'} size={'s'} />
