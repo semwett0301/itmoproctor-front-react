@@ -23,14 +23,16 @@ import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
 import { selectAll } from '../../../utils/selectAll'
 import AddEditCourse from '../modals/AddEditCourse/AddEditCourse'
 import { AxiosResponse } from 'axios'
+import { useAppSelector } from '../../../hooks/reduxHooks'
+import { RoleEnum } from '../../../config/authСonfig'
 
 // DEFAULT FUNCTIONS
 const deleteSelected = async (selected: string[]): Promise<AxiosResponse[]> =>
   Promise.all(selected.map((item) => request.courses.deleteCourse(item)))
 
 const Courses: FC = () => {
+  const user = useAppSelector((state) => state.user)
   const [organizationsIds, setOrganizationsIds] = useState<string[]>([])
-
   const {
     filter,
     pagination,
@@ -164,7 +166,10 @@ const Courses: FC = () => {
                       {
                         label: 'Удалить',
                         iconLeft: IconTrash,
-                        disabled: !selectedRowsId.length,
+                        disabled:
+                          user.role === RoleEnum.ADMIN && user.system
+                            ? !selectedRowsId.length
+                            : selectedRowsId.length !== 1,
                         onClick: () => deleteSelected(selectedRowsId).then(() => update())
                       }
                     ]}
