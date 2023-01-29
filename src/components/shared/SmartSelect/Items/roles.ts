@@ -1,21 +1,50 @@
 import { DefaultItem } from '@consta/uikit/__internal__/src/components/Combobox/helpers'
+import { RoleEnum } from '../../../../config/authСonfig'
 
-const roles: DefaultItem[] = [
+export interface IRoleSelectType extends DefaultItem {
+  roleId: number
+  expert: boolean | null
+}
+const roles: IRoleSelectType[] = [
+  {
+    id: 0,
+    label: 'Слушатель',
+    roleId: 1,
+    expert: null
+  },
   {
     id: 1,
-    label: 'Слушатель'
+    label: 'Проктор',
+    roleId: 2,
+    expert: false
   },
   {
     id: 2,
-    label: 'Проктор'
+    label: 'Проктор(эксперт)',
+    roleId: 2,
+    expert: true
   },
   {
     id: 3,
-    label: 'Администратор'
+    label: 'Администратор',
+    roleId: 3,
+    expert: null
   }
 ]
 
 export default roles
 
-export const getRoleItem = (id: string): DefaultItem =>
-  roles.find((item) => item.id === id) || roles[0]
+export const getRoleItem = (id: RoleEnum, expert: boolean | null): DefaultItem => {
+  switch (id) {
+    case RoleEnum.STUDENT:
+      return roles[0]
+    case RoleEnum.PROCTOR: {
+      if (expert) return roles[2]
+      else return roles[1]
+    }
+    case RoleEnum.ADMIN:
+      return roles[3]
+    default:
+      return roles[0]
+  }
+}

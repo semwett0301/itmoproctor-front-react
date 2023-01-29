@@ -21,13 +21,13 @@ import { RoleEnum } from '../../../../config/authСonfig'
 import { request } from '../../../../api/axios/request'
 import { useOrganizations } from '../../../../hooks/organizationsHooks'
 import { useAppSelector } from '../../../../hooks/reduxHooks'
-import { getUserStatusItem } from '../../../shared/SmartSelect/Items/userStatuses'
+import userStatuses, { getUserStatusItem } from '../../../shared/SmartSelect/Items/userStatuses'
 import dayjs from 'dayjs'
 import { getCitizenItem } from '../../../shared/SmartSelect/Items/citizenships'
 import { getDocumentTypeItem } from '../../../shared/SmartSelect/Items/documents'
 import { getGender } from '../../../shared/SmartSelect/Items/genders'
-import { getProviderItem } from '../../../shared/SmartSelect/Items/providers'
-import { getRoleItem } from '../../../shared/SmartSelect/Items/roles'
+import providers, { getProviderItem } from '../../../shared/SmartSelect/Items/providers'
+import roles, { getRoleItem, IRoleSelectType } from '../../../shared/SmartSelect/Items/roles'
 import { IUser } from '../../../../ts/interfaces/IUser'
 import { IProfilePost } from '../../../../api/axios/modules/profile'
 import { closeModal } from '../../../shared/ModalView/ModalView'
@@ -36,14 +36,13 @@ import { closeModal } from '../../../shared/ModalView/ModalView'
 interface IUserForm {
   active: DefaultItem
   address: string
-  birthday: Date
+  birthday: Date | null
   citizenship: DefaultItem | null
   description: string
   documentIssueDate: Date | null
   documentNumber: string
   documentType: DefaultItem | null
   email: string
-  expert: DefaultItem
   firstname: string
   gender: DefaultItem
   lastname: string
@@ -51,7 +50,7 @@ interface IUserForm {
   organization: IOrganization
   password: string
   provider: DefaultItem
-  role: DefaultItem
+  role: IRoleSelectType
   username: string
 }
 
@@ -92,10 +91,10 @@ const editUserSchema = object({
   lastname: string().nullable().required('Укажите фамилию'),
   firstname: string().nullable().required('Укажите имя'),
   gender: object().nullable().required('Укажите пол'),
-  birthday: date().nullable().required('Укажите дату рождения'),
   email: string().email('Неверный формат email').nullable().required('Укажите email'),
   organization: object().nullable().required('Укажите организацию'),
 
+  birthday: date().nullable(),
   password: string().nullable(),
   middlename: string().nullable(),
   address: string().nullable(),
@@ -126,10 +125,9 @@ const toRequestData = (form: IUserForm, previousUser: IUser | null): IProfilePos
     middlename: form.middlename,
     organization: form.organization._id,
     provider: form.provider.id.toString(),
-    role: form.role.id.toString(),
+    role: form.role.roleId.toString(),
     username: form.username,
-
-    expert: 'false',
+    expert: form.role.expert ? String(form.role.expert) : null,
     password: form.password
   }
 
@@ -138,8 +136,7 @@ const toRequestData = (form: IUserForm, previousUser: IUser | null): IProfilePos
         __v: previousUser.__v,
         _id: previousUser._id,
         attach: previousUser.attach,
-        created: previousUser.created,
-        expert: String(!!previousUser.expert)
+        created: previousUser.created
       })
     : userData
 }
@@ -155,7 +152,12 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
 
   const { control, formState, reset, handleSubmit } = useForm<IUserForm>({
     mode: 'all',
-    resolver: yupResolver(userId ? editUserSchema : addUserSchema)
+    resolver: yupResolver(userId ? editUserSchema : addUserSchema),
+    defaultValues: {
+      provider: providers[0],
+      role: roles[0],
+      active: userStatuses[0]
+    }
   })
 
   useEffect(() => {
@@ -163,7 +165,7 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
 
     getOrganizations()
       .then((r) => {
-        if (profile.role === RoleEnum.ADMIN && profile.organization) {
+        if (profile.role === RoleEnum.ADMIN && profile.organization.code !== 'global') {
           setOrganizationList(r.filter((i) => i.code === profile.organization.code))
         } else {
           setOrganizationList(
@@ -200,14 +202,13 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                 documentNumber: userProfile.documentNumber,
                 documentType: getDocumentTypeItem(userProfile.documentType),
                 email: userProfile.email,
-                expert: { id: String(userProfile.expert), label: 'Нет' },
                 firstname: userProfile.firstname,
                 gender: getGender(userProfile.gender),
                 lastname: userProfile.lastname,
                 middlename: userProfile.middlename,
                 organization: userProfile.organization,
                 provider: getProviderItem(userProfile.provider),
-                role: getRoleItem(userProfile.role.toString()),
+                role: getRoleItem(userProfile.role, userProfile.expert),
                 username: userProfile.username
               })
             })
@@ -467,6 +468,7 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                           render={({ field, fieldState }) => (
                             <SmartSelect
                               withLabel
+                              required
                               value={field.value}
                               onChange={({ value }) => field.onChange(value)}
                               itemsType={'genders'}

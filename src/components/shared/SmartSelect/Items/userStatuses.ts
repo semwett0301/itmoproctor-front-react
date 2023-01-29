@@ -1,8 +1,8 @@
 import { DefaultItem } from '@consta/uikit/Select'
 
 const userStatuses: DefaultItem[] = [
-  { id: 'false', label: 'Заблокирован' },
-  { id: 'true', label: 'Активен' }
+  { id: 'true', label: 'Активен' },
+  { id: 'false', label: 'Заблокирован' }
 ]
 
 export default userStatuses
