@@ -20,7 +20,7 @@ export interface IProfilePost {
   activityDate?: string
   address: string
   created?: string
-  expert?: string
+  expert: string | null
   system?: boolean
   gender: string
   organization: string | IOrganization

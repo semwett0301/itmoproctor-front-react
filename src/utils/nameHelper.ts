@@ -11,10 +11,10 @@ export const getStudentName = (student: IStudent): string => {
 }
 
 export const getShortName = (firstname: string, secondName: string, lastName?: string): string => {
-  let name = lastName + ' ' + firstname[0]
+  let name = lastName + ' ' + firstname[0] + '.'
 
   if (secondName) {
-    name += `. ${secondName[0]}.`
+    name += ` ${secondName[0]}.`
   }
   return name
 }

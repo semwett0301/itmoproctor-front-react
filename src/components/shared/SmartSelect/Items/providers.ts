@@ -2,7 +2,7 @@ import { DefaultItem } from '@consta/uikit/Select'
 
 const providers: DefaultItem[] = [
   {
-    label: 'Локальный',
+    label: 'ITMOproctor',
     id: 'local'
   },
   {

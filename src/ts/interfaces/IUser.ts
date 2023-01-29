@@ -17,7 +17,7 @@ export interface IUser {
   activityDate?: string
   address: string
   created: string
-  expert?: boolean
+  expert: boolean | null
   system?: boolean
   gender: string
   organization: IOrganization

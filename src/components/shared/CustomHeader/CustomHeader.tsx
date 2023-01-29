@@ -1,7 +1,6 @@
 import React, { FC, ReactElement, useRef, useState } from 'react'
 import { Header, HeaderLogin, HeaderModule } from '@consta/uikit/Header'
-import userLogo from '../../../mockData/logos/UserLogo.png'
-import cl from './CustomHeader.module.scss'
+import './CustomHeader.scss'
 import { ContextMenu } from '@consta/uikit/ContextMenu'
 import { IconComponent } from '@consta/uikit/Icon'
 import { useAppSelector } from '../../../hooks/reduxHooks'
@@ -31,7 +30,7 @@ const CustomHeader: FC<ICustomHeader> = ({ leftSide, rightSide, contextMenuItems
   const [isLogged] = useState<boolean>(true)
 
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
-  const menuRef = useRef(null)
+  const menuRef = useRef<HTMLButtonElement>(null)
   const user = useAppSelector((state) => state.user)
 
   return (
@@ -47,12 +46,10 @@ const CustomHeader: FC<ICustomHeader> = ({ leftSide, rightSide, contextMenuItems
               <HeaderLogin
                 ref={menuRef}
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className={cl.headerLogin}
+                className={'headerLogin'}
                 isLogged={isLogged}
                 personName={getShortName(user.firstname, user.middlename, user.lastname)}
                 personInfo={user.username}
-                personStatus='available'
-                personAvatarUrl={userLogo}
               />
             </HeaderModule>
           </>
@@ -63,7 +60,7 @@ const CustomHeader: FC<ICustomHeader> = ({ leftSide, rightSide, contextMenuItems
         items={contextMenuItems}
         isOpen={isMenuOpen}
         anchorRef={menuRef}
-        className={cl.headerContextMenu}
+        className={'headerContextMenu'}
         onClickOutside={() => setIsMenuOpen(false)}
         getItemGroupId={(item) => item.group}
         getItemLeftIcon={(item) => item.iconLeft}
