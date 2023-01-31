@@ -11,8 +11,6 @@ export function selectAll<T extends ITableRow>(
   setSelectedRowsId: (arr: string[]) => void,
   pagination: IPagination
 ): void {
-  console.log(rows.length)
-  console.log(columns[1].title)
   columns[1].title = rows.length ? (
     <Checkbox
       checked={

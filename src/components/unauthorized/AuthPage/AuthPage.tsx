@@ -34,7 +34,6 @@ const AuthPage: FC = () => {
   const { t } = useTranslation()
 
   const onFormSubmit: SubmitHandler<LogPassType> = (form) => {
-    console.log(form)
     request.auth
       .login({ username: form.login, password: form.password })
       .then(async (r) => {

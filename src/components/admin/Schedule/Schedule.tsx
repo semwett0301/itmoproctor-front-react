@@ -49,7 +49,6 @@ const Schedule: FC = () => {
         .then((r) => {
           setTotal(0)
           setTotal(r.data.total)
-          console.log(r.data.total)
           if (r.data.rows.length > 0) {
             return r.data.rows.map((item: IScheduleRow) => {
               return {

@@ -31,7 +31,6 @@ export const useLogin: (username: LogPass, password: LogPass) => () => void = (
   const location: Location = useLocation()
 
   return () => {
-    console.log(password, username)
     if (username !== null && password !== null) {
       request.auth.login({ username: username, password: password }).then(async (r) => {
         await dispatch(setUserActionCreator(r.data))

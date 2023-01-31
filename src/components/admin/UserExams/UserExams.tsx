@@ -48,7 +48,6 @@ import {examsColumn, IExamsTableModel } from '../Exams/examsTableModel'
 
 const UserExams: FC = () => {
   const { id } = useParams()
-  console.log(id)
   const { openTab } = useOpenTab()
 
   const [organizationsIds, setOrganizationsIds] = useState<string[]>([])
@@ -159,7 +158,6 @@ const UserExams: FC = () => {
           rows: pagination.displayedRows.id
         })
         .then((r) => {
-          console.log(r.data)
           setTotal(0)
           setOrganizationsIds(() => r.data.organizations || [])
           setTotal(r.data.total)
@@ -235,18 +233,15 @@ const UserExams: FC = () => {
                         label: 'Сбросить',
                         iconLeft: IconRevert,
                         disabled: !selectedRowsId.length,
-                        onClick: () => console.log(selectedRowsId)
                       },
                       {
                         label: 'Дублировать',
                         iconLeft: IconCopy,
                         disabled: selectedRowsId.length !== 1,
-                        onClick: () => console.log(selectedRowsId)
                       },
                       {
                         label: 'Скачать (csv)',
                         iconLeft: IconDocExport,
-                        onClick: () => console.log(selectedRowsId)
                       },
                       {
                         label: 'Импорт',
@@ -257,7 +252,6 @@ const UserExams: FC = () => {
                         label: 'Удалить',
                         iconLeft: IconTrash,
                         disabled: !selectedRowsId.length,
-                        onClick: () => console.log(selectedRowsId)
                       }
                     ]}
                   />

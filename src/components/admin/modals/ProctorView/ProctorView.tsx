@@ -23,7 +23,6 @@ const ProctorView: FC<IProctorViewProp> = ({ profileId }) => {
   useEffect(() => {
     request.exam.getProfile(profileId).then((r) => {
       const data = r.data
-      console.log(data)
       const ii: IRowViewItem[] = [
         {
           title: 'Логин',

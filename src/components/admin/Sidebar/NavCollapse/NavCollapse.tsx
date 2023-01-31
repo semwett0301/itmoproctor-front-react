@@ -15,7 +15,6 @@ const NavCollapse: FC<NavCollapseProps> = ({ isOpen, addTab }) => {
   const [collapseState, setCollapseState] = useState<boolean>(false)
   const navMaker = (item: ICollapseItem, key: string): JSX.Element => {
     if (!item.children) {
-      console.log(item.path)
       return (
         <div
           className={cl.link}

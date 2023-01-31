@@ -72,7 +72,6 @@ const Admin: FC = () => {
   useEffect(() => {
     const tabWatcher = async (): Promise<void> => {
       const pathParts: string[] = location.pathname.split('/')
-      console.log(pathParts.length)
       const path: string = pathParts[pathParts.length - 1]
 
       if (pathParts.includes('about')) {
@@ -104,7 +103,6 @@ const Admin: FC = () => {
         }
       } else if (pathParts.length === 4) {
         const pathWidthId = pathParts.slice(2, 4).join('/')
-        console.log(pathParts[2])
         let title = ''
         // pathParts[2] === 'exam' ? `Протокол – ${pathParts[3]}` : `Экзамены – ${pathParts[3]}`
 
@@ -139,7 +137,6 @@ const Admin: FC = () => {
   }, [location, tabItems])
 
   useEffect(() => {
-    console.log(location.pathname)
     if (location.pathname === '/admin' && !tabItems.length && !activeTab) {
       openTab({
         id: 'exams',

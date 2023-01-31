@@ -28,7 +28,6 @@ const ListenerView: FC<IListenerViewProp> = ({ profileId, openTab }) => {
     request.exam.getProfile(profileId).then((r) => {
       const data = r.data
       setUser(data)
-      console.log(data._id)
       const ii: IRowViewItem[] = [
         {
           title: 'Логин',

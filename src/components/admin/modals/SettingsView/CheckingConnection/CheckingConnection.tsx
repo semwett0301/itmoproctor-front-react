@@ -4,6 +4,7 @@ import React, { FC, useEffect, useRef, useState } from 'react'
 import { IconPlay } from '@consta/icons/IconPlay'
 import cl from './CheckingConnection.module.scss'
 import Draggable from 'react-draggable'
+import LocalPlayer from '../../../../shared/players/camera/LocalPlayer/LocalPlayer';
 
 const CheckingConnection: FC = () => {
   const videoRef = useRef<HTMLDivElement>(null)
@@ -30,9 +31,11 @@ const CheckingConnection: FC = () => {
             top: 0
           }}
         >
-          <div className={cl.extraFrame} />
+          <div className={cl.extraFrame}>
+            <LocalPlayer/>
+          </div>
         </Draggable>
-        <div className={cl.mainFrame} />
+        <div className={cl.mainFrame}/>
       </div>
       <div className={cl.downPanel}>
         <Button label={'Запустить'} iconLeft={IconPlay} view={'secondary'} size={'s'} />

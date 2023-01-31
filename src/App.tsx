@@ -27,7 +27,6 @@ export const App: FC = () => {
       await request.profile
         .getProfileBySession()
         .then((r) => {
-          console.log(r.data)
           dispatch(setUserActionCreator(r.data))
           dispatch(userLoadedActionCreator())
         })

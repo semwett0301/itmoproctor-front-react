@@ -63,7 +63,6 @@ export default function (instance: AxiosInstance): IExamsAxios {
       return instance.get(`${axiosConfig.adminUrl}/exams`, { params: filter })
     },
     getUserExams(filter) {
-      console.log(filter)
       return instance.get(`${axiosConfig.adminUrl}/exams`, { params: filter })
     },
     getProfile(profileId) {

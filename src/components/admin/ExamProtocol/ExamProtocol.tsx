@@ -7,7 +7,7 @@ import { classJoiner } from '../../../utils/styleClassesUtills'
 import { Card } from '@consta/uikit/Card'
 import { Button } from '@consta/uikit/Button'
 import { cnMixCard } from '@consta/uikit/MixCard'
-import VideoPlayer from '../../shared/VideoPlayer/VideoPlayer'
+import VideoPlayer from '../../shared/players/VideoPlayer/VideoPlayer'
 import videojs from 'video.js'
 import { useParams } from 'react-router-dom'
 import { request } from '../../../api/axios/request'
@@ -43,12 +43,6 @@ const ExamProtocol: FC = () => {
     p.on('dispose', () => {
       videojs.log('player will dispose')
     })
-
-    p.on('resize', () => {
-      console.log('resize')
-    })
-
-    console.log(p)
   }
 
   const source = {
@@ -62,8 +56,6 @@ const ExamProtocol: FC = () => {
       request.expert.exams
         .getExam(id)
         .then(({ data }) => {
-          console.log(id)
-          console.log(data)
           setExam(data)
         })
         .catch((e) => {

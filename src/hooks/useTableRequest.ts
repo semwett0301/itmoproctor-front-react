@@ -49,7 +49,6 @@ export function useTableRequest<ROWS extends { id: string }>(
 
   useEffect(() => {
     if (!isFirst) {
-      console.log(isFirst)
       dropPagination()
       setSelectedRowsId([])
     } else {
