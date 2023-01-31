@@ -5,10 +5,11 @@ import {classJoiner} from '../../../../utils/styleClassesUtills';
 
 type StandardPlayerProps = {
   wait: boolean,
+  muted: boolean,
   videoRef: MutableRefObject<HTMLVideoElement | null>
 }
 
-const StandardPlayer: FC<StandardPlayerProps> = ({wait, videoRef}) => {
+const StandardPlayer: FC<StandardPlayerProps> = ({wait, muted, videoRef}) => {
   return (
     <div className={cl.wrapper}>
       <video
@@ -16,6 +17,7 @@ const StandardPlayer: FC<StandardPlayerProps> = ({wait, videoRef}) => {
         className={classJoiner(cl.video, wait ? cl.disable_video : '')}
         autoPlay
         playsInline
+        muted={muted}
       />
       {
         wait ?
