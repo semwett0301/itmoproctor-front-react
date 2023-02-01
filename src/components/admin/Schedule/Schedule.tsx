@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, {FC, useEffect, useState} from 'react'
 import cl from './Schedule.module.scss'
 import { Layout } from '@consta/uikit/Layout'
 import DatePeriodPicker from '../../shared/Filter/DatePeriodPicker/DatePeriodPicker'
@@ -20,6 +20,12 @@ import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
 import { selectAll } from '../../../utils/selectAll'
 import { openModal } from '../../shared/ModalView/ModalView'
 import AddEditSchedule from '../modals/AddEditSchedule/AddEditSchedule'
+import {IContextMenuItem} from '../../shared/CustomHeader/CustomHeader';
+
+const defaultOptionalButtonsInFilter: IContextMenuItem[] = [
+  { label: 'Изменить', iconLeft: IconEdit },
+  { label: 'Удалить', iconLeft: IconTrash }
+]
 
 const Schedule: FC = () => {
   // filter
@@ -34,6 +40,16 @@ const Schedule: FC = () => {
     dropPagination,
     setTotal
   } = useTable<ScheduleFilter>(TablesEnum.SCHEDULE)
+
+  const [optionalButtonsInFilter, setChosenButtons] = useState<IContextMenuItem[]>(defaultOptionalButtonsInFilter)
+
+  useEffect(() => {
+    if (selectedRowsId.length == 0) {
+      setChosenButtons([])
+    } else {
+      setChosenButtons(defaultOptionalButtonsInFilter)
+    }
+  }, [selectedRowsId])
 
   // Exams table request
   const { isLoading, rows } = useTableRequest(
@@ -127,8 +143,7 @@ const Schedule: FC = () => {
                         iconLeft: IconAdd,
                         onClick: () => openModal(<AddEditSchedule />)
                       },
-                      { label: 'Изменить', iconLeft: IconEdit },
-                      { label: 'Удалить', iconLeft: IconTrash }
+                      ...optionalButtonsInFilter
                     ]}
                   />
                 )

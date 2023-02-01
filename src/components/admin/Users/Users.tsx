@@ -183,7 +183,7 @@ const Users: FC = () => {
                         onClick: () => openModal(<AddEditUser/>)
                       },
                       {
-                        label: 'Импоорт',
+                        label: 'Импорт',
                         iconLeft: IconUpload
                       },
                       {
