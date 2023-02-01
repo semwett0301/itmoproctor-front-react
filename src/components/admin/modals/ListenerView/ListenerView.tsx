@@ -11,6 +11,7 @@ import { Button } from '@consta/uikit/Button'
 import { closeModal } from '../../../shared/ModalView/ModalView'
 import { TabItem } from '../../Admin'
 import { IUser } from '../../../../ts/interfaces/IUser'
+import {openUserExams} from '../../../../utils/openUserExams';
 
 // TYPES
 interface IListenerViewProp {
@@ -110,16 +111,7 @@ const ListenerView: FC<IListenerViewProp> = ({ profileId, openTab }) => {
                 size={'s'}
                 onClick={() => {
                   if (openTab) {
-                    openTab({
-                      id: `userExams/${user?._id}`,
-                      title: `Экзамены-${getShortName(
-                        user.firstname,
-                        user.middlename,
-                        user?.lastname
-                      )}`,
-                      path: `userExams/${user?._id}`,
-                      type: 'tab'
-                    })
+                    openUserExams(openTab, user)
                   }
                   closeModal()
                 }}
