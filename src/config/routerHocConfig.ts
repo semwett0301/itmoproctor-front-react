@@ -11,12 +11,9 @@ import {rolesToRoutesConfig} from '../utils/userRoutes';
 // Генерирование хок-конфигов в соответствии с конкретным условием (RoleEnum, boolean, etc)
 const auth: IHocConfig<RoleEnum> = {
   id: 1,
-  value: [
-    {
-      id: 1,
-      hoc: AuthHoc
-    }
-  ],
+  value: {
+    hoc: AuthHoc
+  },
   data: [
     {
       id: 1,
@@ -43,12 +40,9 @@ const auth: IHocConfig<RoleEnum> = {
 
 const service: IHocConfig<RoleEnum> = {
   id: 2,
-  value: [
-    {
-      id: 1,
-      hoc: ServiceHoc
-    }
-  ],
+  value: {
+    hoc: ServiceHoc
+  },
   data: [
     {
       id: 1,
@@ -59,12 +53,9 @@ const service: IHocConfig<RoleEnum> = {
 
 const error: IHocConfig<RoleEnum> = {
   id: 3,
-  value: [
-    {
-      id: 1,
-      hoc: ErrorHoc
-    }
-  ],
+  value: {
+    hoc: ErrorHoc
+  },
   data: [
     {
       id: 1,
