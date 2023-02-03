@@ -15,6 +15,7 @@ import { request } from './api/axios/request'
 import { userLoadedActionCreator } from './store/reducers/userLoaded/userLoadedActionCreators'
 import ModalView from './components/shared/ModalView/ModalView'
 import dayjs from 'dayjs'
+import {userRoutes} from './utils/userRoutes';
 require('dayjs/locale/ru')
 dayjs.locale('ru')
 

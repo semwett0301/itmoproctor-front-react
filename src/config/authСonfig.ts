@@ -1,4 +1,9 @@
 import {IUserApp} from '../ts/interfaces/IUserApp';
+import {IRoute} from '../ts/interfaces/IRoute';
+import {sharedRoutes} from '../router/modules/sharedRoutes';
+import {unauthorizedRoutes} from '../router/modules/unauthorizedRoutes';
+import {studentRoutes} from '../router/modules/studentRoutes';
+import {adminRoutes} from '../router/modules/adminRoutes';
 
 export enum RoleEnum {
   ALL = 'ALL',
@@ -6,6 +11,11 @@ export enum RoleEnum {
   STUDENT = 'STUDENT',
   PROCTOR = 'PROCTOR',
   ADMIN = 'ADMIN'
+}
+
+export enum ProviderEnum {
+  LOCAL = 'local',
+  OPENEDU = 'openedu'
 }
 
 type RolesToBackendConfig = {
@@ -52,7 +62,4 @@ export const subRolesCallbackConfig: SubRolesCallbackConfig = {
   'EXPERT': user => user.expert ?? false
 }
 
-export enum ProviderEnum {
-  LOCAL = 'local',
-  OPENEDU = 'openedu'
-}
+
