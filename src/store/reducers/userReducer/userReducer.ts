@@ -1,10 +1,10 @@
-import { IUser } from '../../../ts/interfaces/IUser'
+import { IUserApp } from '../../../ts/interfaces/IUserApp'
 import { ProviderEnum, RoleEnum } from '../../../config/authСonfig'
 import { UserActionTypes } from './userActionTypes'
 import { IAction } from '../../../ts/interfaces/IAction'
 import { Reducer } from 'redux'
 
-const initialState: IUser = {
+const initialState: IUserApp = {
   active: false,
   address: '',
   attach: [],
@@ -33,8 +33,8 @@ const initialState: IUser = {
   _id: ''
 }
 
-export const userReducer: Reducer<IUser> = (
-  state: IUser = initialState,
+export const userReducer: Reducer<IUserApp> = (
+  state: IUserApp = initialState,
   action: IAction<UserActionTypes>
 ) => {
   switch (action.type) {

@@ -19,7 +19,7 @@ import { date, object, string } from 'yup'
 import EmptyLabel from '../../../shared/ModalView/EmptyLabel/EmptyLabel'
 import { request } from '../../../../api/axios/request'
 import { closeModal } from '../../../shared/ModalView/ModalView'
-import { IUser } from '../../../../ts/interfaces/IUser'
+import { IUserApp } from '../../../../ts/interfaces/IUserApp'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import { updateUserActionCreator } from '../../../../store/reducers/userReducer/userActionCreators'
@@ -49,7 +49,7 @@ const profileSchema = object({
 })
 
 // DEFAULT FUNCTIONS
-const toRequestData = (profile: IProfileForm, user: IUser): IUser => ({
+const toRequestData = (profile: IProfileForm, user: IUserApp): IUserApp => ({
   ...user,
   lastname: profile.lastname,
   firstname: profile.firstname,

@@ -1,5 +1,5 @@
 import { AxiosInstance, AxiosResponse } from 'axios'
-import { IUser } from '../../../ts/interfaces/IUser'
+import { IUserApp } from '../../../ts/interfaces/IUserApp'
 import axiosConfig from '../../../config/axiosСonfig'
 import { IOrganization } from '../../../ts/interfaces/IOrganizations'
 
@@ -32,18 +32,18 @@ export interface IProfilePost {
 }
 
 export interface IProfileAxios {
-  getProfileById: (userId: string) => Promise<AxiosResponse<IUser>>
-  getProfileBySession: () => Promise<AxiosResponse<IUser>>
-  updateProfile: (userId: string, data: IUser | IProfilePost) => Promise<AxiosResponse<IUser>>
-  addProfile: (data: IProfilePost) => Promise<AxiosResponse<IUser>>
+  getProfileById: (userId: string) => Promise<AxiosResponse<IUserApp>>
+  getProfileBySession: () => Promise<AxiosResponse<IUserApp>>
+  updateProfile: (userId: string, data: IUserApp | IProfilePost) => Promise<AxiosResponse<IUserApp>>
+  addProfile: (data: IProfilePost) => Promise<AxiosResponse<IUserApp>>
 }
 
 export default function (instance: AxiosInstance): IProfileAxios {
   return {
-    getProfileById(userId: string): Promise<AxiosResponse<IUser>> {
+    getProfileById(userId: string): Promise<AxiosResponse<IUserApp>> {
       return instance.get(`${axiosConfig.authUrl}/${userId}`)
     },
-    getProfileBySession(): Promise<AxiosResponse<IUser>> {
+    getProfileBySession(): Promise<AxiosResponse<IUserApp>> {
       return instance.get(`${axiosConfig.authUrl}`)
     },
     updateProfile(userId, data) {

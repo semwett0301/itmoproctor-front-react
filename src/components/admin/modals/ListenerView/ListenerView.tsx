@@ -10,7 +10,7 @@ import { getFullName, getShortName } from '../../../../utils/nameHelper'
 import { Button } from '@consta/uikit/Button'
 import { closeModal } from '../../../shared/ModalView/ModalView'
 import { TabItem } from '../../Admin'
-import { IUser } from '../../../../ts/interfaces/IUser'
+import { IUserApp } from '../../../../ts/interfaces/IUserApp'
 import {openUserExams} from '../../../../utils/openUserExams';
 
 // TYPES
@@ -23,7 +23,7 @@ const ListenerView: FC<IListenerViewProp> = ({ profileId, openTab }) => {
   const { t } = useTranslation('translation', { keyPrefix: 'shared' })
 
   const [items, setItems] = useState<IRowViewItem[]>([])
-  const [user, setUser] = useState<IUser>()
+  const [user, setUser] = useState<IUserApp>()
 
   useEffect(() => {
     request.exam.getProfile(profileId).then((r) => {

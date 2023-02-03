@@ -43,7 +43,7 @@ export const UniversityAdminCollapseItems: ICollapseItem[] = [
   { path: 'users', icon: IconTeam, title: 'Пользователи' },
   { path: 'schedule', icon: IconCalendar, title: 'Расписание' },
   { path: 'courses', icon: IconLayers, title: 'Курсы' },
-  { path: 'maintenance', icon: IconWrench, title: 'Тех. работы', condition: 'system' },
+  { path: 'organizations', icon: IconBag, title: 'Университеты' },
   {
     path: '',
     icon: IconLineAndBarChart,

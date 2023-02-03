@@ -17,7 +17,7 @@ const routeHelper: (
       hocs = hocs.slice(1, hocs.length)
       hocBackup.push(hocParameter)
       return (
-        <Route key={hocParameter.id} element={<hocParameter.hoc condition={condition} />}>
+        <Route key={hocParameter.id} element={<hocParameter.hoc condition={condition} route={route}/>}>
           {routeHelper(hocs, condition, route)}
         </Route>
       )

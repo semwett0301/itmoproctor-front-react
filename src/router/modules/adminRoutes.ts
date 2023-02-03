@@ -1,4 +1,4 @@
-import { IRoute } from '../../ts/interfaces/IRoute'
+import {IRoute} from '../../ts/interfaces/IRoute'
 import Admin from '../../components/admin/Admin'
 import Schedule from '../../components/admin/Schedule/Schedule'
 import Courses from '../../components/admin/Courses/Courses'
@@ -8,6 +8,8 @@ import UserExams from '../../components/admin/UserExams/UserExams'
 import ExamProtocol from '../../components/admin/ExamProtocol/ExamProtocol'
 import NotFound from '../../components/shared/errors/NotFound/NotFound'
 import Exams from '../../components/admin/Exams/Exams'
+import Maintenance from '../../components/admin/Maintenance/Maintenance';
+import {AdminSubRoles} from '../../config/authСonfig';
 
 export const adminRoutes: IRoute[] = [
   {
@@ -23,6 +25,7 @@ export const adminRoutes: IRoute[] = [
       { id: 4, path: 'courses', component: Courses },
       { id: 6, path: 'organizations', component: Organizations },
       { id: 7, path: 'about', component: NotFound },
+      { id: 8, path: 'maintenance', component: Maintenance, subRole: AdminSubRoles.SYSTEM },
       { id: 999, path: '*', component: NotFound }
     ]
   }
