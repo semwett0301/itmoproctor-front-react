@@ -15,7 +15,7 @@ import { request } from './api/axios/request'
 import { userLoadedActionCreator } from './store/reducers/userLoaded/userLoadedActionCreators'
 import ModalView from './components/shared/ModalView/ModalView'
 import dayjs from 'dayjs'
-import {userRoutes} from './utils/userRoutes';
+
 require('dayjs/locale/ru')
 dayjs.locale('ru')
 
@@ -39,7 +39,13 @@ export const App: FC = () => {
 
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route loader={checkAuth}>{routerHocConfig.map((elem) => createRouter(elem))}</Route>
+      // TODO убрать error элемент и дабавить в конфиг для каждого роута собственный, чтобы отлавливать ошибки
+      <Route
+        loader={checkAuth}
+        // errorElement={<NotFound />}
+      >
+        {routerHocConfig.map((elem) => createRouter(elem))}
+      </Route>
     )
   )
 

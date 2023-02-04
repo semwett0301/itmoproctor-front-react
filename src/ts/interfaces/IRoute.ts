@@ -1,12 +1,14 @@
-import {FC} from 'react'
-import {LoaderFunction} from 'react-router-dom'
-import {SubRole} from '../../config/authСonfig';
+import { FC } from 'react'
+import { LoaderFunction } from 'react-router-dom'
+import { SubRole } from '../../config/authСonfig'
 
 export interface IRoute {
+  title?: string | ((id: string) => Promise<string>)
+  type?: 'tab' | 'exam'
   id: number
-  path?: string
+  path: string
   component?: FC
   children?: IRoute[]
-  loader?: LoaderFunction,
+  loader?: LoaderFunction
   subRole?: SubRole
 }
