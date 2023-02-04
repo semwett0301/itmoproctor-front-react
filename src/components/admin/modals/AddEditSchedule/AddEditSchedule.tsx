@@ -6,12 +6,11 @@ import FilterConstructor from '../../../shared/Filter/FilterConstructor'
 import { TextField } from '@consta/uikit/TextField'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { Button } from '@consta/uikit/Button'
-import { date, number, object, string } from 'yup'
+import { date, number, object } from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { cnMixSpace } from '@consta/uikit/MixSpace'
 import cl from './AddEditSchedule.module.scss'
 import { classJoiner } from '../../../../utils/styleClassesUtills'
-import { AutoComplete } from '@consta/uikit/__internal__/src/components/AutoCompleteCanary/AutoCompleteCanary'
 import { IUsersRow } from '../../../../ts/interfaces/IUsers'
 import { getFullName } from '../../../../utils/nameHelper'
 import { request } from '../../../../api/axios/request'
@@ -20,6 +19,7 @@ import { SkeletonText } from '@consta/uikit/Skeleton'
 import { closeModal } from '../../../shared/ModalView/ModalView'
 import { ISchedulePost } from '../../../../api/axios/modules/admin/schedule'
 import dayjs from 'dayjs'
+import { Combobox } from '@consta/uikit/Combobox'
 
 // TYPES
 
@@ -27,7 +27,7 @@ interface IFormInput {
   beginDate: Date
   endDate: Date
   concurrent: string
-  inspector: string
+  inspector: IUsersRow
   maxExamsBeginnings: string
 }
 
@@ -38,7 +38,7 @@ interface IAddEditScheduleProp {
 
 // CONSTANTS
 const organizationSchema = object({
-  inspector: string().required('Необходимо указать проктора').nullable(),
+  inspector: object().required('Укажите проктора'),
   beginDate: date().nullable().required('Укажите дату начала'),
   endDate: date().nullable().required('Укажите дату окончания'),
   concurrent: number().required('Необходимо указать количество сессий').nullable(),
@@ -46,20 +46,34 @@ const organizationSchema = object({
 })
 
 // DEFAULT FUNCTIONS
-const toRequestData = (data: IFormInput, inspector: IUsersRow): ISchedulePost => ({
+const toRequestData = (data: IFormInput): ISchedulePost => ({
   beginDate: dayjs(data.beginDate).startOf('hour').toISOString(),
   endDate: dayjs(data.endDate).startOf('hour').toISOString(),
   concurrent: data.concurrent,
-  inspector: inspector._id,
+  inspector: data.inspector._id,
   maxExamsBeginnings: data.maxExamsBeginnings
 })
 
 const AddEditSchedule: FC<IAddEditScheduleProp> = ({ scheduleId, onSubmit }) => {
-  const [users, setUsers] = useState<IUsersRow[]>([])
-  const [currentInspector, setInspector] = useState<IUsersRow | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isProctorsLoading, setIsProctorsLoading] = useState<boolean>(false)
+  const [proctorsList, setProctorsList] = useState<IUsersRow[]>([])
 
-  const { control, handleSubmit, setError, formState, reset } = useForm<IFormInput>({
+  const getProctors = (query: string): void => {
+    setIsProctorsLoading(true)
+    request.users
+      .getListOfUsers({
+        role: '2,expert',
+        rows: 20,
+        text: query
+      })
+      .then(({ data }) => {
+        setIsProctorsLoading(false)
+        setProctorsList(data.rows)
+      })
+  }
+
+  const { control, handleSubmit, formState, reset } = useForm<IFormInput>({
     mode: 'onChange',
     resolver: yupResolver(organizationSchema)
   })
@@ -68,24 +82,17 @@ const AddEditSchedule: FC<IAddEditScheduleProp> = ({ scheduleId, onSubmit }) => 
     setIsLoading(true)
     request.users
       .getListOfUsers({ role: '2,expert' })
-      .then((r) => {
-        setUsers(r.data.rows)
-        return r.data.rows
-      })
-      .then((rows) => {
+      .then((users) => {
         if (scheduleId)
           return request.schedule.getSchedule(scheduleId).then((r) => {
-            const inspector = rows.find((item) => item._id === r.data.inspector)
+            console.log(r)
+            const inspector = users.data.rows.find((item) => item._id === r.data.inspector)
             if (inspector) {
-              setInspector(inspector)
               reset({
                 beginDate: new Date(r.data.beginDate),
                 endDate: new Date(r.data.endDate),
                 concurrent: r.data.concurrent,
-                inspector:
-                  getFullName(inspector.lastname, inspector.middlename, inspector.firstname) +
-                  ` (${inspector.username})`,
-                maxExamsBeginnings: r.data.maxExamsBeginnings
+                inspector: inspector
               })
             }
           })
@@ -96,22 +103,18 @@ const AddEditSchedule: FC<IAddEditScheduleProp> = ({ scheduleId, onSubmit }) => 
   }, [reset, scheduleId])
 
   const onFormSubmit: SubmitHandler<IFormInput> = (data) => {
-    console.log(data, scheduleId)
-
-    if (currentInspector) {
-      Promise.resolve(
-        scheduleId
-          ? request.schedule.editSchedule(toRequestData(data, currentInspector), scheduleId)
-          : request.schedule.addSchedule(toRequestData(data, currentInspector))
-      )
-        .then(() => {
-          if (onSubmit) {
-            onSubmit()
-          }
-          closeModal()
-        })
-        .catch((e) => console.log(e))
-    }
+    Promise.resolve(
+      scheduleId
+        ? request.schedule.editSchedule(toRequestData(data), scheduleId)
+        : request.schedule.addSchedule(toRequestData(data))
+    )
+      .then(() => {
+        if (onSubmit) {
+          onSubmit()
+        }
+        closeModal()
+      })
+      .catch((e) => console.log(e))
   }
 
   return (
@@ -138,38 +141,28 @@ const AddEditSchedule: FC<IAddEditScheduleProp> = ({ scheduleId, onSubmit }) => 
                         <Controller
                           name='inspector'
                           control={control}
-                          render={({ field, fieldState }) => (
-                            <AutoComplete
+                          render={({ field }) => (
+                            <Combobox
                               size={'s'}
-                              items={users}
-                              value={field.value}
-                              width={'full'}
                               label={'Проктор'}
-                              onChange={({ value }) => {
-                                const insp =
-                                  users.find(
-                                    (i) =>
-                                      getFullName(i.lastname, i.middlename, i.firstname) +
-                                        ` (${i.username})` ===
-                                      field.value
-                                  ) || null
-
-                                if (insp) {
-                                  setInspector(insp)
-                                } else {
-                                  setError('inspector', { message: 'Инспектор не найден' })
-                                }
-
-                                field.onChange(value)
+                              labelForNotFound={'Проктор не найден'}
+                              labelForEmptyItems={'Прокторов нет'}
+                              items={proctorsList}
+                              value={field.value}
+                              onChange={({ value }) => field.onChange(value)}
+                              onInputChange={({ value }) => {
+                                value && getProctors(value)
                               }}
-                              getItemLabel={({ firstname, middlename, lastname, username }) =>
-                                getFullName(lastname, middlename, firstname) + ` (${username})`
+                              getItemLabel={(item) =>
+                                getFullName(
+                                  item.lastname,
+                                  item.firstname,
+                                  item.middlename,
+                                  `(${item.username})`
+                                )
                               }
                               getItemKey={(item) => item._id}
-                              status={fieldState.error ? 'alert' : undefined}
-                              caption={
-                                !currentInspector ? 'Проктор не найден' : fieldState.error?.message
-                              }
+                              isLoading={isProctorsLoading}
                             />
                           )}
                         />

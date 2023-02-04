@@ -28,6 +28,8 @@ import { selectAll } from '../../../utils/selectAll'
 import AddEditUser from '../modals/AddEditUser/AddEditUser'
 import { openModal } from '../../shared/ModalView/ModalView'
 import { useOpenTab } from '../Admin'
+import SubmitModal from '../modals/SubmitModal/SubmitModal'
+import { Button } from '@consta/uikit/Button'
 
 const Users: FC = () => {
   const { t } = useTranslation('translation')
@@ -98,7 +100,22 @@ const Users: FC = () => {
                         iconLeft: IconEdit,
                         onClick: () => openModal(<AddEditUser userId={item._id} />)
                       },
-                      { label: 'Все экзамены', iconLeft: IconAllDone }
+                      {
+                        label: 'Все экзамены',
+                        iconLeft: IconAllDone,
+                        onClick: () =>
+                          openModal(
+                            <SubmitModal
+                              header={'Подтверждение'}
+                              text={'Подтвердите '}
+                              footer={
+                                <div>
+                                  <Button label={'Ghb'} />
+                                </div>
+                              }
+                            />
+                          )
+                      }
                     ]}
                   />
                 )

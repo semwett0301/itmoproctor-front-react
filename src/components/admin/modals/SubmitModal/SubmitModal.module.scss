@@ -1,0 +1,13 @@
+.wrapper{
+  display: grid;
+  max-width: 280px;
+}
+
+.header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: solid 1px var(--color-bg-border);
+  padding: 9px 16px;
+}

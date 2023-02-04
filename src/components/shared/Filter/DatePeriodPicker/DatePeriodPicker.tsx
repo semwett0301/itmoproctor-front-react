@@ -25,7 +25,7 @@ const DatePeriodPicker: FC<IDatePeriodPickerProp> = ({ value, onChange }) => {
       className={cl.datePickerField}
       size={'s'}
       type='date-range'
-      value={[firstDate?.toDate() || new Date(), secondDate?.toDate()]}
+      value={[firstDate?.toDate() || new Date(), secondDate?.toDate() || new Date()]}
       onChange={(props) => {
         onChange([
           dayjs(props.value && props.value[0]).startOf('D'),

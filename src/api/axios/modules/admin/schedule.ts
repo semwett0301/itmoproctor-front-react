@@ -27,6 +27,7 @@ export interface IScheduleAxios {
     schedule: ISchedulePost,
     scheduleId: string
   ) => Promise<AxiosResponse<ISchedulePostResponse>>
+  deleteSchedule: (scheduleId: string) => Promise<AxiosResponse<ISchedulePostResponse>>
 }
 
 export default function (instance: AxiosInstance): IScheduleAxios {
@@ -50,6 +51,9 @@ export default function (instance: AxiosInstance): IScheduleAxios {
     },
     editSchedule(schedule, scheduleId: string) {
       return instance.put(`${axiosConfig.baseUrl}schedule/${scheduleId}`, schedule)
+    },
+    deleteSchedule(scheduleId: string) {
+      return instance.delete(`${axiosConfig.baseUrl}schedule/${scheduleId}`)
     }
   }
 }
