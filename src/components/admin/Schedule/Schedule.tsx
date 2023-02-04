@@ -18,14 +18,23 @@ import { ScheduleFilter, TablesEnum } from '../../../config/tablesReducerConfig'
 import { useTableRequest } from '../../../hooks/useTableRequest'
 import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
 import { selectAll } from '../../../utils/selectAll'
-import { openModal } from '../../shared/ModalView/ModalView'
+import { closeModal, openModal } from '../../shared/ModalView/ModalView'
 import AddEditSchedule from '../modals/AddEditSchedule/AddEditSchedule'
+
+import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
+import { AxiosResponse } from 'axios'
+
+// DEFAULT FUNCTIONS
+const deleteSelected = async (selected: string[]): Promise<AxiosResponse[]> =>
+  Promise.all(selected.map((item) => request.schedule.deleteSchedule(item)))
+
 import {IContextMenuItem} from '../../shared/CustomHeader/CustomHeader';
 
 const defaultOptionalButtonsInFilter: IContextMenuItem[] = [
   { label: 'Изменить', iconLeft: IconEdit },
   { label: 'Удалить', iconLeft: IconTrash }
 ]
+
 
 const Schedule: FC = () => {
   // filter
@@ -52,7 +61,7 @@ const Schedule: FC = () => {
   }, [selectedRowsId])
 
   // Exams table request
-  const { isLoading, rows } = useTableRequest(
+  const { isLoading, rows, update } = useTableRequest(
     () =>
       request.schedule
         .getSchedules({
@@ -87,9 +96,26 @@ const Schedule: FC = () => {
                       {
                         label: 'Изменить',
                         iconLeft: IconEdit,
-                        onClick: () => openModal(<AddEditSchedule scheduleId={item._id} />)
+                        onClick: () =>
+                          openModal(<AddEditSchedule scheduleId={item._id} onSubmit={update} />)
                       },
-                      { label: 'Удалить', iconLeft: IconTrash }
+                      {
+                        label: 'Удалить',
+                        iconLeft: IconTrash,
+                        onClick: () =>
+                          openModal(
+                            <DeleteSubmit
+                              onSubmit={() => {
+                                request.schedule
+                                  .deleteSchedule(item._id)
+                                  .then(closeModal)
+                                  .then(update)
+                                  .catch(console.log)
+                              }}
+                              onCancel={() => closeModal()}
+                            />
+                          )
+                      }
                     ]}
                   />
                 )
@@ -141,7 +167,7 @@ const Schedule: FC = () => {
                       {
                         label: 'Добавить',
                         iconLeft: IconAdd,
-                        onClick: () => openModal(<AddEditSchedule />)
+                        onClick: () => openModal(<AddEditSchedule onSubmit={update} />)
                       },
                       ...optionalButtonsInFilter
                     ]}
