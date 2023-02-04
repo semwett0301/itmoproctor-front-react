@@ -51,7 +51,6 @@ const Courses: FC = () => {
     })
 
   const setOrganizations = (item: IOrganization[] | null): void => {
-    console.log(item)
     setFilter({
       organizations: item
     })

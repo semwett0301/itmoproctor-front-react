@@ -5,9 +5,9 @@ type MainRoutesConfig = {
 }
 
 export const mainRoutesConfig: MainRoutesConfig = {
-  '-1': '/',
-  0: '/login',
-  1: '/student',
-  2: '/proctor',
-  3: '/admin/exams'
+  'ALL': '/',
+  'UNAUTHORIZED': '/login',
+  'STUDENT': '/student',
+  'PROCTOR': '/proctor',
+  'ADMIN': '/admin/exams'
 }

@@ -1,50 +1,41 @@
-import { IHocConfig } from '../ts/interfaces/IHocConfig'
-import { IRoute } from '../ts/interfaces/IRoute'
-import { Route } from 'react-router-dom'
+import {IHocConfig} from '../ts/interfaces/IHocConfig'
+import {IRoute} from '../ts/interfaces/IRoute'
+import {Route} from 'react-router-dom'
 import React from 'react'
-import { HocParameter } from '../ts/types/HocParameter'
+import {HocParameter} from '../ts/types/HocParameter'
 
 const routeHelper: (
-  hocs: HocParameter[],
+  hoc: HocParameter,
   condition: any,
   route: IRoute
-) => JSX.Element | JSX.Element[] = (hocs, condition, route) => {
-  let hocBackup: HocParameter[] = []
+) => JSX.Element | JSX.Element[] = (hoc, condition, route) => {
 
   const hocHelper = (): JSX.Element => {
-    if (hocs.length !== 0) {
-      const hocParameter: HocParameter = hocs[0]
-      hocs = hocs.slice(1, hocs.length)
-      hocBackup.push(hocParameter)
+    if (!route.children) {
       return (
-        <Route key={hocParameter.id} element={<hocParameter.hoc condition={condition} />}>
-          {routeHelper(hocs, condition, route)}
-        </Route>
-      )
-    } else {
-      if (!route.children) {
-        return (
+        <Route element={<hoc.hoc condition={condition} route={route}/>}>
           <Route
             key={route.id}
             path={route?.path}
-            element={route.component ? <route.component /> : ''}
+            element={route.component ? <route.component/> : ''}
             loader={route?.loader}
           />
-        )
-      } else {
-        hocs = hocBackup
-        hocBackup = []
-        return (
+        </Route>
+      )
+    } else {
+      return (
+        <Route element={<hoc.hoc condition={condition} route={route}/>}>
           <Route
             key={route.id}
             path={route.path}
-            element={route.component ? <route.component /> : ''}
+            element={route.component ? <route.component/> : ''}
             loader={route?.loader}
           >
-            {route.children.map((elem) => routeHelper(hocs, condition, elem))}
+            {route.children.map((elem) => routeHelper(hoc, condition, elem))}
           </Route>
-        )
-      }
+        </Route>
+      )
+
     }
   }
 

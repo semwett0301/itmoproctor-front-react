@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, {FC, useEffect, useState} from 'react'
 import cl from './Schedule.module.scss'
 import { Layout } from '@consta/uikit/Layout'
 import DatePeriodPicker from '../../shared/Filter/DatePeriodPicker/DatePeriodPicker'
@@ -20,12 +20,21 @@ import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
 import { selectAll } from '../../../utils/selectAll'
 import { closeModal, openModal } from '../../shared/ModalView/ModalView'
 import AddEditSchedule from '../modals/AddEditSchedule/AddEditSchedule'
+
 import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
 import { AxiosResponse } from 'axios'
 
 // DEFAULT FUNCTIONS
 const deleteSelected = async (selected: string[]): Promise<AxiosResponse[]> =>
   Promise.all(selected.map((item) => request.schedule.deleteSchedule(item)))
+
+import {IContextMenuItem} from '../../shared/CustomHeader/CustomHeader';
+
+const defaultOptionalButtonsInFilter: IContextMenuItem[] = [
+  { label: 'Изменить', iconLeft: IconEdit },
+  { label: 'Удалить', iconLeft: IconTrash }
+]
+
 
 const Schedule: FC = () => {
   // filter
@@ -41,6 +50,16 @@ const Schedule: FC = () => {
     setTotal
   } = useTable<ScheduleFilter>(TablesEnum.SCHEDULE)
 
+  const [optionalButtonsInFilter, setChosenButtons] = useState<IContextMenuItem[]>(defaultOptionalButtonsInFilter)
+
+  useEffect(() => {
+    if (selectedRowsId.length == 0) {
+      setChosenButtons([])
+    } else {
+      setChosenButtons(defaultOptionalButtonsInFilter)
+    }
+  }, [selectedRowsId])
+
   // Exams table request
   const { isLoading, rows, update } = useTableRequest(
     () =>
@@ -55,7 +74,6 @@ const Schedule: FC = () => {
         .then((r) => {
           setTotal(0)
           setTotal(r.data.total)
-          console.log(r.data.total)
           if (r.data.rows.length > 0) {
             return r.data.rows.map((item: IScheduleRow) => {
               return {
@@ -151,8 +169,7 @@ const Schedule: FC = () => {
                         iconLeft: IconAdd,
                         onClick: () => openModal(<AddEditSchedule onSubmit={update} />)
                       },
-                      { label: 'Изменить', iconLeft: IconEdit },
-                      { label: 'Удалить', iconLeft: IconTrash }
+                      ...optionalButtonsInFilter
                     ]}
                   />
                 )

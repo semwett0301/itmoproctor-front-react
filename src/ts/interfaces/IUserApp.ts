@@ -1,7 +1,7 @@
 import { ProviderEnum, RoleEnum } from '../../config/authСonfig'
 import { IOrganization } from './IOrganizations'
 
-export interface IUser {
+interface IUser {
   birthday: string
   email: string
   firstname: string
@@ -22,8 +22,15 @@ export interface IUser {
   gender: string
   organization: IOrganization
   provider: ProviderEnum
-  role: RoleEnum
   _id: string
   __v?: number
   attach?: unknown[]
+}
+
+export interface IUserApp extends IUser {
+  role: RoleEnum
+}
+
+export interface IUserBackend extends IUser {
+  role: number
 }

@@ -3,9 +3,9 @@ import videojs, { VideoJsPlayer } from 'video.js'
 import 'video.js/dist/video-js.css'
 import './VideoPlayer.scss'
 import { backwardIcon, downloadIcon, forwardIcon } from './IconsHTML'
-import { openModal } from '../ModalView/ModalView'
-import DownloadSubmit from '../../admin/modals/DownloadSubmit/DownloadSubmit'
-import { IExam } from '../../../ts/interfaces/IExam'
+import { openModal } from '../../ModalView/ModalView'
+import DownloadSubmit from '../../../admin/modals/DownloadSubmit/DownloadSubmit'
+import { IExam } from '../../../../ts/interfaces/IExam'
 import { IconArrowRight } from '@consta/icons/IconArrowRight'
 import { IconArrowLeft } from '@consta/uikit/IconArrowLeft'
 
@@ -61,12 +61,6 @@ const VideoPlayer: FC<IVideoPlayerProp> = ({ source, onReady, exam }) => {
       const player = (playerRef.current = videojs(videoElement, initialOptions, () => {
         videojs.log('player is ready')
         // videojs.registerComponent()
-        player.on('playerresize', () => {
-          console.log('resize')
-        })
-        player.on('dispose', () => {
-          console.log('dispose')
-        })
         if (onReady) {
           onReady(player)
         }

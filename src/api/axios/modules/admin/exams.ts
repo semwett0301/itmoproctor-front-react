@@ -4,7 +4,7 @@ import { IExamRow } from '../../../../ts/interfaces/IExams'
 import { IResponseArray } from '../../../../ts/interfaces/IResponseInterfaces'
 import dayjs from 'dayjs'
 import { IExam } from '../../../../ts/interfaces/IExam'
-import { IUser } from '../../../../ts/interfaces/IUser'
+import { IUserApp } from '../../../../ts/interfaces/IUserApp'
 import { IVerify } from '../../../../ts/interfaces/IVerify'
 
 export interface filterInterface {
@@ -37,7 +37,7 @@ export interface IUserFilter {
 export interface IExamsAxios {
   getListOfExams: (filter?: filterInterface) => Promise<AxiosResponse<IResponseArray<IExamRow>>>
   getUserExams: (filter: IUserFilter) => Promise<AxiosResponse<IResponseArray<IExamRow>>>
-  getProfile: (proctorId: string) => Promise<AxiosResponse<IUser>>
+  getProfile: (proctorId: string) => Promise<AxiosResponse<IUserApp>>
   getExam: (examId: string) => Promise<AxiosResponse<IExam>>
   addExam: (data: unknown) => Promise<AxiosResponse<IExam>>
   editExam: (data: unknown, examId: string) => Promise<AxiosResponse<IExam>>
@@ -63,7 +63,6 @@ export default function (instance: AxiosInstance): IExamsAxios {
       return instance.get(`${axiosConfig.adminUrl}/exams`, { params: filter })
     },
     getUserExams(filter) {
-      console.log(filter)
       return instance.get(`${axiosConfig.adminUrl}/exams`, { params: filter })
     },
     getProfile(profileId) {

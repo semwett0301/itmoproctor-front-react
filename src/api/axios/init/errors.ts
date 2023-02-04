@@ -7,7 +7,6 @@ interface IErrors {
 
 const errors: IErrors = {
   401: () => {
-    console.log('A')
     store.dispatch(dropUserActionCreator())
   }
 }

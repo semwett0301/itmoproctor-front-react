@@ -102,7 +102,6 @@ const AddEditCourse: FC<IAddEditCourseProp> = ({ courseId, onSubmit }) => {
           setIsLoading(true)
           request.courses.getCourse(courseId).then((r) => {
             setIsLoading(false)
-            console.log(r.data)
             setOrganizationList((prevState) => [...prevState, getOrganization(r.data.organization)])
             reset({
               organization: organizations.find((item) => item._id === r.data.organization),

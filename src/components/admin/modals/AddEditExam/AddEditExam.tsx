@@ -119,7 +119,6 @@ const examSchema = object({
 // DEFAULT FUNCTIONS
 
 const toRequestData = (data: IExamForm, examId?: string): unknown => {
-  console.log(data.verifications)
   return {
     assignment: data.assignment,
     async: data.async.id,
@@ -185,16 +184,13 @@ const AddEditExam: FC<IAddEditExamProp> = ({ examId, onSubmit }) => {
 
   const getCourseCodes = (organizationId: string): void => {
     request.courses.getCourseCodesByOrganizationId(organizationId).then((r) => {
-      console.log(r.data.rows)
       setCourseCodes(r.data.rows)
     })
   }
 
   const getSessionCodes = (courseCode: string): void => {
     const organizationId = getValues('organization')._id
-    console.log(organizationId, courseCode)
     request.courses.getSessionCodes(organizationId, courseCode).then((r) => {
-      console.log(r.data.rows)
       setSessionCodes(r.data.rows)
     })
   }
@@ -210,7 +206,6 @@ const AddEditExam: FC<IAddEditExamProp> = ({ examId, onSubmit }) => {
   const getProctors = (query: string): void => {
     setIsProctorsLoading(true)
     const async = getValues('async')
-    console.log(async)
     if (async) {
       request.users
         .getListOfUsers({
@@ -246,7 +241,6 @@ const AddEditExam: FC<IAddEditExamProp> = ({ examId, onSubmit }) => {
       })
       .then(() => (examId ? request.exam.getExam(examId).then((r) => r.data) : null))
       .then((exam) => {
-        console.log(exam)
         if (exam) {
           reset({
             subject: exam.subject,
@@ -386,8 +380,6 @@ const AddEditExam: FC<IAddEditExamProp> = ({ examId, onSubmit }) => {
                               getItemLabel={(item) => item.shortName ?? item.fullName}
                               getItemKey={(item) => item._id}
                               onChange={({ value }) => {
-                                console.log('log')
-
                                 resetField('sessionCode')
                                 resetField('courseCode')
                                 setSessionCodes([])

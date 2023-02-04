@@ -288,35 +288,29 @@ const Exams: FC = () => {
                         label: 'Изменить',
                         iconLeft: IconEdit,
                         disabled: selectedRowsId.length !== 1,
-                        onClick: () => console.log(selectedRowsId)
                       },
                       {
                         label: 'Сбросить',
                         iconLeft: IconRevert,
                         disabled: !selectedRowsId.length,
-                        onClick: () => console.log(selectedRowsId)
                       },
                       {
                         label: 'Дублировать',
                         iconLeft: IconCopy,
                         disabled: selectedRowsId.length !== 1,
-                        onClick: () => console.log(selectedRowsId)
                       },
                       {
                         label: 'Скачать (csv)',
                         iconLeft: IconDocExport,
-                        onClick: () => console.log(selectedRowsId)
                       },
                       {
                         label: 'Импорт',
                         iconLeft: IconUpload,
-                        onClick: () => console.log(selectedRowsId)
                       },
                       {
                         label: 'Удалить',
                         iconLeft: IconTrash,
                         disabled: !selectedRowsId.length,
-                        onClick: () => console.log(selectedRowsId)
                       }
                     ]}
                   />

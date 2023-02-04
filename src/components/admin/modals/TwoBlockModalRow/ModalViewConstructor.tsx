@@ -11,7 +11,6 @@ interface IModalViewConstructorProps {
 }
 
 const ModalViewConstructor: FC<IModalViewConstructorProps> = ({ items }) => {
-  console.log(items)
   return (
     <table>
       <tbody>

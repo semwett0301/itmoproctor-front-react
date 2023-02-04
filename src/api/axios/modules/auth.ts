@@ -1,16 +1,16 @@
 import {AxiosInstance, AxiosResponse} from 'axios'
 import {ILogin} from '../../../ts/interfaces/ILogin'
-import {IUser} from '../../../ts/interfaces/IUser'
+import {IUserApp} from '../../../ts/interfaces/IUserApp'
 import axiosConfig from '../../../config/axiosСonfig'
 
 export interface IAuthAxios {
-  login: (data: ILogin) => Promise<AxiosResponse<IUser>>
+  login: (data: ILogin) => Promise<AxiosResponse<IUserApp>>
   logout: (userId: string) => Promise<AxiosResponse>
 }
 
 export default function (instance: AxiosInstance): IAuthAxios {
   return {
-    login(data): Promise<AxiosResponse<IUser>> {
+    login(data): Promise<AxiosResponse<IUserApp>> {
       return instance.post(axiosConfig.authUrl, data)
     },
     logout(userId): Promise<AxiosResponse> {

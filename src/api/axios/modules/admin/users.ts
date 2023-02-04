@@ -2,7 +2,7 @@ import { AxiosInstance, AxiosResponse } from 'axios'
 import axiosConfig from '../../../../config/axiosСonfig'
 import { IUsersRow } from '../../../../ts/interfaces/IUsers'
 import { IResponseArray } from '../../../../ts/interfaces/IResponseInterfaces'
-import { IUser } from '../../../../ts/interfaces/IUser'
+import { IUserApp } from '../../../../ts/interfaces/IUserApp'
 
 export interface IUserFilter {
   text?: string | null
@@ -15,7 +15,7 @@ export interface IUserFilter {
 
 export interface IUsersAxios {
   getListOfUsers: (filter?: IUserFilter) => Promise<AxiosResponse<IResponseArray<IUsersRow>>>
-  getUser: (userId: string) => Promise<AxiosResponse<IUser>>
+  getUser: (userId: string) => Promise<AxiosResponse<IUserApp>>
 }
 
 export default function (instance: AxiosInstance): IUsersAxios {

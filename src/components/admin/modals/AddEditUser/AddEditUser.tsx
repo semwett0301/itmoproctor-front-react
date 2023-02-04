@@ -28,7 +28,7 @@ import { getDocumentTypeItem } from '../../../shared/SmartSelect/Items/documents
 import { getGender } from '../../../shared/SmartSelect/Items/genders'
 import providers, { getProviderItem } from '../../../shared/SmartSelect/Items/providers'
 import roles, { getRoleItem, IRoleSelectType } from '../../../shared/SmartSelect/Items/roles'
-import { IUser } from '../../../../ts/interfaces/IUser'
+import { IUserApp } from '../../../../ts/interfaces/IUserApp'
 import { IProfilePost } from '../../../../api/axios/modules/profile'
 import { closeModal } from '../../../shared/ModalView/ModalView'
 
@@ -108,7 +108,7 @@ const editUserSchema = object({
 
 // DEFAULT FUNCTIONS
 
-const toRequestData = (form: IUserForm, previousUser: IUser | null): IProfilePost => {
+const toRequestData = (form: IUserForm, previousUser: IUserApp | null): IProfilePost => {
   const userData = {
     active: form.active.id.toString(),
     address: form.address,
@@ -145,7 +145,7 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const profile = useAppSelector((state) => state.user)
 
-  const [user, setUser] = useState<IUser | null>(null)
+  const [user, setUser] = useState<IUserApp | null>(null)
 
   const { getOrganizations } = useOrganizations()
   const [organizationList, setOrganizationList] = useState<IOrganization[]>([])

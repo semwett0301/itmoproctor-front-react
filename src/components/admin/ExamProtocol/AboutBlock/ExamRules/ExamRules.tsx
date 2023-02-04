@@ -15,9 +15,6 @@ interface IExamRulesProp {
 }
 
 const ExamRules: FC<IExamRulesProp> = ({ factors }) => {
-  useEffect(() => {
-    console.log(factors)
-  })
   return factors ? (
     <div className={cn.wrapper}>
       {(Object.keys(factorsConfig) as Array<IFactorsKeys>).map((key) => {

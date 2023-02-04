@@ -17,7 +17,7 @@ const DeleteSubmit: FC<IDeleteSubmitProp> = ({ onSubmit, onCancel }) => {
     <div className={cl.wrapper}>
       <ModalTitle title={'deleteSubmit'} />
       <Text size={'s'} className={cnMixSpace({ p: 's' })}>
-        Вы уверены, что хотите удалить этот экзамен?
+        Вы действительно хотите удалить выбранные записи?
       </Text>
       <div className={classJoiner(cnMixSpace({ pH: '2xl', pT: '3xs', pB: 'm' }), cl.buttonBlock)}>
         <Button label={'Удалить'} onClick={() => onSubmit()} size={'s'} />

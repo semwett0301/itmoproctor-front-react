@@ -19,7 +19,7 @@
     "dayjs": "^1.11.6",
     "i18next": "^21.9.2",
     "js-cookie": "^3.0.1",
-    "kurento-utils": "~6.9.0",
+    "kurento-utils": "~6.16.0",
     "npm": "^8.19.2",
     "postcss": "^8.4.16",
     "react": "^18.2.0",

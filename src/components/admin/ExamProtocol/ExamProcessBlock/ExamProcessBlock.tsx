@@ -93,13 +93,10 @@ const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
     }
 
     if (attachInputRef.current?.files?.length) {
-      console.log(attachInputRef.current?.files[0])
       const formData = new FormData()
       formData.append('attach', attachInputRef.current?.files[0])
-      request.expert.exams.addAttach(formData).then((r) => console.log(r.data))
+      request.expert.exams.addAttach(formData).catch(e => console.log(e))
     }
-
-    console.log(inputMessage)
   }
 
   return (
@@ -109,7 +106,6 @@ const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
     >
       <Layout flex={1} direction={'column'} className={cn.notesField}>
         {notes.map((note, i) => {
-          if (note.notes.length) console.log(note.notes)
           return (
             <div className={cn.dayMsg} key={i}>
               <Text size={'2xs'} view={'secondary'} style={{ width: '100%', textAlign: 'center' }}>
