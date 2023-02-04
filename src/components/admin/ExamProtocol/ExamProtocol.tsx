@@ -26,8 +26,6 @@ import axiosConfig from '../../../config/axiosСonfig'
 
 // DEFAULT FUNCTIONS
 
-// TODO: copy this components directory and add your content to make your page
-
 const ExamProtocol: FC = () => {
   const playerDivRef = useRef<HTMLDivElement>(null)
   const { id } = useParams<{ id: string }>()

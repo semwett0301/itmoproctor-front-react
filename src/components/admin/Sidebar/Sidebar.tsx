@@ -39,7 +39,7 @@ const Sidebar: FC<SideBarProps> = ({ addTab, expandState, setExpandState }) => {
       />
 
       <NavCollapse isOpen={expandState} addTab={addTab} />
-      <SidebarFooter />
+      <SidebarFooter addTab={addTab} />
     </Card>
   )
 }

@@ -13,12 +13,10 @@ import { IconExit } from '@consta/uikit/IconExit'
 import { useLogout } from '../../hooks/authHooks'
 import NavTabs from '../shared/NavTabs/NavTabs'
 import { classWatcher } from '../../utils/styleClassesUtills'
-import { getSidebarItems } from './Sidebar/NavCollapse/NavCollapseModel'
 import { openModal } from '../shared/ModalView/ModalView'
 import EditProfile from './modals/EditProfile/EditProfile'
 import SettingsView from './modals/SettingsView/SettingsView'
-import { request } from '../../api/axios/request'
-import { getShortName } from '../../utils/nameHelper'
+import { userRoutes } from '../../utils/userRoutes'
 
 export interface TabItem {
   id: number | string
@@ -70,74 +68,7 @@ const Admin: FC = () => {
   }
 
   useEffect(() => {
-    const tabWatcher = async (): Promise<void> => {
-      const pathParts: string[] = location.pathname.split('/')
-      const path: string = pathParts[pathParts.length - 1]
-
-      if (pathParts.includes('about')) {
-        const aboutItem: TabItem = {
-          id: 'about',
-          title: 'О системе',
-          path: 'about',
-          type: 'tab'
-        }
-      }
-
-      let currentItem: TabItem = {
-        id: 'notFound',
-        title: 'Экзамены',
-        path: 'notFound',
-        type: 'tab'
-      }
-
-      if (pathParts.length === 3) {
-        const title: string | undefined = getSidebarItems()
-          .concat({ path: 'about', icon: IconUser, title: 'О системе' })
-          .filter((e) => e.path === path)[0]?.title
-
-        currentItem = {
-          id: path,
-          title: title,
-          path: path,
-          type: title ? 'tab' : 'exam'
-        }
-      } else if (pathParts.length === 4) {
-        const pathWidthId = pathParts.slice(2, 4).join('/')
-        let title = ''
-        // pathParts[2] === 'exam' ? `Протокол – ${pathParts[3]}` : `Экзамены – ${pathParts[3]}`
-
-        if (pathParts[2] === 'exam') {
-          const { firstname, lastname, middlename } = await request.expert.exams
-            .getExam(pathParts[3])
-            .then((r) => r.data.student)
-
-          title = getShortName(firstname, middlename, lastname)
-        } else if (pathParts[2] === 'userExams') {
-          const { firstname, lastname, middlename } = await request.users
-            .getUser(pathParts[3])
-            .then((r) => r.data)
-          title = 'Экзамены – ' + getShortName(firstname, middlename, lastname)
-        }
-
-        currentItem = {
-          id: pathWidthId,
-          title: title,
-          path: pathWidthId,
-          type: title ? 'tab' : 'exam'
-        }
-      }
-
-      if (!tabItems.find((e) => e.id === currentItem.id)) {
-        setItems([...tabItems, currentItem])
-        setActiveTab(currentItem)
-      }
-    }
-
-    tabWatcher()
-  }, [location, tabItems])
-
-  useEffect(() => {
-    if (location.pathname === '/admin' && !tabItems.length && !activeTab) {
+    function openMainTab(): void {
       openTab({
         id: 'exams',
         title: 'Экзамены',
@@ -145,7 +76,54 @@ const Admin: FC = () => {
         type: 'tab'
       })
     }
-  })
+    if (location.pathname === '/admin' && !tabItems.length && !activeTab) {
+      openMainTab()
+    } else if (location.pathname !== '/admin' && location.pathname.includes('/admin')) {
+      const adminComponentsRoutes = userRoutes().find((route) => route.component === Admin)
+
+      if (adminComponentsRoutes) {
+        const path = location.pathname.replace(adminComponentsRoutes.path + '/', '')
+        const pathParts: string[] = path.split('/')
+
+        const currentRoute = adminComponentsRoutes.children?.find((item) => {
+          const itemPathParts = item.path.split('/')
+
+          return itemPathParts.length === pathParts.length && itemPathParts[0] === pathParts[0]
+        })
+
+        if (currentRoute) {
+          if (typeof currentRoute.title === 'string' || typeof currentRoute.title === 'undefined') {
+            openTab({
+              id: path,
+              title: currentRoute.title || 'Неизвестная вкладка',
+              path: path,
+              type: currentRoute.type ?? 'tab'
+            })
+          } else {
+            console.log()
+            currentRoute
+              .title(pathParts[pathParts.length - 1])
+              .then((title) =>
+                openTab({
+                  id: path,
+                  title: title,
+                  path: path,
+                  type: currentRoute.type ?? 'tab'
+                })
+              )
+              .catch(openMainTab)
+          }
+        }
+      } else {
+        openTab({
+          id: 'exams',
+          title: 'Экзамены',
+          path: 'exams',
+          type: 'tab'
+        })
+      }
+    }
+  }, [])
 
   return (
     <Layout className={cl.wrapper} direction={'column'}>

@@ -1,16 +1,30 @@
-import React, {FC} from 'react'
-import {NavLink} from 'react-router-dom'
-import {IconInfo} from '@consta/uikit/IconInfo'
-import {Card} from '@consta/uikit/Card'
+import React, { FC } from 'react'
+import { IconInfo } from '@consta/uikit/IconInfo'
+import { Card } from '@consta/uikit/Card'
 import cl from './SidebarFooter.module.scss'
-import {IconRing} from '@consta/uikit/IconRing'
-import {Button} from '@consta/uikit/Button'
+import { IconRing } from '@consta/uikit/IconRing'
+import { Button } from '@consta/uikit/Button'
+import { TabItem } from '../../Admin'
 
-const SidebarFooter: FC = () => {
+interface SideBarFooterProps {
+  addTab: (item: TabItem) => void
+}
+
+const SidebarFooter: FC<SideBarFooterProps> = ({ addTab }) => {
   return (
     <Card horizontalSpace='s' shadow={false} className={cl.sidebarFooter}>
-      <NavLink to={'/admin/about'} className={cl.link}>
-        <IconInfo size='xs' className={cl.iconInfo}/>
+      <div
+        className={cl.link}
+        onClick={() =>
+          addTab({
+            id: 'about',
+            title: 'О системе',
+            path: 'about',
+            type: 'tab'
+          })
+        }
+      >
+        <IconInfo size='xs' className={cl.iconInfo} />
         <span className={cl.info}>О системе</span>
         <Button
           onlyIcon={true}
@@ -19,7 +33,7 @@ const SidebarFooter: FC = () => {
           view={'clear'}
           className={cl.ringButton}
         />
-      </NavLink>
+      </div>
     </Card>
   )
 }
