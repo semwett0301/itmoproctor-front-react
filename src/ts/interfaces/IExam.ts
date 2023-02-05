@@ -88,11 +88,12 @@ export interface IExam {
   stopDate: string
   planDate: string
   verified: IVerified
-  resolution: boolean
+  resolution: boolean | null
   comment: string
   report: IReport
   info: string
   note: string
   resolutionDate: string
   factors?: IFactors
+  inCheck: boolean
 }

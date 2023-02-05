@@ -9,7 +9,34 @@
   height: 45px;
   display: inline-flex;
   flex-direction: row;
-  justify-content: space-between
+  justify-content: space-between;
+
+
+  .resultBtnWrap{
+    display: inline-flex;
+    gap: 12px;
+    .acceptBtn{
+      color: var(--color-typo-success);
+      border-color: var(--color-bg-success);
+
+
+      &.MixFocus{
+        outline: none;
+        box-shadow: none;
+        animation: none
+      }
+
+      .Animation--Custom{
+        // тут опиши правила анимации
+      }
+    }
+    .declineBtn{
+      color: var(--color-typo-alert);
+      border-color: var(--color-bg-alert);
+
+    }
+  }
+
 }
 
 .examBlock {
@@ -27,21 +54,14 @@
 
 .playerWrapper {
   width: 100%;
-  height: auto;
+  height: 60%;
   border: 1px solid teal;
 }
 
 .violationTimeline {
   height: 80px;
   margin: 10px 0;
-  text-align: center;
 
-  // violet glass-morphism
-  background: rgba(51, 21, 124, 0.5);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(7px);
-  -webkit-backdrop-filter: blur(5px);
-  border: 1px solid rgba(0, 0, 0, 0.3);
 }
 
 .violationBlock {

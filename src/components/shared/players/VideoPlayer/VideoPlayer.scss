@@ -4,9 +4,16 @@
   background: none;
 }
 
+.video-js {
+  height: 100%;
+  width: auto;
+}
+
 .video-js video {
   width: 100% !important;
+  position: relative !important;
 }
+
 .vjs-error .vjs-error-display::before {
   display: none;
 }

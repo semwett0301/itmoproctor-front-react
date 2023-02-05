@@ -34,7 +34,7 @@ const UserRow: FC<IUserRowProp> = ({ user, isStudent }) => {
         </Text>
       ) : (
         <Text view={'secondary'} size={'xs'}>
-          Не назначен
+          не назначен
         </Text>
       )}
     </div>

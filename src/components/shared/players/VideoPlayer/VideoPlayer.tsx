@@ -6,8 +6,6 @@ import { backwardIcon, downloadIcon, forwardIcon } from './IconsHTML'
 import { openModal } from '../../ModalView/ModalView'
 import DownloadSubmit from '../../../admin/modals/DownloadSubmit/DownloadSubmit'
 import { IExam } from '../../../../ts/interfaces/IExam'
-import { IconArrowRight } from '@consta/icons/IconArrowRight'
-import { IconArrowLeft } from '@consta/uikit/IconArrowLeft'
 
 // TYPES
 export interface SourceObject {
@@ -42,7 +40,7 @@ const VideoPlayer: FC<IVideoPlayerProp> = ({ source, onReady, exam }) => {
     autoplay: false,
     controls: true,
     responsive: true,
-    fluid: true,
+    fluid: false,
     isAudio: true,
     sources: [source]
   }
@@ -147,8 +145,8 @@ const VideoPlayer: FC<IVideoPlayerProp> = ({ source, onReady, exam }) => {
   }, [playerRef])
 
   return (
-    <div data-vjs-player=''>
-      <div ref={videoRef} />
+    <div data-vjs-player='' style={{ height: '100%' }}>
+      <div ref={videoRef} style={{ height: '100%' }} />
     </div>
   )
 }

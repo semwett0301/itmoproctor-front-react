@@ -1,7 +1,6 @@
 import React, { FC, Fragment } from 'react'
 import cn from './ViolationsBlock.module.scss'
 import { IReport } from '../../../../ts/interfaces/IExam'
-import { Loader } from '@consta/uikit/Loader'
 import { Text } from '@consta/uikit/Text'
 import { Layout } from '@consta/uikit/Layout'
 import { classJoiner } from '../../../../utils/styleClassesUtills'
@@ -25,7 +24,7 @@ const ViolationsBlock: FC<IViolationsBlockProp> = ({ report }) => {
       <Layout className={cn.layout}>
         <Layout flex={1} className={classJoiner(cnMixSpace({ pH: 's', pV: 'xs' }), cn.stats)}>
           {getViolationsStatsConfig(report.videos).map((item) => (
-            <Fragment key={item.title}>
+            <div className={cn.statsRow} key={item.title}>
               <div className={cn.row}>
                 <Text size={'xs'} view={'secondary'} className={cn.title}>
                   {item.title}
@@ -41,7 +40,7 @@ const ViolationsBlock: FC<IViolationsBlockProp> = ({ report }) => {
                 )}
               </div>
               <Text size={'xs'}>{item.value}</Text>
-            </Fragment>
+            </div>
           ))}
         </Layout>
         <Layout flex={1} className={classJoiner(cnMixSpace({ pH: 's', pV: 'xs' }), cn.details)}>
