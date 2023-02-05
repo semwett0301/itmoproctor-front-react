@@ -20,9 +20,12 @@ const NavTabs: FC<INavTabsProps> = ({ activeTab, tabItems, setActiveTab, closeTa
         fitMode={'scroll'}
         size={'m'}
         value={activeTab}
-        onChange={setActiveTab}
+        onChange={(value) => {
+          console.log(activeTab, value.value)
+          setActiveTab(value)
+        }}
         items={tabItems}
-        getItemLabel={(item) => item.title}
+        getItemLabel={(item) => item.path}
         renderItem={({ item, onChange, checked }) => (
           <TabWithCross item={item} onChange={onChange} checked={checked} onCrossClick={closeTab} />
         )}

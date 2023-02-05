@@ -14,7 +14,6 @@ import { TextField } from '@consta/uikit/TextField'
 import { IconSendMessage } from '@consta/uikit/IconSendMessage'
 import dayjs, { Dayjs } from 'dayjs'
 import Note from './Note/Note'
-import { useAppSelector } from '../../../../hooks/reduxHooks'
 import { socket } from '../../../../api/socket/socket'
 import { IExam } from '../../../../ts/interfaces/IExam'
 import NoteWithAuthor from './NoteWithAuthor/NoteWithAuthor'
@@ -54,7 +53,6 @@ const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
             break
           }
         }
-
         if (foundNode !== null) {
           filteredNotes[foundNode].notes.push(note)
         } else {
@@ -95,7 +93,7 @@ const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
     if (attachInputRef.current?.files?.length) {
       const formData = new FormData()
       formData.append('attach', attachInputRef.current?.files[0])
-      request.expert.exams.addAttach(formData).catch(e => console.log(e))
+      request.expert.exams.addAttach(formData).catch((e) => console.log(e))
     }
   }
 
@@ -133,7 +131,7 @@ const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
         <TextField
           size={'xs'}
           width={'full'}
-          placeholder={'Введите текст комментария'}
+          placeholder={'Введите текст заметки'}
           value={inputMessage}
           onChange={({ value }) => setInputMessage(value)}
           type={'textarea'}

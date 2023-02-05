@@ -168,7 +168,9 @@ const Admin: FC = () => {
             <NavTabs
               activeTab={activeTab}
               tabItems={tabItems}
-              setActiveTab={({ value }) => setActiveTab(value)}
+              setActiveTab={({ value }) => {
+                setActiveTab(value)
+              }}
               closeTab={closeTab}
             />
             <Outlet context={{ openTab }} />

@@ -5,10 +5,20 @@
   align-items: center;
   row-gap: 6px;
 
-  .studentRow{
+  .row{
     display: flex;
     justify-content: space-between;
   }
+}
+
+.stopCheckIcon{
+  color: var(--color-control-typo-secondary);
+  cursor: pointer;
+  z-index: 1;
+   &:hover{
+     color: var(--color-control-bg-primary-hover);
+
+   }
 }
 
 .spinner{

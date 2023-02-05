@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from 'react'
+import React, { FC, useEffect, useMemo, useRef, useState } from 'react'
 import cn from './ExamProtocol.module.scss'
 import { Text } from '@consta/uikit/Text'
 import { Layout } from '@consta/uikit/Layout'
@@ -19,6 +19,10 @@ import Player = videojs.Player
 import Loading from '../../shared/loading/Loading'
 import NotFound from '../../shared/errors/NotFound/NotFound'
 import axiosConfig from '../../../config/axiosСonfig'
+import { useAppSelector } from '../../../hooks/reduxHooks'
+import { Tag } from '@consta/uikit/Tag'
+import { Badge } from '@consta/uikit/Badge'
+import TimeLineHist from './TimeLineHist/TimeLineHist'
 
 // TYPES
 
@@ -30,7 +34,11 @@ const ExamProtocol: FC = () => {
   const playerDivRef = useRef<HTMLDivElement>(null)
   const { id } = useParams<{ id: string }>()
   const [exam, setExam] = useState<IExam>()
-  const [isExamLoading, setIsExamLoading] = useState<boolean>(false)
+  const [isExamLoading, setIsExamLoading] = useState<boolean>(true)
+
+  const user = useAppSelector((state) => state.user)
+
+  const [progressState, setProgressState] = useState<'ableToStart' | 'inProgress' | 'finish'>()
 
   const handlePlayerReady = (p: Player): void => {
     // You can handle player events here, for example:
@@ -54,6 +62,7 @@ const ExamProtocol: FC = () => {
       request.expert.exams
         .getExam(id)
         .then(({ data }) => {
+          console.log(data)
           setExam(data)
         })
         .catch((e) => {
@@ -62,6 +71,19 @@ const ExamProtocol: FC = () => {
         .finally(() => setIsExamLoading(false))
     }
   }, [id])
+
+  const checkStatus = useMemo<'ableToStart' | 'inProgress' | 'finish' | undefined>(() => {
+    if (exam) {
+      console.log(exam)
+      if (exam.stopDate && typeof exam.resolution !== 'boolean') {
+        if (!exam.expert || (exam.expert._id === user._id && !exam.inCheck)) {
+          return 'ableToStart'
+        } else if (exam.expert && exam.expert._id === user._id && exam.inCheck) {
+          return 'inProgress'
+        }
+      }
+    }
+  }, [exam, user._id])
 
   return (
     <Layout
@@ -82,7 +104,20 @@ const ExamProtocol: FC = () => {
                 {exam.course?.name ?? ''}
               </Text>
             </div>
-            <Button label={'Приступить к проверке'} size={'s'} />
+
+            {checkStatus === 'ableToStart' && <Button label={'Приступить к проверке'} size={'s'} />}
+
+            {checkStatus === 'inProgress' && (
+              <div className={cn.resultBtnWrap}>
+                <Button className={cn.acceptBtn} label={'Принять'} view={'secondary'} size={'s'} />
+                <Button
+                  className={cn.declineBtn}
+                  label={'Отклонить'}
+                  view={'secondary'}
+                  size={'s'}
+                />
+              </div>
+            )}
           </div>
           <Layout direction='row' flex={1} className={cn.examBlock}>
             {/* 1 column */}
@@ -97,7 +132,8 @@ const ExamProtocol: FC = () => {
                 verticalSpace={'xs'}
                 className={cn.violationTimeline}
               >
-                <Text>Тамлайн нарушений</Text>
+                {/* <Text>Тамлайн нарушений</Text> */}
+                <TimeLineHist report={exam.report} />
               </Card>
               <Text view={'secondary'} size={'s'}>
                 Нарушения
@@ -113,7 +149,7 @@ const ExamProtocol: FC = () => {
                   cn.violationBlock
                 )}
               >
-                <ViolationsBlock report={exam?.report} />
+                <ViolationsBlock report={exam.report} />
               </div>
             </Layout>
             <Layout className={cn.aboutExamBlock} direction={'column'}>
@@ -121,6 +157,7 @@ const ExamProtocol: FC = () => {
                 <Text view={'secondary'} size={'s'}>
                   Об экзамене
                 </Text>
+                {}
                 <AboutBlock exam={exam} />
               </Layout>
 
