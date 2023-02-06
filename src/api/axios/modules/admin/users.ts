@@ -16,6 +16,7 @@ export interface IUserFilter {
 export interface IUsersAxios {
   getListOfUsers: (filter?: IUserFilter) => Promise<AxiosResponse<IResponseArray<IUsersRow>>>
   getUser: (userId: string) => Promise<AxiosResponse<IUserApp>>
+  deleteUser: (userId: string) => Promise<AxiosResponse<IUsersRow>>
 }
 
 export default function (instance: AxiosInstance): IUsersAxios {
@@ -34,6 +35,9 @@ export default function (instance: AxiosInstance): IUsersAxios {
     },
     getUser(userId) {
       return instance.get(`${axiosConfig.baseUrl}user/${userId}`)
+    },
+    deleteUser(userId) {
+      return instance.delete(`${axiosConfig.baseUrl}user/${userId}`)
     }
   }
 }

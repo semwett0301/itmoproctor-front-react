@@ -33,6 +33,7 @@ const deleteSelected = async (selected: string[]): Promise<AxiosResponse[]> =>
 const Courses: FC = () => {
   const user = useAppSelector((state) => state.user)
   const [organizationsIds, setOrganizationsIds] = useState<string[]>([])
+
   const {
     filter,
     pagination,
@@ -169,7 +170,18 @@ const Courses: FC = () => {
                           user.role === RoleEnum.ADMIN && user.system
                             ? !selectedRowsId.length
                             : selectedRowsId.length !== 1,
-                        onClick: () => deleteSelected(selectedRowsId).then(() => update())
+                        onClick: () =>
+                          openModal(
+                            <DeleteSubmit
+                              onSubmit={() => {
+                                deleteSelected(selectedRowsId)
+                                  .then(closeModal)
+                                  .then(update)
+                                  .catch(console.log)
+                              }}
+                              onCancel={() => closeModal()}
+                            />
+                          )
                       }
                     ]}
                   />

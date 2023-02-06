@@ -1,50 +1,55 @@
-import React, {FC, useState} from 'react'
+import React, { FC, useState } from 'react'
 import cl from './Users.module.scss'
-import {Layout} from '@consta/uikit/Layout'
+import { Layout } from '@consta/uikit/Layout'
 import FilterConstructor from '../../shared/Filter/FilterConstructor'
 import SearchField from '../../shared/Filter/SearchField/SearchField'
 import FilterButton from '../../shared/Filter/FilterButton/FilterButton'
-import {IconAdd} from '@consta/uikit/IconAdd'
-import {IconUpload} from '@consta/uikit/IconUpload'
-import {IconTrash} from '@consta/uikit/IconTrash'
+import { IconAdd } from '@consta/uikit/IconAdd'
+import { IconUpload } from '@consta/uikit/IconUpload'
+import { IconTrash } from '@consta/uikit/IconTrash'
 import OrganizationCombobox from '../../shared/Filter/OrganizationCombobox/OrganizationCombobox'
 import ProviderCombobox from '../../shared/Filter/ProviderCombobox/ProviderCombobox'
 import RoleCombobox from '../../shared/Filter/RoleCombobox/RoleCombobox'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
-import {request} from '../../../api/axios/request'
-import {IUsersRow} from '../../../ts/interfaces/IUsers'
-import {useTranslation} from 'react-i18next'
-import {getUserColumns, IUsersTableModel, usersColumns} from './usersTableModel'
-import {useTable} from '../../../hooks/tableHooks'
-import {TablesEnum, UserFilter} from '../../../config/tablesReducerConfig'
-import {useOrganizations} from '../../../hooks/organizationsHooks'
-import {useTableRequest} from '../../../hooks/useTableRequest'
-import {IconEdit} from '@consta/uikit/IconEdit'
+import { request } from '../../../api/axios/request'
+import { IUsersRow } from '../../../ts/interfaces/IUsers'
+import { useTranslation } from 'react-i18next'
+import { getUserColumns, IUsersTableModel, usersColumns } from './usersTableModel'
+import { useTable } from '../../../hooks/tableHooks'
+import { TablesEnum, UserFilter } from '../../../config/tablesReducerConfig'
+import { useOrganizations } from '../../../hooks/organizationsHooks'
+import { useTableRequest } from '../../../hooks/useTableRequest'
+import { IconEdit } from '@consta/uikit/IconEdit'
 import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
-import {IconAllDone} from '@consta/uikit/IconAllDone'
+import { IconAllDone } from '@consta/uikit/IconAllDone'
 import SharedTable from '../../shared/SharedTable/SharedTable'
-import {organizationsFormat, roleFormat} from '../../../utils/requestFormatters'
-import {selectAll} from '../../../utils/selectAll'
+import { organizationsFormat, roleFormat } from '../../../utils/requestFormatters'
+import { selectAll } from '../../../utils/selectAll'
 import AddEditUser from '../modals/AddEditUser/AddEditUser'
 
 import SubmitModal from '../modals/SubmitModal/SubmitModal'
 import { Button } from '@consta/uikit/Button'
 
-import {closeModal, openModal} from '../../shared/ModalView/ModalView'
-import {useOpenTab} from '../Admin'
-import {useLocation, useNavigate} from 'react-router-dom';
-import {getShortName} from '../../../utils/nameHelper';
-import {openUserExams} from '../../../utils/openUserExams';
+import { closeModal, openModal } from '../../shared/ModalView/ModalView'
+import { useOpenTab } from '../Admin'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { getShortName } from '../../../utils/nameHelper'
+import { openUserExams } from '../../../utils/openUserExams'
+import { AxiosResponse } from 'axios'
+import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
+import { usePagination } from '../../../hooks/paginationHooks'
 
+const deleteSelected = async (selected: string[]): Promise<AxiosResponse[]> =>
+  Promise.all(selected.map((item) => request.users.deleteUser(item)))
 
 const Users: FC = () => {
-  const {t} = useTranslation('translation')
+  const { t } = useTranslation('translation')
 
   const [organizationsIds, setOrganizationsIds] = useState<string[]>([])
 
-  const {getOrganizations, getOrganization, loading} = useOrganizations()
+  const { getOrganizations, getOrganization, loading } = useOrganizations()
 
-  const {openTab} = useOpenTab()
+  const { openTab } = useOpenTab()
 
   // filter
   const {
@@ -60,7 +65,7 @@ const Users: FC = () => {
   } = useTable<UserFilter>(TablesEnum.USERS)
 
   // Users table request
-  const {isLoading, rows} = useTableRequest(
+  const { isLoading, rows, update } = useTableRequest(
     () =>
       getOrganizations()
         .then(() =>
@@ -104,10 +109,13 @@ const Users: FC = () => {
                       {
                         label: 'Изменить',
                         iconLeft: IconEdit,
-                        onClick: () => openModal(<AddEditUser userId={item._id}/>)
+                        onClick: () =>
+                          openModal(<AddEditUser userId={item._id} onSubmit={update} />)
                       },
                       {
-                        label: 'Все экзамены', iconLeft: IconAllDone, onClick: () => {
+                        label: 'Все экзамены',
+                        iconLeft: IconAllDone,
+                        onClick: () => {
                           openUserExams(openTab, item)
                         }
                       }
@@ -139,7 +147,7 @@ const Users: FC = () => {
                 component: (
                   <SearchField
                     placeholder={'Поиск пользователя'}
-                    onChange={({value}) => setFilter({...filter, searchQuery: value})}
+                    onChange={({ value }) => setFilter({ ...filter, searchQuery: value })}
                     value={filter.searchQuery}
                   />
                 ),
@@ -150,7 +158,7 @@ const Users: FC = () => {
                 component: (
                   <OrganizationCombobox
                     value={filter.organizations || []}
-                    onChange={({value}) => setFilter({organizations: value})}
+                    onChange={({ value }) => setFilter({ organizations: value })}
                     organizationsIds={organizationsIds}
                     isIdsLoading={isLoading}
                   />
@@ -162,7 +170,7 @@ const Users: FC = () => {
                 component: (
                   <ProviderCombobox
                     value={filter.provider}
-                    onChange={({value}) => setFilter({provider: value})}
+                    onChange={({ value }) => setFilter({ provider: value })}
                   />
                 ),
                 flex: 1
@@ -172,7 +180,7 @@ const Users: FC = () => {
                 component: (
                   <RoleCombobox
                     value={filter.role}
-                    onChange={({value}) => setFilter({role: value})}
+                    onChange={({ value }) => setFilter({ role: value })}
                   />
                 ),
                 flex: 1
@@ -185,15 +193,28 @@ const Users: FC = () => {
                       {
                         label: 'Добавить',
                         iconLeft: IconAdd,
-                        onClick: () => openModal(<AddEditUser/>)
+                        onClick: () => openModal(<AddEditUser onSubmit={update} />)
                       },
                       {
                         label: 'Импорт',
-                        iconLeft: IconUpload
+                        iconLeft: IconUpload,
+                        disabled: true
                       },
                       {
                         label: 'Удалить',
-                        iconLeft: IconTrash
+                        iconLeft: IconTrash,
+                        onClick: () =>
+                          openModal(
+                            <DeleteSubmit
+                              onSubmit={() => {
+                                deleteSelected(selectedRowsId)
+                                  .then(closeModal)
+                                  .then(update)
+                                  .catch(console.log)
+                              }}
+                              onCancel={() => closeModal()}
+                            />
+                          )
                       }
                     ]}
                   />

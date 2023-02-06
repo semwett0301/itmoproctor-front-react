@@ -10,7 +10,9 @@ import FilterConstructor from '../../../shared/Filter/FilterConstructor'
 import { TextField } from '@consta/uikit/TextField'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
+
 import { date, object, string } from 'yup'
+
 import { DefaultItem, Select } from '@consta/uikit/Select'
 import { IOrganization } from '../../../../ts/interfaces/IOrganizations'
 import SmartSelect from '../../../shared/SmartSelect/SmartSelect'

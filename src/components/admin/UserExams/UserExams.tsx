@@ -37,7 +37,7 @@ import { IconUpload } from '@consta/uikit/IconUpload'
 import ExamTypeSelect from '../../shared/Filter/ExamTypeSelect/ExamTypeSelect'
 import ExamStatusCombobox from '../../shared/Filter/ExamStatusCombobox/ExamStatusCombobox'
 import OrganizationCombobox from '../../shared/Filter/OrganizationCombobox/OrganizationCombobox'
-import {examsColumn, IExamsTableModel } from '../Exams/examsTableModel'
+import { examsColumn, IExamsTableModel } from '../Exams/examsTableModel'
 // TYPES
 
 // CONSTANTS
@@ -232,26 +232,28 @@ const UserExams: FC = () => {
                       {
                         label: 'Сбросить',
                         iconLeft: IconRevert,
-                        disabled: !selectedRowsId.length,
+                        disabled: !selectedRowsId.length
                       },
                       {
                         label: 'Дублировать',
                         iconLeft: IconCopy,
-                        disabled: selectedRowsId.length !== 1,
+                        disabled: selectedRowsId.length !== 1
                       },
                       {
                         label: 'Скачать (csv)',
                         iconLeft: IconDocExport,
+                        disabled: true
                       },
                       {
                         label: 'Импорт',
                         iconLeft: IconUpload,
-                        onClick: () => console.log(selectedRowsId)
+                        onClick: () => console.log(selectedRowsId),
+                        disabled: true
                       },
                       {
                         label: 'Удалить',
                         iconLeft: IconTrash,
-                        disabled: !selectedRowsId.length,
+                        disabled: !selectedRowsId.length
                       }
                     ]}
                   />

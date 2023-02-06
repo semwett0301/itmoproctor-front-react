@@ -18,21 +18,31 @@ export function useTableRequest<ROWS extends { id: string }>(
 
   const [isFirst, setIsFirst] = useState<boolean>(true)
 
-  const updateSelected = (): void =>
-    setRows((prevState) =>
-      prevState.map((item) =>
-        selectedRowsId.includes(item.id)
-          ? { ...item, selected: true }
-          : { ...item, selected: false }
-      )
-    )
+  const updateSelected = (deselectedRows: ROWS[]): ROWS[] => {
+    const newSelected: string[] = []
+
+    const newRows = deselectedRows.map((item) => {
+      if (selectedRowsId.includes(item.id)) {
+        return { ...item, selected: true }
+      }
+      return { ...item, selected: false }
+    })
+
+    for (const row of newRows) {
+      if (selectedRowsId.includes(row.id)) newSelected.push(row.id)
+    }
+
+    setSelectedRowsId(newSelected)
+
+    return newRows
+  }
 
   const update = async (): Promise<ROWS[]> => {
     setIsLoading(true)
     setRows(() => [])
     const r = await request()
-    setRows(r)
-    updateSelected()
+    const newRows = updateSelected(r)
+    setRows(newRows)
     setIsLoading(false)
     return r
   }
