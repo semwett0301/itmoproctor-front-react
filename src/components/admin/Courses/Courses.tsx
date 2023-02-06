@@ -25,6 +25,7 @@ import AddEditCourse from '../modals/AddEditCourse/AddEditCourse'
 import { AxiosResponse } from 'axios'
 import { useAppSelector } from '../../../hooks/reduxHooks'
 import { RoleEnum } from '../../../config/authСonfig'
+import {adminButtonChecker} from '../../../utils/adminButtonChecker';
 
 // DEFAULT FUNCTIONS
 const deleteSelected = async (selected: string[]): Promise<AxiosResponse[]> =>
@@ -57,6 +58,8 @@ const Courses: FC = () => {
     })
   }
 
+  const system = useAppSelector<boolean>(state => state.user.system ?? false)
+
   const { isLoading, rows, update } = useTableRequest<ICoursesTableModel>(
     () =>
       request.courses
@@ -82,7 +85,7 @@ const Courses: FC = () => {
                 updated: item.updated,
                 more: (
                   <MoreButton
-                    items={[
+                    items={adminButtonChecker([
                       {
                         label: 'Изменить',
                         iconLeft: IconEdit,
@@ -106,7 +109,7 @@ const Courses: FC = () => {
                             />
                           )
                       }
-                    ]}
+                    ], system, ['Удалить'])}
                   />
                 )
               }
@@ -157,7 +160,7 @@ const Courses: FC = () => {
                 key: 'btn',
                 component: (
                   <FilterButton
-                    MenuItems={[
+                    MenuItems={adminButtonChecker([
                       {
                         label: 'Добавить',
                         iconLeft: IconAdd,
@@ -183,7 +186,7 @@ const Courses: FC = () => {
                             />
                           )
                       }
-                    ]}
+                    ], system, ['Удалить'])}
                   />
                 )
               }

@@ -39,11 +39,15 @@ import { selectAll } from '../../../utils/selectAll'
 import { socket } from '../../../api/socket/socket'
 import AddEditExam from '../modals/AddEditExam/AddEditExam'
 import { examsColumn, IExamsTableModel } from './examsTableModel'
+import {useAppSelector} from '../../../hooks/reduxHooks';
+import {adminButtonChecker} from '../../../utils/adminButtonChecker';
 
 const Exams: FC = () => {
   const { openTab } = useOpenTab()
 
   const [organizationsIds, setOrganizationsIds] = useState<string[]>([])
+
+  const system = useAppSelector<boolean>(state => state.user.system ?? false)
 
   // const [sortSetting, setSortSetting] = useState<SortByProps<IExamsTableModel> | null>(null)
 
@@ -93,7 +97,7 @@ const Exams: FC = () => {
       ),
       more: (
         <MoreButton
-          items={[
+          items={adminButtonChecker([
             {
               label: 'Изменить',
               iconLeft: IconEdit,
@@ -120,7 +124,7 @@ const Exams: FC = () => {
                   />
                 )
             }
-          ]}
+          ], system, ['Удалить'])}
         />
       )
     }
@@ -238,7 +242,6 @@ const Exams: FC = () => {
           return e
         }
       })
-      console.log(currentRows)
       setRows(currentRows)
     })
 
@@ -278,7 +281,7 @@ const Exams: FC = () => {
                 key: 'btn',
                 component: (
                   <FilterButton
-                    MenuItems={[
+                    MenuItems={adminButtonChecker([
                       {
                         label: 'Добавить',
                         iconLeft: IconAdd,
@@ -314,7 +317,7 @@ const Exams: FC = () => {
                         iconLeft: IconTrash,
                         disabled: !selectedRowsId.length
                       }
-                    ]}
+                    ], system, ['Удалить'])}
                   />
                 )
               }

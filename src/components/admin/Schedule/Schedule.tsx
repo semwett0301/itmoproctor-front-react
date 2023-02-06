@@ -1,39 +1,35 @@
 import React, {FC, useEffect, useState} from 'react'
 import cl from './Schedule.module.scss'
-import { Layout } from '@consta/uikit/Layout'
+import {Layout} from '@consta/uikit/Layout'
 import DatePeriodPicker from '../../shared/Filter/DatePeriodPicker/DatePeriodPicker'
 import SearchField from '../../shared/Filter/SearchField/SearchField'
 import FilterButton from '../../shared/Filter/FilterButton/FilterButton'
-import { IconAdd } from '@consta/uikit/IconAdd'
-import { IconEdit } from '@consta/uikit/IconEdit'
-import { IconTrash } from '@consta/uikit/IconTrash'
+import {IconAdd} from '@consta/uikit/IconAdd'
+import {IconEdit} from '@consta/uikit/IconEdit'
+import {IconTrash} from '@consta/uikit/IconTrash'
 import FilterConstructor from '../../shared/Filter/FilterConstructor'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
 import SharedTable from '../../shared/SharedTable/SharedTable'
-import { IScheduleTableModel, scheduleColumns } from './scheduleTableModel'
-import { request } from '../../../api/axios/request'
-import { IScheduleRow } from '../../../ts/interfaces/IShedule'
-import { useTable } from '../../../hooks/tableHooks'
-import { ScheduleFilter, TablesEnum } from '../../../config/tablesReducerConfig'
-import { useTableRequest } from '../../../hooks/useTableRequest'
+import {IScheduleTableModel, scheduleColumns} from './scheduleTableModel'
+import {request} from '../../../api/axios/request'
+import {IScheduleRow} from '../../../ts/interfaces/IShedule'
+import {useTable} from '../../../hooks/tableHooks'
+import {ScheduleFilter, TablesEnum} from '../../../config/tablesReducerConfig'
+import {useTableRequest} from '../../../hooks/useTableRequest'
 import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
-import { selectAll } from '../../../utils/selectAll'
-import { closeModal, openModal } from '../../shared/ModalView/ModalView'
+import {selectAll} from '../../../utils/selectAll'
+import {closeModal, openModal} from '../../shared/ModalView/ModalView'
 import AddEditSchedule from '../modals/AddEditSchedule/AddEditSchedule'
 
 import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
-import { AxiosResponse } from 'axios'
+import {AxiosResponse} from 'axios'
 
 // DEFAULT FUNCTIONS
 const deleteSelected = async (selected: string[]): Promise<AxiosResponse[]> =>
   Promise.all(selected.map((item) => request.schedule.deleteSchedule(item)))
 
 import {IContextMenuItem} from '../../shared/CustomHeader/CustomHeader';
-
-const defaultOptionalButtonsInFilter: IContextMenuItem[] = [
-  { label: 'Изменить', iconLeft: IconEdit },
-  { label: 'Удалить', iconLeft: IconTrash }
-]
+import {adminButtonChecker} from '../../../utils/adminButtonChecker';
 
 
 const Schedule: FC = () => {
@@ -50,18 +46,8 @@ const Schedule: FC = () => {
     setTotal
   } = useTable<ScheduleFilter>(TablesEnum.SCHEDULE)
 
-  const [optionalButtonsInFilter, setChosenButtons] = useState<IContextMenuItem[]>(defaultOptionalButtonsInFilter)
-
-  useEffect(() => {
-    if (selectedRowsId.length == 0) {
-      setChosenButtons([])
-    } else {
-      setChosenButtons(defaultOptionalButtonsInFilter)
-    }
-  }, [selectedRowsId])
-
   // Exams table request
-  const { isLoading, rows, update } = useTableRequest(
+  const {isLoading, rows, update} = useTableRequest(
     () =>
       request.schedule
         .getSchedules({
@@ -97,7 +83,7 @@ const Schedule: FC = () => {
                         label: 'Изменить',
                         iconLeft: IconEdit,
                         onClick: () =>
-                          openModal(<AddEditSchedule scheduleId={item._id} onSubmit={update} />)
+                          openModal(<AddEditSchedule scheduleId={item._id} onSubmit={update}/>)
                       },
                       {
                         label: 'Удалить',
@@ -144,7 +130,7 @@ const Schedule: FC = () => {
                 component: (
                   <DatePeriodPicker
                     value={filter.date}
-                    onChange={(value) => setFilter({ ...filter, date: value })}
+                    onChange={(value) => setFilter({...filter, date: value})}
                   />
                 )
               },
@@ -153,7 +139,7 @@ const Schedule: FC = () => {
                 component: (
                   <SearchField
                     placeholder={'Поиск проктора'}
-                    onChange={({ value }) => setFilter({ ...filter, searchQuery: value })}
+                    onChange={({value}) => setFilter({...filter, searchQuery: value})}
                     value={filter.searchQuery}
                   />
                 ),
@@ -163,14 +149,24 @@ const Schedule: FC = () => {
                 key: 'btn',
                 component: (
                   <FilterButton
-                    MenuItems={[
+                    MenuItems={adminButtonChecker([
                       {
                         label: 'Добавить',
                         iconLeft: IconAdd,
-                        onClick: () => openModal(<AddEditSchedule onSubmit={update} />)
+                        onClick: () => openModal(<AddEditSchedule onSubmit={update}/>)
                       },
-                      ...optionalButtonsInFilter
-                    ]}
+                      {label: 'Изменить', iconLeft: IconEdit},
+                      {
+                        label: 'Удалить', iconLeft: IconTrash, onClick: () => {
+                          rows.filter(row => selectedRowsId.includes(row.id)).forEach(row => {
+                            request.schedule
+                              .deleteSchedule(row.id)
+                              .then(update)
+                              .catch(console.log)
+                          })
+                        }
+                      }
+                    ], selectedRowsId.length !== 0, ['Изменить', 'Удалить'])}
                   />
                 )
               }
