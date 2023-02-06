@@ -13,7 +13,7 @@ import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
 
 import { date, object, string } from 'yup'
 
-import { DefaultItem, Select } from '@consta/uikit/Select'
+import { DefaultItem } from '@consta/uikit/Select'
 import { IOrganization } from '../../../../ts/interfaces/IOrganizations'
 import SmartSelect from '../../../shared/SmartSelect/SmartSelect'
 import { IconCalendar } from '@consta/uikit/IconCalendar'
@@ -33,6 +33,7 @@ import roles, { getRoleItem, IRoleSelectType } from '../../../shared/SmartSelect
 import { IUserApp } from '../../../../ts/interfaces/IUserApp'
 import { IProfilePost } from '../../../../api/axios/modules/profile'
 import { closeModal } from '../../../shared/ModalView/ModalView'
+import { Combobox } from '@consta/uikit/Combobox'
 
 // TYPES
 interface IUserForm {
@@ -149,10 +150,10 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
 
   const [user, setUser] = useState<IUserApp | null>(null)
 
-  const { getOrganizations } = useOrganizations()
+  const { getOrganizations, getOrganization } = useOrganizations()
   const [organizationList, setOrganizationList] = useState<IOrganization[]>([])
 
-  const { control, formState, reset, handleSubmit } = useForm<IUserForm>({
+  const { control, formState, reset, handleSubmit, setValue } = useForm<IUserForm>({
     mode: 'all',
     resolver: yupResolver(userId ? editUserSchema : addUserSchema),
     defaultValues: {
@@ -168,7 +169,10 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
     getOrganizations()
       .then((r) => {
         if (profile.role === RoleEnum.ADMIN && profile.organization.code !== 'global') {
-          setOrganizationList(r.filter((i) => i.code === profile.organization.code))
+          setOrganizationList(r.filter((i) => i._id === profile.organization._id))
+          if (!userId) {
+            setValue('organization', getOrganization(profile.organization._id))
+          }
         } else {
           setOrganizationList(
             r
@@ -189,8 +193,6 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
             .then((r) => r.data)
             .then((userProfile) => {
               setUser(userProfile)
-              console.log(userProfile)
-              setOrganizationList((prevState) => [...prevState, userProfile.organization])
 
               reset({
                 active: getUserStatusItem(String(userProfile.active)),
@@ -544,17 +546,18 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                           name={'organization'}
                           control={control}
                           render={({ field, fieldState }) => (
-                            <Select
-                              id={field.name}
-                              name={field.name}
-                              required
-                              label={'Университет'}
+                            <Combobox
                               size='s'
+                              required
+                              label='Правообладатель'
+                              placeholder='Правообладатель'
                               items={organizationList}
                               value={field.value}
+                              getItemLabel={(item) => item.shortName ?? item.fullName}
                               getItemKey={(item) => item._id}
-                              getItemLabel={(item) => item.shortName || item.fullName || item._id}
-                              onChange={({ value }) => field.onChange(value)}
+                              onChange={({ value }) => {
+                                field.onChange(value)
+                              }}
                               status={fieldState.error ? 'alert' : undefined}
                               caption={fieldState.error?.message}
                             />

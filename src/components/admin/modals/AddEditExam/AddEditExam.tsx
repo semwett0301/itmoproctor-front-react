@@ -154,7 +154,9 @@ interface IAddEditExamProp {
 
 const AddEditExam: FC<IAddEditExamProp> = ({ examId, onSubmit }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
+
   const [organizationsList, setOrganizationsList] = useState<IOrganization[]>([])
+
   const [courseCodes, setCourseCodes] = useState<string[]>([])
   const [sessionCodes, setSessionCodes] = useState<ISessionCode[]>([])
 
