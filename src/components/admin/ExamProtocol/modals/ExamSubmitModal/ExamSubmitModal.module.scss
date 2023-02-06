@@ -1,0 +1,21 @@
+.wrapper{
+  width: 508px;
+
+  .content{
+    padding: 16px;
+    display: grid;
+    row-gap: 16px;
+
+    .fields{
+      display: grid;
+      row-gap: 8px;
+    }
+
+    .acceptBtn {
+      background-color: #22C38E;
+      border-color: #22C38E;
+      width: min-content;
+      margin-left: auto;
+    }
+  }
+}

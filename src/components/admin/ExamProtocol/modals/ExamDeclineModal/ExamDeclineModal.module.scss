@@ -1,0 +1,26 @@
+.wrapper{
+  width: 508px;
+
+  .content{
+    padding: 16px;
+    display: grid;
+    row-gap: 16px;
+
+    .reasons{
+      display: grid;
+      row-gap: 8px;
+    }
+
+    .fields{
+      display: grid;
+      row-gap: 8px;
+    }
+
+    .decline {
+      background-color: #EB3333;
+      border-color: #EB3333;
+      width: min-content;
+      margin-left: auto;
+    }
+  }
+}

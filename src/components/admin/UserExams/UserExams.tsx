@@ -54,7 +54,7 @@ const UserExams: FC = () => {
 
   // const [sortSetting, setSortSetting] = useState<SortByProps<IExamsTableModel> | null>(null)
 
-  const castToTableRow: (item: IExamRow) => IExamsTableModel = (item) => {
+  const castToTableRow: (item: IExamRow, update: () => void) => IExamsTableModel = (item) => {
     const proctor = getProctor(item.async, item.inspector, item.expert),
       studentName = getStudentName(item.student)
 
@@ -141,7 +141,7 @@ const UserExams: FC = () => {
   } = useTable<ExamFilter>(TablesEnum.EXAMS)
 
   // Exams table request
-  const { isLoading, rows } = useTableRequest<IExamsTableModel>(
+  const { isLoading, rows, update } = useTableRequest<IExamsTableModel>(
     () =>
       request.exam
         .getUserExams({
@@ -165,7 +165,7 @@ const UserExams: FC = () => {
           let obj: IExamsTableModel[] = []
           if (r.data.rows.length > 0) {
             obj = r.data.rows.map((item: IExamRow) => {
-              return castToTableRow(item)
+              return castToTableRow(item, update)
             })
             return obj
           } else return []

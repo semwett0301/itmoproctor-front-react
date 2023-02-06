@@ -15,14 +15,15 @@ import { IExam } from '../../../ts/interfaces/IExam'
 import AboutBlock from './AboutBlock/AboutBlock'
 import ViolationsBlock from './ViolationsBlock/ViolationsBlock'
 import ExamProcessBlock from './ExamProcessBlock/ExamProcessBlock'
-import Player = videojs.Player
 import Loading from '../../shared/loading/Loading'
 import NotFound from '../../shared/errors/NotFound/NotFound'
 import axiosConfig from '../../../config/axiosСonfig'
 import { useAppSelector } from '../../../hooks/reduxHooks'
-import { Tag } from '@consta/uikit/Tag'
-import { Badge } from '@consta/uikit/Badge'
 import TimeLineHist from './TimeLineHist/TimeLineHist'
+import Player = videojs.Player
+import { openModal } from '../../shared/ModalView/ModalView'
+import ExamDeclineModal from './modals/ExamDeclineModal/ExamDeclineModal'
+import ExamSubmitModal from './modals/ExamSubmitModal/ExamSubmitModal'
 
 // TYPES
 
@@ -109,12 +110,19 @@ const ExamProtocol: FC = () => {
 
             {checkStatus === 'inProgress' && (
               <div className={cn.resultBtnWrap}>
-                <Button className={cn.acceptBtn} label={'Принять'} view={'secondary'} size={'s'} />
+                <Button
+                  className={cn.acceptBtn}
+                  label={'Принять'}
+                  view={'secondary'}
+                  size={'s'}
+                  onClick={() => openModal(<ExamSubmitModal exam={exam} />)}
+                />
                 <Button
                   className={cn.declineBtn}
                   label={'Отклонить'}
                   view={'secondary'}
                   size={'s'}
+                  onClick={() => openModal(<ExamDeclineModal exam={exam} />)}
                 />
               </div>
             )}

@@ -22,14 +22,16 @@ const ModalTitles = {
 export type ModalTitlesList = keyof typeof ModalTitles
 
 interface IModalTitleProp {
-  title: ModalTitlesList
+  title?: ModalTitlesList
+  titleString?: string
 }
 
-const ModalTitle: FC<IModalTitleProp> = ({ title }) => {
+const ModalTitle: FC<IModalTitleProp> = ({ title, titleString }) => {
   return (
     <div className={cl.title}>
       <Text weight={'semibold'} size={'s'}>
-        {ModalTitles[title]}
+        {title && ModalTitles[title]}
+        {titleString ?? null}
       </Text>
       <CloseModalButton />
     </div>
