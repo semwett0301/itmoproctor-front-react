@@ -2,7 +2,6 @@ import React, { FC, useEffect, useState } from 'react'
 import ModalTitle from '../../../shared/ModalView/ModalTitle/ModalTitle'
 import cl from './AddEditCourse.module.scss'
 import FilterConstructor from '../../../shared/Filter/FilterConstructor'
-import { Select } from '@consta/uikit/Select'
 import { IOrganization } from '../../../../ts/interfaces/IOrganizations'
 import { useAppSelector } from '../../../../hooks/reduxHooks'
 import { useOrganizations } from '../../../../hooks/organizationsHooks'
@@ -40,7 +39,7 @@ interface IAddEditCourseProp {
 
 // CONSTANTS
 const courseSchema = object({
-  organization: object().required('Укажите организацию'),
+  organization: object().nullable().required('Укажите организацию'),
   courseCode: string().required('Укажите код курса'),
   sessionCode: string().required('Укажите код сессии'),
   name: string().nullable(),
@@ -72,7 +71,7 @@ const AddEditCourse: FC<IAddEditCourseProp> = ({ courseId, onSubmit }) => {
 
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
-  const { control, handleSubmit, formState, reset } = useForm<ICourseForm>({
+  const { control, handleSubmit, formState, reset, setValue } = useForm<ICourseForm>({
     mode: 'all',
     resolver: yupResolver(courseSchema),
     defaultValues: { verifications: verificationItems }
@@ -81,8 +80,11 @@ const AddEditCourse: FC<IAddEditCourseProp> = ({ courseId, onSubmit }) => {
   useEffect(() => {
     getOrganizations()
       .then((r) => {
-        if (user.role !== RoleEnum.ADMIN && user.organization) {
-          setOrganizationList(r.filter((i) => i.code === user.organization.code))
+        if (user.role === RoleEnum.ADMIN && user.organization.code !== 'global') {
+          setOrganizationList(r.filter((i) => i._id === user.organization._id))
+          if (!courseId) {
+            setValue('organization', getOrganization(user.organization._id))
+          }
         } else {
           setOrganizationList(
             r
@@ -102,7 +104,13 @@ const AddEditCourse: FC<IAddEditCourseProp> = ({ courseId, onSubmit }) => {
           setIsLoading(true)
           request.courses.getCourse(courseId).then((r) => {
             setIsLoading(false)
-            setOrganizationList((prevState) => [...prevState, getOrganization(r.data.organization)])
+
+            if (!organizationList.includes(getOrganization(r.data.organization)))
+              setOrganizationList((prevState) => [
+                ...prevState,
+                getOrganization(r.data.organization)
+              ])
+
             reset({
               organization: organizations.find((item) => item._id === r.data.organization),
               sessionCode: r.data.sessionCode,
@@ -150,18 +158,18 @@ const AddEditCourse: FC<IAddEditCourseProp> = ({ courseId, onSubmit }) => {
                           control={control}
                           name='organization'
                           render={({ field, fieldState }) => (
-                            <Select
+                            <Combobox
+                              size='s'
                               required
+                              label='Правообладатель'
+                              placeholder='Правообладатель'
                               items={organizationList}
-                              placeholder={'Универсиетет'}
-                              size={'s'}
-                              label={'Университет'}
-                              // disabled={user.organization.code === 'global'}
                               value={field.value}
-                              onChange={({ value }) => field.onChange(value)}
-                              isLoading={loading}
+                              getItemLabel={(item) => item.shortName ?? item.fullName}
                               getItemKey={(item) => item._id}
-                              getItemLabel={(item) => item.shortName ?? (item.fullName || item._id)}
+                              onChange={({ value }) => {
+                                field.onChange(value)
+                              }}
                               status={fieldState.error ? 'alert' : undefined}
                               caption={fieldState.error?.message}
                             />

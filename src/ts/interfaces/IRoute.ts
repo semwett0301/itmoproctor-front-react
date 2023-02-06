@@ -5,10 +5,13 @@ import { SubRole } from '../../config/authСonfig'
 export interface IRoute {
   title?: string | ((id: string) => Promise<string>)
   type?: 'tab' | 'exam'
+
   id: number
+
   path: string
   component?: FC
   children?: IRoute[]
   loader?: LoaderFunction
+
   subRole?: SubRole
 }

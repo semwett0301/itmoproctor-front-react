@@ -173,6 +173,7 @@ const Admin: FC = () => {
               }}
               closeTab={closeTab}
             />
+
             <Outlet context={{ openTab }} />
           </Card>
         </Layout>

@@ -23,6 +23,7 @@ import { IUserApp } from '../../../../ts/interfaces/IUserApp'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import { updateUserActionCreator } from '../../../../store/reducers/userReducer/userActionCreators'
+import { useOrganizations } from '../../../../hooks/organizationsHooks'
 
 dayjs.extend(customParseFormat)
 
@@ -66,6 +67,8 @@ const EditProfile: FC = () => {
   const dispatch = useAppDispatch()
   console.log(user)
 
+  const { getOrganization } = useOrganizations()
+
   const { control, handleSubmit, formState } = useForm<IProfileForm>({
     mode: 'all',
     resolver: yupResolver(profileSchema),
@@ -76,7 +79,7 @@ const EditProfile: FC = () => {
       gender: getGender(user.gender),
       birthday: dayjs(user.birthday, 'DD.MM.YYYY').toDate(),
       email: user.email,
-      organization: user.organization
+      organization: getOrganization(user.organization._id)
     }
   })
 
@@ -284,7 +287,7 @@ const EditProfile: FC = () => {
                               size='s'
                               items={[field.value]}
                               onChange={({ e }) => field.onChange(e)}
-                              getItemLabel={(item) => item.shortName || item.fullName || item._id}
+                              getItemLabel={(item) => item.shortName || item.fullName}
                               getItemKey={(item) => item._id}
                               value={field.value}
                               status={fieldState.error ? 'alert' : undefined}

@@ -287,30 +287,32 @@ const Exams: FC = () => {
                       {
                         label: 'Изменить',
                         iconLeft: IconEdit,
-                        disabled: selectedRowsId.length !== 1,
+                        disabled: selectedRowsId.length !== 1
                       },
                       {
                         label: 'Сбросить',
                         iconLeft: IconRevert,
-                        disabled: !selectedRowsId.length,
+                        disabled: !selectedRowsId.length
                       },
                       {
                         label: 'Дублировать',
                         iconLeft: IconCopy,
-                        disabled: selectedRowsId.length !== 1,
+                        disabled: selectedRowsId.length !== 1
                       },
                       {
                         label: 'Скачать (csv)',
                         iconLeft: IconDocExport,
+                        disabled: true
                       },
                       {
                         label: 'Импорт',
                         iconLeft: IconUpload,
+                        disabled: true
                       },
                       {
                         label: 'Удалить',
                         iconLeft: IconTrash,
-                        disabled: !selectedRowsId.length,
+                        disabled: !selectedRowsId.length
                       }
                     ]}
                   />
