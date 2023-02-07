@@ -18,6 +18,7 @@ import { socket } from '../../../../api/socket/socket'
 import { IExam } from '../../../../ts/interfaces/IExam'
 import NoteWithAuthor from './NoteWithAuthor/NoteWithAuthor'
 import { FileField } from '@consta/uikit/FileField'
+import { IconTrash } from '@consta/icons/IconTrash'
 
 // TYPES
 interface DateNote {
@@ -38,6 +39,8 @@ const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
   const [notes, setNotes] = useState<Array<DateNote>>([])
   const [inputMessage, setInputMessage] = useState<string | null>(null)
   const attachInputRef = useRef<HTMLInputElement>(null)
+
+  const [files, setFiles] = useState<FileList | null>(null)
 
   const updateNotes = useCallback((id: string): void => {
     request.expert.exams.getNotes(id).then(({ data }) => {
@@ -63,6 +66,8 @@ const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
         }
       })
 
+      console.log(filteredNotes)
+
       setNotes([...filteredNotes])
     })
   }, [])
@@ -82,18 +87,29 @@ const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
 
   const onSendMessageHandler = (): void => {
     if (inputMessage) {
-      request.expert.exams.addNote(exam._id, {
-        text: inputMessage,
-        editable: true,
-        attach: []
-      })
-      setInputMessage(null)
-    }
+      if (files) {
+        const formData = new FormData()
+        formData.append('attach', files[0])
 
-    if (attachInputRef.current?.files?.length) {
-      const formData = new FormData()
-      formData.append('attach', attachInputRef.current?.files[0])
-      request.expert.exams.addAttach(formData).catch((e) => console.log(e))
+        request.expert.exams
+          .addAttach(formData)
+          .then((r) =>
+            request.expert.exams.addNote(exam._id, {
+              text: inputMessage,
+              editable: true,
+              attach: [{ uploadname: r.data.filename, filename: r.data.originalname }]
+            })
+          )
+          .catch((e) => console.log(e))
+      } else {
+        request.expert.exams.addNote(exam._id, {
+          text: inputMessage,
+          editable: true,
+          attach: []
+        })
+      }
+
+      setInputMessage(null)
     }
   }
 
@@ -111,9 +127,9 @@ const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
               </Text>
               {note.notes.map((item) =>
                 item.author._id !== exam.student._id && item.text ? (
-                  <NoteWithAuthor key={item._id} note={item} />
+                  <NoteWithAuthor key={item._id} note={item} exam={exam} />
                 ) : (
-                  <Note key={item._id} note={item} />
+                  <Note key={item._id} note={item} exam={exam} />
                 )
               )}
             </div>
@@ -121,30 +137,53 @@ const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
         })}
       </Layout>
 
-      <div className={cn.messageArea}>
-        <FileField id={'attachInput'} inputRef={attachInputRef}>
-          {(props) => (
-            <Button {...props} onlyIcon iconRight={IconAttach} size={'xs'} view={'clear'} />
+      {exam.resolution === null && (
+        <div className={cn.messageArea}>
+          {!files ? (
+            <FileField
+              id={'attachInput'}
+              inputRef={attachInputRef}
+              onChange={(e) => {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                setFiles(e.target.files)
+              }}
+            >
+              {(props) => (
+                <Button {...props} onlyIcon iconRight={IconAttach} size={'xs'} view={'clear'} />
+              )}
+            </FileField>
+          ) : (
+            <Button
+              size={'xs'}
+              view={'primary'}
+              onlyIcon
+              iconRight={IconTrash}
+              onClick={() => {
+                setFiles(null)
+              }}
+            />
           )}
-        </FileField>
 
-        <TextField
-          size={'xs'}
-          width={'full'}
-          placeholder={'Введите текст заметки'}
-          value={inputMessage}
-          onChange={({ value }) => setInputMessage(value)}
-          type={'textarea'}
-          maxRows={6}
-        />
-        <Button
-          onlyIcon
-          iconRight={IconSendMessage}
-          size={'xs'}
-          view={'clear'}
-          onClick={() => onSendMessageHandler()}
-        />
-      </div>
+          <TextField
+            size={'xs'}
+            width={'full'}
+            placeholder={'Введите текст заметки'}
+            value={inputMessage}
+            onChange={({ value }) => setInputMessage(value)}
+            type={'textarea'}
+            maxRows={6}
+          />
+          <Button
+            disabled={!inputMessage}
+            onlyIcon
+            iconRight={IconSendMessage}
+            size={'xs'}
+            view={'clear'}
+            onClick={() => onSendMessageHandler()}
+          />
+        </div>
+      )}
     </Layout>
   )
 }

@@ -1,0 +1,27 @@
+.wrapper {
+  width: 508px;
+
+  .content {
+    padding: 16px;
+
+    .documentWrapper {
+      min-height: 340px;
+
+      .document {
+        z-index: 9;
+        width: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .footer{
+      display: flex;
+      flex-direction: row-reverse;
+
+      .downloadBtn {
+        margin-top: 8px;
+      }
+    }
+
+  }
+}

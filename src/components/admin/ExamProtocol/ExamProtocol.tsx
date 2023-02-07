@@ -37,6 +37,9 @@ const ExamProtocol: FC = () => {
   const [exam, setExam] = useState<IExam>()
   const [isExamLoading, setIsExamLoading] = useState<boolean>(true)
 
+  const [comment, setComment] = useState<string | null>(null)
+  const [note, setNote] = useState<string | null>(null)
+
   const user = useAppSelector((state) => state.user)
 
   const [progressState, setProgressState] = useState<'ableToStart' | 'inProgress' | 'finish'>()
@@ -115,14 +118,20 @@ const ExamProtocol: FC = () => {
                   label={'Принять'}
                   view={'secondary'}
                   size={'s'}
-                  onClick={() => openModal(<ExamSubmitModal exam={exam} />)}
+                  onClick={() =>
+                    openModal(<ExamSubmitModal exam={exam} prevComment={comment} prevNote={note} />)
+                  }
                 />
                 <Button
                   className={cn.declineBtn}
                   label={'Отклонить'}
                   view={'secondary'}
                   size={'s'}
-                  onClick={() => openModal(<ExamDeclineModal exam={exam} />)}
+                  onClick={() =>
+                    openModal(
+                      <ExamDeclineModal exam={exam} prevComment={comment} prevNote={note} />
+                    )
+                  }
                 />
               </div>
             )}
@@ -136,8 +145,8 @@ const ExamProtocol: FC = () => {
               <Card
                 shadow={false}
                 border={true}
-                horizontalSpace='xs'
-                verticalSpace={'xs'}
+                // horizontalSpace='xs'
+                // verticalSpace={'xs'}
                 className={cn.violationTimeline}
               >
                 {/* <Text>Тамлайн нарушений</Text> */}
@@ -165,8 +174,11 @@ const ExamProtocol: FC = () => {
                 <Text view={'secondary'} size={'s'}>
                   Об экзамене
                 </Text>
-                {}
-                <AboutBlock exam={exam} />
+                <AboutBlock
+                  exam={exam}
+                  commentState={{ comment, setComment }}
+                  noteState={{ note, setNote }}
+                />
               </Layout>
 
               <Layout flex={10} direction={'column'}>

@@ -15,11 +15,13 @@ import { IExam } from '../../../../../ts/interfaces/IExam'
 
 interface IExamSubmitModalProp {
   exam: IExam
+  prevComment: string | null
+  prevNote: string | null
 }
 
-const ExamSubmitModal: FC<IExamSubmitModalProp> = ({ exam }) => {
-  const [comment, setComment] = useState<string | null>(null)
-  const [note, setNote] = useState<string | null>(null)
+const ExamSubmitModal: FC<IExamSubmitModalProp> = ({ prevComment, prevNote }) => {
+  const [comment, setComment] = useState<string | null>(prevComment)
+  const [note, setNote] = useState<string | null>(prevNote)
   const [dropTry, setDropTry] = useState<boolean>(false)
 
   return (

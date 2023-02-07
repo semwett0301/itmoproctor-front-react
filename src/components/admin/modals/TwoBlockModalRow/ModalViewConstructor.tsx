@@ -3,7 +3,7 @@ import TwoBlockModalRow from './TwoBlockModalRow'
 
 export type IRowViewItem = {
   title: string
-  content: JSX.Element | string | null
+  content?: JSX.Element | string | null | 'empty'
 }
 
 interface IModalViewConstructorProps {
@@ -16,7 +16,7 @@ const ModalViewConstructor: FC<IModalViewConstructorProps> = ({ items }) => {
       <tbody>
         {items.map(
           (item) =>
-            item.content !== null && (
+            item.content !== 'empty' && (
               <TwoBlockModalRow title={item.title} content={item.content} key={item.title} />
             )
         )}

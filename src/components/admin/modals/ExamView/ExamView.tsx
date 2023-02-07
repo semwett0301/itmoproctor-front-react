@@ -41,19 +41,19 @@ const ExamView: FC<IExamViewProp> = ({ examId }) => {
         },
         {
           title: 'Правообладатель',
-          content: data.organization.shortName || ''
+          content: data.organization.shortName
         },
         {
           title: 'Курс',
-          content: data.course?.courseCode ?? ''
+          content: data.course?.courseCode
         },
         {
           title: 'Сессия',
-          content: data.course?.sessionCode || ''
+          content: data.course?.sessionCode
         },
         {
           title: 'Испытание',
-          content: data.assignment || ''
+          content: data.assignment
         },
         {
           title: 'Ссылка',
@@ -65,7 +65,7 @@ const ExamView: FC<IExamViewProp> = ({ examId }) => {
         },
         {
           title: 'Код',
-          content: data.course?.courseCode ?? ''
+          content: data.course?.courseCode
         },
         {
           title: 'Тип',
@@ -110,15 +110,15 @@ const ExamView: FC<IExamViewProp> = ({ examId }) => {
         },
         {
           title: 'Комментарий',
-          content: data.comment || ''
+          content: data.comment
         },
         {
           title: 'Комментарий для администратора',
-          content: data.note ?? null
+          content: data.note ?? 'empty'
         },
         {
           title: 'Информация',
-          content: data.info ?? null
+          content: data.info ?? 'empty'
         }
       ]
       setIsLoad(false)

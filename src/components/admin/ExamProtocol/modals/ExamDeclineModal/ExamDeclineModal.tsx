@@ -15,11 +15,13 @@ import { IExam } from '../../../../../ts/interfaces/IExam'
 
 interface IExamDeclineModalProp {
   exam: IExam
+  prevComment: string | null
+  prevNote: string | null
 }
 
-const ExamDeclineModal: FC<IExamDeclineModalProp> = ({ exam }) => {
-  const [comment, setComment] = useState<string | null>(null)
-  const [note, setNote] = useState<string | null>(null)
+const ExamDeclineModal: FC<IExamDeclineModalProp> = ({ prevComment, prevNote }) => {
+  const [comment, setComment] = useState<string | null>(prevComment)
+  const [note, setNote] = useState<string | null>(prevNote)
   const [dropTry, setDropTry] = useState<boolean>(false)
 
   return (
