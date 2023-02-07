@@ -42,7 +42,7 @@ const Organizations: FC = () => {
     else setCurrentPage(0)
   }, [loading])
 
-  const { isLoading, rows } = useTableRequest(
+  const { isLoading, rows, update } = useTableRequest(
     async () => {
       const currentRows: IOrganization[] = await getOrganizations().then((o) =>
         o.filter(
@@ -93,8 +93,9 @@ const Organizations: FC = () => {
                           onSubmit={() => {
                             request.organizations
                               .deleteOrganization(currentRows[i]._id)
-                              .then(() => closeModal())
-                              .catch((e) => console.log(e))
+                              .then(closeModal)
+                              .then(update)
+                              .catch(console.log)
                           }}
                           onCancel={() => closeModal()}
                         />
@@ -177,6 +178,7 @@ const Organizations: FC = () => {
                                   )
                                 )
                                   .then(() => closeModal())
+                                  .then(update)
                                   .catch((e) => console.log(e))
                               }}
                               onCancel={() => closeModal()}

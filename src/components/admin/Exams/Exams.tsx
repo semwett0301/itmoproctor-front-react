@@ -106,7 +106,8 @@ const Exams: FC = () => {
             },
             {
               label: 'Сбросить',
-              iconLeft: IconRevert
+              iconLeft: IconRevert,
+              disabled: true
             },
             {
               label: 'Дублировать',
@@ -298,7 +299,7 @@ const Exams: FC = () => {
                       {
                         label: 'Сбросить',
                         iconLeft: IconRevert,
-                        disabled: !selectedRowsId.length
+                        disabled: !selectedRowsId.length && true
                       },
                       {
                         label: 'Дублировать',

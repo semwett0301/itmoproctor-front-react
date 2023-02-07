@@ -13,7 +13,6 @@ export type NotificationItem = {
   message: string;
   status: SnackBarItemStatus,
   autoClose: number,
-  progressMode: 'timer';
   showProgress: boolean
 }
 
@@ -27,7 +26,6 @@ export function addNotification(message: string, status: SnackBarItemStatus, aut
     message: message,
     status: status,
     autoClose: autoClose,
-    progressMode: 'timer',
     showProgress: true
   }))
 }

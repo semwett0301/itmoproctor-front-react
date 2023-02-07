@@ -71,7 +71,10 @@ const Maintenance: FC = () => {
                           openModal(
                             <AddEditMaintenance
                               maintenanceId={row._id}
-                              onSubmit={() => console.log('edit')}
+                              onSubmit={async () => {
+                                await update()
+                                closeModal()
+                              }}
                             />
                           )
                       },
@@ -86,7 +89,7 @@ const Maintenance: FC = () => {
                                   .deleteMaintenance(row._id)
                                   .then(closeModal)
                                   .then(update)
-                                  .catch((e) => console.log(e))
+                                  .catch(console.log)
                               }}
                               onCancel={() => closeModal()}
                             />
@@ -152,7 +155,12 @@ const Maintenance: FC = () => {
                       {
                         label: 'Добавить',
                         iconLeft: IconAdd,
-                        onClick: () => openModal(<AddEditMaintenance />)
+                        onClick: () => openModal(<AddEditMaintenance onSubmit={
+                          async () => {
+                            await update()
+                            closeModal()
+                          }
+                        }/>)
                       },
                       {
                         label: 'Изменить',
@@ -162,7 +170,10 @@ const Maintenance: FC = () => {
                           openModal(
                             <AddEditMaintenance
                               maintenanceId={selectedRowsId[0]}
-                              onSubmit={() => console.log('edit')}
+                              onSubmit={async () => {
+                                await update()
+                                closeModal()
+                              }}
                             />
                           )
                       },
