@@ -212,6 +212,8 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                 middlename: userProfile.middlename,
                 organization: userProfile.organization,
                 provider: getProviderItem(userProfile.provider),
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
                 role: getRoleItem(userProfile.role, userProfile.expert),
                 username: userProfile.username
               })

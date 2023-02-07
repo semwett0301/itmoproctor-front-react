@@ -16,7 +16,8 @@ const ModalTitles = {
   downloadSubmit: 'Загрузка видео',
   user: 'Профиль пользователя',
   verify: 'Идентификация личности',
-  settings: 'Настройки'
+  settings: 'Настройки',
+  attach: 'Вложение'
 }
 
 export type ModalTitlesList = keyof typeof ModalTitles

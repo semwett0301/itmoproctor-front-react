@@ -10,10 +10,9 @@ import { IconDownload } from '@consta/uikit/IconDownload'
 // TYPES
 interface IDownloadSubmitProp {
   onSubmit: () => void
-  href: string
 }
 
-const DownloadSubmit: FC<IDownloadSubmitProp> = ({ onSubmit, href }) => {
+const DownloadSubmit: FC<IDownloadSubmitProp> = ({ onSubmit }) => {
   return (
     <div className={cl.wrapper}>
       <ModalTitle title={'downloadSubmit'} />
@@ -23,9 +22,6 @@ const DownloadSubmit: FC<IDownloadSubmitProp> = ({ onSubmit, href }) => {
 
       <div className={classJoiner(cnMixSpace({ pH: '2xl', pT: '3xs', pB: 'm' }), cl.buttonBlock)}>
         <Button
-          as={'a'}
-          href={href}
-          download={'Exam.webm'}
           label={'Загрузить'}
           onClick={() => onSubmit()}
           size={'s'}

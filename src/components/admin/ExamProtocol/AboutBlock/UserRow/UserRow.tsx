@@ -16,19 +16,19 @@ import ListenerView from '../../../modals/ListenerView/ListenerView'
 
 interface IUserRowProp {
   user?: IStudent | IInspector | IExpert | null | undefined
-  isStudent?: boolean
+  withModal?: boolean
 }
 
-const UserRow: FC<IUserRowProp> = ({ user, isStudent }) => {
+const UserRow: FC<IUserRowProp> = ({ user, withModal }) => {
   return (
     <div className={cn.row}>
       <IconUser size={'xs'} />
       {user ? (
         <Text
           size={'xs'}
-          view={isStudent ? 'link' : 'primary'}
-          cursor={isStudent ? 'pointer' : undefined}
-          onClick={isStudent ? () => openModal(<ListenerView profileId={user._id} />) : undefined}
+          view={withModal ? 'link' : 'primary'}
+          cursor={withModal ? 'pointer' : undefined}
+          onClick={withModal ? () => openModal(<ListenerView profileId={user._id} />) : undefined}
         >
           {getFullName(user.lastname, user.firstname, user.middlename)}
         </Text>

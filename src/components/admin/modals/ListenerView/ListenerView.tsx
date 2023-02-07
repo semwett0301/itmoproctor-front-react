@@ -6,12 +6,14 @@ import { cnMixSpace } from '@consta/uikit/MixSpace'
 import ModalViewConstructor, { IRowViewItem } from '../TwoBlockModalRow/ModalViewConstructor'
 import { useTranslation } from 'react-i18next'
 import { request } from '../../../../api/axios/request'
-import { getFullName, getShortName } from '../../../../utils/nameHelper'
+import { getFullName } from '../../../../utils/nameHelper'
 import { Button } from '@consta/uikit/Button'
 import { closeModal } from '../../../shared/ModalView/ModalView'
 import { TabItem } from '../../Admin'
 import { IUserApp } from '../../../../ts/interfaces/IUserApp'
-import {openUserExams} from '../../../../utils/openUserExams';
+import { openUserExams } from '../../../../utils/openUserExams'
+import { getCitizenItem } from '../../../shared/SmartSelect/Items/citizenships'
+import { getDocumentTypeItem } from '../../../shared/SmartSelect/Items/documents'
 
 // TYPES
 interface IListenerViewProp {
@@ -69,11 +71,11 @@ const ListenerView: FC<IListenerViewProp> = ({ profileId, openTab }) => {
         },
         {
           title: 'Гражданство',
-          content: data.citizenship
+          content: getCitizenItem(data.citizenship)?.label ?? 'empty'
         },
         {
           title: 'Тип документа',
-          content: data.documentType
+          content: getDocumentTypeItem(data.documentType)?.label ?? 'empty'
         },
         {
           title: 'Серия и номер',

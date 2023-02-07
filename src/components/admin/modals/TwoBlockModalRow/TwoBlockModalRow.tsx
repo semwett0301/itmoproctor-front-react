@@ -5,7 +5,7 @@ import cl from './TwoBlockModalRow.module.scss'
 // TYPES
 interface ITwoBlockModalRowProp {
   title: string
-  content: string | number | JSX.Element
+  content?: string | number | JSX.Element | null
 }
 
 const TwoBlockModalRow: FC<ITwoBlockModalRowProp> = ({ title, content }) => {

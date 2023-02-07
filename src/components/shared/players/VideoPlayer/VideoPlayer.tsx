@@ -25,7 +25,7 @@ interface IVideoPlayerProp {
   exam?: IExam
 }
 
-const VideoPlayer: FC<IVideoPlayerProp> = ({ source, onReady, exam }) => {
+const VideoPlayer: FC<IVideoPlayerProp> = ({ source, onReady }) => {
   const videoRef = React.useRef<HTMLDivElement | null>(null)
   const playerRef = React.useRef<VideoJsPlayer>()
 
@@ -96,19 +96,12 @@ const VideoPlayer: FC<IVideoPlayerProp> = ({ source, onReady, exam }) => {
         clickHandler: function (): void {
           openModal(
             <DownloadSubmit
-              href={source.src}
               onSubmit={() => {
-                // const tag = document.createElement('a')
-                // tag.target = '_blank'
-                // if (exam?.student) {
-                //   tag.href = 'stream/' + exam._id + '.webm'
-                //   tag.download = exam._id + '-' + exam.student.username + '.webm'
-                //   console.log(tag.href)
-                //   console.log(tag.download)
-                // }
-                // document.body.appendChild(tag)
-                // tag.click()
-                // document.body.removeChild(tag)
+                const link = document.createElement('a')
+                link.href = source.src.replace('.webm', '')
+                link.download = ''
+                link.target = '_blank'
+                link.click()
               }}
             />
           )

@@ -1,5 +1,5 @@
 import { DefaultItem } from '@consta/uikit/__internal__/src/components/Combobox/helpers'
-import { RoleEnum } from '../../../../config/authСonfig'
+import { RoleEnum, rolesToBackendConfig } from '../../../../config/authСonfig'
 
 export interface IRoleSelectType extends DefaultItem {
   roleId: number
@@ -34,8 +34,12 @@ const roles: IRoleSelectType[] = [
 
 export default roles
 
-export const getRoleItem = (id: RoleEnum, expert: boolean | null): DefaultItem => {
-  switch (id) {
+export const getRoleItem = (
+  id: keyof typeof rolesToBackendConfig,
+  expert: boolean | null
+): DefaultItem => {
+  const role = rolesToBackendConfig[id]
+  switch (role) {
     case RoleEnum.STUDENT:
       return roles[0]
     case RoleEnum.PROCTOR: {

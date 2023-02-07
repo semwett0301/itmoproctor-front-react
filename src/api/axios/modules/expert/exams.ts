@@ -2,13 +2,23 @@ import { AxiosInstance, AxiosResponse } from 'axios'
 import { IExam } from '../../../../ts/interfaces/IExam'
 import axiosConfig from '../../../../config/axiosСonfig'
 import { INote, IPostNote } from '../../../../ts/interfaces/INotes'
-import exams from '../../../../components/admin/Exams/Exams'
+
+interface IAttachResponse {
+  fieldname: string
+  originalname: string
+  encoding: string
+  mimetype: string
+  destination: string
+  filename: string
+  path: string
+  size: number
+}
 
 export interface IExpertExamsAxios {
   getExam: (examId: string) => Promise<AxiosResponse<IExam>>
   getNotes: (examId: string) => Promise<AxiosResponse<Array<INote>>>
   addNote: (examId: string, note: IPostNote) => Promise<AxiosResponse<Array<INote>>>
-  addAttach: (file: FormData) => Promise<AxiosResponse<unknown>>
+  addAttach: (file: FormData) => Promise<AxiosResponse<IAttachResponse>>
 }
 
 export default function ExpertExams(instance: AxiosInstance): IExpertExamsAxios {

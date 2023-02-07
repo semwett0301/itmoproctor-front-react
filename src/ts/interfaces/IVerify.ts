@@ -5,6 +5,12 @@ export interface IAttach {
   // ISO Date
   created: string
 }
+
+export interface IPostAttach {
+  uploadname: string
+  filename: string
+}
+
 export interface IVerify {
   _id: string
   submit: boolean

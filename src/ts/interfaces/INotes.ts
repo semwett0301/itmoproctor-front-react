@@ -1,4 +1,4 @@
-import { IAttach } from './IVerify'
+import { IAttach, IPostAttach } from './IVerify'
 
 interface IShortUser {
   _id: string
@@ -10,7 +10,7 @@ interface IShortUser {
 export interface IPostNote {
   text: string
   editable: true
-  attach: IAttach[]
+  attach: IPostAttach[]
 }
 
 export interface INote {

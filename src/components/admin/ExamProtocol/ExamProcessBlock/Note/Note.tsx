@@ -7,14 +7,16 @@ import { openModal } from '../../../../shared/ModalView/ModalView'
 import { Button } from '@consta/uikit/Button'
 import { IconAlert } from '@consta/uikit/IconAlert'
 import dayjs from 'dayjs'
-import { stat } from 'fs'
+import AttachModal from '../../modals/AttachModal/AttachModal'
+import { IExam } from '../../../../../ts/interfaces/IExam'
 
 // TYPES
 interface INoteProp {
+  exam: IExam
   note: INote
 }
 
-const Note: FC<INoteProp> = ({ note }) => {
+const Note: FC<INoteProp> = ({ note, exam }) => {
   const [status, setStatus] = useState(0)
 
   useEffect(() => {
@@ -45,7 +47,7 @@ const Note: FC<INoteProp> = ({ note }) => {
                   iconLeft={IconAttach}
                   className={cn.attach}
                   width={'default'}
-                  onClick={() => openModal(<div>Вложение</div>)}
+                  onClick={() => openModal(<AttachModal attach={item} exam={exam} />)}
                 />
               ))}
             </div>
