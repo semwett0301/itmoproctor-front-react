@@ -98,10 +98,12 @@ const VideoPlayer: FC<IVideoPlayerProp> = ({ source, onReady }) => {
             <DownloadSubmit
               onSubmit={() => {
                 const link = document.createElement('a')
-                link.href = source.src.replace('.webm', '')
-                link.download = ''
+                link.href = source.src
+                link.download = 'jkh.webm'
                 link.target = '_blank'
+                document.body.appendChild(link)
                 link.click()
+                document.removeChild(link)
               }}
             />
           )
@@ -126,7 +128,7 @@ const VideoPlayer: FC<IVideoPlayerProp> = ({ source, onReady }) => {
   }, [videoRef])
 
   // Dispose the Video.js player when the functional component unmounts
-  React.useEffect(() => {
+  useEffect(() => {
     const player = playerRef.current
 
     return () => {
