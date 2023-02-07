@@ -105,7 +105,10 @@ const AddEditCourse: FC<IAddEditCourseProp> = ({ courseId, onSubmit }) => {
           request.courses.getCourse(courseId).then((r) => {
             setIsLoading(false)
 
-            if (!organizationList.includes(getOrganization(r.data.organization)))
+            if (
+              r.data.organization !== user.organization._id &&
+              user.organization.code !== 'glodal'
+            )
               setOrganizationList((prevState) => [
                 ...prevState,
                 getOrganization(r.data.organization)
