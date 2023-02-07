@@ -1,6 +1,7 @@
 import { TablesEnum } from '../config/tablesReducerConfig'
 import { useAppDispatch, useAppSelector } from './reduxHooks'
 import {
+  resetFilter,
   setCurrentPagination,
   setNewDisplayedRows,
   setNewFilter,
@@ -10,6 +11,7 @@ import {
 import { IPagination, ITotalPagination } from '../ts/interfaces/IPagination'
 import { ITotalRowsVariants } from '../components/shared/SharedPagination/PaginationField/PaginationField'
 import { Filter } from '../ts/types/Filter'
+import {useEffect} from 'react';
 
 export function useTable<T extends Filter>(
   tableName: TablesEnum

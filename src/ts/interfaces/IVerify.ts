@@ -23,12 +23,10 @@ export interface IVerify {
   documentType: string
   documentNumber: string
   documentIssueDate: string
-  hash: string
   student: string
   exam: string
   address: string
   description: string
   attach: IAttach[]
   created: Date
-  __v: number
 }

@@ -23,7 +23,6 @@ interface IUser {
   organization: IOrganization
   provider: ProviderEnum
   _id: string
-  __v?: number
   attach?: unknown[]
 }
 

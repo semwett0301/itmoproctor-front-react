@@ -1,16 +1,12 @@
-import { Reducer } from 'redux'
-import { ITableParams } from '../../../../ts/interfaces/ITableParams'
-import {
-  ActionPayloadTable,
-  ExamFilter,
-  initialTableParams
-} from '../../../../config/tablesReducerConfig'
-import { IAction } from '../../../../ts/interfaces/IAction'
-import { ExamsTableActionTypes } from './examsTableActionTypes'
-import { statusList } from '../../../../components/shared/Filter/ExamStatusCombobox/ExamStatusCombobox'
-import { ITotalRowsVariants } from '../../../../components/shared/SharedPagination/PaginationField/PaginationField'
-import { ITotalPagination } from '../../../../ts/interfaces/IPagination'
-import { getInitialDateRange } from '../../../../utils/dateUtils'
+import {Reducer} from 'redux'
+import {ITableParams} from '../../../../ts/interfaces/ITableParams'
+import {ActionPayloadTable, ExamFilter, initialTableParams} from '../../../../config/tablesReducerConfig'
+import {IAction} from '../../../../ts/interfaces/IAction'
+import {ExamsTableActionTypes} from './examsTableActionTypes'
+import {statusList} from '../../../../components/shared/Filter/ExamStatusCombobox/ExamStatusCombobox'
+import {ITotalRowsVariants} from '../../../../components/shared/SharedPagination/PaginationField/PaginationField'
+import {ITotalPagination} from '../../../../ts/interfaces/IPagination'
+import {getInitialDateRange} from '../../../../utils/dateUtils'
 
 const initialState: ITableParams<ExamFilter> = initialTableParams<ExamFilter>({
   date: getInitialDateRange(),
@@ -64,6 +60,9 @@ export const examsTableReducer: Reducer<ITableParams<ExamFilter>> = (
           ...(action.payload as ExamFilter)
         }
       }
+
+    case ExamsTableActionTypes.exams_reset:
+      return initialState
 
     default:
       return state

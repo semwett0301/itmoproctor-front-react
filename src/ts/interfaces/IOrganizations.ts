@@ -12,7 +12,6 @@ export interface IOrganizationFull {
   fullNameEN: string | null
   shortNameEN: string | null
   code: string | null
-  __v?: number
   openeduId: number | null
   registrationNumber: string | null
 }

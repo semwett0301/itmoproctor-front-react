@@ -7,7 +7,6 @@ export interface IScheduleRow {
   inspector: IInspector
   beginDate: string
   endDate: string
-  __v: number
 }
 
 export interface ISchedulePostResponse {
@@ -16,6 +15,4 @@ export interface ISchedulePostResponse {
   maxExamsBeginnings: string
   inspector: string
   beginDate: string
-  endDate: string
-  __v: number
 }

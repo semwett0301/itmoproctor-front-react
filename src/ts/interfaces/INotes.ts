@@ -20,6 +20,5 @@ export interface INote {
   text: string
   // ISO Date
   time: string
-  __v: number
   attach: IAttach[]
 }

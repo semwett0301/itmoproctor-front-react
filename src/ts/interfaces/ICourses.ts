@@ -9,5 +9,4 @@ export interface ICourseRow {
   verifications: string[]
   updated: string
   name?: string
-  __v?: number
 }

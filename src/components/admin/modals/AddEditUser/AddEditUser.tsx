@@ -136,7 +136,6 @@ const toRequestData = (form: IUserForm, previousUser: IUserApp | null): IProfile
 
   return previousUser
     ? Object.assign(userData, {
-        __v: previousUser.__v,
         _id: previousUser._id,
         attach: previousUser.attach,
         created: previousUser.created

@@ -4,4 +4,5 @@ export enum OrganizationsTableActionTypes {
   organizations_set_displayed_rows = 'organizations_set_displayed_rows',
   organizations_set_select = 'organizations_set_select',
   organizations_set_filter = 'organizations_set_filter',
+  organizations_reset = 'organizations_reset'
 }

@@ -27,7 +27,9 @@ const NavTabs: FC<INavTabsProps> = ({ activeTab, tabItems, setActiveTab, closeTa
         items={tabItems}
         getItemLabel={(item) => item.path}
         renderItem={({ item, onChange, checked }) => (
-          <TabWithCross item={item} onChange={onChange} checked={checked} onCrossClick={closeTab} />
+          <TabWithCross item={item} onChange={onChange} checked={checked} onCrossClick={() => {
+            closeTab(item)
+          }} />
         )}
       />
     </Card>

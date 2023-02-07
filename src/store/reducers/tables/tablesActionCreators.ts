@@ -37,3 +37,9 @@ export function setNewFilter({name, newFilter}: ActionFilterType): IAction<strin
     payload: newFilter
   }
 }
+
+export function resetFilter(name: TablesEnum) :IAction<string> {
+  return {
+    type: name + '_' + 'reset',
+  }
+}

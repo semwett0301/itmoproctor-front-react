@@ -52,6 +52,9 @@ export const organizationsTableReducer: Reducer<ITableParams<OrganizationsFilter
         }
       }
 
+    case OrganizationsTableActionTypes.organizations_reset:
+      return initialState
+
     default:
       return state
   }

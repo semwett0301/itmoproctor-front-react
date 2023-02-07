@@ -15,5 +15,4 @@ export interface IGetCourse {
   accessAllowed: string[]
   verifications: string[]
   updated: string
-  __v?: number
 }

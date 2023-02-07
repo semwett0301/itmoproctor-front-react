@@ -53,6 +53,9 @@ export const coursesTableReducer: Reducer<ITableParams<CoursesFilter>> = (state 
         }
       }
 
+    case CoursesTableActionTypes.courses_reset:
+      return initialState
+
     default:
       return state
   }

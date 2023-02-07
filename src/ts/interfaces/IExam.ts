@@ -8,7 +8,6 @@ import { VerificationType } from '../types/Verifications'
 export interface IVerified {
   _id: string
   submit: boolean
-  hash: string
 }
 
 export interface IFactors {

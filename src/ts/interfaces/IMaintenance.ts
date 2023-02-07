@@ -4,7 +4,6 @@ export interface IMaintenance {
   endDate: string
   active: boolean
   created: string
-  __v: number
 }
 
 export interface IMaintenancePost {

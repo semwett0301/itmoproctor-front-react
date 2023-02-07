@@ -27,7 +27,6 @@ export interface IProfilePost {
   provider: string
   role: string
   _id?: string
-  __v?: number
   attach?: unknown[]
 }
 

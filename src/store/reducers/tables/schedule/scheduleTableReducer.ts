@@ -61,6 +61,9 @@ export const scheduleTableReducer: Reducer<ITableParams<ScheduleFilter>> = (
         }
       }
 
+    case ScheduleTableActionTypes.schedule_reset:
+      return initialState
+
     default:
       return state
   }

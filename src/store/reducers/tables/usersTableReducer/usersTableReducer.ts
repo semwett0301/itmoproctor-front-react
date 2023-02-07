@@ -55,6 +55,9 @@ export const usersTableReducer: Reducer<ITableParams<UserFilter>> = (state = ini
         }
       }
 
+    case UsersTableActionTypes.users_reset:
+      return initialState
+
     default:
       return state
   }
