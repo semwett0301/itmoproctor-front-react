@@ -41,7 +41,8 @@ export interface IExamsAxios {
   getExam: (examId: string) => Promise<AxiosResponse<IExam>>
   addExam: (data: unknown) => Promise<AxiosResponse<IExam>>
   editExam: (data: unknown, examId: string) => Promise<AxiosResponse<IExam>>
-  getVerify: (verifyId: string) => Promise<AxiosResponse<IVerify>>
+  getVerify: (verifyId: string) => Promise<AxiosResponse<IVerify>>,
+  deleteExam: (examId: string) => Promise<AxiosResponse<void>>
 }
 
 export default function (instance: AxiosInstance): IExamsAxios {
@@ -79,6 +80,9 @@ export default function (instance: AxiosInstance): IExamsAxios {
     },
     getVerify(verifyId) {
       return instance.get(`${axiosConfig.baseUrl}verify/${verifyId}`)
+    },
+    deleteExam(examId) {
+      return instance.delete(`${axiosConfig.baseUrl}exam/${examId}`)
     }
   }
 }

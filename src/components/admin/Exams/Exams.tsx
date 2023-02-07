@@ -41,6 +41,7 @@ import AddEditExam from '../modals/AddEditExam/AddEditExam'
 import { examsColumn, IExamsTableModel } from './examsTableModel'
 import {useAppSelector} from '../../../hooks/reduxHooks';
 import {adminButtonChecker} from '../../../utils/adminButtonChecker';
+import {deleteSelected} from '../../../utils/deleteSelected';
 
 const Exams: FC = () => {
   const { openTab } = useOpenTab()
@@ -51,7 +52,7 @@ const Exams: FC = () => {
 
   // const [sortSetting, setSortSetting] = useState<SortByProps<IExamsTableModel> | null>(null)
 
-  const castToTableRow: (item: IExamRow) => IExamsTableModel = (item) => {
+  const castToTableRow: (item: IExamRow, update: () => Promise<IExamsTableModel[]>) => IExamsTableModel = (item, update) => {
     const proctor = getProctor(item.async, item.inspector, item.expert),
       studentName = getStudentName(item.student),
       studentShortName = getShortName(
@@ -117,8 +118,10 @@ const Exams: FC = () => {
               onClick: () =>
                 openModal(
                   <DeleteSubmit
-                    onSubmit={() => {
+                    onSubmit={async () => {
+                      await request.exam.deleteExam(item._id)
                       closeModal()
+                      await update()
                     }}
                     onCancel={() => closeModal()}
                   />
@@ -144,7 +147,7 @@ const Exams: FC = () => {
   } = useTable<ExamFilter>(TablesEnum.EXAMS)
 
   // Exams table request
-  const { isLoading, rows, setRows } = useTableRequest<IExamsTableModel>(
+  const { isLoading, rows, setRows, update } = useTableRequest<IExamsTableModel>(
     () =>
       request.exam
         .getListOfExams({
@@ -167,7 +170,7 @@ const Exams: FC = () => {
           let obj: IExamsTableModel[] = []
           if (r.data.rows.length > 0) {
             obj = r.data.rows.map((item: IExamRow) => {
-              return castToTableRow(item)
+              return castToTableRow(item, update)
             })
             return obj
           } else return []
@@ -234,7 +237,7 @@ const Exams: FC = () => {
 
   useEffect(() => {
     socket.exams.subscribe((newRow) => {
-      const newTableRow = castToTableRow(newRow)
+      const newTableRow = castToTableRow(newRow, update)
       const currentRows = rows.map((e) => {
         if (e.id === newTableRow.id) {
           return newTableRow
@@ -315,6 +318,10 @@ const Exams: FC = () => {
                       {
                         label: 'Удалить',
                         iconLeft: IconTrash,
+                        onClick: async () => {
+                          await deleteSelected(selectedRowsId, request.exam.deleteExam)
+                          update()
+                        },
                         disabled: !selectedRowsId.length
                       }
                     ], system, ['Удалить'])}
