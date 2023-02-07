@@ -15,6 +15,7 @@ import { request } from './api/axios/request'
 import { userLoadedActionCreator } from './store/reducers/userLoaded/userLoadedActionCreators'
 import ModalView from './components/shared/ModalView/ModalView'
 import dayjs from 'dayjs'
+import NotificationList from './components/shared/NotificationList/NotificationList';
 
 require('dayjs/locale/ru')
 dayjs.locale('ru')
@@ -51,6 +52,7 @@ export const App: FC = () => {
 
   return (
     <Theme preset={presetGpnDefault}>
+      <NotificationList/>
       <ModalView />
       <RouterProvider router={router} />
     </Theme>

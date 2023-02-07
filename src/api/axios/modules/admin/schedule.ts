@@ -1,4 +1,4 @@
-import { AxiosInstance, AxiosResponse } from 'axios'
+import {AxiosError, AxiosInstance, AxiosResponse} from 'axios'
 import axiosConfig from '../../../../config/axiosСonfig'
 import { ISchedulePostResponse, IScheduleRow } from '../../../../ts/interfaces/IShedule'
 import { IResponseArray } from '../../../../ts/interfaces/IResponseInterfaces'

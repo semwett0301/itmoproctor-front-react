@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react'
+import React, {FC} from 'react'
 import cl from './Schedule.module.scss'
 import {Layout} from '@consta/uikit/Layout'
 import DatePeriodPicker from '../../shared/Filter/DatePeriodPicker/DatePeriodPicker'
@@ -22,15 +22,19 @@ import {closeModal, openModal} from '../../shared/ModalView/ModalView'
 import AddEditSchedule from '../modals/AddEditSchedule/AddEditSchedule'
 
 import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
-import {AxiosResponse} from 'axios'
+import {adminButtonChecker} from '../../../utils/adminButtonChecker';
+import {addNotification} from '../../shared/NotificationList/NotificationList';
 
 // DEFAULT FUNCTIONS
-const deleteSelected = async (selected: string[]): Promise<AxiosResponse[]> =>
-  Promise.all(selected.map((item) => request.schedule.deleteSchedule(item)))
+// const deleteSelected = async (selected: string[]): Promise<AxiosResponse[]> =>
+//   Promise.all(selected.map((item) => request.schedule.deleteSchedule(item)))
 
-import {IContextMenuItem} from '../../shared/CustomHeader/CustomHeader';
-import {adminButtonChecker} from '../../../utils/adminButtonChecker';
-
+const createDeleteProblemNotification: (reason: string) => void = reason => {
+  if (reason === '400 error') {
+    addNotification('При удалении расписаний произошла ошибка', 'alert')
+  }
+  closeModal()
+}
 
 const Schedule: FC = () => {
   // filter
@@ -96,7 +100,7 @@ const Schedule: FC = () => {
                                   .deleteSchedule(item._id)
                                   .then(closeModal)
                                   .then(update)
-                                  .catch(console.log)
+                                  .catch(createDeleteProblemNotification)
                               }}
                               onCancel={() => closeModal()}
                             />
@@ -162,7 +166,7 @@ const Schedule: FC = () => {
                             request.schedule
                               .deleteSchedule(row.id)
                               .then(update)
-                              .catch(console.log)
+                              .catch(createDeleteProblemNotification)
                           })
                         }
                       }

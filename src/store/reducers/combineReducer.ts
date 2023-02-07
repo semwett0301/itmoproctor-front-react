@@ -13,6 +13,7 @@ import { isLoadingReducer } from './isLoading/isLoadingReducer'
 import { osInfoReducer } from './osInfo/osInfoReducer'
 import { selectedModalReducer } from './selectedModal/selectedModalReducer'
 import {deviceSettingsReducer} from './deviceSettings/deviceSettingsReducer';
+import {notificationListReducer} from './notificationList/notificationListReducer';
 
 const tableReducer = combineReducers<{ [value in TablesEnum]: Reducer }>({
   exams: examsTableReducer,
@@ -31,5 +32,6 @@ export const combineReducer = combineReducers({
   organizations: organizationsReducer,
   tables: tableReducer,
   selectedModal: selectedModalReducer,
-  deviceSettings: deviceSettingsReducer
+  deviceSettings: deviceSettingsReducer,
+  notificationList: notificationListReducer
 })

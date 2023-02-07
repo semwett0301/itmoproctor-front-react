@@ -9,7 +9,7 @@ export interface IActionOrganizations extends IAction<OrganizationsActionTypes, 
     organization: IOrganization
   }
 }
-export const organizationsReducer: Reducer<IOrganizations> = (
+export const organizationsReducer: Reducer<IOrganizations, IActionOrganizations> = (
   state = {},
   action: IActionOrganizations
 ): IOrganizations => {

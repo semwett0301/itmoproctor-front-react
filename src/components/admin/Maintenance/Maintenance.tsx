@@ -84,7 +84,8 @@ const Maintenance: FC = () => {
                               onSubmit={() => {
                                 request.maintenance
                                   .deleteMaintenance(row._id)
-                                  .then(() => closeModal())
+                                  .then(closeModal)
+                                  .then(update)
                                   .catch((e) => console.log(e))
                               }}
                               onCancel={() => closeModal()}
@@ -178,8 +179,9 @@ const Maintenance: FC = () => {
                                     request.maintenance.deleteMaintenance(id)
                                   )
                                 )
-                                  .then(() => closeModal())
-                                  .catch((e) => console.log(e))
+                                  .then(closeModal)
+                                  .then(update)
+                                  .catch(console.log)
                               }}
                               onCancel={() => closeModal()}
                             />
