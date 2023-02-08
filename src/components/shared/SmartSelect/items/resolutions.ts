@@ -1,4 +1,4 @@
-import { DefaultItem } from '@consta/uikit/__internal__/src/components/Combobox/helpers'
+import {DefaultItem} from '@consta/uikit/__internal__/src/components/Combobox/helpers'
 
 export type ResolutionsType = DefaultItem & { value: string | null }
 const resolutions: ResolutionsType[] = [

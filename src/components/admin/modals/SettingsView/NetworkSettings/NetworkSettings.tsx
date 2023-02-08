@@ -1,14 +1,12 @@
-import React, { Dispatch, FC, useCallback, useEffect, useMemo, useState } from 'react'
-import { Text } from '@consta/uikit/Text'
-import { ProgressLine } from '@consta/uikit/ProgressLine'
+import React, {Dispatch, FC, useCallback, useEffect, useMemo, useState} from 'react'
+import {Text} from '@consta/uikit/Text'
+import {ProgressLine} from '@consta/uikit/ProgressLine'
 import cl from './NetworkSettings.module.scss'
-import { Button } from '@consta/uikit/Button'
-import { IconPause } from '@consta/uikit/IconPause'
-import { IconPlay } from '@consta/uikit/IconPlay'
-import { IpInfo } from '../../../../../api/axios/modules/network'
-import { request } from '../../../../../api/axios/request'
-import dayjs, { Dayjs } from 'dayjs'
-import { getColumnLeftOffset } from '@consta/uikit/__internal__/src/components/Table/helpers'
+import {Button} from '@consta/uikit/Button'
+import {IconPause} from '@consta/uikit/IconPause'
+import {IconPlay} from '@consta/uikit/IconPlay'
+import {IpInfo} from '../../../../../api/axios/modules/network'
+import {request} from '../../../../../api/axios/request'
 
 const NetworkSettings: FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)

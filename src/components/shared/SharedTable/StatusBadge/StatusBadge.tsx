@@ -1,8 +1,8 @@
-import React, { FC } from 'react'
-import { Badge } from '@consta/uikit/Badge'
+import React, {FC} from 'react'
+import {Badge} from '@consta/uikit/Badge'
 import cl from './StatusBadge.module.scss'
-import { IExamRow } from '../../../../ts/interfaces/IExams'
-import { IconRevert } from '@consta/uikit/IconRevert'
+import {IExamRow} from '../../../../ts/interfaces/IExams'
+import {IconRevert} from '@consta/uikit/IconRevert'
 
 export const getExamStatus = (data: IExamRow): number => {
   if (!data) return 0

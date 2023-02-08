@@ -1,4 +1,4 @@
-import { AxiosInstance, AxiosResponse } from 'axios'
+import {AxiosInstance, AxiosResponse} from 'axios'
 
 export type IpInfo = {
   ip: string

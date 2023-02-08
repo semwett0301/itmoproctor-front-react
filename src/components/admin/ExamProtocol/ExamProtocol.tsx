@@ -1,29 +1,29 @@
-import React, { FC, useEffect, useMemo, useRef, useState } from 'react'
+import React, {FC, useEffect, useMemo, useRef, useState} from 'react'
 import cn from './ExamProtocol.module.scss'
-import { Text } from '@consta/uikit/Text'
-import { Layout } from '@consta/uikit/Layout'
-import { cnMixSpace } from '@consta/uikit/MixSpace'
-import { Card } from '@consta/uikit/Card'
-import { Button } from '@consta/uikit/Button'
-import { cnMixCard } from '@consta/uikit/MixCard'
+import {Text} from '@consta/uikit/Text'
+import {Layout} from '@consta/uikit/Layout'
+import {cnMixSpace} from '@consta/uikit/MixSpace'
+import {Card} from '@consta/uikit/Card'
+import {Button} from '@consta/uikit/Button'
+import {cnMixCard} from '@consta/uikit/MixCard'
 import VideoPlayer from '../../shared/players/VideoPlayer/VideoPlayer'
 import videojs from 'video.js'
-import { useParams } from 'react-router-dom'
-import { request } from '../../../api/axios/request'
-import { IExam } from '../../../ts/interfaces/IExam'
+import {useParams} from 'react-router-dom'
+import {request} from '../../../api/axios/request'
+import {IExam} from '../../../ts/interfaces/IExam'
 import AboutBlock from './AboutBlock/AboutBlock'
 import ViolationsBlock from './ViolationsBlock/ViolationsBlock'
 import ExamProcessBlock from './ExamProcessBlock/ExamProcessBlock'
 import Loading from '../../shared/Loading/Loading'
 import NotFound from '../../shared/errors/NotFound/NotFound'
 import TimeLineHist from './TimeLineHist/TimeLineHist'
-import Player = videojs.Player
-import { openModal } from '../../shared/ModalView/ModalView'
+import {openModal} from '../../shared/ModalView/ModalView'
 import ExamDeclineModal from './modals/ExamDeclineModal/ExamDeclineModal'
 import ExamSubmitModal from './modals/ExamSubmitModal/ExamSubmitModal'
 import axiosConfig from '../../../config/api/axiosСonfig';
 import {useAppSelector} from '../../../hooks/store/useAppSelector';
 import {classJoiner} from '../../../utils/common/styleClassesUtills';
+import Player = videojs.Player;
 
 // TYPES
 

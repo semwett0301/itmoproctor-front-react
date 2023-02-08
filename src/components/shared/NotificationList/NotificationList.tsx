@@ -2,7 +2,8 @@ import React, {FC} from 'react';
 import {SnackBar, SnackBarItemStatus} from '@consta/uikit/SnackBar';
 import store from '../../../store';
 import {
-  addNotificationInNotificationList, removeNotificationInNotificationList
+  addNotificationInNotificationList,
+  removeNotificationInNotificationList
 } from '../../../store/reducers/notificationList/notificationListActionCreators';
 
 import cl from './NotificationList.module.scss'

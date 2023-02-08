@@ -1,13 +1,13 @@
-import React, { FC } from 'react'
+import React, {FC} from 'react'
 import cn from './NoteWithAuthor.module.scss'
-import { Text } from '@consta/uikit/Text'
+import {Text} from '@consta/uikit/Text'
 import dayjs from 'dayjs'
-import { Button } from '@consta/uikit/Button'
-import { IconAttach } from '@consta/uikit/IconAttach'
-import { openModal } from '../../../../shared/ModalView/ModalView'
-import { INote } from '../../../../../ts/interfaces/INotes'
+import {Button} from '@consta/uikit/Button'
+import {IconAttach} from '@consta/uikit/IconAttach'
+import {openModal} from '../../../../shared/ModalView/ModalView'
+import {INote} from '../../../../../ts/interfaces/INotes'
 import AttachModal from '../../modals/AttachModal/AttachModal'
-import { IExam } from '../../../../../ts/interfaces/IExam'
+import {IExam} from '../../../../../ts/interfaces/IExam'
 // TYPES
 
 // CONSTANTS

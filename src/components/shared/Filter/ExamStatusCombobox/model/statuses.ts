@@ -1,4 +1,4 @@
-import { tagStatusesDeclaration } from '../StatusTag/StatusTag'
+import {tagStatusesDeclaration} from '../StatusTag/StatusTag'
 
 export const statuses: tagStatusesDeclaration = {
   unplanned: { label: 'Не запланирован', className: 'unplanned' },

@@ -1,9 +1,9 @@
-import React, { FC, ReactElement, useRef, useState } from 'react'
-import { Header, HeaderLogin, HeaderModule } from '@consta/uikit/Header'
+import React, {FC, ReactElement, useRef, useState} from 'react'
+import {Header, HeaderLogin, HeaderModule} from '@consta/uikit/Header'
 import './CustomHeader.scss'
-import { ContextMenu } from '@consta/uikit/ContextMenu'
-import { IconComponent } from '@consta/uikit/Icon'
-import { getShortName } from '../../../utils/common/nameHelper'
+import {ContextMenu} from '@consta/uikit/ContextMenu'
+import {IconComponent} from '@consta/uikit/Icon'
+import {getShortName} from '../../../utils/common/nameHelper'
 import {useAppSelector} from '../../../hooks/store/useAppSelector';
 
 export type IContextMenuItem = {

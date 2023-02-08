@@ -1,8 +1,8 @@
-import React, { FC, ReactNode } from 'react'
+import React, {FC, ReactNode} from 'react'
 import cn from './SubmitModal.module.scss'
-import { Text } from '@consta/uikit/Text'
+import {Text} from '@consta/uikit/Text'
 import CloseModalButton from '../CloseModalButton/CloseModalButton'
-import { cnMixSpace } from '@consta/uikit/MixSpace'
+import {cnMixSpace} from '@consta/uikit/MixSpace'
 // TYPES
 
 // CONSTANTS

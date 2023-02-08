@@ -1,13 +1,13 @@
-import React, { FC, useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import ModalViewConstructor, { IRowViewItem } from '../TwoBlockModalRow/ModalViewConstructor'
-import { request } from '../../../../api/axios/request'
-import { getStrDate } from '../../../../utils/common/dateUtils'
-import { getFullName } from '../../../../utils/common/nameHelper'
+import React, {FC, useEffect, useState} from 'react'
+import {useTranslation} from 'react-i18next'
+import ModalViewConstructor, {IRowViewItem} from '../TwoBlockModalRow/ModalViewConstructor'
+import {request} from '../../../../api/axios/request'
+import {getStrDate} from '../../../../utils/common/dateUtils'
+import {getFullName} from '../../../../utils/common/nameHelper'
 import cl from '../ExamView/ExamView.module.scss'
 import ModalTitle from '../../../shared/ModalView/ModalTitle/ModalTitle'
-import { SkeletonText } from '@consta/uikit/Skeleton'
-import { cnMixSpace } from '@consta/uikit/MixSpace'
+import {SkeletonText} from '@consta/uikit/Skeleton'
+import {cnMixSpace} from '@consta/uikit/MixSpace'
 
 // TYPES
 interface IProctorViewProp {

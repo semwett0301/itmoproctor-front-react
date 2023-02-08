@@ -1,7 +1,7 @@
-import { IVerify } from '../../../../../ts/interfaces/IVerify'
-import { getGender } from '../../../../shared/SmartSelect/items/genders'
-import { getCitizenItem } from '../../../../shared/SmartSelect/items/citizenships'
-import { getDocumentTypeItem } from '../../../../shared/SmartSelect/items/documents'
+import {IVerify} from '../../../../../ts/interfaces/IVerify'
+import {getGender} from '../../../../shared/SmartSelect/items/genders'
+import {getCitizenItem} from '../../../../shared/SmartSelect/items/citizenships'
+import {getDocumentTypeItem} from '../../../../shared/SmartSelect/items/documents'
 import {getFullName} from '../../../../../utils/common/nameHelper';
 
 interface VerifyInfo {

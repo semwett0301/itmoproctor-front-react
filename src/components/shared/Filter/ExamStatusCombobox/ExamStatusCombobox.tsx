@@ -1,9 +1,9 @@
-import React, { FC } from 'react'
-import { Combobox } from '@consta/uikit/Combobox'
+import React, {FC} from 'react'
+import {Combobox} from '@consta/uikit/Combobox'
 import cl from './ExamStatusCombobox.module.scss'
-import StatusTag, { TagPropStatus } from './StatusTag/StatusTag'
-import { SelectItem } from '@consta/uikit/__internal__/src/components/SelectComponents/SelectItem/SelectItem'
-import { statuses } from './model/statuses'
+import StatusTag, {TagPropStatus} from './StatusTag/StatusTag'
+import {SelectItem} from '@consta/uikit/__internal__/src/components/SelectComponents/SelectItem/SelectItem'
+import {statuses} from './model/statuses'
 
 // TYPES
 

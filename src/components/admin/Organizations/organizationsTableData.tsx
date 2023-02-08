@@ -1,7 +1,7 @@
-import { TableColumn } from '@consta/uikit/Table'
-import React, { ReactNode } from 'react'
-import { Checkbox } from '@consta/uikit/Checkbox'
-import { ITableRow } from '../../shared/SharedTable/SharedTable'
+import {TableColumn} from '@consta/uikit/Table'
+import React, {ReactNode} from 'react'
+import {Checkbox} from '@consta/uikit/Checkbox'
+import {ITableRow} from '../../shared/SharedTable/SharedTable'
 import HeaderCell from '../../shared/SharedTable/HeaderCell/HeaderCell'
 import TextWithTooltip from '../../shared/SharedTable/TextWithTooltip/TextWithTooltip'
 

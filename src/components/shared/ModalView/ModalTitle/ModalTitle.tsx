@@ -1,6 +1,6 @@
-import React, { FC } from 'react'
+import React, {FC} from 'react'
 import cl from './ModalTitle.module.scss'
-import { Text } from '@consta/uikit/Text'
+import {Text} from '@consta/uikit/Text'
 import CloseModalButton from '../../../admin/modals/CloseModalButton/CloseModalButton'
 
 // TYPES

@@ -1,11 +1,11 @@
-import React, { FC } from 'react'
+import React, {FC} from 'react'
 import cl from '../DeleteSubmit/DeleteSubmit.module.scss'
 import ModalTitle from '../../../shared/ModalView/ModalTitle/ModalTitle'
-import { Text } from '@consta/uikit/Text'
-import { cnMixSpace } from '@consta/uikit/MixSpace'
-import { classJoiner } from '../../../../utils/common/styleClassesUtills'
-import { Button } from '@consta/uikit/Button'
-import { IconDownload } from '@consta/uikit/IconDownload'
+import {Text} from '@consta/uikit/Text'
+import {cnMixSpace} from '@consta/uikit/MixSpace'
+import {classJoiner} from '../../../../utils/common/styleClassesUtills'
+import {Button} from '@consta/uikit/Button'
+import {IconDownload} from '@consta/uikit/IconDownload'
 
 // TYPES
 interface IDownloadSubmitProp {

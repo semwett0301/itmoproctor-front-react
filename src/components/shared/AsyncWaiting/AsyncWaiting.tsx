@@ -1,6 +1,6 @@
-import React, { FC } from 'react'
-import { ProgressSpin } from '@consta/uikit/ProgressSpin'
-import { Loader } from '@consta/uikit/Loader'
+import React, {FC} from 'react'
+import {ProgressSpin} from '@consta/uikit/ProgressSpin'
+import {Loader} from '@consta/uikit/Loader'
 import cl from './AsyncWaiting.module.scss'
 
 type AsyncWaitingProps = {

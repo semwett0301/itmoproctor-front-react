@@ -1,7 +1,7 @@
-import React, { FC } from 'react'
-import { IconClose } from '@consta/uikit/IconClose'
-import { Button } from '@consta/uikit/Button'
-import { closeModal } from '../../../shared/ModalView/ModalView'
+import React, {FC} from 'react'
+import {IconClose} from '@consta/uikit/IconClose'
+import {Button} from '@consta/uikit/Button'
+import {closeModal} from '../../../shared/ModalView/ModalView'
 
 const CloseModalButton: FC = () => {
   return (

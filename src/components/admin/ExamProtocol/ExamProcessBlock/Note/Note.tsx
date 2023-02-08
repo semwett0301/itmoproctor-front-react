@@ -1,14 +1,14 @@
-import React, { FC, useEffect, useState } from 'react'
-import { INote } from '../../../../../ts/interfaces/INotes'
+import React, {FC, useEffect, useState} from 'react'
+import {INote} from '../../../../../ts/interfaces/INotes'
 import cn from './Note.module.scss'
-import { Text } from '@consta/uikit/Text'
-import { IconAttach } from '@consta/uikit/IconAttach'
-import { openModal } from '../../../../shared/ModalView/ModalView'
-import { Button } from '@consta/uikit/Button'
-import { IconAlert } from '@consta/uikit/IconAlert'
+import {Text} from '@consta/uikit/Text'
+import {IconAttach} from '@consta/uikit/IconAttach'
+import {openModal} from '../../../../shared/ModalView/ModalView'
+import {Button} from '@consta/uikit/Button'
+import {IconAlert} from '@consta/uikit/IconAlert'
 import dayjs from 'dayjs'
 import AttachModal from '../../modals/AttachModal/AttachModal'
-import { IExam } from '../../../../../ts/interfaces/IExam'
+import {IExam} from '../../../../../ts/interfaces/IExam'
 
 // TYPES
 interface INoteProp {

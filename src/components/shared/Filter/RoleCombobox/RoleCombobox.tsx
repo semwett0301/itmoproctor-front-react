@@ -1,6 +1,6 @@
-import React, { FC } from 'react'
-import { Combobox } from '@consta/uikit/Combobox'
-import { DefaultItem } from '@consta/uikit/__internal__/src/components/Combobox/helpers'
+import React, {FC} from 'react'
+import {Combobox} from '@consta/uikit/Combobox'
+import {DefaultItem} from '@consta/uikit/__internal__/src/components/Combobox/helpers'
 
 // CONSTANTS
 const roleList: DefaultItem[] = [

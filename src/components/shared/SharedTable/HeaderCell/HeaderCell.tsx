@@ -1,6 +1,6 @@
-import React, { FC } from 'react'
+import React, {FC} from 'react'
 import cl from './HeaderCell.module.scss'
-import { Text } from '@consta/uikit/Text'
+import {Text} from '@consta/uikit/Text'
 
 // TYPES
 interface IHeaderCellProp {

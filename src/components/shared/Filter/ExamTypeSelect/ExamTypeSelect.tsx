@@ -1,5 +1,5 @@
-import React, { FC } from 'react'
-import { Combobox } from '@consta/uikit/Combobox'
+import React, {FC} from 'react'
+import {Combobox} from '@consta/uikit/Combobox'
 
 // TYPES
 export type typeItem = {

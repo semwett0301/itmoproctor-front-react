@@ -4,8 +4,10 @@ import {useAppDispatch} from '../../store/useAppDispatch';
 import {useAppSelector} from '../../store/useAppSelector';
 import {useCallback, useEffect} from 'react';
 import {
-  setCameraInDeviceSettings, setFrequencyInDeviceSettings,
-  setInputAudioInDeviceSettings, setResolutionInDeviceSettings
+  setCameraInDeviceSettings,
+  setFrequencyInDeviceSettings,
+  setInputAudioInDeviceSettings,
+  setResolutionInDeviceSettings
 } from '../../../store/reducers/deviceSettings/deviceSettingsActionCreators';
 import {useDevices} from './useDevices';
 

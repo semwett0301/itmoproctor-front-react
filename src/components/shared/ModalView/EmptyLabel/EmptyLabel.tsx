@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, {FC} from 'react'
 import cl from './EmptyLabel.module.scss'
 
 const EmptyLabel: FC = () => {

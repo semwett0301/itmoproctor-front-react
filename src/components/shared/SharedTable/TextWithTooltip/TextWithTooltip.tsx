@@ -1,6 +1,6 @@
-import React, { FC } from 'react'
-import { withTooltip } from '@consta/uikit/withTooltip'
-import { Text } from '@consta/uikit/Text'
+import React, {FC} from 'react'
+import {withTooltip} from '@consta/uikit/withTooltip'
+import {Text} from '@consta/uikit/Text'
 import cl from './TextWithTooltip.module.scss'
 
 // TYPES

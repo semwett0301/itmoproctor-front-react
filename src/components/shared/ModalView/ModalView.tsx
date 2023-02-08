@@ -1,5 +1,5 @@
-import React, { FC } from 'react'
-import { Modal } from '@consta/uikit/Modal'
+import React, {FC} from 'react'
+import {Modal} from '@consta/uikit/Modal'
 import {
   setComponentActionCreator,
   setInvisibleActionCreator,

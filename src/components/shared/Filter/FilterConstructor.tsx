@@ -1,8 +1,8 @@
-import React, { FC, ReactNode } from 'react'
-import { Layout } from '@consta/uikit/Layout'
-import { cnMixSpace } from '@consta/uikit/MixSpace'
+import React, {FC, ReactNode} from 'react'
+import {Layout} from '@consta/uikit/Layout'
+import {cnMixSpace} from '@consta/uikit/MixSpace'
 import cl from './FilterConstructor.module.scss'
-import { classJoiner } from '../../../utils/common/styleClassesUtills'
+import {classJoiner} from '../../../utils/common/styleClassesUtills'
 
 interface IFilterComponent {
   key: string | number

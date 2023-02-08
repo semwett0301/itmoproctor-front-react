@@ -1,8 +1,6 @@
-import { SocketCallback } from '../../../ts/types/SocketCallback'
-import { IExamRow } from '../../../ts/interfaces/IExams'
-import { INote } from '../../../ts/interfaces/INotes'
-import { Socket } from 'socket.io-client'
-import { IExamsSocket } from './exams'
+import {SocketCallback} from '../../../ts/types/SocketCallback'
+import {INote} from '../../../ts/interfaces/INotes'
+import {Socket} from 'socket.io-client'
 
 export interface INotesSocket {
   subscribe: (examId: string, callback: SocketCallback<INote[]>) => void

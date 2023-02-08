@@ -1,7 +1,7 @@
-import React, { FC, useEffect, useState } from 'react'
-import { IReport, ViolationsNames } from '../../../../ts/interfaces/IExam'
-import { Histogram, HistogramProps } from '@consta/charts/Histogram'
-import { Text } from '@consta/uikit/Text'
+import React, {FC, useEffect, useState} from 'react'
+import {IReport, ViolationsNames} from '../../../../ts/interfaces/IExam'
+import {Histogram, HistogramProps} from '@consta/charts/Histogram'
+import {Text} from '@consta/uikit/Text'
 
 // CONSTANTS
 

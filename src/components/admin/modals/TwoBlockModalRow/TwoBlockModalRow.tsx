@@ -1,5 +1,5 @@
-import React, { FC } from 'react'
-import { Text } from '@consta/uikit/Text'
+import React, {FC} from 'react'
+import {Text} from '@consta/uikit/Text'
 import cl from './TwoBlockModalRow.module.scss'
 
 // TYPES

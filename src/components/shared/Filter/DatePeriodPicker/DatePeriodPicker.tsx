@@ -1,9 +1,9 @@
-import React, { FC } from 'react'
+import React, {FC} from 'react'
 import cl from './DatePeriodPicker.module.scss'
-import { IconCalendar } from '@consta/uikit/IconCalendar'
-import { DatePicker } from '@consta/uikit/DatePicker'
-import dayjs, { Dayjs } from 'dayjs'
-import { minDate } from './DatePickerConfig'
+import {IconCalendar} from '@consta/uikit/IconCalendar'
+import {DatePicker} from '@consta/uikit/DatePicker'
+import dayjs, {Dayjs} from 'dayjs'
+import {minDate} from './DatePickerConfig'
 
 interface IDatePeriodPickerProp {
   value?: [Dayjs, Dayjs] | [Dayjs]

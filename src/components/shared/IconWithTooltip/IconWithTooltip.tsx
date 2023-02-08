@@ -1,8 +1,8 @@
-import React, { FC } from 'react'
+import React, {FC} from 'react'
 import cn from './IconWithTooltip.module.scss'
-import { IconComponent } from '@consta/uikit/Icon'
-import { TooltipProps, withTooltip } from '@consta/uikit/withTooltip'
-import { IconProps } from '@consta/uikit/__internal__/src/icons/Icon/Icon'
+import {IconComponent} from '@consta/uikit/Icon'
+import {TooltipProps, withTooltip} from '@consta/uikit/withTooltip'
+import {IconProps} from '@consta/uikit/__internal__/src/icons/Icon/Icon'
 
 // TYPES
 

@@ -1,12 +1,12 @@
-import React, { FC, useState } from 'react'
+import React, {FC, useState} from 'react'
 import cn from './ExamDeclineModal.module.scss'
 import ModalTitle from '../../../../shared/ModalView/ModalTitle/ModalTitle'
-import { Text } from '@consta/uikit/Text'
-import { Checkbox } from '@consta/uikit/Checkbox'
-import { TextField } from '@consta/uikit/TextField'
-import { Button } from '@consta/uikit/Button'
-import { IconCheck } from '@consta/icons/IconCheck'
-import { IExam } from '../../../../../ts/interfaces/IExam'
+import {Text} from '@consta/uikit/Text'
+import {Checkbox} from '@consta/uikit/Checkbox'
+import {TextField} from '@consta/uikit/TextField'
+import {Button} from '@consta/uikit/Button'
+import {IconCheck} from '@consta/icons/IconCheck'
+import {IExam} from '../../../../../ts/interfaces/IExam'
 // TYPES
 
 // CONSTANTS

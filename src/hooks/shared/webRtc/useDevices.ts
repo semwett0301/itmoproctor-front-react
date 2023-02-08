@@ -1,12 +1,5 @@
 import {IDeviceItem} from '../../../ts/interfaces/IDeviceItem';
-import {useCallback, useEffect, useState} from 'react';
-import {IResolutionItem} from '../../../ts/interfaces/IResolutionItem';
-import {useAppDispatch} from '../../store/useAppDispatch';
-import {useAppSelector} from '../../store/useAppSelector';
-import {
-  setCameraInDeviceSettings, setFrequencyInDeviceSettings,
-  setInputAudioInDeviceSettings, setResolutionInDeviceSettings
-} from '../../../store/reducers/deviceSettings/deviceSettingsActionCreators';
+import {useEffect, useState} from 'react';
 
 export function useDevices(): {
   waitDevices: boolean,

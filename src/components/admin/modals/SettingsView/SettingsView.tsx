@@ -1,20 +1,17 @@
-import React, { FC, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import React, {FC, useMemo, useState} from 'react'
 import ModalTitle from '../../../shared/ModalView/ModalTitle/ModalTitle'
-import ModalSidebar, {
-  ModalSidebarButton
-} from '../../../shared/ModalView/ModalSidebar/ModalSidebar'
-import { IconVideo } from '@consta/icons/IconVideo'
-import { IconScreenFilled } from '@consta/icons/IconScreenFilled'
-import { IconWorldFilled } from '@consta/icons/IconWorldFilled'
-import { IconInfo } from '@consta/icons/IconInfo'
+import ModalSidebar, {ModalSidebarButton} from '../../../shared/ModalView/ModalSidebar/ModalSidebar'
+import {IconVideo} from '@consta/icons/IconVideo'
+import {IconScreenFilled} from '@consta/icons/IconScreenFilled'
+import {IconWorldFilled} from '@consta/icons/IconWorldFilled'
+import {IconInfo} from '@consta/icons/IconInfo'
 import VideoSettings from './ConnectionVideoSettings/VideoSettings/VideoSettings'
 
 import cl from './SettingsView.module.scss'
-import { Layout } from '@consta/uikit/Layout'
+import {Layout} from '@consta/uikit/Layout'
 import ScreenSettings from './ConnectionVideoSettings/ScreenSettings/ScreenSettings'
 import SystemSettings from './SystemSettings/SystemSettings'
 import NetworkSettings from './NetworkSettings/NetworkSettings'
-import { classJoiner } from '../../../../utils/common/styleClassesUtills'
 
 interface SettingsConfigElement extends ModalSidebarButton {
   component?: JSX.Element

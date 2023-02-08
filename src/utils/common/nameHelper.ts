@@ -1,6 +1,6 @@
-import { IInspector } from '../../ts/interfaces/IInspector'
-import { IExpert } from '../../ts/interfaces/IExpert'
-import { IStudent } from '../../ts/interfaces/IStudent'
+import {IInspector} from '../../ts/interfaces/IInspector'
+import {IExpert} from '../../ts/interfaces/IExpert'
+import {IStudent} from '../../ts/interfaces/IStudent'
 
 export const getFullName = (...args: string[]): string => {
   return args.join(' ')

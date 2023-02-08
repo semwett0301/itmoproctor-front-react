@@ -1,10 +1,7 @@
-import React, { FC } from 'react'
+import React, {FC} from 'react'
 
-import PaginationField, {
-  ITotalRowsVariants,
-  totalRowsVariants
-} from './PaginationField/PaginationField'
-import { IPagination } from '../../../ts/interfaces/IPagination'
+import PaginationField, {ITotalRowsVariants, totalRowsVariants} from './PaginationField/PaginationField'
+import {IPagination} from '../../../ts/interfaces/IPagination'
 
 interface ISharedPaginationProps {
   pagination: IPagination

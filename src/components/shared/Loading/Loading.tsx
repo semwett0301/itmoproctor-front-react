@@ -1,7 +1,6 @@
-import React, { FC } from 'react'
+import React, {FC} from 'react'
 import cn from './Loading.module.scss'
-import { ProgressSpin } from '@consta/uikit/ProgressSpin'
-import { Loader } from '@consta/uikit/Loader'
+import {Loader} from '@consta/uikit/Loader'
 
 const Loading: FC = () => {
   return (

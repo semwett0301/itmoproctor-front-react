@@ -1,4 +1,4 @@
-import { DefaultItem } from '@consta/uikit/Select'
+import {DefaultItem} from '@consta/uikit/Select'
 
 const documents: DefaultItem[] = [
   { id: 'passport', label: 'Паспорт' },

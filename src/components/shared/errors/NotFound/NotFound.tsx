@@ -1,8 +1,8 @@
-import React, { FC } from 'react'
-import { Responses404 } from '@consta/uikit/Responses404'
+import React, {FC} from 'react'
+import {Responses404} from '@consta/uikit/Responses404'
 import cl from './NotFound.module.scss'
-import { Button } from '@consta/uikit/Button'
-import { useNavigate } from 'react-router-dom'
+import {Button} from '@consta/uikit/Button'
+import {useNavigate} from 'react-router-dom'
 
 const NotFound: FC = () => {
   const navigate = useNavigate()

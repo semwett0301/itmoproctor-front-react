@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, {FC} from 'react';
 import dayjs from 'dayjs';
 import TwoRowCell from '../TwoRowCell/TwoRowCell';
 

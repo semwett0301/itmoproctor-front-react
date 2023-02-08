@@ -1,4 +1,4 @@
-import { IAttach, IPostAttach } from './IVerify'
+import {IAttach, IPostAttach} from './IVerify'
 
 interface IShortUser {
   _id: string

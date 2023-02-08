@@ -1,4 +1,4 @@
-import { DefaultItem } from '@consta/uikit/Combobox'
+import {DefaultItem} from '@consta/uikit/Combobox'
 
 export const verificationsList = ['workplace', 'face', 'document'] as const
 export type VerificationType = typeof verificationsList[number]

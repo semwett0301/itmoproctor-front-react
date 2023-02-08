@@ -1,9 +1,9 @@
-import React, { FC, useEffect } from 'react'
+import React, {FC} from 'react'
 import cn from './ExamRules.module.scss'
-import { IFactors, IFactorsKeys } from '../../../../../ts/interfaces/IExam'
-import { factorsConfig } from '../../../../../config/admin/protocol/factorsConfig'
+import {IFactors, IFactorsKeys} from '../../../../../ts/interfaces/IExam'
+import {factorsConfig} from '../../../../../config/admin/protocol/factorsConfig'
 import IconWithTooltip from '../../../../shared/IconWithTooltip/IconWithTooltip'
-import { Text } from '@consta/uikit/Text'
+import {Text} from '@consta/uikit/Text'
 // TYPES
 
 // CONSTANTS

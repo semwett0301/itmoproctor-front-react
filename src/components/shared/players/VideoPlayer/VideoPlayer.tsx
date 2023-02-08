@@ -1,11 +1,11 @@
-import React, { FC, useEffect } from 'react'
-import videojs, { VideoJsPlayer } from 'video.js'
+import React, {FC, useEffect} from 'react'
+import videojs, {VideoJsPlayer} from 'video.js'
 import 'video.js/dist/video-js.css'
 import './VideoPlayer.scss'
-import { backwardIcon, downloadIcon, forwardIcon } from './IconsHTML'
-import { openModal } from '../../ModalView/ModalView'
+import {backwardIcon, downloadIcon, forwardIcon} from './IconsHTML'
+import {openModal} from '../../ModalView/ModalView'
 import DownloadSubmit from '../../../admin/modals/DownloadSubmit/DownloadSubmit'
-import { IExam } from '../../../../ts/interfaces/IExam'
+import {IExam} from '../../../../ts/interfaces/IExam'
 
 // TYPES
 export interface SourceObject {

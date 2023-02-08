@@ -1,9 +1,9 @@
-import { IOrganization } from './IOrganizations'
-import { IStudent } from './IStudent'
-import { IInspector } from './IInspector'
-import { IExpert } from './IExpert'
-import { ICourse } from './ICourse'
-import { VerificationType } from '../types/Verifications'
+import {IOrganization} from './IOrganizations'
+import {IStudent} from './IStudent'
+import {IInspector} from './IInspector'
+import {IExpert} from './IExpert'
+import {ICourse} from './ICourse'
+import {VerificationType} from '../types/Verifications'
 
 export interface IVerified {
   _id: string

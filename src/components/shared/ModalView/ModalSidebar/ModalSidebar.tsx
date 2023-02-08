@@ -1,8 +1,6 @@
-import { Button } from '@consta/uikit/Button'
-import React, { Dispatch, FC } from 'react'
+import React, {Dispatch, FC} from 'react'
 import cl from './ModalSidebar.module.scss'
 import SidebarItem from './SidebarItem/SidebarItem'
-import { IconComponent } from '@consta/icons/Icon'
 
 export interface ModalSidebarButton {
   title: string

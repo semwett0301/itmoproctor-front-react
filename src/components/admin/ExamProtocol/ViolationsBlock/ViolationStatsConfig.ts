@@ -1,4 +1,4 @@
-import { IVideos } from '../../../../ts/interfaces/IExam'
+import {IVideos} from '../../../../ts/interfaces/IExam'
 import {getTime} from '../../../../utils/common/times';
 
 export interface violationsStatsConfig {

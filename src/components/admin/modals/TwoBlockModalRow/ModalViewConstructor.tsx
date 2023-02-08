@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, {FC} from 'react'
 import TwoBlockModalRow from './TwoBlockModalRow'
 
 export type IRowViewItem = {

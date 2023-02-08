@@ -1,7 +1,7 @@
-import React, { FC, MouseEventHandler } from 'react'
+import React, {FC, MouseEventHandler} from 'react'
 import cn from './VerifyBtn.module.scss'
-import { IconUser } from '@consta/uikit/IconUser'
-import { IconAlignLeft } from '@consta/uikit/IconAlignLeft'
+import {IconUser} from '@consta/uikit/IconUser'
+import {IconAlignLeft} from '@consta/uikit/IconAlignLeft'
 // TYPES
 
 // CONSTANTS

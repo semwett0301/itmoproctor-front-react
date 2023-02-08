@@ -1,6 +1,6 @@
-import React, { FC } from 'react'
-import { Layout } from '@consta/uikit/Layout'
-import { TextField } from '@consta/uikit/TextField'
+import React, {FC} from 'react'
+import {Layout} from '@consta/uikit/Layout'
+import {TextField} from '@consta/uikit/TextField'
 
 type baseProps = {
   label: string

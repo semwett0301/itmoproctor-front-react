@@ -1,7 +1,7 @@
-import React, { FC } from 'react'
+import React, {FC} from 'react'
 import cn from './ViolationIcon.module.scss'
-import { ViolationsNames } from '../../../../../ts/interfaces/IExam'
-import { IconWarning } from '@consta/uikit/IconWarning'
+import {ViolationsNames} from '../../../../../ts/interfaces/IExam'
+import {IconWarning} from '@consta/uikit/IconWarning'
 
 // TYPES
 type IViolationsClasses = {

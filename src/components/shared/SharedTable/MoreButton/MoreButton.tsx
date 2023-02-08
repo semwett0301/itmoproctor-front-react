@@ -1,10 +1,10 @@
-import React, { FC, useRef } from 'react'
-import { IconBento } from '@consta/uikit/IconBento'
-import { Button } from '@consta/uikit/Button'
+import React, {FC, useRef} from 'react'
+import {IconBento} from '@consta/uikit/IconBento'
+import {Button} from '@consta/uikit/Button'
 import cl from '../SharedTable.module.scss'
-import { ContextMenu } from '@consta/uikit/ContextMenu'
-import { useFlag } from '@consta/uikit/useFlag'
-import { IContextMenuItem } from '../../CustomHeader/CustomHeader'
+import {ContextMenu} from '@consta/uikit/ContextMenu'
+import {useFlag} from '@consta/uikit/useFlag'
+import {IContextMenuItem} from '../../CustomHeader/CustomHeader'
 
 // TYPES
 

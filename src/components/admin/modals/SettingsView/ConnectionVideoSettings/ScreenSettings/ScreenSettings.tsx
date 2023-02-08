@@ -1,10 +1,10 @@
-import React, { FC, useState } from 'react'
+import React, {FC, useState} from 'react'
 import cl from '../ConnectionVideoSettings.module.scss'
-import { Layout } from '@consta/uikit/Layout'
+import {Layout} from '@consta/uikit/Layout'
 import CheckingConnection from '../../CheckingConnection/CheckingConnection'
-import { Select } from '@consta/uikit/Select'
-import { TextField } from '@consta/uikit/TextField'
-import { Item } from '../../../../../../ts/types/Item'
+import {Select} from '@consta/uikit/Select'
+import {TextField} from '@consta/uikit/TextField'
+import {Item} from '../../../../../../ts/types/Item'
 
 const items: Item[] = [
   {

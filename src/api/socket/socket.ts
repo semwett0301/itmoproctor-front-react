@@ -1,7 +1,7 @@
-import { notifyInstance } from './init/notifyInstance'
-import exams, { IExamsSocket } from './modules/exams'
-import exam, { IExamSocket } from './modules/exam'
-import notes, { INotesSocket } from './modules/notes'
+import {notifyInstance} from './init/notifyInstance'
+import exams, {IExamsSocket} from './modules/exams'
+import exam, {IExamSocket} from './modules/exam'
+import notes, {INotesSocket} from './modules/notes'
 
 export interface IRequestSocket {
   exam: IExamSocket

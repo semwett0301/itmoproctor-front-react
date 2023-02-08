@@ -1,8 +1,8 @@
-import { TableColumn } from '@consta/uikit/Table'
-import { ITableRow } from '../../components/shared/SharedTable/SharedTable'
-import { Checkbox } from '@consta/uikit/Checkbox'
+import {TableColumn} from '@consta/uikit/Table'
+import {ITableRow} from '../../components/shared/SharedTable/SharedTable'
+import {Checkbox} from '@consta/uikit/Checkbox'
 import React from 'react'
-import { IPagination } from '../../ts/interfaces/IPagination'
+import {IPagination} from '../../ts/interfaces/IPagination'
 
 export function selectAll<T extends ITableRow>(
   columns: TableColumn<T>[],

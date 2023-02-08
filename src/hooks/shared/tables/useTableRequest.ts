@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import {Dispatch, SetStateAction, useEffect, useState} from 'react'
 
 export function useTableRequest<ROWS extends { id: string }>(
   request: () => Promise<ROWS[]>,
