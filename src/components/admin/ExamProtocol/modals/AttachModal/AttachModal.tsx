@@ -2,10 +2,10 @@ import React, { FC } from 'react'
 import { IAttach } from '../../../../../ts/interfaces/IVerify'
 import cn from './AttachModal.module.scss'
 import ModalTitle from '../../../../shared/ModalView/ModalTitle/ModalTitle'
-import axiosConfig from '../../../../../config/axiosСonfig'
 import { IExam } from '../../../../../ts/interfaces/IExam'
 import { Button } from '@consta/uikit/Button'
 import { IconDownload } from '@consta/icons/IconDownload'
+import axiosConfig from '../../../../../config/api/axiosСonfig';
 
 // TYPES
 

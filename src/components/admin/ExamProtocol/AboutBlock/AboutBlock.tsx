@@ -1,6 +1,5 @@
 import React, { Dispatch, FC } from 'react'
 import { IExam } from '../../../../ts/interfaces/IExam'
-import { classJoiner } from '../../../../utils/styleClassesUtills'
 import { cnMixSpace } from '@consta/uikit/MixSpace'
 import cn from './AboutBlock.module.scss'
 import { Card } from '@consta/uikit/Card'
@@ -15,8 +14,9 @@ import ExamRules from './ExamRules/ExamRules'
 import ProtocolVerifiedModal from './ProtocolVerifiedModal/ProtocolVerifiedModal'
 import IconWithTooltip from '../../../shared/IconWithTooltip/IconWithTooltip'
 import { IconCancel } from '@consta/icons/IconCancel'
-import { useAppSelector } from '../../../../hooks/reduxHooks'
 import { TextField } from '@consta/uikit/TextField'
+import {useAppSelector} from '../../../../hooks/store/useAppSelector';
+import {classJoiner} from '../../../../utils/common/styleClassesUtills';
 
 // TYPES
 

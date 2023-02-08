@@ -8,12 +8,12 @@ import { Text } from '@consta/uikit/Text'
 import { IAttach, IVerify } from '../../../../../ts/interfaces/IVerify'
 import ModalTitle from '../../../../shared/ModalView/ModalTitle/ModalTitle'
 import { cnMixSpace } from '@consta/uikit/MixSpace'
-import { classJoiner, classWatcher } from '../../../../../utils/styleClassesUtills'
-import axiosConfig from '../../../../../config/axiosСonfig'
 import { Button } from '@consta/uikit/Button'
 import { IconRemove } from '@consta/uikit/IconRemove'
 import { IconInfo } from '@consta/uikit/IconInfo'
 import { getVerifyInfo } from './verifiedInfoConfig'
+import axiosConfig from '../../../../../config/api/axiosСonfig';
+import {classJoiner, classWatcher} from '../../../../../utils/common/styleClassesUtills';
 // TYPES
 
 // CONSTANTS

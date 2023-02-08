@@ -3,7 +3,6 @@ import cn from './ExamProtocol.module.scss'
 import { Text } from '@consta/uikit/Text'
 import { Layout } from '@consta/uikit/Layout'
 import { cnMixSpace } from '@consta/uikit/MixSpace'
-import { classJoiner } from '../../../utils/styleClassesUtills'
 import { Card } from '@consta/uikit/Card'
 import { Button } from '@consta/uikit/Button'
 import { cnMixCard } from '@consta/uikit/MixCard'
@@ -15,15 +14,16 @@ import { IExam } from '../../../ts/interfaces/IExam'
 import AboutBlock from './AboutBlock/AboutBlock'
 import ViolationsBlock from './ViolationsBlock/ViolationsBlock'
 import ExamProcessBlock from './ExamProcessBlock/ExamProcessBlock'
-import Loading from '../../shared/loading/Loading'
+import Loading from '../../shared/Loading/Loading'
 import NotFound from '../../shared/errors/NotFound/NotFound'
-import axiosConfig from '../../../config/axiosСonfig'
-import { useAppSelector } from '../../../hooks/reduxHooks'
 import TimeLineHist from './TimeLineHist/TimeLineHist'
 import Player = videojs.Player
 import { openModal } from '../../shared/ModalView/ModalView'
 import ExamDeclineModal from './modals/ExamDeclineModal/ExamDeclineModal'
 import ExamSubmitModal from './modals/ExamSubmitModal/ExamSubmitModal'
+import axiosConfig from '../../../config/api/axiosСonfig';
+import {useAppSelector} from '../../../hooks/store/useAppSelector';
+import {classJoiner} from '../../../utils/common/styleClassesUtills';
 
 // TYPES
 

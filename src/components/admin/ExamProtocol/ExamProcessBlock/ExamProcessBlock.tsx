@@ -6,7 +6,6 @@ import { request } from '../../../../api/axios/request'
 import { INote } from '../../../../ts/interfaces/INotes'
 import { Text } from '@consta/uikit/Text'
 import { Layout } from '@consta/uikit/Layout'
-import { classJoiner } from '../../../../utils/styleClassesUtills'
 import { cnMixCard } from '@consta/uikit/MixCard'
 import { Button } from '@consta/uikit/Button'
 import { IconAttach } from '@consta/uikit/IconAttach'
@@ -19,6 +18,7 @@ import { IExam } from '../../../../ts/interfaces/IExam'
 import NoteWithAuthor from './NoteWithAuthor/NoteWithAuthor'
 import { FileField } from '@consta/uikit/FileField'
 import { IconTrash } from '@consta/icons/IconTrash'
+import {classJoiner} from '../../../../utils/common/styleClassesUtills';
 
 // TYPES
 interface DateNote {

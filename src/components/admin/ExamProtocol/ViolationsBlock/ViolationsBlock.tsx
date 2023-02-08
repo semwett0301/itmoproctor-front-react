@@ -3,13 +3,13 @@ import cn from './ViolationsBlock.module.scss'
 import { IReport } from '../../../../ts/interfaces/IExam'
 import { Text } from '@consta/uikit/Text'
 import { Layout } from '@consta/uikit/Layout'
-import { classJoiner } from '../../../../utils/styleClassesUtills'
 import { cnMixSpace } from '@consta/uikit/MixSpace'
 import IconWithTooltip from '../../../shared/IconWithTooltip/IconWithTooltip'
 import { IconQuestion } from '@consta/uikit/IconQuestion'
 import { getViolationsStatsConfig, violationsTitles } from './ViolationStatsConfig'
-import { getTime } from '../../../../utils/times'
 import ViolationIcon from './ViolationIcon/ViolationIcon'
+import {getTime} from '../../../../utils/common/times';
+import {classJoiner} from '../../../../utils/common/styleClassesUtills';
 
 // TYPES
 interface IViolationsBlockProp {

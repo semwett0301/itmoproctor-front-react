@@ -4,10 +4,10 @@ import { IStudent } from '../../../../../ts/interfaces/IStudent'
 import { IInspector } from '../../../../../ts/interfaces/IInspector'
 import { IExpert } from '../../../../../ts/interfaces/IExpert'
 import { IconUser } from '@consta/uikit/IconUser'
-import { getFullName } from '../../../../../utils/nameHelper'
 import { Text } from '@consta/uikit/Text'
 import { openModal } from '../../../../shared/ModalView/ModalView'
 import ListenerView from '../../../modals/ListenerView/ListenerView'
+import {getFullName} from '../../../../../utils/common/nameHelper';
 // TYPES
 
 // CONSTANTS

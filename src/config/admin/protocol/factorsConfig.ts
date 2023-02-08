@@ -1,4 +1,4 @@
-import { IFactors } from '../../../../../ts/interfaces/IExam'
+import { IFactors } from '../../../ts/interfaces/IExam'
 import { IconComponent } from '@consta/uikit/Icon'
 import { IconWorldStroked } from '@consta/uikit/IconWorld'
 import { IconBook } from '@consta/uikit/IconBook'
