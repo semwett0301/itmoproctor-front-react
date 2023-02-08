@@ -1,10 +1,11 @@
-import {IAttach, IPostAttach} from './IVerify'
+import { IAttach, IPostAttach } from './IVerify'
 
-interface IShortUser {
+export interface IShortUser {
   _id: string
   lastname: string
   firstname: string
   middlename: string
+  role?: number
 }
 
 export interface IPostNote {

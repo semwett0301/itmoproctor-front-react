@@ -24,6 +24,7 @@ import { useAppSelector } from '../../../hooks/store/useAppSelector'
 import { classJoiner } from '../../../utils/common/styleClassesUtills'
 import Player = videojs.Player
 import Loading from '../../shared/loading/Loading'
+import SyncChat from './SyncChat/SyncChat'
 
 // TYPES
 
@@ -139,21 +140,33 @@ const ExamProtocol: FC = () => {
           <Layout direction='row' flex={1} className={cn.examBlock}>
             {/* 1 column */}
             <Layout flex={2} direction='column'>
-              <div ref={playerDivRef} className={cn.playerWrapper}>
+              <div
+                ref={playerDivRef}
+                className={classJoiner(cn.playerWrapper, cnMixSpace({ mB: 's' }))}
+              >
                 <VideoPlayer source={source} onReady={handlePlayerReady} exam={exam} />
               </div>
-              <Card
-                shadow={false}
-                border={true}
-                // horizontalSpace='xs'
-                // verticalSpace={'xs'}
-                className={cn.violationTimeline}
-              >
-                {/* <Text>Тамлайн нарушений</Text> */}
-                <TimeLineHist report={exam.report} />
-              </Card>
+
+              {exam.async ?? (
+                <>
+                  <Text view={'secondary'} size={'s'}>
+                    Таймлайн
+                  </Text>
+                  <Card
+                    shadow={false}
+                    border={true}
+                    // horizontalSpace='xs'
+                    // verticalSpace={'xs'}
+                    className={cn.violationTimeline}
+                  >
+                    {/* <Text>Тамлайн нарушений</Text> */}
+                    <TimeLineHist report={exam.report} />
+                  </Card>
+                </>
+              )}
+
               <Text view={'secondary'} size={'s'}>
-                Нарушения
+                {exam.async ? 'Нарушения' : 'Диалог'}
               </Text>
               <div
                 className={classJoiner(
@@ -166,7 +179,7 @@ const ExamProtocol: FC = () => {
                   cn.violationBlock
                 )}
               >
-                <ViolationsBlock report={exam.report} />
+                {exam.async ? <ViolationsBlock report={exam.report} /> : <SyncChat exam={exam} />}
               </div>
             </Layout>
             <Layout className={cn.aboutExamBlock} direction={'column'}>

@@ -1,53 +1,53 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
-import cn from './ExamProcessBlock.module.scss'
-
-import utc from 'dayjs/plugin/utc'
-import { request } from '../../../../api/axios/request'
-import { INote } from '../../../../ts/interfaces/INotes'
-import { Text } from '@consta/uikit/Text'
+import { IExam } from '../../../../ts/interfaces/IExam'
+import cn from './SyncChat.module.scss'
+import { classJoiner } from '../../../../utils/common/styleClassesUtills'
 import { Layout } from '@consta/uikit/Layout'
-import { cnMixCard } from '@consta/uikit/MixCard'
+import { Text } from '@consta/uikit/Text'
+import NoteWithAuthor from '../ExamProcessBlock/NoteWithAuthor/NoteWithAuthor'
+import { FileField } from '@consta/uikit/FileField'
 import { Button } from '@consta/uikit/Button'
 import { IconAttach } from '@consta/uikit/IconAttach'
+import { IconTrash } from '@consta/icons/IconTrash'
 import { TextField } from '@consta/uikit/TextField'
 import { IconSendMessage } from '@consta/uikit/IconSendMessage'
-import dayjs, { Dayjs } from 'dayjs'
-import Note from './Note/Note'
+import { request } from '../../../../api/axios/request'
 import { socket } from '../../../../api/socket/socket'
-import { IExam } from '../../../../ts/interfaces/IExam'
-import NoteWithAuthor from './NoteWithAuthor/NoteWithAuthor'
-import { FileField } from '@consta/uikit/FileField'
-import { IconTrash } from '@consta/icons/IconTrash'
-import { classJoiner } from '../../../../utils/common/styleClassesUtills'
+import dayjs, { Dayjs } from 'dayjs'
+import { useAppSelector } from '../../../../hooks/store/useAppSelector'
+import { Avatar } from '@consta/uikit/Avatar'
+import { getShortName } from '../../../../utils/common/nameHelper'
+import { IChatMessage } from '../../../../ts/interfaces/IChat'
 
 // TYPES
-export interface DateNote {
+export interface IDateMessages {
   date: Dayjs
-  notes: INote[]
+  messages: IChatMessage[]
 }
 
 // CONSTANTS
-dayjs.extend(utc)
 
 // DEFAULT FUNCTIONS
 
-interface IExamProcessBlockProp {
+interface ISyncChatProp {
   exam: IExam
 }
 
-const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
-  const [notes, setNotes] = useState<Array<DateNote>>([])
+const SyncChat: FC<ISyncChatProp> = ({ exam }) => {
+  const user = useAppSelector((state) => state.user)
+
+  const [messages, setMessages] = useState<Array<IDateMessages>>([])
   const [inputMessage, setInputMessage] = useState<string | null>(null)
   const attachInputRef = useRef<HTMLInputElement>(null)
 
   const [files, setFiles] = useState<FileList | null>(null)
 
   const updateNotes = useCallback((id: string): void => {
-    request.expert.exams.getNotes(id).then(({ data }) => {
-      const filteredNotes: DateNote[] = []
+    request.student.chat.getMessages(id).then(({ data }) => {
+      const filteredNotes: IDateMessages[] = []
 
-      data.forEach((note) => {
-        const noteDay = dayjs(note.time).utcOffset(0).startOf('d')
+      data.forEach((message) => {
+        const noteDay = dayjs(message.time).utcOffset(0).startOf('d')
         let foundNode = null
 
         for (let i = 0; i < filteredNotes.length; i++) {
@@ -57,27 +57,27 @@ const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
           }
         }
         if (foundNode !== null) {
-          filteredNotes[foundNode].notes.push(note)
+          filteredNotes[foundNode].messages.push(message)
         } else {
           filteredNotes.push({
             date: noteDay,
-            notes: [note]
+            messages: [message]
           })
         }
       })
 
       console.log(filteredNotes)
 
-      setNotes([...filteredNotes])
+      setMessages([...filteredNotes])
     })
   }, [])
 
   useEffect(() => {
-    socket.notes.subscribe(exam._id, () => {
+    socket.chat.subscribe(exam._id, () => {
       updateNotes(exam._id)
     })
     return () => {
-      socket.notes.unsubscribe(exam._id)
+      socket.chat.unsubscribe(exam._id)
     }
   }, [exam._id])
 
@@ -94,17 +94,27 @@ const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
         request.expert.exams
           .addAttach(formData)
           .then((r) =>
-            request.expert.exams.addNote(exam._id, {
+            request.student.chat.postMessage(exam._id, {
+              author: {
+                _id: user._id,
+                lastname: user.lastname,
+                firstname: user.firstname,
+                middlename: user.middlename
+              },
               text: inputMessage ?? '',
-              editable: true,
               attach: [{ uploadname: r.data.filename, filename: r.data.originalname }]
             })
           )
           .catch((e) => console.log(e))
       } else {
-        request.expert.exams.addNote(exam._id, {
+        request.student.chat.postMessage(exam._id, {
+          author: {
+            _id: user._id,
+            lastname: user.lastname,
+            firstname: user.firstname,
+            middlename: user.middlename
+          },
           text: inputMessage ?? '',
-          editable: true,
           attach: []
         })
       }
@@ -115,24 +125,33 @@ const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
   }
 
   return (
-    <Layout
-      direction={'column'}
-      className={classJoiner(cnMixCard({ border: true, form: 'round' }), cn.card)}
-    >
+    <Layout direction={'column'} className={cn.card}>
       <Layout flex={1} direction={'column'} className={cn.notesField}>
-        {notes.map((note, i) => {
+        {messages.map((day, i) => {
           return (
             <div className={cn.dayMsg} key={i}>
               <Text size={'2xs'} view={'secondary'} style={{ width: '100%', textAlign: 'center' }}>
-                {note.date.format('DD MMMM')}
+                {day.date.format('DD MMMM')}
               </Text>
-              {note.notes.map((item) =>
-                item.author._id !== exam.student._id ? (
-                  <NoteWithAuthor key={item._id} note={item} exam={exam} />
-                ) : (
-                  <Note key={item._id} note={item} exam={exam} />
-                )
-              )}
+              {day.messages.map((item) => (
+                <div
+                  className={classJoiner(
+                    cn.message,
+                    item.author._id === user._id ? cn.left : cn.right
+                  )}
+                  key={item._id}
+                >
+                  <Avatar
+                    name={getShortName(
+                      item.author.firstname,
+                      item.author.middlename,
+                      item.author.lastname
+                    )}
+                    className={cn.avatar}
+                  />
+                  <NoteWithAuthor note={item} exam={exam} />
+                </div>
+              ))}
             </div>
           )
         })}
@@ -189,4 +208,4 @@ const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
   )
 }
 
-export default ExamProcessBlock
+export default SyncChat

@@ -1,9 +1,9 @@
 export interface IAttach {
   filename: string
   fileId: string
-  description: string
+  description?: string
   // ISO Date
-  created: string
+  created?: string
 }
 
 export interface IPostAttach {

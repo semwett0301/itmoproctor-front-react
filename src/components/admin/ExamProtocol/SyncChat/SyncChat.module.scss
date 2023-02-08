@@ -1,0 +1,57 @@
+.card {
+  overflow-y: hidden;
+  position: absolute;
+  box-sizing: border-box;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+
+  .notesField {
+    overflow-y: scroll;
+
+    .dayMsg{
+      border-top: var(--control-border-width) solid var(--color-bg-border);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: auto;
+      padding: 8px 0;
+
+      &:first-child{
+        border-top: none;
+      }
+
+
+      .message{
+        display: flex;
+        width: 100%;
+        flex-wrap: wrap;
+
+        .avatar{
+          flex-shrink: 0;
+          margin: 5px 12px 0 5px;
+        }
+        &.right{
+          flex-direction: row-reverse;
+        }
+
+        &.left{
+          flex-direction: row;
+        }
+      }
+
+    }
+  }
+
+  .messageArea {
+    height: auto;
+    padding: 8px 0;
+    border-top: var(--control-border-width) solid var(--color-bg-border);
+    display: grid;
+    grid-template-columns: 32px 1fr 32px;
+    align-items: center;
+    justify-items: center;
+  }
+
+}
