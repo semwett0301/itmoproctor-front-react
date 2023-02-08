@@ -10,10 +10,9 @@ import EditProfile from '../admin/modals/EditProfile/EditProfile'
 import { IconSettings } from '@consta/uikit/IconSettings'
 import { IconScreen } from '@consta/uikit/IconScreen'
 import { IconExit } from '@consta/uikit/IconExit'
-import { useLogout } from '../../hooks/authHooks'
 import { cnMixSpace } from '@consta/uikit/MixSpace'
 import { cnMixCard } from '@consta/uikit/MixCard'
-import { classJoiner } from '../../utils/styleClassesUtills'
+import { classJoiner } from '../../utils/common/styleClassesUtills'
 import { IStudentExamModel, studentExamColumns } from './StudentExamModel'
 import cl from '../shared/SharedTable/SharedTable.module.scss'
 import { Loader } from '@consta/uikit/Loader'
@@ -38,6 +37,7 @@ import { Text } from '@consta/uikit/Text'
 import { AxiosResponse } from 'axios'
 import { IResponseArray } from '../../ts/interfaces/IResponseInterfaces'
 import { IExamRow } from '../../ts/interfaces/IExams'
+import {useLogout} from '../../hooks/auth/useLogout';
 
 const Student: FC = () => {
   const { t } = useTranslation()

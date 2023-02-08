@@ -1,12 +1,12 @@
-import AuthHoc from '../router/hocs/AuthHoc'
+import AuthHoc from '../../router/hocs/AuthHoc'
 import {RoleEnum} from './authСonfig'
-import {IHocConfig} from '../ts/interfaces/IHocConfig'
-import ServiceHoc from '../router/hocs/ServiceHoc'
-import {serviceRoutes} from '../router/modules/serviceRoutes'
-import {HocConfig} from '../ts/types/HocConfig'
-import ErrorHoc from '../router/hocs/ErrorHoc'
-import {errorRoutes} from '../router/modules/errorRoutes'
-import {rolesToRoutesConfig} from '../utils/userRoutes';
+import {IHocConfig} from '../../ts/interfaces/IHocConfig'
+import ServiceHoc from '../../router/hocs/ServiceHoc'
+import {serviceRoutes} from '../../router/modules/serviceRoutes'
+import {HocConfig} from '../../ts/types/HocConfig'
+import ErrorHoc from '../../router/hocs/ErrorHoc'
+import {errorRoutes} from '../../router/modules/errorRoutes'
+import {rolesToRoutesConfig} from './rolesToRoutesConfig';
 
 // Генерирование хок-конфигов в соответствии с конкретным условием (RoleEnum, boolean, etc)
 const auth: IHocConfig<RoleEnum> = {

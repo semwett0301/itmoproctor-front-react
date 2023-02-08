@@ -1,15 +1,11 @@
-import { Reducer } from 'redux'
-import { ITableParams } from '../../../../ts/interfaces/ITableParams'
-import {
-  ActionPayloadTable,
-  initialTableParams,
-  ScheduleFilter
-} from '../../../../config/tablesReducerConfig'
-import { IAction } from '../../../../ts/interfaces/IAction'
-import { ITotalRowsVariants } from '../../../../components/shared/SharedPagination/PaginationField/PaginationField'
-import { ITotalPagination } from '../../../../ts/interfaces/IPagination'
-import { ScheduleTableActionTypes } from './scheduleTableActionTypes'
-import { getInitialDateRange } from '../../../../utils/dateUtils'
+import {Reducer} from 'redux'
+import {ITableParams} from '../../../../ts/interfaces/ITableParams'
+import {ActionPayloadTable, initialTableParams, ScheduleFilter} from '../../../../config/store/tablesReducerConfig'
+import {IAction} from '../../../../ts/interfaces/IAction'
+import {ITotalRowsVariants} from '../../../../components/shared/SharedPagination/PaginationField/PaginationField'
+import {ITotalPagination} from '../../../../ts/interfaces/IPagination'
+import {ScheduleTableActionTypes} from './scheduleTableActionTypes'
+import {getInitialDateRange} from '../../../../utils/common/dateUtils'
 
 const initialState: ITableParams<ScheduleFilter> = initialTableParams<ScheduleFilter>({
   searchQuery: null,

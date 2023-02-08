@@ -6,8 +6,8 @@ import ModalViewConstructor, { IRowViewItem } from '../TwoBlockModalRow/ModalVie
 import { SkeletonText } from '@consta/uikit/Skeleton'
 import { request } from '../../../../api/axios/request'
 import { useTranslation } from 'react-i18next'
-import { getProctor, getStudentName } from '../../../../utils/nameHelper'
-import { getStrDate } from '../../../../utils/dateUtils'
+import { getProctor, getStudentName } from '../../../../utils/common/nameHelper'
+import { getStrDate } from '../../../../utils/common/dateUtils'
 import ResolutionText from './ResolutionText'
 import ModalTitle from '../../../shared/ModalView/ModalTitle/ModalTitle'
 

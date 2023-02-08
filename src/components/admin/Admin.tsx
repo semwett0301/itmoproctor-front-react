@@ -1,31 +1,26 @@
-import React, { FC, useEffect, useState } from 'react'
-import { Layout } from '@consta/uikit/Layout'
+import React, {FC, useEffect, useState} from 'react'
+import {Layout} from '@consta/uikit/Layout'
 import cl from './Admin.module.scss'
 import Sidebar from './Sidebar/Sidebar'
-import { Card } from '@consta/uikit/Card'
-import { Outlet, useLocation, useNavigate, useOutletContext } from 'react-router-dom'
+import {Card} from '@consta/uikit/Card'
+import {Outlet, useLocation, useNavigate, useOutletContext} from 'react-router-dom'
 import CustomHeader from '../shared/CustomHeader/CustomHeader'
 import HeaderLogoModule from '../shared/CustomHeader/HeaderLogoModule/HeaderLogoModule'
 import HeaderTimeDateModule from '../shared/CustomHeader/HeaderTimeDateModule/HeaderTimeDateModule'
-import { IconUser } from '@consta/uikit/IconUser'
-import { IconSettings } from '@consta/uikit/IconSettings'
-import { IconExit } from '@consta/uikit/IconExit'
-import { useLogout } from '../../hooks/authHooks'
-import NavTabs from '../shared/NavTabs/NavTabs'
-import { classWatcher } from '../../utils/styleClassesUtills'
-import { openModal } from '../shared/ModalView/ModalView'
+import {IconUser} from '@consta/uikit/IconUser'
+import {IconSettings} from '@consta/uikit/IconSettings'
+import {IconExit} from '@consta/uikit/IconExit'
+import NavTabs, {TabItem} from '../shared/NavTabs/NavTabs'
+import {classWatcher} from '../../utils/common/styleClassesUtills'
+import {openModal} from '../shared/ModalView/ModalView'
 import EditProfile from './modals/EditProfile/EditProfile'
 import SettingsView from './modals/SettingsView/SettingsView'
-import { userRoutes } from '../../utils/userRoutes'
-
-export interface TabItem {
-  id: number | string
-  title: string
-  path: string
-  type: 'tab' | 'exam'
-}
+import {userRoutes} from '../../utils/common/userRoutes'
+import {tabPathToTableConfig} from '../../config/admin/tabPathToTableConfig';
+import {useLogout} from '../../hooks/auth/useLogout';
 
 type AdminOutletContextType = { openTab: (item: TabItem) => void }
+
 
 const Admin: FC = () => {
   const [tabItems, setItems] = useState<TabItem[]>([])
@@ -54,6 +49,8 @@ const Admin: FC = () => {
   }
 
   const openTab = (item: TabItem): void => {
+    item.table = tabPathToTableConfig[item.path]
+
     setItems((prevState) => {
       if (!prevState.find((i) => i.id === item.id)) {
         navigate(item.path)
@@ -97,10 +94,9 @@ const Admin: FC = () => {
               id: path,
               title: currentRoute.title || 'Неизвестная вкладка',
               path: path,
-              type: currentRoute.type ?? 'tab'
+              type: currentRoute.type ?? 'tab',
             })
           } else {
-            console.log()
             currentRoute
               .title(pathParts[pathParts.length - 1])
               .then((title) =>
@@ -108,7 +104,7 @@ const Admin: FC = () => {
                   id: path,
                   title: title,
                   path: path,
-                  type: currentRoute.type ?? 'tab'
+                  type: currentRoute.type ?? 'tab',
                 })
               )
               .catch(openMainTab)
@@ -119,7 +115,7 @@ const Admin: FC = () => {
           id: 'exams',
           title: 'Экзамены',
           path: 'exams',
-          type: 'tab'
+          type: 'tab',
         })
       }
     }

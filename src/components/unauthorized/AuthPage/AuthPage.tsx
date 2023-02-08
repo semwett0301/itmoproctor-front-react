@@ -8,12 +8,12 @@ import { Text } from '@consta/uikit/Text'
 import { Button } from '@consta/uikit/Button'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { AppDispatch } from '../../../store'
-import { useAppDispatch } from '../../../hooks/reduxHooks'
 import { Location, NavigateFunction, useLocation, useNavigate } from 'react-router-dom'
 import { request } from '../../../api/axios/request'
 import { setUserActionCreator } from '../../../store/reducers/userReducer/userActionCreators'
 import { Informer } from '@consta/uikit/Informer'
 import { cnMixSpace } from '@consta/uikit/MixSpace'
+import {useAppDispatch} from '../../../hooks/store/useAppDispatch';
 
 type LogPassType = {
   login: string

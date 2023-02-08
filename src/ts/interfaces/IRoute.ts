@@ -1,6 +1,6 @@
-import { FC } from 'react'
-import { LoaderFunction } from 'react-router-dom'
-import { SubRole } from '../../config/authСonfig'
+import {FC} from 'react'
+import {LoaderFunction} from 'react-router-dom'
+import {SubRole} from '../../config/router/authСonfig'
 
 export interface IRoute {
   title?: string | ((id: string) => Promise<string>)

@@ -3,7 +3,7 @@ import cl from './StatusTag.module.scss'
 import {Tag} from '@consta/uikit/Tag'
 import {DefaultItem} from '@consta/uikit/Combobox'
 import {customBadgePropStatus, statusObject} from '../../../SharedTable/StatusBadge/StatusBadge'
-import {classJoiner} from '../../../../../utils/styleClassesUtills'
+import {classJoiner} from '../../../../../utils/common/styleClassesUtills'
 import {statuses} from '../model/statuses'
 
 // CONSTANTS

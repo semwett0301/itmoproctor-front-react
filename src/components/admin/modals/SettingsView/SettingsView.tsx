@@ -14,7 +14,7 @@ import { Layout } from '@consta/uikit/Layout'
 import ScreenSettings from './ConnectionVideoSettings/ScreenSettings/ScreenSettings'
 import SystemSettings from './SystemSettings/SystemSettings'
 import NetworkSettings from './NetworkSettings/NetworkSettings'
-import { classJoiner } from '../../../../utils/styleClassesUtills'
+import { classJoiner } from '../../../../utils/common/styleClassesUtills'
 
 interface SettingsConfigElement extends ModalSidebarButton {
   component?: JSX.Element

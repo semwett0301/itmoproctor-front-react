@@ -1,7 +1,7 @@
 import {IUserApp, IUserBackend} from '../../../ts/interfaces/IUserApp'
 import {UserActionTypes} from './userActionTypes'
 import {IAction} from '../../../ts/interfaces/IAction';
-import {rolesToBackendConfig} from '../../../config/authСonfig';
+import {rolesToBackendConfig} from '../../../config/router/authСonfig';
 
 export function setUserActionCreator(payload: IUserBackend | IUserApp): IAction<UserActionTypes> {
   const user = payload

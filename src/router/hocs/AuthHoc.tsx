@@ -1,9 +1,9 @@
 import React, {FC} from 'react'
 import {Navigate, Outlet, useLocation, useOutletContext} from 'react-router-dom'
-import {useAppSelector} from '../../hooks/reduxHooks'
-import {RoleEnum, subRolesCallbackConfig, subRolesMapToRolesConfig} from '../../config/authСonfig'
+import {RoleEnum, subRolesCallbackConfig, subRolesMapToRolesConfig} from '../../config/router/authСonfig'
 import {HocPropsType} from '../../ts/types/HocPropsType'
 import {IUserApp} from '../../ts/interfaces/IUserApp';
+import {useAppSelector} from '../../hooks/store/useAppSelector';
 
 const AuthHoc: FC<HocPropsType<RoleEnum>> = ({condition, route}) => {
   const location = useLocation()

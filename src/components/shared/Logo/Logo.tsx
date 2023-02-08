@@ -1,7 +1,7 @@
-import React, { FC } from 'react'
-import { Text } from '@consta/uikit/Text'
+import React, {FC} from 'react'
+import {Text} from '@consta/uikit/Text'
 import classes from './Logo.module.scss'
-import axiosConfig from '../../../config/axiosСonfig'
+import axiosConfig from '../../../config/api/axiosСonfig'
 
 const Logo: FC = () => {
   return (

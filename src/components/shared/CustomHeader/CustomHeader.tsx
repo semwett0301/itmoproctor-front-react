@@ -3,8 +3,8 @@ import { Header, HeaderLogin, HeaderModule } from '@consta/uikit/Header'
 import './CustomHeader.scss'
 import { ContextMenu } from '@consta/uikit/ContextMenu'
 import { IconComponent } from '@consta/uikit/Icon'
-import { useAppSelector } from '../../../hooks/reduxHooks'
-import { getShortName } from '../../../utils/nameHelper'
+import { getShortName } from '../../../utils/common/nameHelper'
+import {useAppSelector} from '../../../hooks/store/useAppSelector';
 
 export type IContextMenuItem = {
   label: string

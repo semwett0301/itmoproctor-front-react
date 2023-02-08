@@ -1,6 +1,6 @@
 import React, {FC, useState} from 'react';
 import {Item} from '../../../ts/types/Item';
-import {findLang, languages} from '../../../utils/findItem';
+import {findLang, languages} from '../../../utils/i18n/findItem';
 import {Button} from '@consta/uikit/Button';
 import i18n from 'i18next';
 import classes from './SwitchLanguage.module.scss'

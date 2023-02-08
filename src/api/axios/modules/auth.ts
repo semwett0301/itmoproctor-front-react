@@ -1,7 +1,7 @@
 import {AxiosInstance, AxiosResponse} from 'axios'
 import {ILogin} from '../../../ts/interfaces/ILogin'
 import {IUserApp} from '../../../ts/interfaces/IUserApp'
-import axiosConfig from '../../../config/axiosСonfig'
+import axiosConfig from '../../../config/api/axiosСonfig'
 
 export interface IAuthAxios {
   login: (data: ILogin) => Promise<AxiosResponse<IUserApp>>

@@ -1,5 +1,4 @@
 import React, {FC} from 'react';
-import {useAppDispatch, useAppSelector} from '../../../hooks/reduxHooks';
 import {SnackBar, SnackBarItemStatus} from '@consta/uikit/SnackBar';
 import store from '../../../store';
 import {
@@ -7,6 +6,8 @@ import {
 } from '../../../store/reducers/notificationList/notificationListActionCreators';
 
 import cl from './NotificationList.module.scss'
+import {useAppDispatch} from '../../../hooks/store/useAppDispatch';
+import {useAppSelector} from '../../../hooks/store/useAppSelector';
 
 export type NotificationItem = {
   key: number;

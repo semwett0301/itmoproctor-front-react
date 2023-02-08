@@ -1,4 +1,4 @@
-import { IInspector } from './IInspector'
+import {IInspector} from './IInspector'
 
 export interface IScheduleRow {
   _id: string
@@ -15,4 +15,5 @@ export interface ISchedulePostResponse {
   maxExamsBeginnings: string
   inspector: string
   beginDate: string
+  endDate: string
 }

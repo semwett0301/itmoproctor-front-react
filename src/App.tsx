@@ -1,21 +1,17 @@
-import React, { FC } from 'react'
-import { presetGpnDefault, Theme } from '@consta/uikit/Theme'
-import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  Route,
-  RouterProvider
-} from 'react-router-dom'
-import routerHocConfig from './config/routerHocConfig'
+import React, {FC} from 'react'
+import {presetGpnDefault, Theme} from '@consta/uikit/Theme'
+import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from 'react-router-dom'
+import routerHocConfig from './config/router/routerHocConfig'
 
-import { createRouter } from './router/createRouter'
-import { useAppDispatch, useAppSelector } from './hooks/reduxHooks'
-import { setUserActionCreator } from './store/reducers/userReducer/userActionCreators'
-import { request } from './api/axios/request'
-import { userLoadedActionCreator } from './store/reducers/userLoaded/userLoadedActionCreators'
+import {createRouter} from './router/createRouter'
+import {setUserActionCreator} from './store/reducers/userReducer/userActionCreators'
+import {request} from './api/axios/request'
+import {userLoadedActionCreator} from './store/reducers/userLoaded/userLoadedActionCreators'
 import ModalView from './components/shared/ModalView/ModalView'
 import dayjs from 'dayjs'
 import NotificationList from './components/shared/NotificationList/NotificationList';
+import {useAppDispatch} from './hooks/store/useAppDispatch';
+import {useAppSelector} from './hooks/store/useAppSelector';
 
 require('dayjs/locale/ru')
 dayjs.locale('ru')

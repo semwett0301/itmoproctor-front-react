@@ -1,7 +1,7 @@
-import {AxiosError, AxiosInstance, AxiosResponse} from 'axios'
-import axiosConfig from '../../../../config/axiosСonfig'
-import { ISchedulePostResponse, IScheduleRow } from '../../../../ts/interfaces/IShedule'
-import { IResponseArray } from '../../../../ts/interfaces/IResponseInterfaces'
+import {AxiosInstance, AxiosResponse} from 'axios'
+import axiosConfig from '../../../../config/api/axiosСonfig'
+import {ISchedulePostResponse, IScheduleRow} from '../../../../ts/interfaces/IShedule'
+import {IResponseArray} from '../../../../ts/interfaces/IResponseInterfaces'
 
 export interface IScheduleFilter {
   from: string

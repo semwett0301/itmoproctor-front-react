@@ -1,7 +1,7 @@
 import React, {FC, MutableRefObject} from 'react';
 import cl from './StandardPlayer.module.scss'
 import {Loader} from '@consta/uikit/Loader';
-import {classJoiner} from '../../../../utils/styleClassesUtills';
+import {classJoiner} from '../../../../utils/common/styleClassesUtills';
 
 type StandardPlayerProps = {
   wait: boolean,

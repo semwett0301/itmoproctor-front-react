@@ -1,38 +1,38 @@
-import React, { FC, useState } from 'react'
+import React, {FC, useState} from 'react'
 import cl from './Courses.module.scss'
-import { Layout } from '@consta/uikit/Layout'
+import {Layout} from '@consta/uikit/Layout'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
 import FilterButton from '../../shared/Filter/FilterButton/FilterButton'
 import FilterConstructor from '../../shared/Filter/FilterConstructor'
 import SearchField from '../../shared/Filter/SearchField/SearchField'
 import OrganizationCombobox from '../../shared/Filter/OrganizationCombobox/OrganizationCombobox'
-import { IconAdd } from '@consta/uikit/IconAdd'
-import { IconTrash } from '@consta/uikit/IconTrash'
-import { IOrganization } from '../../../ts/interfaces/IOrganizations'
-import { IconEdit } from '@consta/uikit/IconEdit'
+import {IconAdd} from '@consta/uikit/IconAdd'
+import {IconTrash} from '@consta/uikit/IconTrash'
+import {IOrganization} from '../../../ts/interfaces/IOrganizations'
+import {IconEdit} from '@consta/uikit/IconEdit'
 import SharedTable from '../../shared/SharedTable/SharedTable'
-import { coursesColumns, ICoursesTableModel } from './coursesTableModel'
-import { request } from '../../../api/axios/request'
-import { ICourseRow } from '../../../ts/interfaces/ICourses'
-import { useTableRequest } from '../../../hooks/useTableRequest'
-import { useTable } from '../../../hooks/tableHooks'
-import { CoursesFilter, TablesEnum } from '../../../config/tablesReducerConfig'
-import { closeModal, openModal } from '../../shared/ModalView/ModalView'
+import {coursesColumns, ICoursesTableModel} from './coursesTableModel'
+import {request} from '../../../api/axios/request'
+import {ICourseRow} from '../../../ts/interfaces/ICourses'
+import {useTableRequest} from '../../../hooks/shared/tables/useTableRequest'
+import {useTable} from '../../../hooks/shared/tables/useTable'
+import {CoursesFilter, TablesEnum} from '../../../config/store/tablesReducerConfig'
+import {closeModal, openModal} from '../../shared/ModalView/ModalView'
 import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
 import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
-import { selectAll } from '../../../utils/selectAll'
+import {selectAll} from '../../../utils/admin/selectAll'
 import AddEditCourse from '../modals/AddEditCourse/AddEditCourse'
-import { AxiosResponse } from 'axios'
-import { useAppSelector } from '../../../hooks/reduxHooks'
-import { RoleEnum } from '../../../config/authСonfig'
-import {adminButtonChecker} from '../../../utils/adminButtonChecker';
+import {AxiosResponse} from 'axios'
+import {RoleEnum} from '../../../config/router/authСonfig'
+import {adminButtonChecker} from '../../../utils/admin/adminButtonChecker';
+import {useAppSelector} from '../../../hooks/store/useAppSelector';
 
 // DEFAULT FUNCTIONS
 const deleteSelected = async (selected: string[]): Promise<AxiosResponse[]> =>
   Promise.all(selected.map((item) => request.courses.deleteCourse(item)))
 
 const Courses: FC = () => {
-  const user = useAppSelector((state) => state.user)
+  const user = useAppSelector((state) => state.user);
   const [organizationsIds, setOrganizationsIds] = useState<string[]>([])
 
   const {

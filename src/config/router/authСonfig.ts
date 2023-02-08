@@ -1,9 +1,4 @@
-import {IUserApp} from '../ts/interfaces/IUserApp';
-import {IRoute} from '../ts/interfaces/IRoute';
-import {sharedRoutes} from '../router/modules/sharedRoutes';
-import {unauthorizedRoutes} from '../router/modules/unauthorizedRoutes';
-import {studentRoutes} from '../router/modules/studentRoutes';
-import {adminRoutes} from '../router/modules/adminRoutes';
+import {IUserApp} from '../../ts/interfaces/IUserApp';
 
 export enum RoleEnum {
   ALL = 'ALL',

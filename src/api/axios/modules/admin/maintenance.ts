@@ -1,7 +1,7 @@
-import { AxiosInstance, AxiosResponse } from 'axios'
-import axiosConfig from '../../../../config/axiosСonfig'
-import { IMaintenance, IMaintenancePost } from '../../../../ts/interfaces/IMaintenance'
-import { IResponseArray } from '../../../../ts/interfaces/IResponseInterfaces'
+import {AxiosInstance, AxiosResponse} from 'axios'
+import axiosConfig from '../../../../config/api/axiosСonfig'
+import {IMaintenance, IMaintenancePost} from '../../../../ts/interfaces/IMaintenance'
+import {IResponseArray} from '../../../../ts/interfaces/IResponseInterfaces'
 
 export interface IMaintenanceFilter {
   from: string

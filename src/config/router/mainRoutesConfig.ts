@@ -1,4 +1,4 @@
-import { RoleEnum } from './authСonfig'
+import {RoleEnum} from './authСonfig'
 
 type MainRoutesConfig = {
   [key in RoleEnum]: string

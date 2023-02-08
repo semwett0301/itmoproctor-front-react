@@ -6,7 +6,7 @@ import HeaderCell from '../../shared/SharedTable/HeaderCell/HeaderCell'
 import TwoRowCell from '../../shared/SharedTable/TwoRowCell/TwoRowCell'
 import { openModal } from '../../shared/ModalView/ModalView'
 import ExamView from '../modals/ExamView/ExamView'
-import { proctor } from '../../../utils/nameHelper'
+import { proctor } from '../../../utils/common/nameHelper'
 import TextWithTooltip from '../../shared/SharedTable/TextWithTooltip/TextWithTooltip'
 import dayjs from 'dayjs'
 

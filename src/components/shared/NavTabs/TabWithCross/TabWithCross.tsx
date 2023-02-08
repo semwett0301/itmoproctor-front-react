@@ -2,11 +2,11 @@ import React, {FC} from 'react'
 import {cnTabsTab} from '@consta/uikit/Tabs'
 import {IconClose} from '@consta/uikit/IconClose'
 import cl from './TabWithCross.module.scss'
-import {classJoiner} from '../../../../utils/styleClassesUtills'
+import {classJoiner} from '../../../../utils/common/styleClassesUtills'
 import {IconVideo} from '@consta/uikit/IconVideo'
-import {TabItem} from '../../../admin/Admin'
 import {useNavigate} from 'react-router-dom'
 import {Button} from '@consta/uikit/Button'
+import {TabItem} from '../NavTabs';
 
 interface TabWIthCrossProps {
   item: TabItem

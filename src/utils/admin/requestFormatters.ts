@@ -1,5 +1,5 @@
-import { StatusComboboxItem } from '../components/shared/Filter/ExamStatusCombobox/ExamStatusCombobox'
-import { IOrganization } from '../ts/interfaces/IOrganizations'
+import { StatusComboboxItem } from '../../components/shared/Filter/ExamStatusCombobox/ExamStatusCombobox'
+import { IOrganization } from '../../ts/interfaces/IOrganizations'
 import { DefaultItem } from '@consta/uikit/__internal__/src/components/Combobox/helpers'
 
 export const statusFormat = (statuses: StatusComboboxItem[] | null): string | null =>

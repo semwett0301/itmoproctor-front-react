@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import cl from './SidebarItem.module.scss'
-import { classWatcher } from '../../../../../utils/styleClassesUtills'
+import { classWatcher } from '../../../../../utils/common/styleClassesUtills'
 
 type SidebarItemProps = {
   logo: JSX.Element

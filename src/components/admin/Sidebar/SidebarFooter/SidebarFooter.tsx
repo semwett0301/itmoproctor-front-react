@@ -1,10 +1,10 @@
-import React, { FC } from 'react'
-import { IconInfo } from '@consta/uikit/IconInfo'
-import { Card } from '@consta/uikit/Card'
+import React, {FC} from 'react'
+import {IconInfo} from '@consta/uikit/IconInfo'
+import {Card} from '@consta/uikit/Card'
 import cl from './SidebarFooter.module.scss'
-import { IconRing } from '@consta/uikit/IconRing'
-import { Button } from '@consta/uikit/Button'
-import { TabItem } from '../../Admin'
+import {IconRing} from '@consta/uikit/IconRing'
+import {Button} from '@consta/uikit/Button'
+import {TabItem} from '../../../shared/NavTabs/NavTabs';
 
 interface SideBarFooterProps {
   addTab: (item: TabItem) => void

@@ -2,7 +2,7 @@ import React, { FC, useRef, useState } from 'react'
 import cl from './TwoRowCell.module.scss'
 import { Text } from '@consta/uikit/Text'
 import { Tooltip } from '@consta/uikit/Tooltip'
-import { classJoiner } from '../../../../utils/styleClassesUtills'
+import { classJoiner } from '../../../../utils/common/styleClassesUtills'
 
 // CONSTANTS
 

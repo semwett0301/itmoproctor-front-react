@@ -1,4 +1,4 @@
-import {Item} from '../ts/types/Item';
+import {Item} from '../../ts/types/Item';
 
 export const languages: Item[] = [
   {

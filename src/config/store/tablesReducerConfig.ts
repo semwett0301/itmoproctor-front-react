@@ -1,8 +1,8 @@
-import { ITableParams } from '../ts/interfaces/ITableParams'
+import {ITableParams} from '../../ts/interfaces/ITableParams'
 import {
   ITotalRowsVariants,
   totalRowsVariants
-} from '../components/shared/SharedPagination/PaginationField/PaginationField'
+} from '../../components/shared/SharedPagination/PaginationField/PaginationField'
 import {
   Filter,
   IDateFilter,
@@ -12,8 +12,8 @@ import {
   ISearchQueryFilter,
   IStatusFilter,
   ITypeFilter
-} from '../ts/types/Filter'
-import { ITotalPagination } from '../ts/interfaces/IPagination'
+} from '../../ts/types/Filter'
+import {ITotalPagination} from '../../ts/interfaces/IPagination'
 
 // Список табличек
 

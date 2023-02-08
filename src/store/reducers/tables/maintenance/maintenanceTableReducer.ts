@@ -1,11 +1,11 @@
 import {Reducer} from 'redux'
 import {ITableParams} from '../../../../ts/interfaces/ITableParams'
-import {ActionPayloadTable, initialTableParams, MaintenanceFilter} from '../../../../config/tablesReducerConfig'
+import {ActionPayloadTable, initialTableParams, MaintenanceFilter} from '../../../../config/store/tablesReducerConfig'
 import {IAction} from '../../../../ts/interfaces/IAction'
 import {ITotalRowsVariants} from '../../../../components/shared/SharedPagination/PaginationField/PaginationField'
 import {ITotalPagination} from '../../../../ts/interfaces/IPagination'
 import {MaintenanceTableActionTypes} from './maintenanceTableActionTypes'
-import {getInitialDateRange} from '../../../../utils/dateUtils'
+import {getInitialDateRange} from '../../../../utils/common/dateUtils'
 
 const initialState: ITableParams<MaintenanceFilter> = initialTableParams<MaintenanceFilter>({
   date: getInitialDateRange()

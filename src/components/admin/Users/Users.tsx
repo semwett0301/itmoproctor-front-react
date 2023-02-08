@@ -15,26 +15,24 @@ import {request} from '../../../api/axios/request'
 import {IUsersRow} from '../../../ts/interfaces/IUsers'
 import {useTranslation} from 'react-i18next'
 import {getUserColumns, IUsersTableModel, usersColumns} from './usersTableModel'
-import {useTable} from '../../../hooks/tableHooks'
-import {TablesEnum, UserFilter} from '../../../config/tablesReducerConfig'
-import {useOrganizations} from '../../../hooks/organizationsHooks'
-import {useTableRequest} from '../../../hooks/useTableRequest'
+import {useTable} from '../../../hooks/shared/tables/useTable'
+import {TablesEnum, UserFilter} from '../../../config/store/tablesReducerConfig'
+import {useOrganizations} from '../../../hooks/admin/useOrganizations'
+import {useTableRequest} from '../../../hooks/shared/tables/useTableRequest'
 import {IconEdit} from '@consta/uikit/IconEdit'
 import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
 import {IconAllDone} from '@consta/uikit/IconAllDone'
 import SharedTable from '../../shared/SharedTable/SharedTable'
-import {organizationsFormat, roleFormat} from '../../../utils/requestFormatters'
-import {selectAll} from '../../../utils/selectAll'
+import {organizationsFormat, roleFormat} from '../../../utils/admin/requestFormatters'
+import {selectAll} from '../../../utils/admin/selectAll'
 import AddEditUser from '../modals/AddEditUser/AddEditUser'
 
 import {closeModal, openModal} from '../../shared/ModalView/ModalView'
 import {useOpenTab} from '../Admin'
-import {openUserExams} from '../../../utils/openUserExams'
-import {AxiosResponse} from 'axios'
+import {openUserExams} from '../../../utils/admin/openUserExams'
 import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
-import {adminButtonChecker} from '../../../utils/adminButtonChecker';
-import {deleteSelected} from '../../../utils/deleteSelected';
-
+import {adminButtonChecker} from '../../../utils/admin/adminButtonChecker';
+import {deleteSelected} from '../../../utils/admin/deleteSelected';
 
 
 const Users: FC = () => {

@@ -1,7 +1,7 @@
-import { AxiosInstance, AxiosResponse } from 'axios'
-import { IExam } from '../../../../ts/interfaces/IExam'
-import axiosConfig from '../../../../config/axiosСonfig'
-import { INote, IPostNote } from '../../../../ts/interfaces/INotes'
+import {AxiosInstance, AxiosResponse} from 'axios'
+import {IExam} from '../../../../ts/interfaces/IExam'
+import axiosConfig from '../../../../config/api/axiosСonfig'
+import {INote, IPostNote} from '../../../../ts/interfaces/INotes'
 
 interface IAttachResponse {
   fieldname: string

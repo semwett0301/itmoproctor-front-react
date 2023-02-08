@@ -1,14 +1,14 @@
-import { TableColumn } from '@consta/uikit/Table'
-import React, { ReactNode } from 'react'
-import { Checkbox } from '@consta/uikit/Checkbox'
-import { ITableRow } from '../../shared/SharedTable/SharedTable'
+import {TableColumn} from '@consta/uikit/Table'
+import React, {ReactNode} from 'react'
+import {Checkbox} from '@consta/uikit/Checkbox'
+import {ITableRow} from '../../shared/SharedTable/SharedTable'
 import HeaderCell from '../../shared/SharedTable/HeaderCell/HeaderCell'
 import DateCell from '../../shared/SharedTable/DateCell/DateCell'
 import TextWithTooltip from '../../shared/SharedTable/TextWithTooltip/TextWithTooltip'
-import { getFullName } from '../../../utils/nameHelper'
-import { openModal } from '../../shared/ModalView/ModalView'
+import {getFullName} from '../../../utils/common/nameHelper'
+import {openModal} from '../../shared/ModalView/ModalView'
 import ListenerView from '../modals/ListenerView/ListenerView'
-import { TabItem } from '../Admin'
+import {TabItem} from '../../shared/NavTabs/NavTabs';
 
 export interface IUsersTableModel extends ITableRow {
   user: {

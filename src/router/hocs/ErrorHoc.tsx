@@ -1,8 +1,8 @@
 import React, {FC} from 'react'
 import {Navigate, Outlet, useLocation, useOutletContext} from 'react-router-dom'
-import {useAppSelector} from '../../hooks/reduxHooks'
-import {RoleEnum} from '../../config/authСonfig'
+import {RoleEnum} from '../../config/router/authСonfig'
 import {HocPropsType} from '../../ts/types/HocPropsType'
+import {useAppSelector} from '../../hooks/store/useAppSelector';
 
 const ErrorHoc: FC<HocPropsType<RoleEnum>> = () => {
   const location = useLocation()

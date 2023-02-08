@@ -1,4 +1,4 @@
-import {ActionFilterType, TablesEnum} from '../../../config/tablesReducerConfig';
+import {ActionFilterType, TablesEnum} from '../../../config/store/tablesReducerConfig';
 import {ITotalPagination} from '../../../ts/interfaces/IPagination';
 import {IAction} from '../../../ts/interfaces/IAction';
 import {ITotalRowsVariants} from '../../../components/shared/SharedPagination/PaginationField/PaginationField';

@@ -1,5 +1,5 @@
-import { ProviderEnum, RoleEnum } from '../../config/authСonfig'
-import { IOrganization } from './IOrganizations'
+import {ProviderEnum, RoleEnum} from '../../config/router/authСonfig'
+import {IOrganization} from './IOrganizations'
 
 interface IUser {
   birthday: string

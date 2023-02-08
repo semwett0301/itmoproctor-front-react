@@ -4,9 +4,10 @@ import {Select} from '@consta/uikit/Select'
 import {TextField} from '@consta/uikit/TextField'
 import cl from '../ConnectionVideoSettings.module.scss'
 import CheckingConnection from '../../CheckingConnection/CheckingConnection'
-import {useDevices, useDeviceSettings} from '../../../../../../hooks/webRtcHooks';
 import {IResolutionItem} from '../../../../../../ts/interfaces/IResolutionItem'
 import {defaultResolution} from '../../../../../../store/reducers/deviceSettings/deviceSettingsReducer';
+import {useDevices} from '../../../../../../hooks/shared/webRtc/useDevices';
+import {useDeviceSettings} from '../../../../../../hooks/shared/webRtc/useDeviceSettings';
 
 const resolutions: IResolutionItem[] = [
   {

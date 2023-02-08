@@ -1,8 +1,8 @@
-import { AxiosInstance, AxiosResponse } from 'axios'
-import axiosConfig from '../../../../config/axiosСonfig'
-import { IUsersRow } from '../../../../ts/interfaces/IUsers'
-import { IResponseArray } from '../../../../ts/interfaces/IResponseInterfaces'
-import { IUserApp } from '../../../../ts/interfaces/IUserApp'
+import {AxiosInstance, AxiosResponse} from 'axios'
+import axiosConfig from '../../../../config/api/axiosСonfig'
+import {IUsersRow} from '../../../../ts/interfaces/IUsers'
+import {IResponseArray} from '../../../../ts/interfaces/IResponseInterfaces'
+import {IUserApp} from '../../../../ts/interfaces/IUserApp'
 
 export interface IUserFilter {
   text?: string | null

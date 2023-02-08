@@ -10,11 +10,11 @@ import cl from './AddEditMaintenance.module.scss'
 import { Button } from '@consta/uikit/Button'
 import { IconCheck } from '@consta/uikit/IconCheck'
 import { cnMixSpace } from '@consta/uikit/MixSpace'
-import { classJoiner } from '../../../../utils/styleClassesUtills'
+import { classJoiner } from '../../../../utils/common/styleClassesUtills'
 import { IconCalendar } from '@consta/uikit/IconCalendar'
 import { request } from '../../../../api/axios/request'
 import { closeModal } from '../../../shared/ModalView/ModalView'
-import { Modify } from '../../../../utils/typesUtils'
+import { Modify } from '../../../../utils/ts/typesUtils'
 // TYPES
 type booleanItem = DefaultItem & { value: boolean }
 

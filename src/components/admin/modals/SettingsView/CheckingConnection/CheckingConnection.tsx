@@ -5,8 +5,8 @@ import {IconPlay} from '@consta/icons/IconPlay'
 import cl from './CheckingConnection.module.scss'
 import Draggable from 'react-draggable'
 import LocalPlayer from '../../../../shared/players/camera/LocalPlayer/LocalPlayer';
-import {useDeviceSettings} from '../../../../../hooks/webRtcHooks';
 import {IconPause} from '@consta/icons/IconPause';
+import {useDeviceSettings} from '../../../../../hooks/shared/webRtc/useDeviceSettings';
 
 const CheckingConnection: FC = () => {
   const videoRef = useRef<HTMLDivElement>(null)
@@ -44,8 +44,10 @@ const CheckingConnection: FC = () => {
           <div className={cl.extraFrame}>
             {
               isCheckingStart ?
-                <LocalPlayer videoDeviceId={currentCamera?.device.deviceId ?? ''} frequency={currentFrequency}/> : <img
+                <LocalPlayer videoDeviceId={currentCamera?.device.deviceId ?? ''} frequency={currentFrequency}/> :
+                <img
                   src={'https://images.squarespace-cdn.com/content/v1/5bbcad0f2727be3646b9fee1/1581444002162-ENI9OCULKLB1M1JE3XD0/image-asset.png?format=1000w'}
+                  alt={'Локальный плеер'}
                   style={{
                     width: '100%',
                     height: '100%'

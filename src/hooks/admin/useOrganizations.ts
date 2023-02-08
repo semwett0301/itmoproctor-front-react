@@ -1,9 +1,10 @@
-import { IOrganization, IOrganizations } from '../ts/interfaces/IOrganizations'
+import { IOrganization, IOrganizations } from '../../ts/interfaces/IOrganizations'
 import { useEffect, useLayoutEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from './reduxHooks'
-import { request } from '../api/axios/request'
-import { AppDispatch } from '../store'
-import { setOrganizationActionCreator } from '../store/reducers/organizations/organizationsActionCreators'
+import { request } from '../../api/axios/request'
+import { AppDispatch } from '../../store'
+import { setOrganizationActionCreator } from '../../store/reducers/organizations/organizationsActionCreators'
+import {useAppDispatch} from '../store/useAppDispatch';
+import {useAppSelector} from '../store/useAppSelector';
 
 export const useOrganizations = (): {
   loading: boolean

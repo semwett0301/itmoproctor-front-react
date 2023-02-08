@@ -1,12 +1,12 @@
 import {Reducer} from 'redux'
 import {ITableParams} from '../../../../ts/interfaces/ITableParams'
-import {ActionPayloadTable, ExamFilter, initialTableParams} from '../../../../config/tablesReducerConfig'
+import {ActionPayloadTable, ExamFilter, initialTableParams} from '../../../../config/store/tablesReducerConfig'
 import {IAction} from '../../../../ts/interfaces/IAction'
 import {ExamsTableActionTypes} from './examsTableActionTypes'
 import {statusList} from '../../../../components/shared/Filter/ExamStatusCombobox/ExamStatusCombobox'
 import {ITotalRowsVariants} from '../../../../components/shared/SharedPagination/PaginationField/PaginationField'
 import {ITotalPagination} from '../../../../ts/interfaces/IPagination'
-import {getInitialDateRange} from '../../../../utils/dateUtils'
+import {getInitialDateRange} from '../../../../utils/common/dateUtils'
 
 const initialState: ITableParams<ExamFilter> = initialTableParams<ExamFilter>({
   date: getInitialDateRange(),

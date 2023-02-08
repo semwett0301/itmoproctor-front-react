@@ -1,7 +1,7 @@
-import { AxiosInstance, AxiosResponse } from 'axios'
-import { IUserApp } from '../../../ts/interfaces/IUserApp'
-import axiosConfig from '../../../config/axiosСonfig'
-import { IOrganization } from '../../../ts/interfaces/IOrganizations'
+import {AxiosInstance, AxiosResponse} from 'axios'
+import {IUserApp} from '../../../ts/interfaces/IUserApp'
+import axiosConfig from '../../../config/api/axiosСonfig'
+import {IOrganization} from '../../../ts/interfaces/IOrganizations'
 
 export interface IProfilePost {
   birthday: string

@@ -2,7 +2,7 @@ import React, { FC, ReactNode } from 'react'
 import { IconCheck } from '@consta/uikit/IconCheck'
 import { Button } from '@consta/uikit/Button'
 import cl from './SaveButton.module.scss'
-import { classJoiner } from '../../../../utils/styleClassesUtills'
+import { classJoiner } from '../../../../utils/common/styleClassesUtills'
 import { cnMixSpace } from '@consta/uikit/MixSpace'
 // TYPES
 

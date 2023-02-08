@@ -1,5 +1,5 @@
-import { DefaultItem } from '@consta/uikit/__internal__/src/components/Combobox/helpers'
-import { RoleEnum, rolesToBackendConfig } from '../../../../config/authСonfig'
+import {DefaultItem} from '@consta/uikit/__internal__/src/components/Combobox/helpers'
+import {RoleEnum, rolesToBackendConfig} from '../../../../config/router/authСonfig'
 
 export interface IRoleSelectType extends DefaultItem {
   roleId: number

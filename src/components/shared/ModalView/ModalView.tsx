@@ -1,5 +1,4 @@
 import React, { FC } from 'react'
-import { useAppSelector } from '../../../hooks/reduxHooks'
 import { Modal } from '@consta/uikit/Modal'
 import {
   setComponentActionCreator,
@@ -8,6 +7,7 @@ import {
 } from '../../../store/reducers/selectedModal/selectedModalActionCreators'
 import store from '../../../store'
 import cl from './ModalView.module.scss'
+import {useAppSelector} from '../../../hooks/store/useAppSelector';
 
 export function openModal(component: JSX.Element): void {
   store.dispatch(setComponentActionCreator(component))

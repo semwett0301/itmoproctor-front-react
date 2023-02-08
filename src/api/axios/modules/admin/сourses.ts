@@ -1,10 +1,10 @@
-import { AxiosInstance, AxiosResponse } from 'axios'
-import axiosConfig from '../../../../config/axiosСonfig'
-import { IResponseArray } from '../../../../ts/interfaces/IResponseInterfaces'
-import { ICourseRow } from '../../../../ts/interfaces/ICourses'
-import { VerificationType } from '../../../../ts/types/Verifications'
-import { IGetCourse } from '../../../../ts/interfaces/ICourse'
-import { ISessionCode } from '../../../../components/admin/modals/AddEditExam/AddEditExam'
+import {AxiosInstance, AxiosResponse} from 'axios'
+import axiosConfig from '../../../../config/api/axiosСonfig'
+import {IResponseArray} from '../../../../ts/interfaces/IResponseInterfaces'
+import {ICourseRow} from '../../../../ts/interfaces/ICourses'
+import {VerificationType} from '../../../../ts/types/Verifications'
+import {IGetCourse} from '../../../../ts/interfaces/ICourse'
+import {ISessionCode} from '../../../../components/admin/modals/AddEditExam/AddEditExam'
 
 export interface ICoursesFilter {
   text: string | null

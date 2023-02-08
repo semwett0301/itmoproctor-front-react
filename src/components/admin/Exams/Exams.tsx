@@ -1,13 +1,15 @@
-import React, { FC, useEffect, useState } from 'react'
+// noinspection DuplicatedCode
+
+import React, {FC, useEffect, useState} from 'react'
 import cl from './Exams.module.scss'
-import { useOpenTab } from '../Admin'
-import { IconAdd } from '@consta/uikit/IconAdd'
-import { IconEdit } from '@consta/uikit/IconEdit'
-import { IconRevert } from '@consta/uikit/IconRevert'
-import { IconCopy } from '@consta/uikit/IconCopy'
-import { IconDocExport } from '@consta/uikit/IconDocExport'
-import { IconUpload } from '@consta/uikit/IconUpload'
-import { IconTrash } from '@consta/uikit/IconTrash'
+import {useOpenTab} from '../Admin'
+import {IconAdd} from '@consta/uikit/IconAdd'
+import {IconEdit} from '@consta/uikit/IconEdit'
+import {IconRevert} from '@consta/uikit/IconRevert'
+import {IconCopy} from '@consta/uikit/IconCopy'
+import {IconDocExport} from '@consta/uikit/IconDocExport'
+import {IconUpload} from '@consta/uikit/IconUpload'
+import {IconTrash} from '@consta/uikit/IconTrash'
 import SharedTable from '../../shared/SharedTable/SharedTable'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
 import ExamStatusCombobox from '../../shared/Filter/ExamStatusCombobox/ExamStatusCombobox'
@@ -17,31 +19,28 @@ import DatePeriodPicker from '../../shared/Filter/DatePeriodPicker/DatePeriodPic
 import SearchField from '../../shared/Filter/SearchField/SearchField'
 import FilterButton from '../../shared/Filter/FilterButton/FilterButton'
 import OrganizationCombobox from '../../shared/Filter/OrganizationCombobox/OrganizationCombobox'
-import { Layout } from '@consta/uikit/Layout'
-import { useTableRequest } from '../../../hooks/useTableRequest'
-import { useTable } from '../../../hooks/tableHooks'
-import { ExamFilter, TablesEnum } from '../../../config/tablesReducerConfig'
-import { request } from '../../../api/axios/request'
-import { IExamRow } from '../../../ts/interfaces/IExams'
-import { getProctor, getShortName, getStudentName } from '../../../utils/nameHelper'
+import {Layout} from '@consta/uikit/Layout'
+import {useTableRequest} from '../../../hooks/shared/tables/useTableRequest'
+import {useTable} from '../../../hooks/shared/tables/useTable'
+import {ExamFilter, TablesEnum} from '../../../config/store/tablesReducerConfig'
+import {request} from '../../../api/axios/request'
+import {IExamRow} from '../../../ts/interfaces/IExams'
+import {getProctor, getShortName, getStudentName} from '../../../utils/common/nameHelper'
 import TypeBadge from '../../shared/SharedTable/TypeBadge/TypeBadge'
-import StatusBadge, {
-  customBadgePropStatus,
-  getExamStatus
-} from '../../shared/SharedTable/StatusBadge/StatusBadge'
-import { IconVideo } from '@consta/uikit/IconVideo'
-import { Button } from '@consta/uikit/Button'
+import StatusBadge, {customBadgePropStatus, getExamStatus} from '../../shared/SharedTable/StatusBadge/StatusBadge'
+import {IconVideo} from '@consta/uikit/IconVideo'
+import {Button} from '@consta/uikit/Button'
 import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
-import { organizationsFormat, resetFormat, statusFormat } from '../../../utils/requestFormatters'
-import { closeModal, openModal } from '../../shared/ModalView/ModalView'
+import {organizationsFormat, resetFormat, statusFormat} from '../../../utils/admin/requestFormatters'
+import {closeModal, openModal} from '../../shared/ModalView/ModalView'
 import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
-import { selectAll } from '../../../utils/selectAll'
-import { socket } from '../../../api/socket/socket'
+import {selectAll} from '../../../utils/admin/selectAll'
+import {socket} from '../../../api/socket/socket'
 import AddEditExam from '../modals/AddEditExam/AddEditExam'
-import { examsColumn, IExamsTableModel } from './examsTableModel'
-import {useAppSelector} from '../../../hooks/reduxHooks';
-import {adminButtonChecker} from '../../../utils/adminButtonChecker';
-import {deleteSelected} from '../../../utils/deleteSelected';
+import {examsColumn, IExamsTableModel} from './examsTableModel'
+import {adminButtonChecker} from '../../../utils/admin/adminButtonChecker';
+import {deleteSelected} from '../../../utils/admin/deleteSelected';
+import {useAppSelector} from '../../../hooks/store/useAppSelector';
 
 const Exams: FC = () => {
   const { openTab } = useOpenTab()

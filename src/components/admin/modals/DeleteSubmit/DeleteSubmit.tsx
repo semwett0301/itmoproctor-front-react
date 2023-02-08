@@ -3,7 +3,7 @@ import cl from './DeleteSubmit.module.scss'
 import { Text } from '@consta/uikit/Text'
 import { Button } from '@consta/uikit/Button'
 import { cnMixSpace } from '@consta/uikit/MixSpace'
-import { classJoiner } from '../../../../utils/styleClassesUtills'
+import { classJoiner } from '../../../../utils/common/styleClassesUtills'
 import ModalTitle from '../../../shared/ModalView/ModalTitle/ModalTitle'
 
 // TYPES

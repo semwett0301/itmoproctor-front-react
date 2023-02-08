@@ -1,6 +1,10 @@
 import {Reducer} from 'redux';
 import {ITableParams} from '../../../../ts/interfaces/ITableParams';
-import {ActionPayloadTable, initialTableParams, OrganizationsFilter} from '../../../../config/tablesReducerConfig';
+import {
+  ActionPayloadTable,
+  initialTableParams,
+  OrganizationsFilter
+} from '../../../../config/store/tablesReducerConfig';
 import {IAction} from '../../../../ts/interfaces/IAction';
 import {ITotalRowsVariants} from '../../../../components/shared/SharedPagination/PaginationField/PaginationField';
 import {ITotalPagination} from '../../../../ts/interfaces/IPagination';

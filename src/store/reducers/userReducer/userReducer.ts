@@ -1,8 +1,8 @@
-import { IUserApp } from '../../../ts/interfaces/IUserApp'
-import { ProviderEnum, RoleEnum } from '../../../config/authСonfig'
-import { UserActionTypes } from './userActionTypes'
-import { IAction } from '../../../ts/interfaces/IAction'
-import { Reducer } from 'redux'
+import {IUserApp} from '../../../ts/interfaces/IUserApp'
+import {ProviderEnum, RoleEnum} from '../../../config/router/authСonfig'
+import {UserActionTypes} from './userActionTypes'
+import {IAction} from '../../../ts/interfaces/IAction'
+import {Reducer} from 'redux'
 
 const initialState: IUserApp = {
   active: false,

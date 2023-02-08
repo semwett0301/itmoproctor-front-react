@@ -13,16 +13,16 @@ import SharedTable from '../../shared/SharedTable/SharedTable'
 import {IScheduleTableModel, scheduleColumns} from './scheduleTableModel'
 import {request} from '../../../api/axios/request'
 import {IScheduleRow} from '../../../ts/interfaces/IShedule'
-import {useTable} from '../../../hooks/tableHooks'
-import {ScheduleFilter, TablesEnum} from '../../../config/tablesReducerConfig'
-import {useTableRequest} from '../../../hooks/useTableRequest'
+import {useTable} from '../../../hooks/shared/tables/useTable'
+import {ScheduleFilter, TablesEnum} from '../../../config/store/tablesReducerConfig'
+import {useTableRequest} from '../../../hooks/shared/tables/useTableRequest'
 import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
-import {selectAll} from '../../../utils/selectAll'
+import {selectAll} from '../../../utils/admin/selectAll'
 import {closeModal, openModal} from '../../shared/ModalView/ModalView'
 import AddEditSchedule from '../modals/AddEditSchedule/AddEditSchedule'
 
 import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
-import {adminButtonChecker} from '../../../utils/adminButtonChecker';
+import {adminButtonChecker} from '../../../utils/admin/adminButtonChecker';
 import {addNotification} from '../../shared/NotificationList/NotificationList';
 
 // DEFAULT FUNCTIONS

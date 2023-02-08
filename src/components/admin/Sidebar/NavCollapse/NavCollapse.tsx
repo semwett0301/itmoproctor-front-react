@@ -1,10 +1,10 @@
-import { Card } from '@consta/uikit/Card'
-import React, { FC, useState } from 'react'
-import { Collapse } from '@consta/uikit/Collapse'
-import { getSidebarItems, ICollapseItem } from './NavCollapseModel'
+import {Card} from '@consta/uikit/Card'
+import React, {FC, useState} from 'react'
+import {Collapse} from '@consta/uikit/Collapse'
+import {getSidebarItems, ICollapseItem} from './NavCollapseModel'
 import cl from './NavCollapse.module.scss'
-import { classJoiner, classWatcher } from '../../../../utils/styleClassesUtills'
-import { TabItem } from '../../Admin'
+import {classJoiner, classWatcher} from '../../../../utils/common/styleClassesUtills'
+import {TabItem} from '../../../shared/NavTabs/NavTabs';
 
 interface NavCollapseProps {
   isOpen: boolean

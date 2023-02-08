@@ -1,8 +1,8 @@
-import { AxiosInstance, AxiosResponse } from 'axios'
-import { IResponseArray } from '../../../../ts/interfaces/IResponseInterfaces'
-import { IExamRow } from '../../../../ts/interfaces/IExams'
-import axiosConfig from '../../../../config/axiosСonfig'
-import { IExam } from '../../../../ts/interfaces/IExam'
+import {AxiosInstance, AxiosResponse} from 'axios'
+import {IResponseArray} from '../../../../ts/interfaces/IResponseInterfaces'
+import {IExamRow} from '../../../../ts/interfaces/IExams'
+import axiosConfig from '../../../../config/api/axiosСonfig'
+import {IExam} from '../../../../ts/interfaces/IExam'
 
 export interface IStudentExamsAxios {
   getExams: () => Promise<AxiosResponse<IResponseArray<IExamRow>>>

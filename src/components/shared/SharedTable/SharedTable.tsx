@@ -3,7 +3,7 @@ import { Table, TableColumn } from '@consta/uikit/Table'
 import cl from './SharedTable.module.scss'
 import { ResponsesNothingFound } from '@consta/uikit/ResponsesNothingFound'
 import { Loader } from '@consta/uikit/Loader'
-import { classJoiner } from '../../../utils/styleClassesUtills'
+import { classJoiner } from '../../../utils/common/styleClassesUtills'
 
 export interface ITableRow {
   id: string

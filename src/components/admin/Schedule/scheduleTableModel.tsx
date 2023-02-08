@@ -5,7 +5,7 @@ import { ITableRow } from '../../shared/SharedTable/SharedTable'
 import HeaderCell from '../../shared/SharedTable/HeaderCell/HeaderCell'
 import DateCell from '../../shared/SharedTable/DateCell/DateCell'
 import TextWithTooltip from '../../shared/SharedTable/TextWithTooltip/TextWithTooltip'
-import { getFullName } from '../../../utils/nameHelper'
+import { getFullName } from '../../../utils/common/nameHelper'
 import { openModal } from '../../shared/ModalView/ModalView'
 import ProctorView from '../modals/ProctorView/ProctorView'
 

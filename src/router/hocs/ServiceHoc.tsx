@@ -1,9 +1,9 @@
 import React, {FC} from 'react'
 import {Navigate, useLocation} from 'react-router-dom'
-import {useAppSelector} from '../../hooks/reduxHooks'
-import {RoleEnum} from '../../config/authСonfig'
+import {RoleEnum} from '../../config/router/authСonfig'
 import {HocPropsType} from '../../ts/types/HocPropsType'
-import {mainRoutesConfig} from '../../config/mainRoutesConfig'
+import {mainRoutesConfig} from '../../config/router/mainRoutesConfig'
+import {useAppSelector} from '../../hooks/store/useAppSelector';
 
 const ServiceHoc: FC<HocPropsType<RoleEnum>> = () => {
   const location = useLocation()

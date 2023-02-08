@@ -1,4 +1,4 @@
-import { IRoute } from '../../ts/interfaces/IRoute'
+import {IRoute} from '../../ts/interfaces/IRoute'
 import Admin from '../../components/admin/Admin'
 import Schedule from '../../components/admin/Schedule/Schedule'
 import Courses from '../../components/admin/Courses/Courses'
@@ -9,9 +9,9 @@ import ExamProtocol from '../../components/admin/ExamProtocol/ExamProtocol'
 import NotFound from '../../components/shared/errors/NotFound/NotFound'
 import Exams from '../../components/admin/Exams/Exams'
 import Maintenance from '../../components/admin/Maintenance/Maintenance'
-import { AdminSubRoles } from '../../config/authСonfig'
-import { request } from '../../api/axios/request'
-import { getShortName } from '../../utils/nameHelper'
+import {AdminSubRoles} from '../../config/router/authСonfig'
+import {request} from '../../api/axios/request'
+import {getShortName} from '../../utils/common/nameHelper'
 
 export const adminRoutes: IRoute[] = [
   {
