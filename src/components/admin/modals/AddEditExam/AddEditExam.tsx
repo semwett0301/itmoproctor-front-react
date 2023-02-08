@@ -164,11 +164,11 @@ const AddEditExam: FC<IAddEditExamProp> = ({examId, onSubmit}) => {
   const [isStudentsLoading, setIsStudentsLoading] = useState<boolean>(false)
 
   const [isProctorsLoading, setIsProctorsLoading] = useState<boolean>(false)
-  const [studentsList, setStudentsList] = useState<IUsersRow[]>([])
 
-  const [proctorsList, setProctorsList] = useState<IUsersRow[]>([])
+  const [studentsList, setStudentsList] = useState<IUsersRow[]>([])
   const [studentEmptyLabel, setStudentEmptyLabel] = useState<string>('Введите имя слушателя')
 
+  const [proctorsList, setProctorsList] = useState<IUsersRow[]>([])
   const [proctorEmptyLabel, setProctorEmptyLabel] = useState<string>(examType ? 'Введите имя эксперта' : 'Введите имя проктора')
 
   const user = useAppSelector((state) => state.user)
@@ -282,7 +282,14 @@ const AddEditExam: FC<IAddEditExamProp> = ({examId, onSubmit}) => {
             info: exam.info,
             note: exam.note
           })
-          setIsLoading(false)
+
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          setStudentsList([exam.student])
+
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          setProctorsList([exam.expert ?? exam.inspector])
         }
       })
   }, [])
