@@ -1,7 +1,7 @@
-import React, {FC, useEffect, useState} from 'react'
-import {IReport, ViolationsNames} from '../../../../ts/interfaces/IExam'
-import {Histogram, HistogramProps} from '@consta/charts/Histogram'
-import {Text} from '@consta/uikit/Text'
+import React, { FC, useEffect, useState } from 'react'
+import { IReport, ViolationsNames } from '../../../../ts/interfaces/IExam'
+import { Histogram, HistogramProps } from '@consta/charts/Histogram'
+import { Text } from '@consta/uikit/Text'
 
 // CONSTANTS
 
@@ -57,9 +57,7 @@ const TimeLineHist: FC<ITimeLineHistProp> = ({ report }) => {
 
       setOptions({
         binField: 'value',
-        legend: {
-          position: 'left'
-        },
+        legend: false,
         stackField: 'name',
         color: (item) => {
           return violationsColors[item['name'] as ALlViolationsNames]

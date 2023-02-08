@@ -1,19 +1,21 @@
-import auth, {IAuthAxios} from './modules/auth'
-import profile, {IProfileAxios} from './modules/profile'
-import exams, {IExamsAxios} from './modules/admin/exams'
-import dist, {IDistAxios} from './modules/dist'
+import auth, { IAuthAxios } from './modules/auth'
+import profile, { IProfileAxios } from './modules/profile'
+import exams, { IExamsAxios } from './modules/admin/exams'
+import dist, { IDistAxios } from './modules/dist'
 import mainInstance from './init/mainInstance'
-import organizations, {IOrganizationsAxios} from './modules/admin/organizations'
-import users, {IUsersAxios} from './modules/admin/users'
-import schedule, {IScheduleAxios} from './modules/admin/schedule'
-import courses, {ICoursesAxios} from './modules/admin/сourses'
-import maintenance, {IMaintenanceAxios} from './modules/admin/maintenance'
-import studentExams, {IStudentExamsAxios} from './modules/student/studentExams'
-import ExpertExams, {IExpertExamsAxios} from './modules/expert/exams'
-import network, {INetworkAxios} from './modules/network'
+import organizations, { IOrganizationsAxios } from './modules/admin/organizations'
+import users, { IUsersAxios } from './modules/admin/users'
+import schedule, { IScheduleAxios } from './modules/admin/schedule'
+import courses, { ICoursesAxios } from './modules/admin/сourses'
+import maintenance, { IMaintenanceAxios } from './modules/admin/maintenance'
+import studentExams, { IStudentExamsAxios } from './modules/student/studentExams'
+import ExpertExams, { IExpertExamsAxios } from './modules/expert/exams'
+import network, { INetworkAxios } from './modules/network'
+import chat, { IStudentChatAxios } from './modules/student/chat'
 
 export interface IStudentRequestAxios {
   exams: IStudentExamsAxios
+  chat: IStudentChatAxios
 }
 
 export interface IExpertRequestAxios {
@@ -47,7 +49,8 @@ export const request: IRequestAxios = {
   organizations: organizations(mainInstance),
 
   student: {
-    exams: studentExams(mainInstance)
+    exams: studentExams(mainInstance),
+    chat: chat(mainInstance)
   },
   expert: {
     exams: ExpertExams(mainInstance)
