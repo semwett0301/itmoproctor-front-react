@@ -169,7 +169,13 @@ const AddEditExam: FC<IAddEditExamProp> = ({examId, onSubmit}) => {
   const [studentEmptyLabel, setStudentEmptyLabel] = useState<string>('Введите имя слушателя')
 
   const [proctorsList, setProctorsList] = useState<IUsersRow[]>([])
-  const [proctorEmptyLabel, setProctorEmptyLabel] = useState<string>(examType ? 'Введите имя эксперта' : 'Введите имя проктора')
+  const [proctorEmptyLabel, setProctorEmptyLabel] = useState<string>('')
+
+  useEffect(() => {
+    setProctorEmptyLabel(examType ? 'Введите имя эксперта' : 'Введите имя проктора')
+
+    setProctorsList([])
+  }, [examType])
 
   const user = useAppSelector((state) => state.user)
 
@@ -241,7 +247,6 @@ const AddEditExam: FC<IAddEditExamProp> = ({examId, onSubmit}) => {
         return r
       })
       .then((r) => {
-        setIsLoading(false)
         setOrganizationsList(r)
       })
       .then(() => (examId ? request.exam.getExam(examId).then((r) => r.data) : null))
@@ -283,6 +288,9 @@ const AddEditExam: FC<IAddEditExamProp> = ({examId, onSubmit}) => {
             note: exam.note
           })
 
+          // getCourseCodes(exam.organization._id)
+          // if (exam.course) getSessionCodes(exam.course.courseCode)
+
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           setStudentsList([exam.student])
@@ -291,6 +299,7 @@ const AddEditExam: FC<IAddEditExamProp> = ({examId, onSubmit}) => {
           // @ts-ignore
           setProctorsList([exam.expert ?? exam.inspector])
         }
+        setIsLoading(false)
       })
   }, [])
 
@@ -301,10 +310,10 @@ const AddEditExam: FC<IAddEditExamProp> = ({examId, onSubmit}) => {
           : request.exam.addExam(toRequestData(data))
       )
       .then(() => {
-        closeModal()
         if (onSubmit) {
           onSubmit()
         }
+        closeModal()
       })
       .catch(console.log)
   }
@@ -394,6 +403,7 @@ const AddEditExam: FC<IAddEditExamProp> = ({examId, onSubmit}) => {
                               onChange={({value}) => {
                                 resetField('sessionCode')
                                 resetField('courseCode')
+                                console.log(getValues('sessionCode'))
                                 setSessionCodes([])
                                 setCourseCodes([])
 
@@ -433,6 +443,7 @@ const AddEditExam: FC<IAddEditExamProp> = ({examId, onSubmit}) => {
                               value={field.value}
                               onChange={({value}) => {
                                 resetField('sessionCode')
+                                console.log('a')
                                 if (value) {
                                   getSessionCodes(value)
                                 }

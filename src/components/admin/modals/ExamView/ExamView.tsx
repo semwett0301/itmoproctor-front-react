@@ -16,8 +16,8 @@ interface IExamViewProp {
   examId: string
 }
 
-const ExamView: FC<IExamViewProp> = ({ examId }) => {
-  const { t } = useTranslation('translation', { keyPrefix: 'shared' })
+const ExamView: FC<IExamViewProp> = ({examId}) => {
+  const {t} = useTranslation('translation', {keyPrefix: 'shared'})
 
   const [isLoad, setIsLoad] = useState<boolean>(true)
   const [items, setItems] = useState<IRowViewItem[]>([])
@@ -58,7 +58,7 @@ const ExamView: FC<IExamViewProp> = ({ examId }) => {
         {
           title: 'Ссылка',
           content: (
-            <Text size={'s'} as={'a'} target={'_blank'} rel='noreferrer' href={data.platformURL}>
+            <Text size={'s'} as={'a'} target={'_blank'} rel="noreferrer" href={data.platformURL}>
               Полетели
             </Text>
           )
@@ -83,18 +83,18 @@ const ExamView: FC<IExamViewProp> = ({ examId }) => {
         },
         {
           title: 'Длительность',
-          content: t('minutesPlurals.counter', { count: data.duration })
+          content: t('minutesPlurals.counter', {count: data.duration})
         },
         {
           title: 'Начало',
           content:
-            getStrDate(data.beginDate) +
-            (data.startDate ? getStrDate(data.startDate, ' (hh:mm)') : '')
+            data.beginDate ? getStrDate(data.beginDate) +
+              (data.startDate ? getStrDate(data.startDate, ' (hh:mm)') : '') : ''
         },
         {
           title: 'Окончание',
           content:
-            getStrDate(data.endDate) + (data.stopDate ? getStrDate(data.stopDate, ' (hh:mm)') : '')
+            data.endDate ? getStrDate(data.endDate) + (data.stopDate ? getStrDate(data.stopDate, ' (hh:mm)') : '') : ''
         },
         {
           title: 'Слушатель',
@@ -106,7 +106,7 @@ const ExamView: FC<IExamViewProp> = ({ examId }) => {
         },
         {
           title: 'Заключение',
-          content: <ResolutionText resolution={data.resolution} />
+          content: <ResolutionText resolution={data.resolution}/>
         },
         {
           title: 'Комментарий',
@@ -128,12 +128,12 @@ const ExamView: FC<IExamViewProp> = ({ examId }) => {
 
   return (
     <div className={cl.wrapper}>
-      <ModalTitle title={'exam'} />
+      <ModalTitle title={'exam'}/>
       {isLoad ? (
-        <SkeletonText rows={10} fontSize='s' lineHeight={'l'} />
+        <SkeletonText rows={10} fontSize="s" lineHeight={'l'}/>
       ) : (
-        <div className={cnMixSpace({ pH: 'm', pV: 's' })}>
-          <ModalViewConstructor items={items} />
+        <div className={cnMixSpace({pH: 'm', pV: 's'})}>
+          <ModalViewConstructor items={items}/>
         </div>
       )}
     </div>
