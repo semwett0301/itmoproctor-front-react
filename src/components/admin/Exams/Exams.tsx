@@ -52,31 +52,6 @@ const Exams: FC = () => {
 
   // const [sortSetting, setSortSetting] = useState<SortByProps<IExamsTableModel> | null>(null)
 
-  const duplicateExam = useCallback<(item: IExam | IExamRow ) => Promise<void>>(async (item) => {
-    const deletedProperties: Array<keyof IExam | keyof IExamRow> = [
-      '_id',
-      'examCode',
-      'inspector',
-      'inspectorConnected',
-      'expert',
-      'inCheck',
-      'verified',
-      'beginDate',
-      'endDate',
-      'startDate',
-      'stopDate',
-      'planDate',
-      'resolution',
-      'videoAvailable',
-      'comment',
-      'note',
-    ]
-
-    deletedProperties.forEach(e => Reflect.deleteProperty(item, e))
-
-    await request.exam.addExam(item)
-  }, [])
-
   const castToTableRow: (item: IExamRow, update: () => Promise<IExamsTableModel[]>) => IExamsTableModel = (item, update) => {
     const proctor = getProctor(item.async, item.inspector, item.expert),
       studentName = getStudentName(item.student),
@@ -137,11 +112,9 @@ const Exams: FC = () => {
             {
               label: 'Дублировать',
               iconLeft: IconCopy,
-              onClick: async () => {
-                const currentExam = await request.exam.getExam(item._id)
-                await duplicateExam(currentExam.data)
-                await update()
-              }
+              onClick: () => openModal(
+                <AddEditExam examId={item._id} onSubmit={update} isDuplicate={true}/>
+              )
             },
             {
               label: 'Удалить',
@@ -335,12 +308,9 @@ const Exams: FC = () => {
                       {
                         label: 'Дублировать',
                         iconLeft: IconCopy,
-                        onClick: async () => {
-                          for (const rowId of selectedRowsId) {
-                            const exam = await request.exam.getExam(rowId)
-                            await duplicateExam(exam.data)
-                          }
-                          await update()
+                        disabled: selectedRowsId.length !== 1,
+                        onClick: () => {
+                          openModal(<AddEditExam examId={selectedRowsId[0]} onSubmit={update} isDuplicate={true}/>)
                         }
                       },
                       {

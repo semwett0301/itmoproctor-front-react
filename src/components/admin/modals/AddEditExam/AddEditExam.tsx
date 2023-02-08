@@ -30,6 +30,7 @@ import {examTypesObj} from '../../../shared/SmartSelect/items/examTypes'
 import resolutions, {ResolutionsType} from '../../../shared/SmartSelect/items/resolutions'
 import {closeModal} from '../../../shared/ModalView/ModalView'
 import {useAppSelector} from '../../../../hooks/store/useAppSelector';
+import duplicateExam from '../../../../utils/admin/exams/duplicateExamPreparing';
 
 // TYPES
 export interface ISessionCode {
@@ -150,15 +151,17 @@ const toRequestData = (data: IExamForm, examId?: string): unknown => {
 interface IAddEditExamProp {
   examId?: string
   onSubmit?: () => void
+  isDuplicate?: boolean
 }
 
-const AddEditExam: FC<IAddEditExamProp> = ({examId, onSubmit}) => {
+const AddEditExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplicate = false}) => {
   const [examType, setExamType] = useState<boolean>(true)
 
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
   const [organizationsList, setOrganizationsList] = useState<IOrganization[]>([])
   const [courseCodes, setCourseCodes] = useState<string[]>([])
+
 
   const [sessionCodes, setSessionCodes] = useState<ISessionCode[]>([])
   const [isStudentsLoading, setIsStudentsLoading] = useState<boolean>(false)
@@ -252,6 +255,10 @@ const AddEditExam: FC<IAddEditExamProp> = ({examId, onSubmit}) => {
       .then(() => (examId ? request.exam.getExam(examId).then((r) => r.data) : null))
       .then((exam) => {
         if (exam) {
+          if (isDuplicate) {
+            exam = duplicateExam(exam)
+          }
+
           reset({
             subject: exam.subject,
             examId: exam.examId,
@@ -305,7 +312,7 @@ const AddEditExam: FC<IAddEditExamProp> = ({examId, onSubmit}) => {
 
   const onFormSubmit: SubmitHandler<IExamForm> = (data) => {
     Promise.resolve(
-        examId
+        examId && !isDuplicate
           ? request.exam.editExam(toRequestData(data, examId), examId)
           : request.exam.addExam(toRequestData(data))
       )
