@@ -36,7 +36,7 @@ import {closeModal, openModal} from '../../shared/ModalView/ModalView'
 import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
 import {selectAll} from '../../../utils/admin/selectAll'
 import {socket} from '../../../api/socket/socket'
-import AddEditExam from '../modals/AddEditExam/AddEditExam'
+import AddEditDuplicateExam from '../modals/AddEditExam/AddEditDuplicateExam'
 import {examsColumn, IExamsTableModel} from './examsTableModel'
 import {adminButtonChecker} from '../../../utils/admin/adminButtonChecker';
 import {deleteSelected} from '../../../utils/admin/deleteSelected';
@@ -102,7 +102,7 @@ const Exams: FC = () => {
             {
               label: 'Изменить',
               iconLeft: IconEdit,
-              onClick: () => openModal(<AddEditExam examId={item._id} onSubmit={update}/>)
+              onClick: () => openModal(<AddEditDuplicateExam examId={item._id} onSubmit={update}/>)
             },
             {
               label: 'Сбросить',
@@ -113,7 +113,7 @@ const Exams: FC = () => {
               label: 'Дублировать',
               iconLeft: IconCopy,
               onClick: () => openModal(
-                <AddEditExam examId={item._id} onSubmit={update} isDuplicate={true}/>
+                <AddEditDuplicateExam examId={item._id} onSubmit={update} isDuplicate={true}/>
               )
             },
             {
@@ -292,12 +292,12 @@ const Exams: FC = () => {
                       {
                         label: 'Добавить',
                         iconLeft: IconAdd,
-                        onClick: () => openModal(<AddEditExam onSubmit={update}/>)
+                        onClick: () => openModal(<AddEditDuplicateExam onSubmit={update}/>)
                       },
                       {
                         label: 'Изменить',
                         iconLeft: IconEdit,
-                        onClick: () => openModal(<AddEditExam examId={selectedRowsId[0]} onSubmit={update}/>),
+                        onClick: () => openModal(<AddEditDuplicateExam examId={selectedRowsId[0]} onSubmit={update}/>),
                         disabled: selectedRowsId.length !== 1
                       },
                       {
@@ -310,7 +310,7 @@ const Exams: FC = () => {
                         iconLeft: IconCopy,
                         disabled: selectedRowsId.length !== 1,
                         onClick: () => {
-                          openModal(<AddEditExam examId={selectedRowsId[0]} onSubmit={update} isDuplicate={true}/>)
+                          openModal(<AddEditDuplicateExam examId={selectedRowsId[0]} onSubmit={update} isDuplicate={true}/>)
                         }
                       },
                       {

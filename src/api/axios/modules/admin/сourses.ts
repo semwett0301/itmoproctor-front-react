@@ -4,7 +4,7 @@ import {IResponseArray} from '../../../../ts/interfaces/IResponseInterfaces'
 import {ICourseRow} from '../../../../ts/interfaces/ICourses'
 import {VerificationType} from '../../../../ts/types/Verifications'
 import {IGetCourse} from '../../../../ts/interfaces/ICourse'
-import {ISessionCode} from '../../../../components/admin/modals/AddEditExam/AddEditExam'
+import {ISessionCode} from '../../../../components/admin/modals/AddEditExam/AddEditDuplicateExam'
 
 export interface ICoursesFilter {
   text: string | null

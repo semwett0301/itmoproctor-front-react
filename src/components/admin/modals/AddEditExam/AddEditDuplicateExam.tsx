@@ -2,7 +2,7 @@ import React, {FC, useEffect, useState} from 'react'
 import ModalTitle from '../../../shared/ModalView/ModalTitle/ModalTitle'
 import {classJoiner} from '../../../../utils/common/styleClassesUtills'
 import {cnMixSpace} from '@consta/uikit/MixSpace'
-import cn from './AddEditExam.module.scss'
+import cn from './AddEditDuplicateExam.module.scss'
 import {SkeletonText} from '@consta/uikit/Skeleton'
 import FilterConstructor from '../../../shared/Filter/FilterConstructor'
 import SaveButton from '../../../shared/ModalView/SaveButton/SaveButton'
@@ -154,7 +154,7 @@ interface IAddEditExamProp {
   isDuplicate?: boolean
 }
 
-const AddEditExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplicate = false}) => {
+const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplicate = false}) => {
   const [examType, setExamType] = useState<boolean>(true)
 
   const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -295,8 +295,10 @@ const AddEditExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplicate = fals
             note: exam.note
           })
 
-          // getCourseCodes(exam.organization._id)
-          // if (exam.course) getSessionCodes(exam.course.courseCode)
+          console.log(getValues('courseCode'))
+
+          getCourseCodes(exam.organization._id)
+          if (exam.course) getSessionCodes(exam.course.courseCode)
 
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -408,9 +410,12 @@ const AddEditExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplicate = fals
                               getItemLabel={(item) => item.shortName ?? item.fullName}
                               getItemKey={(item) => item._id}
                               onChange={({value}) => {
-                                resetField('sessionCode')
-                                resetField('courseCode')
-                                console.log(getValues('sessionCode'))
+                                resetField('courseCode', {
+                                  defaultValue: null
+                                })
+                                resetField('sessionCode', {
+                                  defaultValue: null
+                                })
                                 setSessionCodes([])
                                 setCourseCodes([])
 
@@ -449,8 +454,9 @@ const AddEditExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplicate = fals
                               getItemKey={(item) => item}
                               value={field.value}
                               onChange={({value}) => {
-                                resetField('sessionCode')
-                                console.log('a')
+                                resetField('sessionCode', {
+                                  defaultValue: null
+                                })
                                 if (value) {
                                   getSessionCodes(value)
                                 }
@@ -524,7 +530,9 @@ const AddEditExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplicate = fals
                               itemsType={'examTypes'}
                               value={field.value}
                               onChange={({value}) => {
-                                resetField('expertOrInspector')
+                                resetField('expertOrInspector', {
+                                  defaultValue: null
+                                })
                                 if (value) setExamType(value.id === 'true')
                                 field.onChange(value)
                               }}
@@ -972,4 +980,4 @@ const AddEditExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplicate = fals
   )
 }
 
-export default AddEditExam
+export default AddEditDuplicateExam
