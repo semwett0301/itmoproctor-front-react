@@ -18,7 +18,7 @@ type RolesToBackendConfig = {
 }
 
 // Соотношение кодов с бэкенда и ролей в приложении
-export const rolesToBackendConfig: RolesToBackendConfig = {
+export const backendToRolesConfig: RolesToBackendConfig = {
   1: RoleEnum.STUDENT,
   2: RoleEnum.PROCTOR,
   3: RoleEnum.ADMIN

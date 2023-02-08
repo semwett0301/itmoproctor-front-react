@@ -1,10 +1,10 @@
-import React, {FC, useEffect, useState} from 'react'
+import React, {FC, useCallback, useEffect, useState} from 'react'
 import ModalTitle from '../../../shared/ModalView/ModalTitle/ModalTitle'
 import {DatePicker} from '@consta/uikit/DatePicker'
 import {IconCalendar} from '@consta/uikit/IconCalendar'
 import FilterConstructor from '../../../shared/Filter/FilterConstructor'
 import {TextField} from '@consta/uikit/TextField'
-import {Controller, SubmitHandler, useForm} from 'react-hook-form'
+import {Controller, set, SubmitHandler, useForm} from 'react-hook-form'
 import {Button} from '@consta/uikit/Button'
 import {date, number, object} from 'yup'
 import {yupResolver} from '@hookform/resolvers/yup'
@@ -27,7 +27,7 @@ interface IFormInput {
   beginDate: Date
   endDate: Date
   concurrent: string
-  inspector: IUsersRow
+  inspector: IUsersRow | null
   maxExamsBeginnings: string
 }
 
@@ -50,16 +50,18 @@ const toRequestData = (data: IFormInput): ISchedulePost => ({
   beginDate: dayjs(data.beginDate).startOf('hour').toISOString(),
   endDate: dayjs(data.endDate).startOf('hour').toISOString(),
   concurrent: data.concurrent,
-  inspector: data.inspector._id,
+  inspector: data.inspector?._id ?? '',
   maxExamsBeginnings: data.maxExamsBeginnings
 })
 
-const AddEditSchedule: FC<IAddEditScheduleProp> = ({ scheduleId, onSubmit }) => {
+const AddEditSchedule: FC<IAddEditScheduleProp> = ({scheduleId, onSubmit}) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isProctorsLoading, setIsProctorsLoading] = useState<boolean>(false)
   const [proctorsList, setProctorsList] = useState<IUsersRow[]>([])
 
-  const getProctors = (query: string): void => {
+  const [emptyLabel, setLabelEmpty] = useState<string>('Введите имя проктора')
+
+  const getProctors = useCallback<(query: string | null) => void>(query => {
     setIsProctorsLoading(true)
     request.users
       .getListOfUsers({
@@ -67,13 +69,13 @@ const AddEditSchedule: FC<IAddEditScheduleProp> = ({ scheduleId, onSubmit }) => 
         rows: 20,
         text: query
       })
-      .then(({ data }) => {
-        setIsProctorsLoading(false)
+      .then(({data}) => {
         setProctorsList(data.rows)
+        setIsProctorsLoading(false)
       })
-  }
+  }, [])
 
-  const { control, handleSubmit, formState, reset } = useForm<IFormInput>({
+  const {control, handleSubmit, formState, reset} = useForm<IFormInput>({
     mode: 'onChange',
     resolver: yupResolver(organizationSchema)
   })
@@ -81,7 +83,7 @@ const AddEditSchedule: FC<IAddEditScheduleProp> = ({ scheduleId, onSubmit }) => 
   useEffect(() => {
     setIsLoading(true)
     request.users
-      .getListOfUsers({ role: '2,expert' })
+      .getListOfUsers({role: '2,expert'})
       .then((users) => {
         if (scheduleId)
           return request.schedule.getSchedule(scheduleId).then((r) => {
@@ -94,6 +96,10 @@ const AddEditSchedule: FC<IAddEditScheduleProp> = ({ scheduleId, onSubmit }) => 
                 concurrent: r.data.concurrent,
                 inspector: inspector
               })
+
+              setProctorsList([
+                inspector
+              ])
             }
           })
       })
@@ -102,12 +108,13 @@ const AddEditSchedule: FC<IAddEditScheduleProp> = ({ scheduleId, onSubmit }) => 
       })
   }, [reset, scheduleId])
 
+
   const onFormSubmit: SubmitHandler<IFormInput> = (data) => {
     Promise.resolve(
-      scheduleId
-        ? request.schedule.editSchedule(toRequestData(data), scheduleId)
-        : request.schedule.addSchedule(toRequestData(data))
-    )
+        scheduleId
+          ? request.schedule.editSchedule(toRequestData(data), scheduleId)
+          : request.schedule.addSchedule(toRequestData(data))
+      )
       .then(() => {
         if (onSubmit) {
           onSubmit()
@@ -119,14 +126,14 @@ const AddEditSchedule: FC<IAddEditScheduleProp> = ({ scheduleId, onSubmit }) => 
 
   return (
     <div>
-      <ModalTitle title={'schedule'} />
-      <div className={classJoiner(cnMixSpace({ pH: '2xs' }), cl.wrapper)}>
+      <ModalTitle title={'schedule'}/>
+      <div className={classJoiner(cnMixSpace({pH: '2xs'}), cl.wrapper)}>
         {isLoading ? (
           <SkeletonText
             rows={10}
-            fontSize='s'
+            fontSize="s"
             lineHeight={'l'}
-            className={classJoiner(cnMixSpace({ p: 's' }), cl.skeleton)}
+            className={classJoiner(cnMixSpace({p: 's'}), cl.skeleton)}
           />
         ) : (
           <form noValidate onSubmit={handleSubmit(onFormSubmit)}>
@@ -139,19 +146,37 @@ const AddEditSchedule: FC<IAddEditScheduleProp> = ({ scheduleId, onSubmit }) => 
                       key: '01',
                       component: (
                         <Controller
-                          name='inspector'
+                          name="inspector"
                           control={control}
-                          render={({ field }) => (
+                          render={({field}) => (
                             <Combobox
                               size={'s'}
                               label={'Проктор'}
                               labelForNotFound={'Проктор не найден'}
-                              labelForEmptyItems={'Прокторов нет'}
+                              labelForEmptyItems={emptyLabel}
                               items={proctorsList}
                               value={field.value}
-                              onChange={({ value }) => field.onChange(value)}
-                              onInputChange={({ value }) => {
-                                value && getProctors(value)
+                              onChange={({value}) => {
+                                if (value === null) {
+                                  setProctorsList([])
+                                  setLabelEmpty('Введите имя проктора')
+                                } else {
+                                  proctorsList.length > 1 && setProctorsList([value])
+                                }
+
+                                return field.onChange(value)
+                              }
+                              }
+                              onInputChange={({value}) => {
+                                if (!field.value) {
+                                  if (value && value.length >= 3) {
+                                    getProctors(value)
+                                    setLabelEmpty('Проктор не найден')
+                                  } else {
+                                    setProctorsList([])
+                                    setLabelEmpty('Введите имя проктора')
+                                  }
+                                }
                               }}
                               getItemLabel={(item) =>
                                 getFullName(
@@ -178,15 +203,15 @@ const AddEditSchedule: FC<IAddEditScheduleProp> = ({ scheduleId, onSubmit }) => 
                       key: 11,
                       component: (
                         <Controller
-                          name='beginDate'
+                          name="beginDate"
                           control={control}
-                          render={({ field, fieldState }) => (
+                          render={({field, fieldState}) => (
                             <DatePicker
                               size={'s'}
                               type={'date-time'}
                               format={'dd.MM.yyyy HH:mm'}
                               multiplicitySeconds={0}
-                              placeholder='ММ.ДД.ГГГГ ЧЧ:ММ'
+                              placeholder="ММ.ДД.ГГГГ ЧЧ:ММ"
                               label={'Дата начала'}
                               rightSide={IconCalendar}
                               value={field.value}
@@ -194,7 +219,7 @@ const AddEditSchedule: FC<IAddEditScheduleProp> = ({ scheduleId, onSubmit }) => 
                               name={field.name}
                               id={field.name}
                               onBlur={field.onBlur}
-                              onChange={({ value }) => field.onChange(value)}
+                              onChange={({value}) => field.onChange(value)}
                               status={fieldState.error ? 'alert' : undefined}
                               caption={fieldState.error?.message}
                             />
@@ -207,14 +232,14 @@ const AddEditSchedule: FC<IAddEditScheduleProp> = ({ scheduleId, onSubmit }) => 
                       key: 12,
                       component: (
                         <Controller
-                          name='endDate'
+                          name="endDate"
                           control={control}
-                          render={({ field, fieldState }) => (
+                          render={({field, fieldState}) => (
                             <DatePicker
                               size={'s'}
                               type={'date-time'}
                               format={'dd.MM.yyyy HH:mm'}
-                              placeholder='ММ.ДД.ГГГГ ЧЧ:ММ'
+                              placeholder="ММ.ДД.ГГГГ ЧЧ:ММ"
                               label={'Дата окончания'}
                               multiplicitySeconds={0}
                               rightSide={IconCalendar}
@@ -223,7 +248,7 @@ const AddEditSchedule: FC<IAddEditScheduleProp> = ({ scheduleId, onSubmit }) => 
                               name={field.name}
                               id={field.name}
                               onBlur={field.onBlur}
-                              onChange={({ value }) => field.onChange(value)}
+                              onChange={({value}) => field.onChange(value)}
                               status={fieldState.error ? 'alert' : undefined}
                               caption={fieldState.error?.message}
                             />
@@ -241,10 +266,10 @@ const AddEditSchedule: FC<IAddEditScheduleProp> = ({ scheduleId, onSubmit }) => 
                       key: 21,
                       component: (
                         <Controller
-                          name='concurrent'
+                          name="concurrent"
                           control={control}
                           defaultValue={'1'}
-                          render={({ field, fieldState }) => (
+                          render={({field, fieldState}) => (
                             <TextField
                               size={'s'}
                               label={'Сессии'}
@@ -257,7 +282,7 @@ const AddEditSchedule: FC<IAddEditScheduleProp> = ({ scheduleId, onSubmit }) => 
                               name={field.name}
                               id={field.name}
                               onBlur={field.onBlur}
-                              onChange={({ value }) => field.onChange(value ? +value : null)}
+                              onChange={({value}) => field.onChange(value ? +value : null)}
                               status={fieldState.error ? 'alert' : undefined}
                             />
                           )}
@@ -269,10 +294,10 @@ const AddEditSchedule: FC<IAddEditScheduleProp> = ({ scheduleId, onSubmit }) => 
                       key: 22,
                       component: (
                         <Controller
-                          name='maxExamsBeginnings'
+                          name="maxExamsBeginnings"
                           control={control}
                           defaultValue={'1'}
-                          render={({ field, fieldState }) => (
+                          render={({field, fieldState}) => (
                             <TextField
                               size={'s'}
                               label={'Старты'}
@@ -285,7 +310,7 @@ const AddEditSchedule: FC<IAddEditScheduleProp> = ({ scheduleId, onSubmit }) => 
                               id={field.name}
                               onBlur={field.onBlur}
                               type={'number'}
-                              onChange={({ value }) => field.onChange(value ? +value : null)}
+                              onChange={({value}) => field.onChange(value ? +value : null)}
                               status={fieldState.error ? 'alert' : undefined}
                             />
                           )}
@@ -298,8 +323,8 @@ const AddEditSchedule: FC<IAddEditScheduleProp> = ({ scheduleId, onSubmit }) => 
               ]}
             />
             <div
-              style={{ display: 'flex', flexDirection: 'row-reverse' }}
-              className={cnMixSpace({ pH: 'm', mB: 's' })}
+              style={{display: 'flex', flexDirection: 'row-reverse'}}
+              className={cnMixSpace({pH: 'm', mB: 's'})}
             >
               <Button
                 type={'submit'}
