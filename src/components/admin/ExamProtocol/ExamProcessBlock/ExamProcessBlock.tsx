@@ -1,24 +1,24 @@
-import React, {FC, useCallback, useEffect, useRef, useState} from 'react'
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import cn from './ExamProcessBlock.module.scss'
 
 import utc from 'dayjs/plugin/utc'
-import {request} from '../../../../api/axios/request'
-import {INote} from '../../../../ts/interfaces/INotes'
-import {Text} from '@consta/uikit/Text'
-import {Layout} from '@consta/uikit/Layout'
-import {cnMixCard} from '@consta/uikit/MixCard'
-import {Button} from '@consta/uikit/Button'
-import {IconAttach} from '@consta/uikit/IconAttach'
-import {TextField} from '@consta/uikit/TextField'
-import {IconSendMessage} from '@consta/uikit/IconSendMessage'
-import dayjs, {Dayjs} from 'dayjs'
+import { request } from '../../../../api/axios/request'
+import { INote } from '../../../../ts/interfaces/INotes'
+import { Text } from '@consta/uikit/Text'
+import { Layout } from '@consta/uikit/Layout'
+import { cnMixCard } from '@consta/uikit/MixCard'
+import { Button } from '@consta/uikit/Button'
+import { IconAttach } from '@consta/uikit/IconAttach'
+import { TextField } from '@consta/uikit/TextField'
+import { IconSendMessage } from '@consta/uikit/IconSendMessage'
+import dayjs, { Dayjs } from 'dayjs'
 import Note from './Note/Note'
-import {socket} from '../../../../api/socket/socket'
-import {IExam} from '../../../../ts/interfaces/IExam'
+import { socket } from '../../../../api/socket/socket'
+import { IExam } from '../../../../ts/interfaces/IExam'
 import NoteWithAuthor from './NoteWithAuthor/NoteWithAuthor'
-import {FileField} from '@consta/uikit/FileField'
-import {IconTrash} from '@consta/icons/IconTrash'
-import {classJoiner} from '../../../../utils/common/styleClassesUtills';
+import { FileField } from '@consta/uikit/FileField'
+import { IconTrash } from '@consta/icons/IconTrash'
+import { classJoiner } from '../../../../utils/common/styleClassesUtills'
 
 // TYPES
 interface DateNote {
@@ -86,7 +86,7 @@ const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
   }, [updateNotes, exam._id])
 
   const onSendMessageHandler = (): void => {
-    if (inputMessage) {
+    if (inputMessage || files) {
       if (files) {
         const formData = new FormData()
         formData.append('attach', files[0])
@@ -95,7 +95,7 @@ const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
           .addAttach(formData)
           .then((r) =>
             request.expert.exams.addNote(exam._id, {
-              text: inputMessage,
+              text: inputMessage ?? '',
               editable: true,
               attach: [{ uploadname: r.data.filename, filename: r.data.originalname }]
             })
@@ -103,7 +103,7 @@ const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
           .catch((e) => console.log(e))
       } else {
         request.expert.exams.addNote(exam._id, {
-          text: inputMessage,
+          text: inputMessage ?? '',
           editable: true,
           attach: []
         })
@@ -126,7 +126,7 @@ const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
                 {note.date.format('DD MMMM')}
               </Text>
               {note.notes.map((item) =>
-                item.author._id !== exam.student._id && item.text ? (
+                item.author._id !== exam.student._id ? (
                   <NoteWithAuthor key={item._id} note={item} exam={exam} />
                 ) : (
                   <Note key={item._id} note={item} exam={exam} />
@@ -175,7 +175,7 @@ const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
             maxRows={6}
           />
           <Button
-            disabled={!inputMessage}
+            disabled={!inputMessage && !files}
             onlyIcon
             iconRight={IconSendMessage}
             size={'xs'}
