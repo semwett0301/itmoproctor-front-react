@@ -23,7 +23,7 @@ import axiosConfig from '../../../config/api/axiosСonfig'
 import { useAppSelector } from '../../../hooks/store/useAppSelector'
 import { classJoiner } from '../../../utils/common/styleClassesUtills'
 import Player = videojs.Player
-import Loading from '../../shared/loading/Loading'
+import Loading from '../../shared/Loading/Loading'
 import SyncChat from './SyncChat/SyncChat'
 
 // TYPES

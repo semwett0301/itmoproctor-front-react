@@ -1,13 +1,15 @@
-import React, {FC} from 'react'
+import React, { FC } from 'react'
 import cn from './NoteWithAuthor.module.scss'
-import {Text} from '@consta/uikit/Text'
+import { Text } from '@consta/uikit/Text'
 import dayjs from 'dayjs'
-import {Button} from '@consta/uikit/Button'
-import {IconAttach} from '@consta/uikit/IconAttach'
-import {openModal} from '../../../../shared/ModalView/ModalView'
-import {INote} from '../../../../../ts/interfaces/INotes'
+import { Button } from '@consta/uikit/Button'
+import { IconAttach } from '@consta/uikit/IconAttach'
+import { openModal } from '../../../../shared/ModalView/ModalView'
+import { INote } from '../../../../../ts/interfaces/INotes'
 import AttachModal from '../../modals/AttachModal/AttachModal'
-import {IExam} from '../../../../../ts/interfaces/IExam'
+import { IExam } from '../../../../../ts/interfaces/IExam'
+import { downloadByHref } from '../../../../../utils/common/download'
+import axiosConfig from '../../../../../config/api/axiosСonfig'
 // TYPES
 
 // CONSTANTS
@@ -45,7 +47,14 @@ const NoteWithAuthor: FC<INoteWithAuthorProp> = ({ note, exam }) => {
               iconLeft={IconAttach}
               className={cn.attach}
               width={'default'}
-              onClick={() => openModal(<AttachModal attach={item} exam={exam} />)}
+              onClick={() => {
+                if (!/\.(png|jpe?g|bmp|webp|gif|tiff)$/i.test(item.filename)) {
+                  const attachUrl = `${axiosConfig.baseUrl}storage/note/${exam.examId}/${item.fileId}`
+                  downloadByHref(attachUrl, item.filename)
+                } else {
+                  openModal(<AttachModal attach={item} exam={exam} />)
+                }
+              }}
             />
           ))}
         </div>

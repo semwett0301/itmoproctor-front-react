@@ -142,6 +142,7 @@ const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
         <div className={cn.messageArea}>
           {!files ? (
             <FileField
+              name={'attach'}
               id={'attachInput'}
               inputRef={attachInputRef}
               onChange={(e) => {

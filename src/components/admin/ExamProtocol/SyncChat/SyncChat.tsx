@@ -40,7 +40,9 @@ const SyncChat: FC<ISyncChatProp> = ({ exam }) => {
   const [inputMessage, setInputMessage] = useState<string | null>(null)
   const attachInputRef = useRef<HTMLInputElement>(null)
 
-  const [files, setFiles] = useState<FileList | null>(null)
+  const [att, setAtt] = useState<FileList | null>(null)
+
+  const chat = useRef<HTMLDivElement>(null)
 
   const updateNotes = useCallback((id: string): void => {
     request.student.chat.getMessages(id).then(({ data }) => {
@@ -69,6 +71,14 @@ const SyncChat: FC<ISyncChatProp> = ({ exam }) => {
       console.log(filteredNotes)
 
       setMessages([...filteredNotes])
+
+      if (chat.current) {
+        const scrollBottom =
+          chat.current.scrollHeight - chat.current.scrollTop - chat.current.clientHeight
+        if (scrollBottom < 80) {
+          chat.current.scrollIntoView({ block: 'end' })
+        }
+      }
     })
   }, [])
 
@@ -76,6 +86,7 @@ const SyncChat: FC<ISyncChatProp> = ({ exam }) => {
     socket.chat.subscribe(exam._id, () => {
       updateNotes(exam._id)
     })
+
     return () => {
       socket.chat.unsubscribe(exam._id)
     }
@@ -86,10 +97,10 @@ const SyncChat: FC<ISyncChatProp> = ({ exam }) => {
   }, [updateNotes, exam._id])
 
   const onSendMessageHandler = (): void => {
-    if (inputMessage || files) {
-      if (files) {
+    if (inputMessage || att) {
+      if (att) {
         const formData = new FormData()
-        formData.append('attach', files[0])
+        formData.append('attach', att[0])
 
         request.expert.exams
           .addAttach(formData)
@@ -119,14 +130,14 @@ const SyncChat: FC<ISyncChatProp> = ({ exam }) => {
         })
       }
 
-      setFiles(null)
+      setAtt(null)
       setInputMessage(null)
     }
   }
 
   return (
     <Layout direction={'column'} className={cn.card}>
-      <Layout flex={1} direction={'column'} className={cn.notesField}>
+      <Layout flex={1} direction={'column'} className={cn.notesField} ref={chat}>
         {messages.map((day, i) => {
           return (
             <div className={cn.dayMsg} key={i}>
@@ -159,14 +170,14 @@ const SyncChat: FC<ISyncChatProp> = ({ exam }) => {
 
       {exam.resolution === null && (
         <div className={cn.messageArea}>
-          {!files ? (
+          {!att ? (
             <FileField
-              id={'attachInput'}
+              id={'file'}
               inputRef={attachInputRef}
               onChange={(e) => {
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
-                setFiles(e.target.files)
+                setAtt(e.target.files)
               }}
             >
               {(props) => (
@@ -180,7 +191,7 @@ const SyncChat: FC<ISyncChatProp> = ({ exam }) => {
               onlyIcon
               iconRight={IconTrash}
               onClick={() => {
-                setFiles(null)
+                setAtt(null)
               }}
             />
           )}
@@ -195,7 +206,7 @@ const SyncChat: FC<ISyncChatProp> = ({ exam }) => {
             maxRows={6}
           />
           <Button
-            disabled={!inputMessage && !files}
+            disabled={!inputMessage && !att}
             onlyIcon
             iconRight={IconSendMessage}
             size={'xs'}
