@@ -236,7 +236,7 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
 
   useEffect(() => {
     setIsLoading(true)
-    getOrganizations()
+    Promise.resolve(getOrganizations())
       .then((r) => r.filter((i) => i.code && i.code !== 'global' && i.code !== 'notStudent'))
       .then((r) => {
         if (user.role === RoleEnum.ADMIN && user.organization.code !== 'global') {

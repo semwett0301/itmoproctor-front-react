@@ -60,7 +60,7 @@ const Users: FC = () => {
   // Users table request
   const {isLoading, rows, update} = useTableRequest(
     () =>
-      getOrganizations()
+      Promise.resolve(getOrganizations())
         .then(() =>
           request.users.getListOfUsers({
             text: filter.searchQuery,

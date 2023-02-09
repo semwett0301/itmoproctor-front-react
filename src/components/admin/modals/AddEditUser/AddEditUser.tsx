@@ -165,7 +165,7 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
   useEffect(() => {
     setIsLoading(true)
 
-    getOrganizations()
+    Promise.resolve(getOrganizations())
       .then((r) => {
         if (profile.role === RoleEnum.ADMIN && profile.organization.code !== 'global') {
           setOrganizationList(r.filter((i) => i._id === profile.organization._id))

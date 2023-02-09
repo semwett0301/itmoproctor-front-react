@@ -78,7 +78,7 @@ const AddEditCourse: FC<IAddEditCourseProp> = ({ courseId, onSubmit }) => {
   })
 
   useEffect(() => {
-    getOrganizations()
+    Promise.resolve(getOrganizations())
       .then((r) => {
         if (user.role === RoleEnum.ADMIN && user.organization.code !== 'global') {
           setOrganizationList(r.filter((i) => i._id === user.organization._id))

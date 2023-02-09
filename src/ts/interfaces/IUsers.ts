@@ -1,4 +1,6 @@
-export interface IUsersRow {
+import {ITableRow} from '../../components/shared/SharedTable/SharedTable';
+
+export interface IUsersRow{
   _id: string
   role: number
   active: boolean
