@@ -40,7 +40,11 @@ const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
   const [inputMessage, setInputMessage] = useState<string | null>(null)
   const attachInputRef = useRef<HTMLInputElement>(null)
 
+  const [isShift, setIsShift] = useState<boolean>(false)
   const [files, setFiles] = useState<FileList | null>(null)
+
+  const chat = useRef<HTMLDivElement>(null)
+  const msg = useRef<HTMLDivElement>(null)
 
   const updateNotes = useCallback((id: string): void => {
     request.expert.exams.getNotes(id).then(({ data }) => {
@@ -76,10 +80,25 @@ const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
     socket.notes.subscribe(exam._id, () => {
       updateNotes(exam._id)
     })
+
+    const setShift = (e: KeyboardEvent) => {
+      setIsShift(e.shiftKey)
+    }
+
+    window.addEventListener('keypress', setShift)
+
     return () => {
       socket.notes.unsubscribe(exam._id)
+      window.removeEventListener('keypress', setShift)
     }
   }, [exam._id])
+
+  useEffect(() => {
+    if (msg.current && chat.current) {
+      if (chat.current.scrollHeight - chat.current.scrollTop - chat.current.clientHeight < 240)
+        msg.current.scrollIntoView({ block: 'end', behavior: 'smooth' })
+    }
+  }, [notes])
 
   useEffect(() => {
     updateNotes(exam._id)
@@ -119,10 +138,10 @@ const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
       direction={'column'}
       className={classJoiner(cnMixCard({ border: true, form: 'round' }), cn.card)}
     >
-      <Layout flex={1} direction={'column'} className={cn.notesField}>
-        {notes.map((note, i) => {
+      <Layout flex={1} direction={'column'} className={cn.notesField} ref={chat}>
+        {notes.map((note, i, array) => {
           return (
-            <div className={cn.dayMsg} key={i}>
+            <div className={cn.dayMsg} key={i} ref={i === array.length - 1 ? msg : undefined}>
               <Text size={'2xs'} view={'secondary'} style={{ width: '100%', textAlign: 'center' }}>
                 {note.date.format('DD MMMM')}
               </Text>
@@ -142,6 +161,7 @@ const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
         <div className={cn.messageArea}>
           {!files ? (
             <FileField
+              name={'attach'}
               id={'attachInput'}
               inputRef={attachInputRef}
               onChange={(e) => {
@@ -171,7 +191,21 @@ const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
             width={'full'}
             placeholder={'Введите текст заметки'}
             value={inputMessage}
-            onChange={({ value }) => setInputMessage(value)}
+            onChange={({ value }) => {
+              if (value === '\n' && !files) return
+
+              if (value === '\n' && files) {
+                if (!isShift) onSendMessageHandler()
+                else setInputMessage(value)
+                return
+              }
+
+              if (value && inputMessage && value.replace(inputMessage, '') === '\n' && !isShift) {
+                onSendMessageHandler()
+              } else {
+                setInputMessage(value)
+              }
+            }}
             type={'textarea'}
             maxRows={6}
           />

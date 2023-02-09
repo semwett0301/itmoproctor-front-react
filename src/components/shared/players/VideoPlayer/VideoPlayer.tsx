@@ -1,11 +1,11 @@
-import React, {FC, useEffect} from 'react'
-import videojs, {VideoJsPlayer} from 'video.js'
+import React, { FC, useEffect, useState } from 'react'
+import videojs, { VideoJsPlayer } from 'video.js'
 import 'video.js/dist/video-js.css'
 import './VideoPlayer.scss'
-import {backwardIcon, downloadIcon, forwardIcon} from './IconsHTML'
-import {openModal} from '../../ModalView/ModalView'
+import { backwardIcon, downloadIcon, forwardIcon } from './IconsHTML'
+import { openModal } from '../../ModalView/ModalView'
 import DownloadSubmit from '../../../admin/modals/DownloadSubmit/DownloadSubmit'
-import {IExam} from '../../../../ts/interfaces/IExam'
+import { IExam } from '../../../../ts/interfaces/IExam'
 
 // TYPES
 export interface SourceObject {
@@ -121,6 +121,76 @@ const VideoPlayer: FC<IVideoPlayerProp> = ({ source, onReady }) => {
 
       // You could update an existing player in the `else` block here
       // on prop change, for example:
+      const playerKeyControl = (event: KeyboardEvent) => {
+        const exclude = ['input', 'textarea']
+
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (exclude.indexOf(event?.target?.tagName.toLowerCase()) >= 0) return
+
+        console.log(event)
+
+        const code = event.code
+        switch (code) {
+          case 'ArrowDown':
+            player.volume(player.volume() > 0.1 ? player.volume() - 0.1 : 0)
+            // .volume =
+            break
+          case 'ArrowUp':
+            player.volume(player.volume() < 0.9 ? player.volume() + 0.1 : 1)
+            break
+          case 'ArrowLeft':
+            if (event.shiftKey) player.currentTime(player.currentTime() - 60)
+            else if (event.ctrlKey) player.currentTime(player.currentTime() - 15)
+            else player.currentTime(player.currentTime() - 5)
+            break
+          case 'ArrowRight':
+            if (event.shiftKey) player.currentTime(player.currentTime() + 60)
+            else if (event.ctrlKey) player.currentTime(player.currentTime() + 15)
+            else player.currentTime(player.currentTime() + 5)
+            break
+          case 'PageDown':
+            player.currentTime(player.currentTime() - 60)
+            break
+          case 'PageUp':
+            player.currentTime(player.currentTime() + 60)
+            break
+          case 'Comma':
+            if (player.paused()) player.currentTime(player.currentTime() - 1 / 5)
+            break
+          case 'Period':
+            if (player.paused()) player.currentTime(player.currentTime() + 1 / 5)
+            break
+          case 'Home':
+            player.currentTime(0)
+            break
+          case 'End':
+            player.currentTime(player.duration())
+            break
+          case 'Space':
+            if (player.paused()) player.play()
+            else player.pause()
+            break
+          case 'KeyM':
+            player.muted(!player.muted())
+            break
+          case 'KeyF':
+            if (player.isFullscreen()) player.exitFullscreen()
+            else player.requestFullscreen()
+            break
+          case 'Esc':
+            if (player.isFullscreen()) player.exitFullscreen()
+            break
+          default:
+            return
+        }
+        event.preventDefault()
+      }
+      window.addEventListener('keydown', playerKeyControl)
+
+      return () => {
+        window.removeEventListener('keydown', playerKeyControl)
+      }
     } else {
       const player = playerRef.current
       player.src(initialOptions.sources[0])

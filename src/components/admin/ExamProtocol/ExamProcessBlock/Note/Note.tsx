@@ -1,14 +1,16 @@
-import React, {FC, useEffect, useState} from 'react'
-import {INote} from '../../../../../ts/interfaces/INotes'
+import React, { FC, useEffect, useState } from 'react'
+import { INote } from '../../../../../ts/interfaces/INotes'
 import cn from './Note.module.scss'
-import {Text} from '@consta/uikit/Text'
-import {IconAttach} from '@consta/uikit/IconAttach'
-import {openModal} from '../../../../shared/ModalView/ModalView'
-import {Button} from '@consta/uikit/Button'
-import {IconAlert} from '@consta/uikit/IconAlert'
+import { Text } from '@consta/uikit/Text'
+import { IconAttach } from '@consta/uikit/IconAttach'
+import { openModal } from '../../../../shared/ModalView/ModalView'
+import { Button } from '@consta/uikit/Button'
+import { IconAlert } from '@consta/uikit/IconAlert'
 import dayjs from 'dayjs'
 import AttachModal from '../../modals/AttachModal/AttachModal'
-import {IExam} from '../../../../../ts/interfaces/IExam'
+import { IExam } from '../../../../../ts/interfaces/IExam'
+import axiosConfig from '../../../../../config/api/axiosСonfig'
+import { downloadByHref } from '../../../../../utils/common/download'
 
 // TYPES
 interface INoteProp {
@@ -47,7 +49,14 @@ const Note: FC<INoteProp> = ({ note, exam }) => {
                   iconLeft={IconAttach}
                   className={cn.attach}
                   width={'default'}
-                  onClick={() => openModal(<AttachModal attach={item} exam={exam} />)}
+                  onClick={() => {
+                    if (!/\.(png|jpe?g|bmp|webp|gif|tiff)$/i.test(item.filename)) {
+                      const attachUrl = `${axiosConfig.baseUrl}storage/note/${exam.examId}/${item.fileId}`
+                      downloadByHref(attachUrl, item.filename)
+                    } else {
+                      openModal(<AttachModal attach={item} exam={exam} />)
+                    }
+                  }}
                 />
               ))}
             </div>

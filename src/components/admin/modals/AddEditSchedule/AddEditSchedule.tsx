@@ -1,7 +1,8 @@
+import React, { FC, useEffect, useState } from 'react'
 import React, {FC, useCallback, useEffect, useState} from 'react'
 import ModalTitle from '../../../shared/ModalView/ModalTitle/ModalTitle'
-import {DatePicker} from '@consta/uikit/DatePicker'
-import {IconCalendar} from '@consta/uikit/IconCalendar'
+import { DatePicker } from '@consta/uikit/DatePicker'
+import { IconCalendar } from '@consta/uikit/IconCalendar'
 import FilterConstructor from '../../../shared/Filter/FilterConstructor'
 import {TextField} from '@consta/uikit/TextField'
 import {Controller, set, SubmitHandler, useForm} from 'react-hook-form'
@@ -10,16 +11,16 @@ import {date, number, object} from 'yup'
 import {yupResolver} from '@hookform/resolvers/yup'
 import {cnMixSpace} from '@consta/uikit/MixSpace'
 import cl from './AddEditSchedule.module.scss'
-import {classJoiner} from '../../../../utils/common/styleClassesUtills'
-import {IUsersRow} from '../../../../ts/interfaces/IUsers'
-import {getFullName} from '../../../../utils/common/nameHelper'
-import {request} from '../../../../api/axios/request'
-import {IconCheck} from '@consta/uikit/IconCheck'
-import {SkeletonText} from '@consta/uikit/Skeleton'
-import {closeModal} from '../../../shared/ModalView/ModalView'
-import {ISchedulePost} from '../../../../api/axios/modules/admin/schedule'
+import { classJoiner } from '../../../../utils/common/styleClassesUtills'
+import { IUsersRow } from '../../../../ts/interfaces/IUsers'
+import { getFullName } from '../../../../utils/common/nameHelper'
+import { request } from '../../../../api/axios/request'
+import { IconCheck } from '@consta/uikit/IconCheck'
+import { SkeletonText } from '@consta/uikit/Skeleton'
+import { closeModal } from '../../../shared/ModalView/ModalView'
+import { ISchedulePost } from '../../../../api/axios/modules/admin/schedule'
 import dayjs from 'dayjs'
-import {Combobox} from '@consta/uikit/Combobox'
+import { Combobox } from '@consta/uikit/Combobox'
 
 // TYPES
 
@@ -75,7 +76,7 @@ const AddEditSchedule: FC<IAddEditScheduleProp> = ({scheduleId, onSubmit}) => {
       })
   }, [])
 
-  const {control, handleSubmit, formState, reset} = useForm<IFormInput>({
+  const { control, handleSubmit, formState, reset, resetField } = useForm<IFormInput>({
     mode: 'onChange',
     resolver: yupResolver(organizationSchema)
   })
@@ -326,6 +327,13 @@ const AddEditSchedule: FC<IAddEditScheduleProp> = ({scheduleId, onSubmit}) => {
               style={{display: 'flex', flexDirection: 'row-reverse'}}
               className={cnMixSpace({pH: 'm', mB: 's'})}
             >
+              <Button
+                label={'ghfhj'}
+                iconLeft={IconCheck}
+                size={'s'}
+                onClick={() => resetField('inspector')}
+              />
+
               <Button
                 type={'submit'}
                 label={'Сохранить'}
