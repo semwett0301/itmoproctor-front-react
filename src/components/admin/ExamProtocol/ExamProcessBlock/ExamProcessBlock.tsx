@@ -81,8 +81,14 @@ const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
       updateNotes(exam._id)
     })
 
-    const setShift = (e: KeyboardEvent) => {
-      setIsShift(e.shiftKey)
+    const setShift = (e: KeyboardEvent): void => {
+      setIsShift(e.shiftKey || e.ctrlKey)
+
+      if (e.shiftKey || e.ctrlKey) {
+        if (e.key == 'Enter') {
+          setInputMessage((prev) => (prev ? prev + '\n' : prev))
+        }
+      }
     }
 
     window.addEventListener('keypress', setShift)
@@ -192,18 +198,24 @@ const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
             placeholder={'Введите текст заметки'}
             value={inputMessage}
             onChange={({ value }) => {
-              if (value === '\n' && !files) return
+              if (value === '\n') {
+                if (value === '\n' && !files) return
 
-              if (value === '\n' && files) {
-                if (!isShift) onSendMessageHandler()
-                else setInputMessage(value)
-                return
-              }
-
-              if (value && inputMessage && value.replace(inputMessage, '') === '\n' && !isShift) {
-                onSendMessageHandler()
+                if (value === '\n' && files && !isShift) {
+                  if (!isShift) onSendMessageHandler()
+                  return
+                }
               } else {
-                setInputMessage(value)
+                if (value && inputMessage && value.replace(inputMessage, '') === '\n' && isShift) {
+                  // setInputMessage(value.slice(0, -2))
+                  return
+                }
+
+                if (value && inputMessage && value.replace(inputMessage, '') === '\n' && !isShift) {
+                  onSendMessageHandler()
+                } else {
+                  setInputMessage(value)
+                }
               }
             }}
             type={'textarea'}
