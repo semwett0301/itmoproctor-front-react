@@ -86,8 +86,14 @@ const SyncChat: FC<ISyncChatProp> = ({ exam }) => {
       updateNotes(exam._id)
     })
 
-    const setShift = (e: KeyboardEvent) => {
-      setIsShift(e.shiftKey)
+    const setShift = (e: KeyboardEvent): void => {
+      setIsShift(e.shiftKey || e.ctrlKey)
+
+      if (e.shiftKey || e.ctrlKey) {
+        if (e.key == 'Enter') {
+          setInputMessage((prev) => (prev ? prev + '\n' : prev))
+        }
+      }
     }
 
     window.addEventListener('keypress', setShift)
@@ -207,19 +213,25 @@ const SyncChat: FC<ISyncChatProp> = ({ exam }) => {
             width={'full'}
             placeholder={'Введите текст заметки'}
             value={inputMessage}
-            onChange={({ value, e }) => {
-              if (value === '\n' && !att) return
+            onChange={({ value }) => {
+              if (value === '\n') {
+                if (value === '\n' && !att) return
 
-              if (value === '\n' && att) {
-                if (!isShift) onSendMessageHandler()
-                else setInputMessage(value)
-                return
-              }
-
-              if (value && inputMessage && value.replace(inputMessage, '') === '\n' && !isShift) {
-                onSendMessageHandler()
+                if (value === '\n' && att && !isShift) {
+                  if (!isShift) onSendMessageHandler()
+                  return
+                }
               } else {
-                setInputMessage(value)
+                if (value && inputMessage && value.replace(inputMessage, '') === '\n' && isShift) {
+                  // setInputMessage(value.slice(0, -2))
+                  return
+                }
+
+                if (value && inputMessage && value.replace(inputMessage, '') === '\n' && !isShift) {
+                  onSendMessageHandler()
+                } else {
+                  setInputMessage(value)
+                }
               }
             }}
             type={'textarea'}
