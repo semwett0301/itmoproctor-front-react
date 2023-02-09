@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { Dispatch, FC, SetStateAction, useEffect } from 'react'
 import videojs, { VideoJsPlayer } from 'video.js'
 import 'video.js/dist/video-js.css'
 import './VideoPlayer.scss'
@@ -23,9 +23,10 @@ interface IVideoPlayerProp {
   source: SourceObject
   onReady: (player: videojs.Player) => void
   exam?: IExam
+  setChangeTimeFunction?: Dispatch<SetStateAction<null | ((time: number) => void)>>
 }
 
-const VideoPlayer: FC<IVideoPlayerProp> = ({ source, onReady }) => {
+const VideoPlayer: FC<IVideoPlayerProp> = ({ source, onReady, setChangeTimeFunction }) => {
   const videoRef = React.useRef<HTMLDivElement | null>(null)
   const playerRef = React.useRef<VideoJsPlayer>()
 
@@ -63,6 +64,10 @@ const VideoPlayer: FC<IVideoPlayerProp> = ({ source, onReady }) => {
           onReady(player)
         }
       }))
+
+      if (setChangeTimeFunction) {
+        setChangeTimeFunction((seconds: number) => player.currentTime(seconds))
+      }
 
       const Button = videojs.getComponent('Button')
 
@@ -121,7 +126,7 @@ const VideoPlayer: FC<IVideoPlayerProp> = ({ source, onReady }) => {
 
       // You could update an existing player in the `else` block here
       // on prop change, for example:
-      const playerKeyControl = (event: KeyboardEvent) => {
+      const playerKeyControl = (event: KeyboardEvent): void => {
         const exclude = ['input', 'textarea']
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment

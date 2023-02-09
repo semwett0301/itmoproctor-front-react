@@ -1,0 +1,32 @@
+.content {
+  max-width: 554px;
+  padding: 12px 16px 20px 16px;
+
+  .violationMapping {
+    display: grid;
+    grid-template-columns: 64px auto;
+    column-gap: 18px;
+    row-gap: 15px;
+
+    .colorBlock {
+      width: 64px;
+      height: 24px;
+
+      &.noFaces {
+        background-color: #EB5757;
+      }
+
+      &.severalFaces {
+        background-color: #F01DB5;
+      }
+
+      &.noSound {
+        background-color: #E99311;
+      }
+
+      &.many {
+        background-color: #A71753;
+      }
+    }
+  }
+}

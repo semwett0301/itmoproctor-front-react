@@ -3,7 +3,6 @@ import cn from './ExamProtocol.module.scss'
 import { Text } from '@consta/uikit/Text'
 import { Layout } from '@consta/uikit/Layout'
 import { cnMixSpace } from '@consta/uikit/MixSpace'
-import { Card } from '@consta/uikit/Card'
 import { Button } from '@consta/uikit/Button'
 import { cnMixCard } from '@consta/uikit/MixCard'
 import VideoPlayer from '../../shared/players/VideoPlayer/VideoPlayer'
@@ -22,9 +21,9 @@ import ExamSubmitModal from './modals/ExamSubmitModal/ExamSubmitModal'
 import axiosConfig from '../../../config/api/axiosСonfig'
 import { useAppSelector } from '../../../hooks/store/useAppSelector'
 import { classJoiner } from '../../../utils/common/styleClassesUtills'
-import Player = videojs.Player
 import Loading from '../../shared/Loading/Loading'
 import SyncChat from './SyncChat/SyncChat'
+import Player = videojs.Player
 
 // TYPES
 
@@ -43,9 +42,11 @@ const ExamProtocol: FC = () => {
 
   const user = useAppSelector((state) => state.user)
 
+  const [player, setPlayer] = useState<videojs.Player | null>(null)
   // const [progressState, setProgressState] = useState<'ableToStart' | 'inProgress' | 'finish'>()
 
   const handlePlayerReady = (p: Player): void => {
+    setPlayer(p)
     // You can handle player events here, for example:
     p.on('waiting', () => {
       videojs.log('player is waiting')
@@ -147,23 +148,7 @@ const ExamProtocol: FC = () => {
                 <VideoPlayer source={source} onReady={handlePlayerReady} exam={exam} />
               </div>
 
-              {exam.async ?? (
-                <>
-                  <Text view={'secondary'} size={'s'}>
-                    Таймлайн
-                  </Text>
-                  <Card
-                    shadow={false}
-                    border={true}
-                    // horizontalSpace='xs'
-                    // verticalSpace={'xs'}
-                    className={cn.violationTimeline}
-                  >
-                    {/* <Text>Тамлайн нарушений</Text> */}
-                    <TimeLineHist report={exam.report} />
-                  </Card>
-                </>
-              )}
+              {exam.async ? <TimeLineHist report={exam.report} player={player} /> : null}
 
               <Text view={'secondary'} size={'s'}>
                 {exam.async ? 'Нарушения' : 'Диалог'}
