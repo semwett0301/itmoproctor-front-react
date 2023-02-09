@@ -17,7 +17,7 @@ import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
 import {useOrganizations} from '../../../hooks/admin/useOrganizations'
 import SharedTable from '../../shared/SharedTable/SharedTable'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
-import {IOrganization} from '../../../ts/interfaces/IOrganizations'
+import {IOrganization, IOrganizationFull} from '../../../ts/interfaces/IOrganizations'
 import {selectAll} from '../../../utils/admin/selectAll'
 import AddEditOrganization from '../modals/AddEditOrganization/AddEditOrganization'
 import {request} from '../../../api/axios/request'
@@ -35,24 +35,22 @@ const Organizations: FC = () => {
     dropPagination
   } = useTable<OrganizationsFilter>(TablesEnum.ORGANIZATIONS)
 
-  const { loading, getOrganizations } = useOrganizations()
+  const {loading, getOrganizations, changeOrganizations} = useOrganizations()
 
   useLayoutEffect(() => {
     if (loading) setCurrentPage(1)
     else setCurrentPage(0)
   }, [loading])
 
-  const { isLoading, rows, update } = useTableRequest(
+  const {isLoading, rows, update} = useTableRequest(
     async () => {
-      const currentRows: IOrganization[] = await getOrganizations().then((o) =>
-        o.filter(
-          (r) =>
-            !filter.searchQuery ||
-            r.fullName?.includes(filter.searchQuery) ||
-            r.shortName?.includes(filter.searchQuery) ||
-            r.code?.includes(filter.searchQuery)
-        )
-      )
+      const currentRows: IOrganization[] = getOrganizations().filter(
+            (r) =>
+              !filter.searchQuery ||
+              r.fullName?.includes(filter.searchQuery) ||
+              r.shortName?.includes(filter.searchQuery) ||
+              r.code?.includes(filter.searchQuery)
+          )
 
       const newRows: IOrganizationsTableModel[] = []
 
@@ -80,7 +78,10 @@ const Organizations: FC = () => {
                       openModal(
                         <AddEditOrganization
                           organizationId={currentRows[i]._id}
-                          onSubmit={() => console.log('submit')}
+                          onSubmit={async (res: IOrganizationFull) => {
+                            await changeOrganizations(res, 'change')
+                            await update()
+                          }}
                         />
                       )
                   },
@@ -93,8 +94,9 @@ const Organizations: FC = () => {
                           onSubmit={() => {
                             request.organizations
                               .deleteOrganization(currentRows[i]._id)
-                              .then(closeModal)
+                              .then((r => changeOrganizations(r.data, 'delete')))
                               .then(update)
+                              .then(closeModal)
                               .catch(console.log)
                           }}
                           onCancel={() => closeModal()}
@@ -137,7 +139,7 @@ const Organizations: FC = () => {
                 component: (
                   <SearchField
                     placeholder={'Поиск университета'}
-                    onChange={({ value }) => setSearchQuery(value)}
+                    onChange={({value}) => setSearchQuery(value)}
                     value={filter.searchQuery}
                   />
                 ),
@@ -154,8 +156,9 @@ const Organizations: FC = () => {
                         onClick: () =>
                           openModal(
                             <AddEditOrganization
-                              onSubmit={() => {
-                                console.log('submit')
+                              onSubmit={async (res: IOrganizationFull) => {
+                                await changeOrganizations(res, 'add')
+                                await update()
                               }}
                             />
                           )
@@ -163,7 +166,17 @@ const Organizations: FC = () => {
                       {
                         label: 'Изменить',
                         iconLeft: IconEdit,
-                        disabled: !(selectedRowsId.length === 1)
+                        disabled: !(selectedRowsId.length === 1),
+                        onClick: () =>
+                          openModal(
+                            <AddEditOrganization
+                              organizationId={selectedRowsId[0]}
+                              onSubmit={async (res: IOrganizationFull) => {
+                                await changeOrganizations(res, 'change')
+                                await update()
+                              }}
+                            />
+                          )
                       },
                       {
                         label: 'Удалить',
@@ -173,12 +186,13 @@ const Organizations: FC = () => {
                             <DeleteSubmit
                               onSubmit={() => {
                                 Promise.all(
-                                  selectedRowsId.map((id) =>
-                                    request.organizations.deleteOrganization(id)
+                                    selectedRowsId.map((id) =>
+                                      request.organizations.deleteOrganization(id)
+                                    )
                                   )
-                                )
-                                  .then(() => closeModal())
+                                  .then(r => r.forEach(org => changeOrganizations(org.data, 'delete')))
                                   .then(update)
+                                  .then(() => closeModal())
                                   .catch((e) => console.log(e))
                               }}
                               onCancel={() => closeModal()}

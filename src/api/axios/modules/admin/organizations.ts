@@ -5,7 +5,7 @@ import {IOrganizationFull, IOrganizationsResponse} from '../../../../ts/interfac
 export interface IOrganizationsAxios {
   getListOfOrganizations: () => Promise<AxiosResponse<IOrganizationsResponse>>
   getFullOrganization: (id: string) => Promise<AxiosResponse<IOrganizationFull>>
-  putOrganization: (organization: IOrganizationFull) => Promise<AxiosResponse<IOrganizationFull>>
+  putOrganization: (organizationId: string, organization: IOrganizationFull) => Promise<AxiosResponse<IOrganizationFull>>
   postOrganization: (organization: IOrganizationFull) => Promise<AxiosResponse<IOrganizationFull>>
   deleteOrganization: (organizationId: string) => Promise<AxiosResponse<IOrganizationFull>>
 }
@@ -18,9 +18,9 @@ export default function (instance: AxiosInstance): IOrganizationsAxios {
     getFullOrganization(id) {
       return instance.get(`${axiosConfig.baseUrl}organization/${id}`)
     },
-    putOrganization(organization) {
-      return instance.put(`${axiosConfig.baseUrl}organization/${organization._id}`, {
-        organization
+    putOrganization(organizationId, organization) {
+      return instance.put(`${axiosConfig.baseUrl}organization/${organizationId}`, {
+        ...organization
       })
     },
     postOrganization(organization) {

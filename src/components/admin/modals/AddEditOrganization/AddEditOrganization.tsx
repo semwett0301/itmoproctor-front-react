@@ -10,11 +10,12 @@ import {TextField} from '@consta/uikit/TextField'
 import {Button} from '@consta/uikit/Button'
 import {IconCheck} from '@consta/uikit/IconCheck'
 import {number, object, string} from 'yup'
+import {closeModal} from '../../../shared/ModalView/ModalView';
 
 // TYPES
 interface IAddEditOrganizationProp {
   organizationId?: string
-  onSubmit?: () => void
+  onSubmit?: (res: IOrganizationFull) => void
 }
 
 // CONSTANTS
@@ -25,7 +26,7 @@ interface IAddEditOrganizationProp {
 //   'shortNameRU'
 // ]
 
-const AddEditOrganization: FC<IAddEditOrganizationProp> = ({ organizationId }) => {
+const AddEditOrganization: FC<IAddEditOrganizationProp> = ({ organizationId, onSubmit }) => {
   const [organization, setOrganization] = useState<IOrganizationFull>({
     _id: null,
     fullNameRU: '',
@@ -239,32 +240,19 @@ const AddEditOrganization: FC<IAddEditOrganizationProp> = ({ organizationId }) =
               label={'Сохранить'}
               iconLeft={IconCheck}
               onClick={() => {
-                const IOrganiz = object({
-                  _id: string().nullable(),
-                  fullNameRU: string().required(),
-                  shortNameRU: string().nullable(),
-                  fullNameEN: string().nullable(),
-                  shortNameEN: string().nullable(),
-                  code: string().nullable(),
-                  openeduId: string().nullable(),
-                  registrationNumber: number().nullable()
-                })
-
-                console.log(IOrganiz.isValidSync(organization))
-
-                // Promise.resolve(
-                //   organizationId
-                //     ? request.organizations.putOrganization(organization)
-                //     : request.organizations.postOrganization(organization)
-                // )
-                //   .then(() => {
-                //     if (onSubmit) {
-                //       onSubmit()
-                //     }
-                //     console.log('onSubmit')
-                //   })
-                //   .then(() => closeModal())
-                //   .catch((e) => console.log(e))
+                Promise.resolve(
+                  organizationId
+                    ? request.organizations.putOrganization(organizationId, organization)
+                    : request.organizations.postOrganization(organization)
+                )
+                  .then(r => {
+                    console.log(r.data)
+                    if (onSubmit) {
+                      onSubmit(r.data)
+                    }
+                  })
+                  .then(() => closeModal())
+                  .catch((e) => console.log(e))
               }}
             />
           </div>
