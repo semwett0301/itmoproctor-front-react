@@ -33,6 +33,7 @@ import {openUserExams} from '../../../utils/admin/openUserExams'
 import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
 import {adminButtonChecker} from '../../../utils/admin/adminButtonChecker';
 import {deleteSelected} from '../../../utils/admin/deleteSelected';
+import {useAppSelector} from '../../../hooks/store/useAppSelector';
 
 
 const Users: FC = () => {
@@ -41,6 +42,8 @@ const Users: FC = () => {
   const [organizationsIds, setOrganizationsIds] = useState<string[]>([])
 
   const {getOrganizations, getOrganization, loading} = useOrganizations()
+
+  const system = useAppSelector(state => state.user.system ?? false)
 
   const {openTab} = useOpenTab()
 
@@ -98,7 +101,7 @@ const Users: FC = () => {
 
                 more: (
                   <MoreButton
-                    items={[
+                    items={adminButtonChecker([
                       {
                         label: 'Изменить',
                         iconLeft: IconEdit,
@@ -129,7 +132,7 @@ const Users: FC = () => {
                             />
                           )
                       }
-                    ]}
+                    ], system, ['Удалить'])}
                   />
                 )
               }
@@ -226,7 +229,7 @@ const Users: FC = () => {
                             />
                           )
                       }
-                    ], selectedRowsId.length !== 0, ['Удалить'])}
+                    ], selectedRowsId.length !== 0 && system, ['Удалить'])}
                   />
                 )
               }
