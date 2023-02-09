@@ -1,0 +1,40 @@
+.timeWrap{
+  height: 24px;
+  left: 11px;
+  right: 22px;
+  position: absolute;
+}
+
+.violationTimeline {
+  position: relative;
+  height: 100px;
+  margin: 8px 0;
+  padding: 4px 8px;
+}
+
+.title{
+  display: flex;
+  justify-content: space-between;
+
+  .titleText{
+    display: flex;
+    align-items: center;
+
+    .icon{
+      margin-left: 10px;
+      cursor: pointer;
+
+      &:hover{
+        color: var(--color-control-bg-primary)
+      }
+    }
+  }
+}
+
+.dropdown{
+  z-index: 10;
+}
+
+.select{
+width: 171px;
+}
