@@ -1,22 +1,24 @@
-import React, {Dispatch, FC} from 'react'
-import {IExam} from '../../../../ts/interfaces/IExam'
-import {cnMixSpace} from '@consta/uikit/MixSpace'
+import React, { Dispatch, FC } from 'react'
+import { IExam } from '../../../../ts/interfaces/IExam'
+import { cnMixSpace } from '@consta/uikit/MixSpace'
 import cn from './AboutBlock.module.scss'
-import {Card} from '@consta/uikit/Card'
-import {Text} from '@consta/uikit/Text'
-import {Button} from '@consta/uikit/Button'
-import {IconDocBlank} from '@consta/uikit/IconDocBlank'
+import { Card } from '@consta/uikit/Card'
+import { Text } from '@consta/uikit/Text'
+import { Button } from '@consta/uikit/Button'
+import { IconDocBlank } from '@consta/uikit/IconDocBlank'
 import UserRow from './UserRow/UserRow'
 import VerifyBtn from './VerifyBtn/VerifyBtn'
-import {openModal} from '../../../shared/ModalView/ModalView'
+import { openModal } from '../../../shared/ModalView/ModalView'
 import ExamView from '../../modals/ExamView/ExamView'
 import ExamRules from './ExamRules/ExamRules'
 import ProtocolVerifiedModal from './ProtocolVerifiedModal/ProtocolVerifiedModal'
 import IconWithTooltip from '../../../shared/IconWithTooltip/IconWithTooltip'
-import {IconCancel} from '@consta/icons/IconCancel'
-import {TextField} from '@consta/uikit/TextField'
-import {useAppSelector} from '../../../../hooks/store/useAppSelector';
-import {classJoiner} from '../../../../utils/common/styleClassesUtills';
+import { IconCancel } from '@consta/icons/IconCancel'
+import { TextField } from '@consta/uikit/TextField'
+import { useAppSelector } from '../../../../hooks/store/useAppSelector'
+import { classJoiner } from '../../../../utils/common/styleClassesUtills'
+import { request } from '../../../../api/axios/request'
+import ResolutionText from '../../modals/ExamView/ResolutionText'
 
 // TYPES
 
@@ -31,9 +33,10 @@ interface IAboutBlockProp {
     setComment: Dispatch<React.SetStateAction<string | null>>
   }
   noteState: { note: string | null; setNote: Dispatch<React.SetStateAction<string | null>> }
+  updateExam: () => void
 }
 
-const AboutBlock: FC<IAboutBlockProp> = ({ exam, noteState, commentState }) => {
+const AboutBlock: FC<IAboutBlockProp> = ({ exam, noteState, commentState, updateExam }) => {
   const user = useAppSelector((state) => state.user)
 
   const { note, setNote } = noteState
@@ -60,7 +63,7 @@ const AboutBlock: FC<IAboutBlockProp> = ({ exam, noteState, commentState }) => {
       <div className={cn.row}>
         <UserRow user={exam.student} withModal />
         <VerifyBtn
-          view={exam.verified && exam.verifications?.length ? 'normal' : 'disabled'}
+          view={exam.verified ? 'normal' : 'disabled'}
           onClick={
             exam.verified ? () => openModal(<ProtocolVerifiedModal exam={exam} />) : undefined
           }
@@ -73,11 +76,26 @@ const AboutBlock: FC<IAboutBlockProp> = ({ exam, noteState, commentState }) => {
           <IconWithTooltip
             icon={IconCancel}
             tooltipProps={{ content: 'Завершить проверку' }}
-            iconProps={{ className: cn.stopCheckIcon, onClick: () => console.log(';sljhf') }}
+            iconProps={{
+              className: cn.stopCheckIcon,
+              onClick: () =>
+                request.expert.exams
+                  .stopCheck({
+                    ...exam,
+                    inCheck: false,
+                    expert: null
+                  })
+                  .then(updateExam)
+            }}
           />
         )}
       </div>
 
+      {typeof exam.resolution === 'boolean' && (
+        <Text size='xs' view='secondary' as={'span'}>
+          Заключение: <ResolutionText resolution={exam.resolution} size={'xs'} />
+        </Text>
+      )}
       {isInProgress && (
         <>
           <TextField

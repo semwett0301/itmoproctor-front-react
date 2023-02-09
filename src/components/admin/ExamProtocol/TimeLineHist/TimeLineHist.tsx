@@ -78,6 +78,7 @@ const TimeLineHist: FC<ITimeLineHistProp> = ({ report, player }) => {
 
             return {
               value: newItem,
+              tooltip: false,
               itemStyle: {
                 color:
                   violations.length === 1
@@ -160,6 +161,7 @@ const TimeLineHist: FC<ITimeLineHistProp> = ({ report, player }) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const onChartClick = (params: any): void => {
+    console.log(params)
     const timeOffset = Math.round(
       ((params.value[1] - params.value[0]) * (params.event.offsetX - params.event.target.shape.x)) /
         params.event.target.shape.width

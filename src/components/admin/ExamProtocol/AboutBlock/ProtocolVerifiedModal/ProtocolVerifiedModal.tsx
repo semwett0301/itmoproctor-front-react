@@ -1,19 +1,19 @@
-import React, {FC, useEffect, useState} from 'react'
+import React, { FC, Fragment, useEffect, useState } from 'react'
 import cn from './ProtocolVerifiedModal.module.scss'
-import {useFlag} from '@consta/uikit/useFlag'
-import {Loader} from '@consta/uikit/Loader'
-import {IExam} from '../../../../../ts/interfaces/IExam'
-import {request} from '../../../../../api/axios/request'
-import {Text} from '@consta/uikit/Text'
-import {IAttach, IVerify} from '../../../../../ts/interfaces/IVerify'
+import { useFlag } from '@consta/uikit/useFlag'
+import { Loader } from '@consta/uikit/Loader'
+import { IExam } from '../../../../../ts/interfaces/IExam'
+import { request } from '../../../../../api/axios/request'
+import { Text } from '@consta/uikit/Text'
+import { IAttach, IVerify } from '../../../../../ts/interfaces/IVerify'
 import ModalTitle from '../../../../shared/ModalView/ModalTitle/ModalTitle'
-import {cnMixSpace} from '@consta/uikit/MixSpace'
-import {Button} from '@consta/uikit/Button'
-import {IconRemove} from '@consta/uikit/IconRemove'
-import {IconInfo} from '@consta/uikit/IconInfo'
-import {getVerifyInfo} from './verifiedInfoConfig'
-import axiosConfig from '../../../../../config/api/axiosСonfig';
-import {classJoiner, classWatcher} from '../../../../../utils/common/styleClassesUtills';
+import { cnMixSpace } from '@consta/uikit/MixSpace'
+import { Button } from '@consta/uikit/Button'
+import { IconRemove } from '@consta/uikit/IconRemove'
+import { IconInfo } from '@consta/uikit/IconInfo'
+import { getVerifyInfo } from './verifiedInfoConfig'
+import axiosConfig from '../../../../../config/api/axiosСonfig'
+import { classJoiner, classWatcher } from '../../../../../utils/common/styleClassesUtills'
 // TYPES
 
 // CONSTANTS
@@ -57,14 +57,14 @@ const ProtocolVerifiedModal: FC<IProtocolVerifiedModalProp> = ({ exam }) => {
               </div>
               <div className={cn.info}>
                 {getVerifyInfo(verify).map((item) => (
-                  <>
+                  <Fragment key={item.title}>
                     <Text size={'xs'} lineHeight={'xs'} className={cn.infoText}>
                       {item.title}
                     </Text>
                     <Text size={'xs'} lineHeight={'xs'} className={cn.infoText}>
                       {item.value}
                     </Text>
-                  </>
+                  </Fragment>
                 ))}
               </div>
             </div>

@@ -62,6 +62,19 @@ const ExamProtocol: FC = () => {
     type: 'video/webm'
   }
 
+  const updateExam = (): void => {
+    if (id)
+      request.expert.exams
+        .getExam(id)
+        .then(({ data }) => {
+          console.log(data)
+          setExam(data)
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+  }
+
   useEffect(() => {
     if (id) {
       setIsExamLoading(true)
@@ -111,7 +124,27 @@ const ExamProtocol: FC = () => {
               </Text>
             </div>
 
-            {checkStatus === 'ableToStart' && <Button label={'Приступить к проверке'} size={'s'} />}
+            {checkStatus === 'ableToStart' && (
+              <Button
+                label={'Приступить к проверке'}
+                size={'s'}
+                onClick={() =>
+                  request.expert.exams
+                    .startCheck({
+                      ...exam,
+                      inCheck: true,
+                      expert: {
+                        username: user.username,
+                        firstname: user.firstname,
+                        middlename: user.middlename,
+                        lastname: user.lastname,
+                        _id: user._id
+                      }
+                    })
+                    .then(updateExam)
+                }
+              />
+            )}
 
             {checkStatus === 'inProgress' && (
               <div className={cn.resultBtnWrap}>
@@ -121,7 +154,14 @@ const ExamProtocol: FC = () => {
                   view={'secondary'}
                   size={'s'}
                   onClick={() =>
-                    openModal(<ExamSubmitModal exam={exam} prevComment={comment} prevNote={note} />)
+                    openModal(
+                      <ExamSubmitModal
+                        exam={exam}
+                        prevComment={comment}
+                        prevNote={note}
+                        update={updateExam}
+                      />
+                    )
                   }
                 />
                 <Button
@@ -131,7 +171,12 @@ const ExamProtocol: FC = () => {
                   size={'s'}
                   onClick={() =>
                     openModal(
-                      <ExamDeclineModal exam={exam} prevComment={comment} prevNote={note} />
+                      <ExamDeclineModal
+                        exam={exam}
+                        prevComment={comment}
+                        prevNote={note}
+                        update={updateExam}
+                      />
                     )
                   }
                 />
@@ -176,6 +221,7 @@ const ExamProtocol: FC = () => {
                   exam={exam}
                   commentState={{ comment, setComment }}
                   noteState={{ note, setNote }}
+                  updateExam={updateExam}
                 />
               </Layout>
 
