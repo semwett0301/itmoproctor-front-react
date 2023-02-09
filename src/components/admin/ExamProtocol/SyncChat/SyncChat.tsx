@@ -35,6 +35,7 @@ interface ISyncChatProp {
 
 const SyncChat: FC<ISyncChatProp> = ({ exam }) => {
   const user = useAppSelector((state) => state.user)
+  const [isShift, setIsShift] = useState<boolean>(false)
 
   const [messages, setMessages] = useState<Array<IDateMessages>>([])
   const [inputMessage, setInputMessage] = useState<string | null>(null)
@@ -43,6 +44,7 @@ const SyncChat: FC<ISyncChatProp> = ({ exam }) => {
   const [att, setAtt] = useState<FileList | null>(null)
 
   const chat = useRef<HTMLDivElement>(null)
+  const msg = useRef<HTMLDivElement>(null)
 
   const updateNotes = useCallback((id: string): void => {
     request.student.chat.getMessages(id).then(({ data }) => {
@@ -68,27 +70,31 @@ const SyncChat: FC<ISyncChatProp> = ({ exam }) => {
         }
       })
 
-      console.log(filteredNotes)
-
       setMessages([...filteredNotes])
-
-      if (chat.current) {
-        const scrollBottom =
-          chat.current.scrollHeight - chat.current.scrollTop - chat.current.clientHeight
-        if (scrollBottom < 80) {
-          chat.current.scrollIntoView({ block: 'end' })
-        }
-      }
     })
   }, [])
+
+  useEffect(() => {
+    if (msg.current && chat.current) {
+      if (chat.current.scrollHeight - chat.current.scrollTop - chat.current.clientHeight < 240)
+        msg.current.scrollIntoView({ block: 'end', behavior: 'smooth' })
+    }
+  }, [messages])
 
   useEffect(() => {
     socket.chat.subscribe(exam._id, () => {
       updateNotes(exam._id)
     })
 
+    const setShift = (e: KeyboardEvent) => {
+      setIsShift(e.shiftKey)
+    }
+
+    window.addEventListener('keypress', setShift)
+
     return () => {
       socket.chat.unsubscribe(exam._id)
+      window.removeEventListener('keypress', setShift)
     }
   }, [exam._id])
 
@@ -138,9 +144,9 @@ const SyncChat: FC<ISyncChatProp> = ({ exam }) => {
   return (
     <Layout direction={'column'} className={cn.card}>
       <Layout flex={1} direction={'column'} className={cn.notesField} ref={chat}>
-        {messages.map((day, i) => {
+        {messages.map((day, i, array) => {
           return (
-            <div className={cn.dayMsg} key={i}>
+            <div className={cn.dayMsg} key={i} ref={i === array.length - 1 ? msg : undefined}>
               <Text size={'2xs'} view={'secondary'} style={{ width: '100%', textAlign: 'center' }}>
                 {day.date.format('DD MMMM')}
               </Text>
@@ -201,7 +207,21 @@ const SyncChat: FC<ISyncChatProp> = ({ exam }) => {
             width={'full'}
             placeholder={'Введите текст заметки'}
             value={inputMessage}
-            onChange={({ value }) => setInputMessage(value)}
+            onChange={({ value, e }) => {
+              if (value === '\n' && !att) return
+
+              if (value === '\n' && att) {
+                if (!isShift) onSendMessageHandler()
+                else setInputMessage(value)
+                return
+              }
+
+              if (value && inputMessage && value.replace(inputMessage, '') === '\n' && !isShift) {
+                onSendMessageHandler()
+              } else {
+                setInputMessage(value)
+              }
+            }}
             type={'textarea'}
             maxRows={6}
           />

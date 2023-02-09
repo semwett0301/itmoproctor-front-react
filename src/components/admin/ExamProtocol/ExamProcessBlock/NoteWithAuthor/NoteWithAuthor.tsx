@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, RefObject } from 'react'
 import cn from './NoteWithAuthor.module.scss'
 import { Text } from '@consta/uikit/Text'
 import dayjs from 'dayjs'
