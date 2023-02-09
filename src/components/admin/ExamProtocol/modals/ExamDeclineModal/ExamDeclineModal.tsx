@@ -1,12 +1,14 @@
-import React, {FC, useState} from 'react'
+import React, { FC, useState } from 'react'
 import cn from './ExamDeclineModal.module.scss'
 import ModalTitle from '../../../../shared/ModalView/ModalTitle/ModalTitle'
-import {Text} from '@consta/uikit/Text'
-import {Checkbox} from '@consta/uikit/Checkbox'
-import {TextField} from '@consta/uikit/TextField'
-import {Button} from '@consta/uikit/Button'
-import {IconCheck} from '@consta/icons/IconCheck'
-import {IExam} from '../../../../../ts/interfaces/IExam'
+import { Text } from '@consta/uikit/Text'
+import { Checkbox } from '@consta/uikit/Checkbox'
+import { TextField } from '@consta/uikit/TextField'
+import { Button } from '@consta/uikit/Button'
+import { IconCheck } from '@consta/icons/IconCheck'
+import { IExam } from '../../../../../ts/interfaces/IExam'
+import { request } from '../../../../../api/axios/request'
+import { closeModal } from '../../../../shared/ModalView/ModalView'
 // TYPES
 
 // CONSTANTS
@@ -17,9 +19,10 @@ interface IExamDeclineModalProp {
   exam: IExam
   prevComment: string | null
   prevNote: string | null
+  update: () => void
 }
 
-const ExamDeclineModal: FC<IExamDeclineModalProp> = ({ prevComment, prevNote }) => {
+const ExamDeclineModal: FC<IExamDeclineModalProp> = ({ exam, prevComment, prevNote, update }) => {
   const [comment, setComment] = useState<string | null>(prevComment)
   const [note, setNote] = useState<string | null>(prevNote)
   const [dropTry, setDropTry] = useState<boolean>(false)
@@ -53,6 +56,8 @@ const ExamDeclineModal: FC<IExamDeclineModalProp> = ({ prevComment, prevNote }) 
             placeholder={'Введите текст комментария'}
             value={comment}
             onChange={({ value }) => setComment(value)}
+            status={comment ? 'success' : 'warning'}
+            caption={!comment ? 'Необходимо указать комментарий' : undefined}
           />
           <TextField
             label={'Примечания'}
@@ -64,7 +69,19 @@ const ExamDeclineModal: FC<IExamDeclineModalProp> = ({ prevComment, prevNote }) 
           />
         </div>
 
-        <Button size={'s'} className={cn.acceptBtn} label={'Отклонить'} iconLeft={IconCheck} />
+        <Button
+          disabled={!comment}
+          size={'s'}
+          className={cn.acceptBtn}
+          label={'Отклонить'}
+          iconLeft={IconCheck}
+          onClick={() =>
+            request.expert.exams
+              .setResolution(exam, false, comment ?? '', note, dropTry)
+              .then(update)
+              .then(closeModal)
+          }
+        />
       </div>
     </div>
   )

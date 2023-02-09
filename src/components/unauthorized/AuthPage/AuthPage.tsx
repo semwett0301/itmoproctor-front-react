@@ -1,19 +1,19 @@
-import React, {FC, useState} from 'react'
+import React, { FC, useState } from 'react'
 import classes from './AuthPage.module.scss'
-import {useTranslation} from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import SwitchLanguage from '../../shared/SwitchLanguage/SwitchLanguage'
 import Logo from '../../shared/Logo/Logo'
-import {TextField} from '@consta/uikit/TextField'
-import {Text} from '@consta/uikit/Text'
-import {Button} from '@consta/uikit/Button'
-import {Controller, SubmitHandler, useForm} from 'react-hook-form'
-import {AppDispatch} from '../../../store'
-import {Location, NavigateFunction, useLocation, useNavigate} from 'react-router-dom'
-import {request} from '../../../api/axios/request'
-import {setUserActionCreator} from '../../../store/reducers/userReducer/userActionCreators'
-import {Informer} from '@consta/uikit/Informer'
-import {cnMixSpace} from '@consta/uikit/MixSpace'
-import {useAppDispatch} from '../../../hooks/store/useAppDispatch';
+import { TextField } from '@consta/uikit/TextField'
+import { Text } from '@consta/uikit/Text'
+import { Button } from '@consta/uikit/Button'
+import { Controller, SubmitHandler, useForm } from 'react-hook-form'
+import { AppDispatch } from '../../../store'
+import { Location, NavigateFunction, useLocation, useNavigate } from 'react-router-dom'
+import { request } from '../../../api/axios/request'
+import { setUserActionCreator } from '../../../store/reducers/userReducer/userActionCreators'
+import { Informer } from '@consta/uikit/Informer'
+import { cnMixSpace } from '@consta/uikit/MixSpace'
+import { useAppDispatch } from '../../../hooks/store/useAppDispatch'
 
 type LogPassType = {
   login: string
@@ -59,7 +59,11 @@ const AuthPage: FC = () => {
             {requestError && (
               <Informer label={'Неверный логин или пароль'} status={'alert'} view={'bordered'} />
             )}
-            <form className={classes.auth_container} onSubmit={handleSubmit(onFormSubmit)}>
+            <form
+              className={classes.auth_container}
+              onSubmit={handleSubmit(onFormSubmit)}
+              noValidate
+            >
               <div>
                 <Text view={'secondary'} size={'m'} weight={'light'}>
                   {t('unauthorized.auth.login')}
@@ -70,8 +74,6 @@ const AuthPage: FC = () => {
                   name={'login'}
                   render={({ field, fieldState }) => (
                     <TextField
-                      autoComplete={'username'}
-                      id={'login'}
                       name={field.name}
                       value={field.value}
                       onChange={({ value }) => {
@@ -97,8 +99,6 @@ const AuthPage: FC = () => {
                   name={'password'}
                   render={({ field, fieldState }) => (
                     <TextField
-                      autoComplete={'current-password'}
-                      id={'password'}
                       name={field.name}
                       type='password'
                       value={field.value}

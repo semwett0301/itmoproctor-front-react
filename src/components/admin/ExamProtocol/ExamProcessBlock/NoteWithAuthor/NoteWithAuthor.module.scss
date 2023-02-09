@@ -17,4 +17,19 @@
     grid-column-end: 3;
     white-space: pre-wrap;
   }
+  .messageAttach{
+    grid-column-start: 1;
+    grid-column-end: 3;
+    display: flex;
+
+    .attach{
+      max-width: calc(100% - 30px);
+
+      span{
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+      }
+    }
+  }
 }
