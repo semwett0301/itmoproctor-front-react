@@ -12,7 +12,6 @@ import studentExams, {IStudentExamsAxios} from './modules/student/studentExams'
 import ExpertExams, {IExpertExamsAxios} from './modules/expert/exams'
 import network from './modules/network'
 import chat, {IStudentChatAxios} from './modules/student/chat'
-import webCallLog from './modules/webCallLog';
 
 export interface IStudentRequestAxios {
   exams: IStudentExamsAxios
@@ -42,5 +41,4 @@ export const request = {
     exams: ExpertExams(mainInstance)
   },
   network: network(mainInstance),
-  webCallLog: webCallLog(mainInstance)
 }

@@ -7,6 +7,8 @@ import Draggable from 'react-draggable'
 import LocalPlayer from '../../../../shared/players/camera/LocalPlayer/LocalPlayer';
 import {IconPause} from '@consta/icons/IconPause';
 import {useDeviceSettings} from '../../../../../hooks/shared/webRtc/useDeviceSettings';
+import RemotePlayer from '../../../../shared/players/camera/RemovePlayer/RemotePlayer';
+import {useAppSelector} from '../../../../../hooks/store/useAppSelector';
 
 const CheckingConnection: FC = () => {
   const videoRef = useRef<HTMLDivElement>(null)
@@ -15,6 +17,8 @@ const CheckingConnection: FC = () => {
   const [bottomBound, setBottomBound] = useState<number>(0)
 
   const [isCheckingStart, setIsCheckingStart] = useState<boolean>(false)
+
+  const userId = useAppSelector(state => state.user._id)
 
   const {
     currentCamera,
@@ -55,7 +59,9 @@ const CheckingConnection: FC = () => {
             }
           </div>
         </Draggable>
-        <div className={cl.mainFrame}/>
+        <div className={cl.mainFrame}>
+          <RemotePlayer userId={userId}/>
+        </div>
       </div>
       <div className={cl.downPanel}>
         <Button label={isCheckingStart ? 'Остановить' : 'Запустить'} disabled={!currentCamera || !currentInputAudio}
