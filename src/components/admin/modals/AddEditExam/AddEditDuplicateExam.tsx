@@ -1,36 +1,36 @@
-import React, {FC, useEffect, useState} from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import ModalTitle from '../../../shared/ModalView/ModalTitle/ModalTitle'
-import {classJoiner} from '../../../../utils/common/styleClassesUtills'
-import {cnMixSpace} from '@consta/uikit/MixSpace'
+import { classJoiner } from '../../../../utils/common/styleClassesUtills'
+import { cnMixSpace } from '@consta/uikit/MixSpace'
 import cn from './AddEditDuplicateExam.module.scss'
-import {SkeletonText} from '@consta/uikit/Skeleton'
+import { SkeletonText } from '@consta/uikit/Skeleton'
 import FilterConstructor from '../../../shared/Filter/FilterConstructor'
 import SaveButton from '../../../shared/ModalView/SaveButton/SaveButton'
-import {IOrganization} from '../../../../ts/interfaces/IOrganizations'
-import {DefaultItem, Select} from '@consta/uikit/Select'
+import { IOrganization } from '../../../../ts/interfaces/IOrganizations'
+import { DefaultItem, Select } from '@consta/uikit/Select'
 import {
   fullVerificationItems,
   getPostVerificstions,
   getVerifications,
   IFullVerificationItem
 } from '../../../../ts/types/Verifications'
-import {Controller, SubmitHandler, useForm} from 'react-hook-form'
-import {array, date, number, object, string} from 'yup'
-import {yupResolver} from '@hookform/resolvers/yup/dist/yup'
-import {TextField} from '@consta/uikit/TextField'
+import { Controller, SubmitHandler, useForm } from 'react-hook-form'
+import { array, date, number, object, string } from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
+import { TextField } from '@consta/uikit/TextField'
 import SmartSelect from '../../../shared/SmartSelect/SmartSelect'
-import {DatePicker} from '@consta/uikit/DatePicker'
-import {useOrganizations} from '../../../../hooks/admin/useOrganizations'
-import {Combobox} from '@consta/uikit/Combobox'
-import {RoleEnum} from '../../../../config/router/authСonfig'
-import {request} from '../../../../api/axios/request'
-import {IUsersRow} from '../../../../ts/interfaces/IUsers'
-import {getFullName} from '../../../../utils/common/nameHelper'
-import {examTypesObj} from '../../../shared/SmartSelect/items/examTypes'
-import resolutions, {ResolutionsType} from '../../../shared/SmartSelect/items/resolutions'
-import {closeModal} from '../../../shared/ModalView/ModalView'
-import {useAppSelector} from '../../../../hooks/store/useAppSelector';
-import duplicateExam from '../../../../utils/admin/exams/duplicateExamPreparing';
+import { DatePicker } from '@consta/uikit/DatePicker'
+import { useOrganizations } from '../../../../hooks/admin/useOrganizations'
+import { Combobox } from '@consta/uikit/Combobox'
+import { RoleEnum } from '../../../../config/router/authСonfig'
+import { request } from '../../../../api/axios/request'
+import { IUsersRow } from '../../../../ts/interfaces/IUsers'
+import { getFullName } from '../../../../utils/common/nameHelper'
+import { examTypesObj } from '../../../shared/SmartSelect/items/examTypes'
+import resolutions, { ResolutionsType } from '../../../shared/SmartSelect/items/resolutions'
+import { closeModal } from '../../../shared/ModalView/ModalView'
+import { useAppSelector } from '../../../../hooks/store/useAppSelector'
+import duplicateExam from '../../../../utils/admin/exams/duplicateExamPreparing'
 
 // TYPES
 export interface ISessionCode {
@@ -154,14 +154,13 @@ interface IAddEditExamProp {
   isDuplicate?: boolean
 }
 
-const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplicate = false}) => {
+const AddEditDuplicateExam: FC<IAddEditExamProp> = ({ examId, onSubmit, isDuplicate = false }) => {
   const [examType, setExamType] = useState<boolean>(true)
 
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
   const [organizationsList, setOrganizationsList] = useState<IOrganization[]>([])
   const [courseCodes, setCourseCodes] = useState<string[]>([])
-
 
   const [sessionCodes, setSessionCodes] = useState<ISessionCode[]>([])
   const [isStudentsLoading, setIsStudentsLoading] = useState<boolean>(false)
@@ -182,15 +181,15 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
 
   const user = useAppSelector((state) => state.user)
 
-  const {getOrganizations} = useOrganizations()
+  const { getOrganizations } = useOrganizations()
 
-  const {control, setValue, reset, handleSubmit, resetField, getValues, formState} =
+  const { control, setValue, reset, handleSubmit, resetField, getValues, formState } =
     useForm<IExamForm>({
       mode: 'all',
       resolver: yupResolver(examSchema),
       defaultValues: {
         examId: 'course-v1',
-        async: {id: 'true', label: 'Асинхронный'},
+        async: { id: 'true', label: 'Асинхронный' },
         resolution: resolutions[2],
         verifications: [fullVerificationItems[4]]
       }
@@ -211,7 +210,7 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
 
   const getStudents = (query: string): void => {
     setIsStudentsLoading(true)
-    request.users.getListOfUsers({role: '1', rows: 20, text: query}).then(({data}) => {
+    request.users.getListOfUsers({ role: '1', rows: 20, text: query }).then(({ data }) => {
       setIsStudentsLoading(false)
       setStudentsList(data.rows)
     })
@@ -227,7 +226,7 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
           rows: 20,
           text: query
         })
-        .then(({data}) => {
+        .then(({ data }) => {
           setIsProctorsLoading(false)
           setProctorsList(data.rows)
         })
@@ -264,7 +263,7 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
             examId: exam.examId,
             organization: exam.organization,
             courseCode: exam.course?.courseCode,
-            sessionCode: {_id: exam.course?._id, sessionCode: exam.course?.sessionCode},
+            sessionCode: { _id: exam.course?._id, sessionCode: exam.course?.sessionCode },
             assignment: exam.assignment,
             examCode: exam.examCode,
             async: examTypesObj[String(exam.async)],
@@ -288,14 +287,12 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
               exam.resolution === null
                 ? resolutions[2]
                 : exam.resolution
-                  ? resolutions[0]
-                  : resolutions[1],
+                ? resolutions[0]
+                : resolutions[1],
             comment: exam.comment,
             info: exam.info,
             note: exam.note
           })
-
-          console.log(getValues('courseCode'))
 
           getCourseCodes(exam.organization._id)
           if (exam.course) getSessionCodes(exam.course.courseCode)
@@ -314,10 +311,10 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
 
   const onFormSubmit: SubmitHandler<IExamForm> = (data) => {
     Promise.resolve(
-        examId && !isDuplicate
-          ? request.exam.editExam(toRequestData(data, examId), examId)
-          : request.exam.addExam(toRequestData(data))
-      )
+      examId && !isDuplicate
+        ? request.exam.editExam(toRequestData(data, examId), examId)
+        : request.exam.addExam(toRequestData(data))
+    )
       .then(() => {
         if (onSubmit) {
           onSubmit()
@@ -329,10 +326,10 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
 
   return (
     <>
-      <ModalTitle title={'exam'}/>
-      <div className={classJoiner(cnMixSpace({pH: '2xs'}), cn.wrapper)}>
+      <ModalTitle title={'exam'} />
+      <div className={classJoiner(cnMixSpace({ pH: '2xs' }), cn.wrapper)}>
         {isLoading ? (
-          <SkeletonText fontSize="l" rows={40}/>
+          <SkeletonText fontSize='l' rows={40} />
         ) : (
           <form noValidate onSubmit={handleSubmit(onFormSubmit)}>
             <FilterConstructor
@@ -346,12 +343,12 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
                       component: (
                         <Controller
                           control={control}
-                          name="subject"
-                          render={({field, fieldState}) => (
+                          name='subject'
+                          render={({ field, fieldState }) => (
                             <TextField
-                              size="s"
+                              size='s'
                               value={field.value}
-                              onChange={({value}) => field.onChange(value)}
+                              onChange={({ value }) => field.onChange(value)}
                               label={'Экзамен'}
                               required
                               status={fieldState.error ? 'alert' : undefined}
@@ -372,12 +369,12 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
                       component: (
                         <Controller
                           control={control}
-                          name="examId"
-                          render={({field, fieldState}) => (
+                          name='examId'
+                          render={({ field, fieldState }) => (
                             <TextField
-                              size="s"
+                              size='s'
                               value={field.value}
-                              onChange={({value}) => field.onChange(value)}
+                              onChange={({ value }) => field.onChange(value)}
                               label={'Идентификатор экзамена'}
                               required
                               status={fieldState.error ? 'alert' : undefined}
@@ -398,18 +395,18 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
                       component: (
                         <Controller
                           control={control}
-                          name="organization"
-                          render={({field, fieldState}) => (
+                          name='organization'
+                          render={({ field, fieldState }) => (
                             <Combobox
-                              size="s"
+                              size='s'
                               required
-                              label="Правообладатель"
-                              placeholder="Правообладатель"
+                              label='Правообладатель'
+                              placeholder='Правообладатель'
                               items={organizationsList}
                               value={field.value}
                               getItemLabel={(item) => item.shortName ?? item.fullName}
                               getItemKey={(item) => item._id}
-                              onChange={({value}) => {
+                              onChange={({ value }) => {
                                 resetField('courseCode', {
                                   defaultValue: null
                                 })
@@ -443,17 +440,17 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
                       component: (
                         <Controller
                           control={control}
-                          name="courseCode"
-                          render={({field}) => (
+                          name='courseCode'
+                          render={({ field }) => (
                             <Select
-                              size="s"
-                              label="Курс"
+                              size='s'
+                              label='Курс'
                               required
                               items={courseCodes}
                               getItemLabel={(item) => item}
                               getItemKey={(item) => item}
                               value={field.value}
-                              onChange={({value}) => {
+                              onChange={({ value }) => {
                                 resetField('sessionCode', {
                                   defaultValue: null
                                 })
@@ -473,17 +470,17 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
                       component: (
                         <Controller
                           control={control}
-                          name="sessionCode"
-                          render={({field}) => (
+                          name='sessionCode'
+                          render={({ field }) => (
                             <Select
-                              size="s"
-                              label="Сессия"
+                              size='s'
+                              label='Сессия'
                               required
                               items={sessionCodes}
                               value={field.value}
                               getItemKey={(item) => item._id}
                               getItemLabel={(item) => item.sessionCode}
-                              onChange={({value}) => {
+                              onChange={({ value }) => {
                                 field.onChange(value)
                               }}
                             />
@@ -502,12 +499,12 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
                       component: (
                         <Controller
                           control={control}
-                          name="assignment"
-                          render={({field, fieldState}) => (
+                          name='assignment'
+                          render={({ field, fieldState }) => (
                             <TextField
-                              size="s"
+                              size='s'
                               value={field.value}
-                              onChange={({value}) => field.onChange(value)}
+                              onChange={({ value }) => field.onChange(value)}
                               label={'Испытание'}
                               required
                               status={fieldState.error ? 'alert' : undefined}
@@ -523,13 +520,13 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
                       component: (
                         <Controller
                           control={control}
-                          name="async"
-                          render={({field, fieldState}) => (
+                          name='async'
+                          render={({ field, fieldState }) => (
                             <SmartSelect
                               withLabel
                               itemsType={'examTypes'}
                               value={field.value}
-                              onChange={({value}) => {
+                              onChange={({ value }) => {
                                 resetField('expertOrInspector', {
                                   defaultValue: null
                                 })
@@ -555,12 +552,12 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
                       component: (
                         <Controller
                           control={control}
-                          name="examCode"
-                          render={({field}) => (
+                          name='examCode'
+                          render={({ field }) => (
                             <TextField
-                              size="s"
+                              size='s'
                               value={field.value}
-                              onChange={({value}) => field.onChange(value)}
+                              onChange={({ value }) => field.onChange(value)}
                               label={'Код'}
                             />
                           )}
@@ -578,8 +575,8 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
                       component: (
                         <Controller
                           control={control}
-                          name="verifications"
-                          render={({field}) => (
+                          name='verifications'
+                          render={({ field }) => (
                             <Combobox
                               label={'Верификации'}
                               placeholder={'Виды верификации'}
@@ -587,7 +584,7 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
                               multiple
                               items={fullVerificationItems}
                               value={field.value}
-                              onChange={({value}) => {
+                              onChange={({ value }) => {
                                 if (!value || value.includes(fullVerificationItems[4])) {
                                   field.onChange([fullVerificationItems[4]])
                                 } else if (value.includes(fullVerificationItems[3])) {
@@ -600,9 +597,9 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
                                   const val = value.filter(
                                     (item) =>
                                       JSON.stringify(item) !==
-                                      JSON.stringify(fullVerificationItems[3]) &&
+                                        JSON.stringify(fullVerificationItems[3]) &&
                                       JSON.stringify(item) !==
-                                      JSON.stringify(fullVerificationItems[4])
+                                        JSON.stringify(fullVerificationItems[4])
                                   )
                                   field.onChange(val)
                                 }
@@ -623,8 +620,8 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
                       component: (
                         <Controller
                           control={control}
-                          name="terms"
-                          render={({field, fieldState}) => (
+                          name='terms'
+                          render={({ field, fieldState }) => (
                             <DatePicker
                               placeholder={'ДД.ММ.ГГГГ ЧЧ.ММ'}
                               format={'dd.MM.yyyy HH:mm'}
@@ -637,9 +634,9 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
                               value={
                                 field.value ? [field.value.leftDate, field.value.rightDate] : null
                               }
-                              onChange={({value}) =>
+                              onChange={({ value }) =>
                                 field.onChange(
-                                  value ? {leftDate: value[0], rightDate: value[1]} : null
+                                  value ? { leftDate: value[0], rightDate: value[1] } : null
                                 )
                               }
                               status={fieldState.error ? 'alert' : undefined}
@@ -659,8 +656,8 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
                       component: (
                         <Controller
                           control={control}
-                          name="planDates"
-                          render={({field, fieldState}) => (
+                          name='planDates'
+                          render={({ field, fieldState }) => (
                             <DatePicker
                               label={'Плановые даты'}
                               labelPosition={'top'}
@@ -672,9 +669,9 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
                               value={
                                 field.value ? [field.value.beginDate, field.value.endDate] : null
                               }
-                              onChange={({value}) =>
+                              onChange={({ value }) =>
                                 field.onChange(
-                                  value ? {beginDate: value[0], endDate: value[1]} : null
+                                  value ? { beginDate: value[0], endDate: value[1] } : null
                                 )
                               }
                               status={fieldState.error ? 'alert' : undefined}
@@ -694,8 +691,8 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
                       component: (
                         <Controller
                           control={control}
-                          name="factDates"
-                          render={({field, fieldState}) => (
+                          name='factDates'
+                          render={({ field, fieldState }) => (
                             <DatePicker
                               placeholder={'ДД.ММ.ГГГГ ЧЧ.ММ'}
                               format={'dd.MM.yyyy HH:mm'}
@@ -707,9 +704,9 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
                               value={
                                 field.value ? [field.value.startDate, field.value.stopDate] : null
                               }
-                              onChange={({value}) =>
+                              onChange={({ value }) =>
                                 field.onChange(
-                                  value ? {startDate: value[0], stopDate: value[1]} : null
+                                  value ? { startDate: value[0], stopDate: value[1] } : null
                                 )
                               }
                               status={fieldState.error ? 'alert' : undefined}
@@ -729,17 +726,17 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
                       component: (
                         <Controller
                           control={control}
-                          name="duration"
-                          render={({field, fieldState}) => (
+                          name='duration'
+                          render={({ field, fieldState }) => (
                             <TextField
                               type={'number'}
                               min={1}
                               max={600}
-                              size="s"
-                              label="Длительность"
+                              size='s'
+                              label='Длительность'
                               required
                               value={String(field.value)}
-                              onChange={({value}) => {
+                              onChange={({ value }) => {
                                 if (value === 'NaN') {
                                   field.onChange(1)
                                 } else {
@@ -764,8 +761,8 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
                       component: (
                         <Controller
                           control={control}
-                          name="student"
-                          render={({field, fieldState}) => (
+                          name='student'
+                          render={({ field, fieldState }) => (
                             <Combobox
                               size={'s'}
                               label={'Слушатель'}
@@ -774,7 +771,7 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
                               required
                               items={studentsList}
                               value={field.value}
-                              onChange={({value}) => {
+                              onChange={({ value }) => {
                                 if (value === null) {
                                   setStudentsList([])
                                   setStudentEmptyLabel('Введите имя слушателя')
@@ -784,7 +781,7 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
 
                                 return field.onChange(value)
                               }}
-                              onInputChange={({value}) => {
+                              onInputChange={({ value }) => {
                                 if (!field.value) {
                                   if (value && value?.length >= 3) {
                                     getStudents(value)
@@ -823,8 +820,8 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
                       component: (
                         <Controller
                           control={control}
-                          name="expertOrInspector"
-                          render={({field}) => (
+                          name='expertOrInspector'
+                          render={({ field }) => (
                             <Combobox
                               size={'s'}
                               label={examType ? 'Эксперт' : 'Проктор'}
@@ -832,24 +829,30 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
                               labelForEmptyItems={proctorEmptyLabel}
                               items={proctorsList}
                               value={field.value}
-                              onChange={({value}) => {
+                              onChange={({ value }) => {
                                 if (value === null) {
                                   setProctorsList([])
-                                  setProctorEmptyLabel(`Введите имя ${examType ? 'эксперта' : 'проктора'}`)
+                                  setProctorEmptyLabel(
+                                    `Введите имя ${examType ? 'эксперта' : 'проктора'}`
+                                  )
                                 } else {
                                   proctorsList.length > 1 && setProctorsList([value])
                                 }
 
                                 return field.onChange(value)
                               }}
-                              onInputChange={({value}) => {
+                              onInputChange={({ value }) => {
                                 if (!field.value) {
                                   if (value && value?.length >= 3) {
                                     getProctors(value)
-                                    setProctorEmptyLabel(`${examType ? 'Эксперт' : 'Проктор'} не найден`)
+                                    setProctorEmptyLabel(
+                                      `${examType ? 'Эксперт' : 'Проктор'} не найден`
+                                    )
                                   } else {
                                     setProctorsList([])
-                                    setProctorEmptyLabel(`Введите имя ${examType ? 'эксперта' : 'проктора'}`)
+                                    setProctorEmptyLabel(
+                                      `Введите имя ${examType ? 'эксперта' : 'проктора'}`
+                                    )
                                   }
                                 }
                               }}
@@ -879,13 +882,13 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
                       component: (
                         <Controller
                           control={control}
-                          name="resolution"
-                          render={({field, fieldState}) => (
+                          name='resolution'
+                          render={({ field, fieldState }) => (
                             <SmartSelect
                               withLabel
                               itemsType={'resolutions'}
                               value={field.value}
-                              onChange={({value}) => field.onChange(value)}
+                              onChange={({ value }) => field.onChange(value)}
                               status={fieldState.error ? 'alert' : undefined}
                               caption={fieldState.error?.message}
                             />
@@ -904,15 +907,15 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
                       component: (
                         <Controller
                           control={control}
-                          name="comment"
-                          render={({field}) => (
+                          name='comment'
+                          render={({ field }) => (
                             <TextField
-                              label="Комменарий"
-                              size="s"
-                              type="textarea"
+                              label='Комменарий'
+                              size='s'
+                              type='textarea'
                               maxRows={3}
                               value={field.value}
-                              onChange={({value}) => field.onChange(value)}
+                              onChange={({ value }) => field.onChange(value)}
                             />
                           )}
                         />
@@ -929,15 +932,15 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
                       component: (
                         <Controller
                           control={control}
-                          name="note"
-                          render={({field}) => (
+                          name='note'
+                          render={({ field }) => (
                             <TextField
-                              label="Примечание для администратора"
-                              size="s"
-                              type="textarea"
+                              label='Примечание для администратора'
+                              size='s'
+                              type='textarea'
                               maxRows={3}
                               value={field.value}
-                              onChange={({value}) => field.onChange(value)}
+                              onChange={({ value }) => field.onChange(value)}
                             />
                           )}
                         />
@@ -954,15 +957,15 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
                       component: (
                         <Controller
                           control={control}
-                          name="info"
-                          render={({field}) => (
+                          name='info'
+                          render={({ field }) => (
                             <TextField
-                              label="Информация"
-                              size="s"
-                              type="textarea"
+                              label='Информация'
+                              size='s'
+                              type='textarea'
                               maxRows={3}
                               value={field.value}
-                              onChange={({value}) => field.onChange(value)}
+                              onChange={({ value }) => field.onChange(value)}
                             />
                           )}
                         />
@@ -972,7 +975,7 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({examId, onSubmit, isDuplica
                 }
               ]}
             />
-            <SaveButton valid={formState.isValid}/>
+            <SaveButton valid={formState.isValid} />
           </form>
         )}
       </div>

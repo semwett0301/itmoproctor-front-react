@@ -1,40 +1,49 @@
-import React, {FC, useState} from 'react'
-import {useParams} from 'react-router-dom'
+import React, { FC, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import cl from './UserExams.module.scss'
-import {Layout} from '@consta/uikit/Layout'
+import { Layout } from '@consta/uikit/Layout'
 import SharedTable from '../../shared/SharedTable/SharedTable'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
 import FilterConstructor from '../../shared/Filter/FilterConstructor'
-import {useOpenTab} from '../Admin'
-import {useTable} from '../../../hooks/shared/tables/useTable'
-import {ExamFilter, TablesEnum} from '../../../config/store/tablesReducerConfig'
-import {IExamRow} from '../../../ts/interfaces/IExams'
-import {getProctor, getStudentName} from '../../../utils/common/nameHelper'
+import { useOpenTab } from '../Admin'
+import { useTable } from '../../../hooks/shared/tables/useTable'
+import { ExamFilter, TablesEnum } from '../../../config/store/tablesReducerConfig'
+import { IExamRow } from '../../../ts/interfaces/IExams'
+import { getProctor, getStudentName } from '../../../utils/common/nameHelper'
 import TypeBadge from '../../shared/SharedTable/TypeBadge/TypeBadge'
-import StatusBadge, {customBadgePropStatus, getExamStatus} from '../../shared/SharedTable/StatusBadge/StatusBadge'
-import {Button} from '@consta/uikit/Button'
-import {IconVideo} from '@consta/uikit/IconVideo'
+import StatusBadge, {
+  customBadgePropStatus,
+  getExamStatus
+} from '../../shared/SharedTable/StatusBadge/StatusBadge'
+import { Button } from '@consta/uikit/Button'
+import { IconVideo } from '@consta/uikit/IconVideo'
 import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
-import {IconEdit} from '@consta/uikit/IconEdit'
-import {IconRevert} from '@consta/uikit/IconRevert'
-import {IconCopy} from '@consta/uikit/IconCopy'
-import {IconTrash} from '@consta/uikit/IconTrash'
-import {closeModal, openModal} from '../../shared/ModalView/ModalView'
+import { IconEdit } from '@consta/uikit/IconEdit'
+import { IconRevert } from '@consta/uikit/IconRevert'
+import { IconCopy } from '@consta/uikit/IconCopy'
+import { IconTrash } from '@consta/uikit/IconTrash'
+import { closeModal, openModal } from '../../shared/ModalView/ModalView'
 import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
-import {useTableRequest} from '../../../hooks/shared/tables/useTableRequest'
-import {request} from '../../../api/axios/request'
-import {organizationsFormat, resetFormat, statusFormat} from '../../../utils/admin/requestFormatters'
-import {selectAll} from '../../../utils/admin/selectAll'
+import { useTableRequest } from '../../../hooks/shared/tables/useTableRequest'
+import { request } from '../../../api/axios/request'
+import {
+  organizationsFormat,
+  resetFormat,
+  statusFormat
+} from '../../../utils/admin/requestFormatters'
+import { selectAll } from '../../../utils/admin/selectAll'
 import DatePeriodPicker from '../../shared/Filter/DatePeriodPicker/DatePeriodPicker'
 import SearchField from '../../shared/Filter/SearchField/SearchField'
 import FilterButton from '../../shared/Filter/FilterButton/FilterButton'
-import {IconAdd} from '@consta/uikit/IconAdd'
-import {IconDocExport} from '@consta/uikit/IconDocExport'
-import {IconUpload} from '@consta/uikit/IconUpload'
+import { IconAdd } from '@consta/uikit/IconAdd'
+import { IconDocExport } from '@consta/uikit/IconDocExport'
+import { IconUpload } from '@consta/uikit/IconUpload'
 import ExamTypeSelect from '../../shared/Filter/ExamTypeSelect/ExamTypeSelect'
 import ExamStatusCombobox from '../../shared/Filter/ExamStatusCombobox/ExamStatusCombobox'
 import OrganizationCombobox from '../../shared/Filter/OrganizationCombobox/OrganizationCombobox'
-import {examsColumn, IExamsTableModel} from '../Exams/examsTableModel'
+import { examsColumn, IExamsTableModel } from '../Exams/examsTableModel'
+import AddEditDuplicateExam from '../modals/AddEditExam/AddEditDuplicateExam'
+import { deleteSelected } from '../../../utils/admin/deleteSelected'
 // TYPES
 
 // CONSTANTS
@@ -51,7 +60,23 @@ const UserExams: FC = () => {
 
   // const [sortSetting, setSortSetting] = useState<SortByProps<IExamsTableModel> | null>(null)
 
-  const castToTableRow: (item: IExamRow, update: () => void) => IExamsTableModel = (item) => {
+  // filter
+  const {
+    pagination,
+    setCurrentPage,
+    setDisplayedRows,
+    setTotal,
+    selectedRowsId,
+    filter,
+    setSelectedRowsId,
+    setFilter,
+    dropPagination
+  } = useTable<ExamFilter>(TablesEnum.EXAMS)
+
+  const castToTableRow: (item: IExamRow, update: () => void) => IExamsTableModel = (
+    item,
+    update
+  ) => {
     const proctor = getProctor(item.async, item.inspector, item.expert),
       studentName = getStudentName(item.student)
 
@@ -95,7 +120,8 @@ const UserExams: FC = () => {
           items={[
             {
               label: 'Изменить',
-              iconLeft: IconEdit
+              iconLeft: IconEdit,
+              onClick: () => openModal(<AddEditDuplicateExam examId={item._id} onSubmit={update} />)
             },
             {
               label: 'Сбросить',
@@ -103,7 +129,11 @@ const UserExams: FC = () => {
             },
             {
               label: 'Дублировать',
-              iconLeft: IconCopy
+              iconLeft: IconCopy,
+              onClick: () =>
+                openModal(
+                  <AddEditDuplicateExam examId={item._id} onSubmit={update} isDuplicate={true} />
+                )
             },
             {
               label: 'Удалить',
@@ -111,8 +141,10 @@ const UserExams: FC = () => {
               onClick: () =>
                 openModal(
                   <DeleteSubmit
-                    onSubmit={() => {
+                    onSubmit={async () => {
+                      await request.exam.deleteExam(item._id)
                       closeModal()
+                      await update()
                     }}
                     onCancel={() => closeModal()}
                   />
@@ -123,19 +155,6 @@ const UserExams: FC = () => {
       )
     }
   }
-
-  // filter
-  const {
-    pagination,
-    setCurrentPage,
-    setDisplayedRows,
-    setTotal,
-    selectedRowsId,
-    filter,
-    setSelectedRowsId,
-    setFilter,
-    dropPagination
-  } = useTable<ExamFilter>(TablesEnum.EXAMS)
 
   // Exams table request
   const { isLoading, rows, update } = useTableRequest<IExamsTableModel>(
@@ -218,13 +237,16 @@ const UserExams: FC = () => {
                       {
                         label: 'Добавить',
                         iconLeft: IconAdd,
-                        onClick: () => console.log('OpenModal')
+                        onClick: () => openModal(<AddEditDuplicateExam onSubmit={update} />)
                       },
                       {
                         label: 'Изменить',
                         iconLeft: IconEdit,
                         disabled: selectedRowsId.length !== 1,
-                        onClick: () => console.log(selectedRowsId)
+                        onClick: () =>
+                          openModal(
+                            <AddEditDuplicateExam examId={selectedRowsId[0]} onSubmit={update} />
+                          )
                       },
                       {
                         label: 'Сбросить',
@@ -234,7 +256,16 @@ const UserExams: FC = () => {
                       {
                         label: 'Дублировать',
                         iconLeft: IconCopy,
-                        disabled: selectedRowsId.length !== 1
+                        disabled: selectedRowsId.length !== 1,
+                        onClick: () => {
+                          openModal(
+                            <AddEditDuplicateExam
+                              examId={selectedRowsId[0]}
+                              onSubmit={update}
+                              isDuplicate={true}
+                            />
+                          )
+                        }
                       },
                       {
                         label: 'Скачать (csv)',
@@ -244,12 +275,22 @@ const UserExams: FC = () => {
                       {
                         label: 'Импорт',
                         iconLeft: IconUpload,
-                        onClick: () => console.log(selectedRowsId),
                         disabled: true
                       },
                       {
                         label: 'Удалить',
                         iconLeft: IconTrash,
+                        onClick: () =>
+                          openModal(
+                            <DeleteSubmit
+                              onSubmit={async () => {
+                                await deleteSelected(selectedRowsId, request.exam.deleteExam)
+                                closeModal()
+                                await update()
+                              }}
+                              onCancel={() => closeModal()}
+                            />
+                          ),
                         disabled: !selectedRowsId.length
                       }
                     ]}

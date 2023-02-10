@@ -4,7 +4,13 @@ export const getTime = (seconds: number): string => {
   const sec = Math.floor(newSec % 60)
   let min = Math.floor(newSec / 60)
 
-  if (min === 0) return `00:${sec}`
+  let strSec = String(sec)
+
+  if (seconds < 10) {
+    strSec = 0 + strSec
+  }
+
+  if (min === 0) return `00:${strSec}`
 
   if (min < 60) return `${Math.floor(min / 10)}${min % 10}:${Math.floor(sec / 10)}${sec % 10}`
   else {

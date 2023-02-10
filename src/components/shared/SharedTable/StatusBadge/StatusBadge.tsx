@@ -1,38 +1,35 @@
-import React, {FC} from 'react'
-import {Badge} from '@consta/uikit/Badge'
+import React, { FC } from 'react'
+import { Badge } from '@consta/uikit/Badge'
 import cl from './StatusBadge.module.scss'
-import {IExamRow} from '../../../../ts/interfaces/IExams'
-import {IconRevert} from '@consta/uikit/IconRevert'
+import { IExamRow } from '../../../../ts/interfaces/IExams'
+import { IconRevert } from '@consta/uikit/IconRevert'
+import dayjs from 'dayjs'
 
 export const getExamStatus = (data: IExamRow): number => {
   if (!data) return 0
-  const now = Date.now()
-  let statusID = 0
+  const now = dayjs()
 
+  let status = 0
   if (data.rightDate) {
-    const rightDate = Date.parse(data.rightDate)
-    if (rightDate <= now) statusID = 6
+    const rightDate = dayjs(data.rightDate)
+    if (rightDate <= now) status = 6
   }
-
-  if (data.startDate && data.endDate) {
-    const beginDate = Date.parse(data.startDate)
-    const endDate = Date.parse(data.endDate)
-
-    if (beginDate > now) statusID = 1
-    if (endDate <= now) {
-      statusID = 8
-    }
-    if (beginDate <= now && endDate > now) statusID = 2
-    if (data.startDate) statusID = 3
-    if (data.inspectorConnected) statusID = 7
-    if (data.startDate && data.async) statusID = 9
-    if (data.stopDate) statusID = 11
-    if (data.videoAvailable) statusID = 10
-    if (data.inCheck) statusID = 12
-    if (data.resolution === true) statusID = 4
-    if (data.resolution === false) statusID = 5
+  if (data.beginDate && data.endDate) {
+    const beginDate = dayjs(data.beginDate)
+    const endDate = dayjs(data.endDate)
+    if (beginDate > now) status = 1
+    if (endDate <= now) status = 8
+    if (beginDate <= now && endDate > now) status = 2
+    if (data.startDate) status = 3
+    if (data.inspectorConnected === true) status = 7
+    if (data.startDate && data.async) status = 9
+    if (data.stopDate) status = 11
+    if (data.videoAvailable) status = 10
+    if (data.inCheck) status = 12
+    if (data.resolution === true) status = 4
+    if (data.resolution === false) status = 5
   }
-  return statusID
+  return status
 }
 
 export const customBadgePropStatus = [
@@ -51,7 +48,11 @@ export const customBadgePropStatus = [
   'review'
 ] as const
 
-export const customBadgePropStatusObject = {
+export type CustomBadgePropStatus = typeof customBadgePropStatus[number]
+
+export const customBadgePropStatusObject: {
+  [identifier: number]: CustomBadgePropStatus
+} = {
   0: 'unplanned',
   1: 'planned',
   2: 'waiting',
@@ -66,8 +67,6 @@ export const customBadgePropStatusObject = {
   11: 'forming',
   12: 'review'
 }
-
-export type CustomBadgePropStatus = typeof customBadgePropStatus[number]
 
 export type statusObject = {
   label: string

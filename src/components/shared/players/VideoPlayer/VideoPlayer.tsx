@@ -32,12 +32,18 @@ const VideoPlayer: FC<IVideoPlayerProp> = ({ source, onReady, setChangeTimeFunct
 
   const initialOptions = {
     playbackRates: [0.5, 1, 1.5, 2, 3, 5],
+    language: 'ru',
+    languages: {
+      ru: {
+        'The media could not be loaded, either because the server or network failed or because the format is not supported.':
+          'Не удалось загрузить видео, повторите попытку позже'
+      }
+    },
     inactivityTimeout: 1000,
     bigPlayButton: false,
     userActions: {
       hotkeys: false
     },
-
     autoplay: false,
     controls: true,
     responsive: true,
