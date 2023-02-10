@@ -9,6 +9,7 @@ import {IconPause} from '@consta/icons/IconPause';
 import {useDeviceSettings} from '../../../../../hooks/shared/webRtc/useDeviceSettings';
 import RemotePlayer from '../../../../shared/players/camera/RemovePlayer/RemotePlayer';
 import {useAppSelector} from '../../../../../hooks/store/useAppSelector';
+import {classJoiner} from '../../../../../utils/common/styleClassesUtills';
 
 const CheckingConnection: FC = () => {
   const videoRef = useRef<HTMLDivElement>(null)
@@ -45,27 +46,33 @@ const CheckingConnection: FC = () => {
             top: 0
           }}
         >
-          <div className={cl.extraFrame}>
+          <div className={classJoiner(cl.extraFrame, !isCheckingStart ? cl.extraFrameDisabled : '')}>
             {
-              isCheckingStart ?
-                <LocalPlayer videoDeviceId={currentCamera?.device.deviceId ?? ''} frequency={currentFrequency}/> :
-                <img
-                  src={'https://images.squarespace-cdn.com/content/v1/5bbcad0f2727be3646b9fee1/1581444002162-ENI9OCULKLB1M1JE3XD0/image-asset.png?format=1000w'}
-                  alt={'Локальный плеер'}
-                  style={{
-                    width: '100%',
-                    height: '100%'
-                  }}/>
+              isCheckingStart &&
+                <LocalPlayer videoDeviceId={currentCamera?.device.deviceId ?? ''} frequency={currentFrequency}/>
             }
           </div>
         </Draggable>
         <div className={cl.mainFrame}>
-          <RemotePlayer userId={userId}/>
+          {
+            isCheckingStart ?
+              <RemotePlayer userId={userId}/>
+              :
+              <div className={cl.emptyMainFrame}>
+                <div>
+                  Трансляция не запущена.
+                </div>
+                <div>
+                  Для проверки связи нажмите кнопку «Запустить».
+                </div>
+              </div>
+          }
         </div>
       </div>
       <div className={cl.downPanel}>
         <Button label={isCheckingStart ? 'Остановить' : 'Запустить'} disabled={!currentCamera || !currentInputAudio}
-                iconLeft={isCheckingStart ? IconPause : IconPlay} view={'secondary'} size={'s'} onClick={() => setIsCheckingStart(!isCheckingStart)}/>
+                iconLeft={isCheckingStart ? IconPause : IconPlay} view={'secondary'} size={'s'}
+                onClick={() => setIsCheckingStart(!isCheckingStart)}/>
         <Text as={'div'} size={'s'} view={'warning'}>
           Установка соединения
         </Text>

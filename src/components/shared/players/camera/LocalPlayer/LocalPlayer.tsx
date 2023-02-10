@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useRef, useState} from 'react';
+import React, {FC} from 'react';
 import StandardPlayer from '../../StandardPlayer/StandardPlayer';
 import {useVideo} from '../../../../../hooks/shared/webRtc/useVideo';
 

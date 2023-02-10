@@ -15,7 +15,7 @@ export function useVideo(videoDeviceId: string,
           audio: false,
           video: {
             frameRate: frequency,
-            deviceId: videoDeviceId
+            deviceId: videoDeviceId,
           }
         })
 
