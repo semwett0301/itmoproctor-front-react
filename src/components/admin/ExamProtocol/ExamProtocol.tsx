@@ -67,7 +67,6 @@ const ExamProtocol: FC = () => {
       request.expert.exams
         .getExam(id)
         .then(({ data }) => {
-          console.log(data)
           setExam(data)
         })
         .catch((e) => {
@@ -81,7 +80,6 @@ const ExamProtocol: FC = () => {
       request.expert.exams
         .getExam(id)
         .then(({ data }) => {
-          console.log(data)
           setExam(data)
         })
         .catch((e) => {
@@ -185,7 +183,7 @@ const ExamProtocol: FC = () => {
           </div>
           <Layout direction='row' flex={1} className={cn.examBlock}>
             {/* 1 column */}
-            <Layout flex={2} direction='column'>
+            <Layout flex={2} direction='column' style={{ maxWidth: '60%' }}>
               <div
                 ref={playerDivRef}
                 className={classJoiner(cn.playerWrapper, cnMixSpace({ mB: 's' }))}
@@ -212,6 +210,7 @@ const ExamProtocol: FC = () => {
                 {exam.async ? <ViolationsBlock report={exam.report} /> : <SyncChat exam={exam} />}
               </div>
             </Layout>
+            {/* 2 column */}
             <Layout className={cn.aboutExamBlock} direction={'column'}>
               <Layout direction={'column'}>
                 <Text view={'secondary'} size={'s'}>

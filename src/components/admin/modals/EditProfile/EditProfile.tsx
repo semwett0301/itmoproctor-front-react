@@ -1,30 +1,30 @@
-import React, {FC, useState} from 'react'
+import React, { FC, useState } from 'react'
 import cl from './EditProfile.module.scss'
 import ModalTitle from '../../../shared/ModalView/ModalTitle/ModalTitle'
-import {SkeletonText} from '@consta/uikit/Skeleton'
+import { SkeletonText } from '@consta/uikit/Skeleton'
 import FilterConstructor from '../../../shared/Filter/FilterConstructor'
-import {classJoiner} from '../../../../utils/common/styleClassesUtills'
-import {cnMixSpace} from '@consta/uikit/MixSpace'
+import { classJoiner } from '../../../../utils/common/styleClassesUtills'
+import { cnMixSpace } from '@consta/uikit/MixSpace'
 import SaveButton from '../../../shared/ModalView/SaveButton/SaveButton'
-import {Controller, SubmitHandler, useForm} from 'react-hook-form'
-import {yupResolver} from '@hookform/resolvers/yup/dist/yup'
-import {DefaultItem, Select} from '@consta/uikit/Select'
-import {TextField} from '@consta/uikit/TextField'
+import { Controller, SubmitHandler, useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
+import { DefaultItem, Select } from '@consta/uikit/Select'
+import { TextField } from '@consta/uikit/TextField'
 import SmartSelect from '../../../shared/SmartSelect/SmartSelect'
-import {DatePicker} from '@consta/uikit/DatePicker'
-import {IOrganization} from '../../../../ts/interfaces/IOrganizations'
-import {getGender} from '../../../shared/SmartSelect/items/genders'
-import {date, object, string} from 'yup'
+import { DatePicker } from '@consta/uikit/DatePicker'
+import { IOrganization } from '../../../../ts/interfaces/IOrganizations'
+import { getGender } from '../../../shared/SmartSelect/items/genders'
+import { date, object, string } from 'yup'
 import EmptyLabel from '../../../shared/ModalView/EmptyLabel/EmptyLabel'
-import {request} from '../../../../api/axios/request'
-import {closeModal} from '../../../shared/ModalView/ModalView'
-import {IUserApp} from '../../../../ts/interfaces/IUserApp'
+import { request } from '../../../../api/axios/request'
+import { closeModal } from '../../../shared/ModalView/ModalView'
+import { IUserApp } from '../../../../ts/interfaces/IUserApp'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
-import {updateUserActionCreator} from '../../../../store/reducers/userReducer/userActionCreators'
-import {useOrganizations} from '../../../../hooks/admin/useOrganizations'
-import {useAppDispatch} from '../../../../hooks/store/useAppDispatch';
-import {useAppSelector} from '../../../../hooks/store/useAppSelector';
+import { updateUserActionCreator } from '../../../../store/reducers/userReducer/userActionCreators'
+import { useOrganizations } from '../../../../hooks/admin/useOrganizations'
+import { useAppDispatch } from '../../../../hooks/store/useAppDispatch'
+import { useAppSelector } from '../../../../hooks/store/useAppSelector'
 
 dayjs.extend(customParseFormat)
 
@@ -66,7 +66,6 @@ const EditProfile: FC = () => {
   const [isLoading] = useState<boolean>(false)
   const user = useAppSelector((state) => state.user)
   const dispatch = useAppDispatch()
-  console.log(user)
 
   const { getOrganization } = useOrganizations()
 

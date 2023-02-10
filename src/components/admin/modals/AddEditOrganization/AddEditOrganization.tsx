@@ -1,16 +1,15 @@
-import React, {FC, useEffect, useState} from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import cl from './AddEditOrganization.module.scss'
-import {IOrganizationFull} from '../../../../ts/interfaces/IOrganizations'
-import {request} from '../../../../api/axios/request'
+import { IOrganizationFull } from '../../../../ts/interfaces/IOrganizations'
+import { request } from '../../../../api/axios/request'
 import ModalTitle from '../../../shared/ModalView/ModalTitle/ModalTitle'
-import {SkeletonText} from '@consta/uikit/Skeleton'
-import {cnMixSpace} from '@consta/uikit/MixSpace'
+import { SkeletonText } from '@consta/uikit/Skeleton'
+import { cnMixSpace } from '@consta/uikit/MixSpace'
 import FilterConstructor from '../../../shared/Filter/FilterConstructor'
-import {TextField} from '@consta/uikit/TextField'
-import {Button} from '@consta/uikit/Button'
-import {IconCheck} from '@consta/uikit/IconCheck'
-import {number, object, string} from 'yup'
-import {closeModal} from '../../../shared/ModalView/ModalView';
+import { TextField } from '@consta/uikit/TextField'
+import { Button } from '@consta/uikit/Button'
+import { IconCheck } from '@consta/uikit/IconCheck'
+import { closeModal } from '../../../shared/ModalView/ModalView'
 
 // TYPES
 interface IAddEditOrganizationProp {
@@ -44,7 +43,6 @@ const AddEditOrganization: FC<IAddEditOrganizationProp> = ({ organizationId, onS
     if (organizationId) {
       setIsLoad(true)
       request.organizations.getFullOrganization(organizationId).then((r) => {
-        console.log(r.data)
         setIsLoad(false)
         setOrganization(r.data)
       })
@@ -245,8 +243,7 @@ const AddEditOrganization: FC<IAddEditOrganizationProp> = ({ organizationId, onS
                     ? request.organizations.putOrganization(organizationId, organization)
                     : request.organizations.postOrganization(organization)
                 )
-                  .then(r => {
-                    console.log(r.data)
+                  .then((r) => {
                     if (onSubmit) {
                       onSubmit(r.data)
                     }

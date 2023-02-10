@@ -70,8 +70,6 @@ const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
         }
       })
 
-      console.log(filteredNotes)
-
       setNotes([...filteredNotes])
     })
   }, [])

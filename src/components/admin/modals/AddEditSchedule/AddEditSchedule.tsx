@@ -87,7 +87,6 @@ const AddEditSchedule: FC<IAddEditScheduleProp> = ({ scheduleId, onSubmit }) => 
       .then((users) => {
         if (scheduleId)
           return request.schedule.getSchedule(scheduleId).then((r) => {
-            console.log(r)
             const inspector = users.data.rows.find((item) => item._id === r.data.inspector)
             if (inspector) {
               reset({

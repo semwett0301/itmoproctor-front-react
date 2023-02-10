@@ -10,6 +10,7 @@ import { DefaultItem, Select } from '@consta/uikit/Select'
 import { IconQuestion } from '@consta/icons/IconQuestion'
 import { openModal } from '../../../shared/ModalView/ModalView'
 import TimelineGuideModal from '../modals/TimelineGuideModal/TimelineGuideModal'
+import * as echarts from 'echarts'
 
 // TYPES
 type ALlViolationsNames = ViolationsNames | 'many'
@@ -91,10 +92,8 @@ const TimeLineHist: FC<ITimeLineHistProp> = ({ report, player }) => {
     [report, item?.id]
   )
 
-  const options = {
+  const options: echarts.EChartOption = {
     tooltip: {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       position: function (pos, params, el, elRect, size) {
         const obj = { top: 10 }
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -127,19 +126,21 @@ const TimeLineHist: FC<ITimeLineHistProp> = ({ report, player }) => {
         // @ts-ignore
         renderItem: (params, api) => {
           const yValue = 1
-          const start = api.coord([api.value(0), 1])
-          const size = api.size([(api.value(1) as number) - (api.value(0) as number), yValue])
-          const style = api.style()
+          if (api.coord && api.size && api.style && api.value) {
+            const start = api.coord([api.value(0), 1])
+            const size = api.size([(api.value(1) as number) - (api.value(0) as number), yValue])
+            const style = api.style()
 
-          return {
-            type: 'rect',
-            shape: {
-              x: start[0],
-              y: start[1],
-              width: size[0],
-              height: size[1]
-            },
-            style: style
+            return {
+              type: 'rect',
+              shape: {
+                x: start[0],
+                y: start[1],
+                width: size[0],
+                height: size[1]
+              },
+              style: style
+            }
           }
         },
         label: {
@@ -158,10 +159,7 @@ const TimeLineHist: FC<ITimeLineHistProp> = ({ report, player }) => {
     ]
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   const onChartClick = (params: any): void => {
-    console.log(params)
     const timeOffset = Math.round(
       ((params.value[1] - params.value[0]) * (params.event.offsetX - params.event.target.shape.x)) /
         params.event.target.shape.width

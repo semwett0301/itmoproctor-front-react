@@ -1,15 +1,15 @@
 // noinspection DuplicatedCode
 
-import React, {FC, useCallback, useEffect, useState} from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import cl from './Exams.module.scss'
-import {useOpenTab} from '../Admin'
-import {IconAdd} from '@consta/uikit/IconAdd'
-import {IconEdit} from '@consta/uikit/IconEdit'
-import {IconRevert} from '@consta/uikit/IconRevert'
-import {IconCopy} from '@consta/uikit/IconCopy'
-import {IconDocExport} from '@consta/uikit/IconDocExport'
-import {IconUpload} from '@consta/uikit/IconUpload'
-import {IconTrash} from '@consta/uikit/IconTrash'
+import { useOpenTab } from '../Admin'
+import { IconAdd } from '@consta/uikit/IconAdd'
+import { IconEdit } from '@consta/uikit/IconEdit'
+import { IconRevert } from '@consta/uikit/IconRevert'
+import { IconCopy } from '@consta/uikit/IconCopy'
+import { IconDocExport } from '@consta/uikit/IconDocExport'
+import { IconUpload } from '@consta/uikit/IconUpload'
+import { IconTrash } from '@consta/uikit/IconTrash'
 import SharedTable from '../../shared/SharedTable/SharedTable'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
 import ExamStatusCombobox from '../../shared/Filter/ExamStatusCombobox/ExamStatusCombobox'
@@ -19,47 +19,68 @@ import DatePeriodPicker from '../../shared/Filter/DatePeriodPicker/DatePeriodPic
 import SearchField from '../../shared/Filter/SearchField/SearchField'
 import FilterButton from '../../shared/Filter/FilterButton/FilterButton'
 import OrganizationCombobox from '../../shared/Filter/OrganizationCombobox/OrganizationCombobox'
-import {Layout} from '@consta/uikit/Layout'
-import {useTableRequest} from '../../../hooks/shared/tables/useTableRequest'
-import {useTable} from '../../../hooks/shared/tables/useTable'
-import {ExamFilter, TablesEnum} from '../../../config/store/tablesReducerConfig'
-import {request} from '../../../api/axios/request'
-import {IExamRow} from '../../../ts/interfaces/IExams'
-import {getProctor, getShortName, getStudentName} from '../../../utils/common/nameHelper'
+import { Layout } from '@consta/uikit/Layout'
+import { useTableRequest } from '../../../hooks/shared/tables/useTableRequest'
+import { useTable } from '../../../hooks/shared/tables/useTable'
+import { ExamFilter, TablesEnum } from '../../../config/store/tablesReducerConfig'
+import { request } from '../../../api/axios/request'
+import { IExamRow } from '../../../ts/interfaces/IExams'
+import { getProctor, getShortName, getStudentName } from '../../../utils/common/nameHelper'
 import TypeBadge from '../../shared/SharedTable/TypeBadge/TypeBadge'
-import StatusBadge, {customBadgePropStatus, getExamStatus} from '../../shared/SharedTable/StatusBadge/StatusBadge'
-import {IconVideo} from '@consta/uikit/IconVideo'
-import {Button} from '@consta/uikit/Button'
+import StatusBadge, {
+  customBadgePropStatusObject,
+  getExamStatus
+} from '../../shared/SharedTable/StatusBadge/StatusBadge'
+import { IconVideo } from '@consta/uikit/IconVideo'
+import { Button } from '@consta/uikit/Button'
 import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
-import {organizationsFormat, resetFormat, statusFormat} from '../../../utils/admin/requestFormatters'
-import {closeModal, openModal} from '../../shared/ModalView/ModalView'
+import {
+  organizationsFormat,
+  resetFormat,
+  statusFormat
+} from '../../../utils/admin/requestFormatters'
+import { closeModal, openModal } from '../../shared/ModalView/ModalView'
 import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
-import {selectAll} from '../../../utils/admin/selectAll'
-import {socket} from '../../../api/socket/socket'
+import { selectAll } from '../../../utils/admin/selectAll'
+import { socket } from '../../../api/socket/socket'
 import AddEditDuplicateExam from '../modals/AddEditExam/AddEditDuplicateExam'
-import {examsColumn, IExamsTableModel} from './examsTableModel'
-import {adminButtonChecker} from '../../../utils/admin/adminButtonChecker';
-import {deleteSelected} from '../../../utils/admin/deleteSelected';
-import {useAppSelector} from '../../../hooks/store/useAppSelector';
-import {IExam} from '../../../ts/interfaces/IExam';
+import { examsColumn, IExamsTableModel } from './examsTableModel'
+import { adminButtonChecker } from '../../../utils/admin/adminButtonChecker'
+import { deleteSelected } from '../../../utils/admin/deleteSelected'
+import { useAppSelector } from '../../../hooks/store/useAppSelector'
 
 const Exams: FC = () => {
-  const {openTab} = useOpenTab()
+  const { openTab } = useOpenTab()
 
   const [organizationsIds, setOrganizationsIds] = useState<string[]>([])
 
-  const system = useAppSelector<boolean>(state => state.user.system ?? false)
+  const system = useAppSelector<boolean>((state) => state.user.system ?? false)
 
   // const [sortSetting, setSortSetting] = useState<SortByProps<IExamsTableModel> | null>(null)
 
-  const castToTableRow: (item: IExamRow, update: () => Promise<IExamsTableModel[]>) => IExamsTableModel = (item, update) => {
-    const proctor = getProctor(item.async, item.inspector, item.expert),
-      studentName = getStudentName(item.student),
+  // const errorArray: string[] = []
+
+  const castToTableRow: (
+    item: IExamRow,
+    update: () => Promise<IExamsTableModel[]>
+  ) => IExamsTableModel = (item, update) => {
+    // console.log(item._id)
+
+    const proctor = getProctor(item.async, item.inspector, item.expert)
+    let studentName = 'Неизвестный пользователь',
+      studentShortName = 'Неизвестный пользователь'
+
+    try {
+      studentName = getStudentName(item.student)
       studentShortName = getShortName(
         item.student.firstname,
         item.student.middlename,
         item.student.lastname
       )
+    } catch (e) {
+      console.log(`Error with user in exam – ${item._id}`)
+      // errorArray.push(item._id)
+    }
 
     return {
       async: item.async,
@@ -72,18 +93,18 @@ const Exams: FC = () => {
         assigment: item.assignment,
         subject: item.subject
       },
-      type: <TypeBadge async={item.async}/>,
-      start: {startDate: item.startDate, beginDate: item.beginDate},
+      type: <TypeBadge async={item.async} />,
+      start: { startDate: item.startDate, beginDate: item.beginDate },
       status: (
         <StatusBadge
-          status={customBadgePropStatus[getExamStatus(item)]}
+          status={customBadgePropStatusObject[getExamStatus(item)]}
           reset={!item.examId || !item.examId.startsWith('course-v1')}
         />
       ),
       // Если есть фактическая дата начала(startDate), то отображать
       video: item.startDate && (
         <Button
-          size="xs"
+          size='xs'
           onlyIcon
           iconRight={IconVideo}
           onClick={() =>
@@ -98,40 +119,46 @@ const Exams: FC = () => {
       ),
       more: (
         <MoreButton
-          items={adminButtonChecker([
-            {
-              label: 'Изменить',
-              iconLeft: IconEdit,
-              onClick: () => openModal(<AddEditDuplicateExam examId={item._id} onSubmit={update}/>)
-            },
-            {
-              label: 'Сбросить',
-              iconLeft: IconRevert,
-              disabled: true
-            },
-            {
-              label: 'Дублировать',
-              iconLeft: IconCopy,
-              onClick: () => openModal(
-                <AddEditDuplicateExam examId={item._id} onSubmit={update} isDuplicate={true}/>
-              )
-            },
-            {
-              label: 'Удалить',
-              iconLeft: IconTrash,
-              onClick: () =>
-                openModal(
-                  <DeleteSubmit
-                    onSubmit={async () => {
-                      await request.exam.deleteExam(item._id)
-                      closeModal()
-                      await update()
-                    }}
-                    onCancel={() => closeModal()}
-                  />
-                )
-            }
-          ], system, ['Удалить'])}
+          items={adminButtonChecker(
+            [
+              {
+                label: 'Изменить',
+                iconLeft: IconEdit,
+                onClick: () =>
+                  openModal(<AddEditDuplicateExam examId={item._id} onSubmit={update} />)
+              },
+              {
+                label: 'Сбросить',
+                iconLeft: IconRevert,
+                disabled: true
+              },
+              {
+                label: 'Дублировать',
+                iconLeft: IconCopy,
+                onClick: () =>
+                  openModal(
+                    <AddEditDuplicateExam examId={item._id} onSubmit={update} isDuplicate={true} />
+                  )
+              },
+              {
+                label: 'Удалить',
+                iconLeft: IconTrash,
+                onClick: () =>
+                  openModal(
+                    <DeleteSubmit
+                      onSubmit={async () => {
+                        await request.exam.deleteExam(item._id)
+                        closeModal()
+                        await update()
+                      }}
+                      onCancel={() => closeModal()}
+                    />
+                  )
+              }
+            ],
+            system,
+            ['Удалить']
+          )}
         />
       )
     }
@@ -151,7 +178,7 @@ const Exams: FC = () => {
   } = useTable<ExamFilter>(TablesEnum.EXAMS)
 
   // Exams table request
-  const {isLoading, rows, setRows, update} = useTableRequest<IExamsTableModel>(
+  const { isLoading, rows, setRows, update } = useTableRequest<IExamsTableModel>(
     () =>
       request.exam
         .getListOfExams({
@@ -167,6 +194,7 @@ const Exams: FC = () => {
           rows: pagination.displayedRows.id
         })
         .then((r) => {
+          // errorArray = []
           setTotal(0)
           setOrganizationsIds(() => r.data.organizations || [])
           setTotal(r.data.total)
@@ -269,7 +297,7 @@ const Exams: FC = () => {
                 component: (
                   <DatePeriodPicker
                     value={filter.date}
-                    onChange={(value) => setFilter({date: value})}
+                    onChange={(value) => setFilter({ date: value })}
                   />
                 )
               },
@@ -278,7 +306,7 @@ const Exams: FC = () => {
                 component: (
                   <SearchField
                     placeholder={'Поиск по экзамену'}
-                    onChange={({value}) => setFilter({searchQuery: value})}
+                    onChange={({ value }) => setFilter({ searchQuery: value })}
                     value={filter.searchQuery}
                   />
                 ),
@@ -288,56 +316,71 @@ const Exams: FC = () => {
                 key: 'btn',
                 component: (
                   <FilterButton
-                    MenuItems={adminButtonChecker([
-                      {
-                        label: 'Добавить',
-                        iconLeft: IconAdd,
-                        onClick: () => openModal(<AddEditDuplicateExam onSubmit={update}/>)
-                      },
-                      {
-                        label: 'Изменить',
-                        iconLeft: IconEdit,
-                        onClick: () => openModal(<AddEditDuplicateExam examId={selectedRowsId[0]} onSubmit={update}/>),
-                        disabled: selectedRowsId.length !== 1
-                      },
-                      {
-                        label: 'Сбросить',
-                        iconLeft: IconRevert,
-                        disabled: true
-                      },
-                      {
-                        label: 'Дублировать',
-                        iconLeft: IconCopy,
-                        disabled: selectedRowsId.length !== 1,
-                        onClick: () => {
-                          openModal(<AddEditDuplicateExam examId={selectedRowsId[0]} onSubmit={update} isDuplicate={true}/>)
+                    MenuItems={adminButtonChecker(
+                      [
+                        {
+                          label: 'Добавить',
+                          iconLeft: IconAdd,
+                          onClick: () => openModal(<AddEditDuplicateExam onSubmit={update} />)
+                        },
+                        {
+                          label: 'Изменить',
+                          iconLeft: IconEdit,
+                          onClick: () =>
+                            openModal(
+                              <AddEditDuplicateExam examId={selectedRowsId[0]} onSubmit={update} />
+                            ),
+                          disabled: selectedRowsId.length !== 1
+                        },
+                        {
+                          label: 'Сбросить',
+                          iconLeft: IconRevert,
+                          disabled: true
+                        },
+                        {
+                          label: 'Дублировать',
+                          iconLeft: IconCopy,
+                          disabled: selectedRowsId.length !== 1,
+                          onClick: () => {
+                            openModal(
+                              <AddEditDuplicateExam
+                                examId={selectedRowsId[0]}
+                                onSubmit={update}
+                                isDuplicate={true}
+                              />
+                            )
+                          }
+                        },
+                        {
+                          label: 'Скачать (csv)',
+                          iconLeft: IconDocExport,
+                          disabled: true
+                        },
+                        {
+                          label: 'Импорт',
+                          iconLeft: IconUpload,
+                          disabled: true
+                        },
+                        {
+                          label: 'Удалить',
+                          iconLeft: IconTrash,
+                          onClick: () =>
+                            openModal(
+                              <DeleteSubmit
+                                onSubmit={async () => {
+                                  await deleteSelected(selectedRowsId, request.exam.deleteExam)
+                                  closeModal()
+                                  await update()
+                                }}
+                                onCancel={() => closeModal()}
+                              />
+                            ),
+                          disabled: !selectedRowsId.length
                         }
-                      },
-                      {
-                        label: 'Скачать (csv)',
-                        iconLeft: IconDocExport,
-                        disabled: true
-                      },
-                      {
-                        label: 'Импорт',
-                        iconLeft: IconUpload,
-                        disabled: true
-                      },
-                      {
-                        label: 'Удалить',
-                        iconLeft: IconTrash,
-                        onClick: () => openModal(
-                          <DeleteSubmit
-                            onSubmit={async () => {
-                              await deleteSelected(selectedRowsId, request.exam.deleteExam)
-                              closeModal()
-                              await update()
-                            }}
-                            onCancel={() => closeModal()}
-                          />),
-                        disabled: !selectedRowsId.length
-                      },
-                    ], system, ['Удалить'])}
+                      ],
+                      system,
+                      ['Удалить']
+                    )}
                   />
                 )
               }
@@ -351,7 +394,7 @@ const Exams: FC = () => {
                 component: (
                   <ExamTypeSelect
                     value={filter.type}
-                    onChange={({value}) => setFilter({type: value})}
+                    onChange={({ value }) => setFilter({ type: value })}
                   />
                 ),
                 flex: 2
@@ -361,7 +404,7 @@ const Exams: FC = () => {
                 component: (
                   <ExamStatusCombobox
                     value={filter.status}
-                    onChange={(value) => setFilter({status: value})}
+                    onChange={(value) => setFilter({ status: value })}
                   />
                 ),
                 flex: 4
@@ -371,7 +414,7 @@ const Exams: FC = () => {
                 component: (
                   <OrganizationCombobox
                     value={filter.organizations || []}
-                    onChange={({value}) => setFilter({organizations: value})}
+                    onChange={({ value }) => setFilter({ organizations: value })}
                     organizationsIds={organizationsIds}
                     isIdsLoading={isLoading}
                   />

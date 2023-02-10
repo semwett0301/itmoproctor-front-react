@@ -1,26 +1,26 @@
-import React, {FC} from 'react'
+import React, { FC } from 'react'
 import cl from './Maintenance.module.scss'
-import {Layout} from '@consta/uikit/Layout'
+import { Layout } from '@consta/uikit/Layout'
 import FilterConstructor from '../../shared/Filter/FilterConstructor'
 import DatePeriodPicker from '../../shared/Filter/DatePeriodPicker/DatePeriodPicker'
 import FilterButton from '../../shared/Filter/FilterButton/FilterButton'
-import {IconAdd} from '@consta/uikit/IconAdd'
-import {IconEdit} from '@consta/uikit/IconEdit'
-import {IconTrash} from '@consta/uikit/IconTrash'
-import {Button} from '@consta/uikit/Button'
-import {IconRestart} from '@consta/uikit/IconRestart'
-import {request} from '../../../api/axios/request'
-import {IMaintenanceTableModel, maintenanceColumns} from './maintenanceTableModel'
-import {IMaintenance} from '../../../ts/interfaces/IMaintenance'
-import {useTable} from '../../../hooks/shared/tables/useTable'
-import {MaintenanceFilter, TablesEnum} from '../../../config/store/tablesReducerConfig'
+import { IconAdd } from '@consta/uikit/IconAdd'
+import { IconEdit } from '@consta/uikit/IconEdit'
+import { IconTrash } from '@consta/uikit/IconTrash'
+import { Button } from '@consta/uikit/Button'
+import { IconRestart } from '@consta/uikit/IconRestart'
+import { request } from '../../../api/axios/request'
+import { IMaintenanceTableModel, maintenanceColumns } from './maintenanceTableModel'
+import { IMaintenance } from '../../../ts/interfaces/IMaintenance'
+import { useTable } from '../../../hooks/shared/tables/useTable'
+import { MaintenanceFilter, TablesEnum } from '../../../config/store/tablesReducerConfig'
 import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
-import {closeModal, openModal} from '../../shared/ModalView/ModalView'
+import { closeModal, openModal } from '../../shared/ModalView/ModalView'
 import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
-import {useTableRequest} from '../../../hooks/shared/tables/useTableRequest'
+import { useTableRequest } from '../../../hooks/shared/tables/useTableRequest'
 import SharedTable from '../../shared/SharedTable/SharedTable'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
-import {selectAll} from '../../../utils/admin/selectAll'
+import { selectAll } from '../../../utils/admin/selectAll'
 import AddEditMaintenance from '../modals/AddEditMaintenance/AddEditMaintenance'
 
 const Maintenance: FC = () => {
@@ -48,10 +48,7 @@ const Maintenance: FC = () => {
         })
         .then((r): IMaintenanceTableModel[] => {
           setTotal(r.data.total)
-          console.log(
-            filter.date[0].format('DD.MM.YYYY hh:mm'),
-            filter.date[1].format('DD.MM.YYYY hh:mm')
-          )
+
           if (r.data.rows.length > 0) {
             return r.data.rows.map((row: IMaintenance) => {
               return {
@@ -155,12 +152,15 @@ const Maintenance: FC = () => {
                       {
                         label: 'Добавить',
                         iconLeft: IconAdd,
-                        onClick: () => openModal(<AddEditMaintenance onSubmit={
-                          async () => {
-                            await update()
-                            closeModal()
-                          }
-                        }/>)
+                        onClick: () =>
+                          openModal(
+                            <AddEditMaintenance
+                              onSubmit={async () => {
+                                await update()
+                                closeModal()
+                              }}
+                            />
+                          )
                       },
                       {
                         label: 'Изменить',

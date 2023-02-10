@@ -1,13 +1,13 @@
-import React, {FC, useEffect, useState} from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import cl from './ExamView.module.scss'
-import {Text} from '@consta/uikit/Text'
-import {cnMixSpace} from '@consta/uikit/MixSpace'
-import ModalViewConstructor, {IRowViewItem} from '../TwoBlockModalRow/ModalViewConstructor'
-import {SkeletonText} from '@consta/uikit/Skeleton'
-import {request} from '../../../../api/axios/request'
-import {useTranslation} from 'react-i18next'
-import {getProctor, getStudentName} from '../../../../utils/common/nameHelper'
-import {getStrDate} from '../../../../utils/common/dateUtils'
+import { Text } from '@consta/uikit/Text'
+import { cnMixSpace } from '@consta/uikit/MixSpace'
+import ModalViewConstructor, { IRowViewItem } from '../TwoBlockModalRow/ModalViewConstructor'
+import { SkeletonText } from '@consta/uikit/Skeleton'
+import { request } from '../../../../api/axios/request'
+import { useTranslation } from 'react-i18next'
+import { getProctor, getStudentName } from '../../../../utils/common/nameHelper'
+import { getStrDate } from '../../../../utils/common/dateUtils'
 import ResolutionText from './ResolutionText'
 import ModalTitle from '../../../shared/ModalView/ModalTitle/ModalTitle'
 
@@ -16,8 +16,8 @@ interface IExamViewProp {
   examId: string
 }
 
-const ExamView: FC<IExamViewProp> = ({examId}) => {
-  const {t} = useTranslation('translation', {keyPrefix: 'shared'})
+const ExamView: FC<IExamViewProp> = ({ examId }) => {
+  const { t } = useTranslation('translation', { keyPrefix: 'shared' })
 
   const [isLoad, setIsLoad] = useState<boolean>(true)
   const [items, setItems] = useState<IRowViewItem[]>([])
@@ -25,7 +25,6 @@ const ExamView: FC<IExamViewProp> = ({examId}) => {
   useEffect(() => {
     request.student.exams.getExamInfo(examId).then((r) => {
       const data = r.data
-      console.log(data)
       const ii: IRowViewItem[] = [
         {
           title: 'Экзамен',
@@ -58,7 +57,7 @@ const ExamView: FC<IExamViewProp> = ({examId}) => {
         {
           title: 'Ссылка',
           content: (
-            <Text size={'s'} as={'a'} target={'_blank'} rel="noreferrer" href={data.platformURL}>
+            <Text size={'s'} as={'a'} target={'_blank'} rel='noreferrer' href={data.platformURL}>
               Полетели
             </Text>
           )
@@ -83,18 +82,21 @@ const ExamView: FC<IExamViewProp> = ({examId}) => {
         },
         {
           title: 'Длительность',
-          content: t('minutesPlurals.counter', {count: data.duration})
+          content: t('minutesPlurals.counter', { count: data.duration })
         },
         {
           title: 'Начало',
-          content:
-            data.beginDate ? getStrDate(data.beginDate) +
-              (data.startDate ? getStrDate(data.startDate, ' (hh:mm)') : '') : ''
+          content: data.beginDate
+            ? getStrDate(data.beginDate) +
+              (data.startDate ? getStrDate(data.startDate, ' (hh:mm)') : '')
+            : ''
         },
         {
           title: 'Окончание',
-          content:
-            data.endDate ? getStrDate(data.endDate) + (data.stopDate ? getStrDate(data.stopDate, ' (hh:mm)') : '') : ''
+          content: data.endDate
+            ? getStrDate(data.endDate) +
+              (data.stopDate ? getStrDate(data.stopDate, ' (hh:mm)') : '')
+            : ''
         },
         {
           title: 'Слушатель',
@@ -106,7 +108,7 @@ const ExamView: FC<IExamViewProp> = ({examId}) => {
         },
         {
           title: 'Заключение',
-          content: <ResolutionText resolution={data.resolution}/>
+          content: <ResolutionText resolution={data.resolution} />
         },
         {
           title: 'Комментарий',
@@ -128,12 +130,12 @@ const ExamView: FC<IExamViewProp> = ({examId}) => {
 
   return (
     <div className={cl.wrapper}>
-      <ModalTitle title={'exam'}/>
+      <ModalTitle title={'exam'} />
       {isLoad ? (
-        <SkeletonText rows={10} fontSize="s" lineHeight={'l'}/>
+        <SkeletonText rows={10} fontSize='s' lineHeight={'l'} />
       ) : (
-        <div className={cnMixSpace({pH: 'm', pV: 's'})}>
-          <ModalViewConstructor items={items}/>
+        <div className={cnMixSpace({ pH: 'm', pV: 's' })}>
+          <ModalViewConstructor items={items} />
         </div>
       )}
     </div>

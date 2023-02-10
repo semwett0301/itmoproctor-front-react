@@ -1,15 +1,15 @@
-import React, {FC, Fragment} from 'react'
+import React, { FC, Fragment } from 'react'
 import cn from './ViolationsBlock.module.scss'
-import {IReport} from '../../../../ts/interfaces/IExam'
-import {Text} from '@consta/uikit/Text'
-import {Layout} from '@consta/uikit/Layout'
-import {cnMixSpace} from '@consta/uikit/MixSpace'
+import { IReport } from '../../../../ts/interfaces/IExam'
+import { Text } from '@consta/uikit/Text'
+import { Layout } from '@consta/uikit/Layout'
+import { cnMixSpace } from '@consta/uikit/MixSpace'
 import IconWithTooltip from '../../../shared/IconWithTooltip/IconWithTooltip'
-import {IconQuestion} from '@consta/uikit/IconQuestion'
-import {getViolationsStatsConfig, violationsTitles} from './ViolationStatsConfig'
+import { IconQuestion } from '@consta/uikit/IconQuestion'
+import { getViolationsStatsConfig, violationsTitles } from './ViolationStatsConfig'
 import ViolationIcon from './ViolationIcon/ViolationIcon'
-import {getTime} from '../../../../utils/common/times';
-import {classJoiner} from '../../../../utils/common/styleClassesUtills';
+import { getTime } from '../../../../utils/common/times'
+import { classJoiner } from '../../../../utils/common/styleClassesUtills'
 
 // TYPES
 interface IViolationsBlockProp {
@@ -55,7 +55,7 @@ const ViolationsBlock: FC<IViolationsBlockProp> = ({ report }) => {
                   <div key={i} className={cn.violation}>
                     <ViolationIcon violationName={violation.name} />
                     <Text size={'xs'}>
-                      {violationsTitles[violation.name]}({(violation.probability * 100).toFixed(0)}
+                      {violationsTitles[violation.name]} ({(violation.probability * 100).toFixed(0)}
                       %)
                     </Text>
                   </div>
