@@ -56,9 +56,18 @@ const items: DefaultItem[] = [
 const TimeLineHist: FC<ITimeLineHistProp> = ({ report, player }) => {
   const [item, setItem] = useState<DefaultItem | null>({ id: 'many', label: 'Все нарушения' })
 
+  const [currentTime, setCurrentTime] = useState(0)
+
+  if (player) {
+    player.on('timeupdate', () => {
+      setCurrentTime(player.currentTime())
+      console.log(player.currentTime())
+    })
+  }
+
   const newData = useMemo(
     () =>
-      report?.videos
+      (report?.videos
         ? report.videos.results.map((v) => {
             const { startTime, endTime, violations } = v
             if (
@@ -88,8 +97,15 @@ const TimeLineHist: FC<ITimeLineHistProp> = ({ report, player }) => {
               }
             }
           })
-        : [],
-    [report, item?.id]
+        : []
+      ).concat([
+        {
+          value: [currentTime, currentTime + 0.1, ''],
+          tooltip: false,
+          itemStyle: { color: 'black' }
+        }
+      ]),
+    [report, item?.id, currentTime]
   )
 
   const options: echarts.EChartOption = {
