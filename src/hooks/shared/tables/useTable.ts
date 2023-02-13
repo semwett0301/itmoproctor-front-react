@@ -12,7 +12,8 @@ import {Filter} from '../../../ts/types/Filter'
 import {useAppDispatch} from '../../store/useAppDispatch';
 import {useAppSelector} from '../../store/useAppSelector';
 
-export function useTable<T extends Filter>(
+export function
+useTable<T extends Filter>(
   tableName: TablesEnum
 ): {
   selectedRowsId: string[]
