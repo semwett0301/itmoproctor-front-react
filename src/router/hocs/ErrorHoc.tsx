@@ -13,7 +13,7 @@ const ErrorHoc: FC<HocPropsType<RoleEnum>> = () => {
     return <Outlet context={context}/>
   }
 
-  return <Navigate to={'/kurento-utils'} replace={true} state={{ from: location }} />
+  return <Navigate to={'/dist'} replace={true} state={{ from: location }} />
 }
 
 export default ErrorHoc
