@@ -23,6 +23,7 @@ export const adminRoutes: IRoute[] = [
       {
         id: 21,
         path: 'userExams/:id',
+        type: 'user-exams',
         title: (id: string) =>
           request.users
             .getUser(id)

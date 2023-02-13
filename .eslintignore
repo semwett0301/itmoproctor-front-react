@@ -4,4 +4,4 @@
 *.pcss
 .eslintrc.json
 /src/i18n/localizations/ruLocalization.ts
-/src/kurento-utils
+/src/kurentoUtils

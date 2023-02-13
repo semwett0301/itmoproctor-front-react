@@ -12,7 +12,7 @@ export interface IDistAxios {
 export default function (instance: AxiosInstance): IDistAxios {
   return {
     getInfo(): Promise<AxiosResponse<IDistMetadata>> {
-      return instance.get('/kurento-utils/metadata')
+      return instance.get('/dist/metadata')
     }
   }
 }
