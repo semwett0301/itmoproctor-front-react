@@ -157,7 +157,7 @@ const UserExams: FC = () => {
   }
 
   // Exams table request
-  const { isLoading, rows, update } = useTableRequest<IExamsTableModel>(
+  const { isLoading, rows, update, isRowsFinished } = useTableRequest<IExamsTableModel>(
     () =>
       request.exam
         .getUserExams({
@@ -353,6 +353,7 @@ const UserExams: FC = () => {
         pagination={pagination}
         setCurrentPage={setCurrentPage}
         setDisplayedRows={setDisplayedRows}
+        isRowsFinished={isRowsFinished}
       />
     </Layout>
   )

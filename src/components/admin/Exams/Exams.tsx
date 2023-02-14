@@ -178,7 +178,7 @@ const Exams: FC = () => {
   } = useTable<ExamFilter>(TablesEnum.EXAMS)
 
   // Exams table request
-  const { isLoading, rows, setRows, update } = useTableRequest<IExamsTableModel>(
+  const { isLoading, rows, setRows, update, isRowsFinished } = useTableRequest<IExamsTableModel>(
     () =>
       request.exam
         .getListOfExams({
@@ -442,6 +442,7 @@ const Exams: FC = () => {
         pagination={pagination}
         setCurrentPage={setCurrentPage}
         setDisplayedRows={setDisplayedRows}
+        isRowsFinished={isRowsFinished}
       />
     </Layout>
   )

@@ -19,7 +19,7 @@ interface IAttachModalProp {
 }
 
 const AttachModal: FC<IAttachModalProp> = ({ attach, exam }) => {
-  const attachUrl = `${axiosConfig.baseUrl}storage/note/${exam.examId}/${attach.fileId}`
+  const attachUrl = `${axiosConfig.baseUrl}storage/note/${exam._id}/${attach.fileId}`
 
   return (
     <div className={cn.wrapper}>

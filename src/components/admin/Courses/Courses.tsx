@@ -60,7 +60,7 @@ const Courses: FC = () => {
 
   const system = useAppSelector<boolean>(state => state.user.system ?? false)
 
-  const { isLoading, rows, update } = useTableRequest<ICoursesTableModel>(
+  const { isLoading, rows, update, isRowsFinished } = useTableRequest<ICoursesTableModel>(
     () =>
       request.courses
         .getListOfCourses({
@@ -209,6 +209,7 @@ const Courses: FC = () => {
         pagination={pagination}
         setCurrentPage={setCurrentPage}
         setDisplayedRows={setDisplayedRows}
+        isRowsFinished={isRowsFinished}
       />
     </Layout>
   )

@@ -61,7 +61,7 @@ const Users: FC = () => {
   } = useTable<UserFilter>(TablesEnum.USERS)
 
   // Users table request
-  const {isLoading, rows, update} = useTableRequest(
+  const {isLoading, rows, update, isRowsFinished} = useTableRequest(
     () =>
       Promise.resolve(getOrganizations())
         .then(() =>
@@ -140,7 +140,7 @@ const Users: FC = () => {
           } else return []
         }),
     [filter.searchQuery, filter.role, filter.provider, filter.organizations, loading],
-    [pagination.currentPage, pagination.displayedRows.id],
+    [pagination.displayedRows, pagination.currentPage],
     dropPagination,
     selectedRowsId,
     setSelectedRowsId
@@ -252,6 +252,7 @@ const Users: FC = () => {
         pagination={pagination}
         setCurrentPage={setCurrentPage}
         setDisplayedRows={setDisplayedRows}
+        isRowsFinished={isRowsFinished}
       />
     </Layout>
   )

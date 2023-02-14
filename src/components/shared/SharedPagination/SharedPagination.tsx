@@ -1,4 +1,4 @@
-import React, {FC} from 'react'
+import React, { FC, useEffect } from 'react'
 
 import PaginationField, {ITotalRowsVariants, totalRowsVariants} from './PaginationField/PaginationField'
 import {IPagination} from '../../../ts/interfaces/IPagination'
@@ -7,6 +7,7 @@ interface ISharedPaginationProps {
   pagination: IPagination
   setCurrentPage: (currentPage: number) => void
   setDisplayedRows: (displayedRows: ITotalRowsVariants) => void
+  isRowsFinished: boolean | null
 }
 
 const SharedPagination: FC<ISharedPaginationProps> = (props) => {
@@ -16,8 +17,20 @@ const SharedPagination: FC<ISharedPaginationProps> = (props) => {
   }
 
   const setCurrentPage: (value: number) => void = (value) => {
-    props.setCurrentPage(value)
+    if (props.isRowsFinished !== null) {
+      if (props.isRowsFinished) {
+        props.setCurrentPage(value - 1)
+      } else {
+        props.setCurrentPage(value + 1)
+      }
+    } else {
+      props.setCurrentPage(value)
+    }
   }
+
+  useEffect(() => {
+    props.isRowsFinished !== null && setCurrentPage(props.pagination.currentPage)
+  }, [props.isRowsFinished])
 
   return (
     <PaginationField

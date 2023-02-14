@@ -37,7 +37,7 @@ const Maintenance: FC = () => {
   } = useTable<MaintenanceFilter>(TablesEnum.MAINTENANCE)
 
   // Exams table request
-  const { isLoading, rows, update } = useTableRequest(
+  const { isLoading, rows, update, isRowsFinished } = useTableRequest(
     () =>
       request.maintenance
         .getMaintenances({
@@ -219,6 +219,7 @@ const Maintenance: FC = () => {
         pagination={pagination}
         setCurrentPage={setCurrentPage}
         setDisplayedRows={setDisplayedRows}
+        isRowsFinished={isRowsFinished}
       />
     </Layout>
   )
