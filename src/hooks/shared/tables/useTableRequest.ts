@@ -68,22 +68,24 @@ export function useTableRequest<ROWS extends { id: string }>(
   }, [JSON.stringify(rows), JSON.stringify(selectedRowsId.length)])
 
   useEffect(() => {
+    update()
+      .catch((e) => console.log(e))
+      .finally(() => setIsFirst(false))
+  }, [])
+
+  useEffect(() => {
     if (!isFirst) {
       dropPagination()
       setSelectedRowsId([])
-    } else {
-      setIsFirst(false)
+      update().catch((e) => console.log(e))
     }
-    update().catch((e) => console.log(e))
   }, filterArray)
 
   useEffect(() => {
     if (!isFirst) {
       setSelectedRowsId([])
-    } else {
-      setIsFirst(false)
+      update().catch((e) => console.log(e))
     }
-    update().catch((e) => console.log(e))
   }, paginationArray)
 
   return { isLoading, rows, setRows, update, isRowsFinished }
