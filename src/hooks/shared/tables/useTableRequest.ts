@@ -1,9 +1,10 @@
 import {Dispatch, SetStateAction, useEffect, useState} from 'react'
+import { ITotalRowsVariants } from '../../../components/shared/SharedPagination/PaginationField/PaginationField'
 
 export function useTableRequest<ROWS extends { id: string }>(
   request: () => Promise<ROWS[]>,
   filterArray: unknown[],
-  paginationArray: unknown[],
+  paginationArray: [ITotalRowsVariants, number],
   dropPagination: () => void,
   selectedRowsId: string[],
   setSelectedRowsId: (rowId: string | string[]) => void
@@ -12,9 +13,11 @@ export function useTableRequest<ROWS extends { id: string }>(
   rows: ROWS[]
   setRows: Dispatch<SetStateAction<ROWS[]>>
   update: () => Promise<ROWS[]>
+  isRowsFinished: null | boolean
 } {
   const [rows, setRows] = useState<ROWS[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isRowsFinished, setIsRowsFinished] = useState<boolean | null>(null)
 
   const [isFirst, setIsFirst] = useState<boolean>(true)
 
@@ -42,6 +45,13 @@ export function useTableRequest<ROWS extends { id: string }>(
     setRows(() => [])
     const r = await request()
     const newRows = updateSelected(r)
+
+    if (paginationArray[1] !== 0 && newRows.length === 0) {
+      setIsRowsFinished(true)
+    } else {
+      setIsRowsFinished(null)
+    }
+
     setRows(newRows)
     setIsLoading(false)
     return r
@@ -76,5 +86,5 @@ export function useTableRequest<ROWS extends { id: string }>(
     update().catch((e) => console.log(e))
   }, paginationArray)
 
-  return { isLoading, rows, setRows, update }
+  return { isLoading, rows, setRows, update, isRowsFinished }
 }

@@ -42,7 +42,7 @@ const Organizations: FC = () => {
     else setCurrentPage(0)
   }, [loading])
 
-  const {isLoading, rows, update} = useTableRequest(
+  const {isLoading, rows, update, isRowsFinished} = useTableRequest(
     async () => {
       const currentRows: IOrganization[] = getOrganizations().filter(
             (r) =>
@@ -223,6 +223,7 @@ const Organizations: FC = () => {
         pagination={pagination}
         setCurrentPage={setCurrentPage}
         setDisplayedRows={setDisplayedRows}
+        isRowsFinished={isRowsFinished}
       />
     </Layout>
   )

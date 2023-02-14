@@ -11,7 +11,7 @@ import {
 import {WebRtcPeer} from 'kurento-utils';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const kurentoUtils = require('../../../../../kurento-utils/kurento-utils')
+const kurentoUtils = require('../../../../../kurentoUtils/kurento-utils')
 
 type RemotePlayerProps = {
   userId: string,

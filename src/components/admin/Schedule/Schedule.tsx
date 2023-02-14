@@ -51,7 +51,7 @@ const Schedule: FC = () => {
   } = useTable<ScheduleFilter>(TablesEnum.SCHEDULE)
 
   // Exams table request
-  const {isLoading, rows, update} = useTableRequest(
+  const {isLoading, rows, update, isRowsFinished} = useTableRequest(
     () =>
       request.schedule
         .getSchedules({
@@ -114,7 +114,7 @@ const Schedule: FC = () => {
           } else return []
         }),
     [filter.searchQuery, filter.date],
-    [pagination.currentPage, pagination.displayedRows.id],
+    [pagination.displayedRows, pagination.currentPage],
     dropPagination,
     selectedRowsId,
     setSelectedRowsId
@@ -193,6 +193,7 @@ const Schedule: FC = () => {
         pagination={pagination}
         setCurrentPage={setCurrentPage}
         setDisplayedRows={setDisplayedRows}
+        isRowsFinished={isRowsFinished}
       />
     </Layout>
   )

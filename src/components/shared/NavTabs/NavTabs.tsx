@@ -11,7 +11,7 @@ export interface TabItem {
   id: number | string
   title: string
   path: string
-  type: 'tab' | 'exam'
+  type: 'tab' | 'exam' | 'user-exams'
   table?: TablesEnum
 }
 
