@@ -1,29 +1,29 @@
-import React, {FC} from 'react'
+import React, { FC } from 'react'
 import cl from './Schedule.module.scss'
-import {Layout} from '@consta/uikit/Layout'
+import { Layout } from '@consta/uikit/Layout'
 import DatePeriodPicker from '../../shared/Filter/DatePeriodPicker/DatePeriodPicker'
 import SearchField from '../../shared/Filter/SearchField/SearchField'
 import FilterButton from '../../shared/Filter/FilterButton/FilterButton'
-import {IconAdd} from '@consta/uikit/IconAdd'
-import {IconEdit} from '@consta/uikit/IconEdit'
-import {IconTrash} from '@consta/uikit/IconTrash'
+import { IconAdd } from '@consta/uikit/IconAdd'
+import { IconEdit } from '@consta/uikit/IconEdit'
+import { IconTrash } from '@consta/uikit/IconTrash'
 import FilterConstructor from '../../shared/Filter/FilterConstructor'
 import SharedPagination from '../../shared/SharedPagination/SharedPagination'
 import SharedTable from '../../shared/SharedTable/SharedTable'
-import {IScheduleTableModel, scheduleColumns} from './scheduleTableModel'
-import {request} from '../../../api/axios/request'
-import {IScheduleRow} from '../../../ts/interfaces/IShedule'
-import {useTable} from '../../../hooks/shared/tables/useTable'
-import {ScheduleFilter, TablesEnum} from '../../../config/store/tablesReducerConfig'
-import {useTableRequest} from '../../../hooks/shared/tables/useTableRequest'
+import { IScheduleTableModel, scheduleColumns } from './scheduleTableModel'
+import { request } from '../../../api/axios/request'
+import { IScheduleRow } from '../../../ts/interfaces/IShedule'
+import { useTable } from '../../../hooks/shared/tables/useTable'
+import { ScheduleFilter, TablesEnum } from '../../../config/store/tablesReducerConfig'
+import { useTableRequest } from '../../../hooks/shared/tables/useTableRequest'
 import MoreButton from '../../shared/SharedTable/MoreButton/MoreButton'
-import {selectAll} from '../../../utils/admin/selectAll'
-import {closeModal, openModal} from '../../shared/ModalView/ModalView'
+import { selectAll } from '../../../utils/admin/selectAll'
+import { closeModal, openModal } from '../../shared/ModalView/ModalView'
 import AddEditSchedule from '../modals/AddEditSchedule/AddEditSchedule'
 
 import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
-import {adminButtonChecker} from '../../../utils/admin/adminButtonChecker';
-import {addNotification} from '../../shared/NotificationList/NotificationList';
+import { adminButtonChecker } from '../../../utils/admin/adminButtonChecker'
+import { addNotification } from '../../shared/NotificationList/NotificationList'
 
 // DEFAULT FUNCTIONS
 // const deleteSelected = async (selected: string[]): Promise<AxiosResponse[]> =>
@@ -51,7 +51,7 @@ const Schedule: FC = () => {
   } = useTable<ScheduleFilter>(TablesEnum.SCHEDULE)
 
   // Exams table request
-  const {isLoading, rows, update, isRowsFinished} = useTableRequest(
+  const { isLoading, rows, update, isRowsFinished } = useTableRequest(
     () =>
       request.schedule
         .getSchedules({
@@ -87,7 +87,7 @@ const Schedule: FC = () => {
                         label: 'Изменить',
                         iconLeft: IconEdit,
                         onClick: () =>
-                          openModal(<AddEditSchedule scheduleId={item._id} onSubmit={update}/>)
+                          openModal(<AddEditSchedule scheduleId={item._id} onSubmit={update} />)
                       },
                       {
                         label: 'Удалить',
@@ -134,7 +134,7 @@ const Schedule: FC = () => {
                 component: (
                   <DatePeriodPicker
                     value={filter.date}
-                    onChange={(value) => setFilter({...filter, date: value})}
+                    onChange={(value) => setFilter({ ...filter, date: value })}
                   />
                 )
               },
@@ -143,7 +143,7 @@ const Schedule: FC = () => {
                 component: (
                   <SearchField
                     placeholder={'Поиск проктора'}
-                    onChange={({value}) => setFilter({...filter, searchQuery: value})}
+                    onChange={({ value }) => setFilter({ ...filter, searchQuery: value })}
                     value={filter.searchQuery}
                   />
                 ),
@@ -157,17 +157,25 @@ const Schedule: FC = () => {
                       {
                         label: 'Добавить',
                         iconLeft: IconAdd,
-                        onClick: () => openModal(<AddEditSchedule onSubmit={update}/>)
+                        onClick: () => openModal(<AddEditSchedule onSubmit={update} />)
                       },
-                      {label: 'Изменить', iconLeft: IconEdit},
+                      { label: 'Изменить', iconLeft: IconEdit },
                       {
                         label: 'Удалить', iconLeft: IconTrash, onClick: () => {
-                          rows.filter(row => selectedRowsId.includes(row.id)).forEach(row => {
-                            request.schedule
-                              .deleteSchedule(row.id)
-                              .then(update)
-                              .catch(createDeleteProblemNotification)
-                          })
+                          openModal(
+                            <DeleteSubmit
+                              onSubmit={() => {
+                                rows.filter(row => selectedRowsId.includes(row.id)).forEach(row => {
+                                  request.schedule
+                                    .deleteSchedule(row.id)
+                                    .then(update)
+                                    .then(closeModal)
+                                    .catch(createDeleteProblemNotification)
+                                })
+                              }}
+                              onCancel={() => closeModal()}
+                            />
+                          )
                         }
                       }
                     ], selectedRowsId.length !== 0, ['Изменить', 'Удалить'])}
