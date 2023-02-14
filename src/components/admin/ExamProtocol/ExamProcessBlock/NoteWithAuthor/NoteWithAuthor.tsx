@@ -49,7 +49,7 @@ const NoteWithAuthor: FC<INoteWithAuthorProp> = ({ note, exam }) => {
               width={'default'}
               onClick={() => {
                 if (!/\.(png|jpe?g|bmp|webp|gif|tiff)$/i.test(item.filename)) {
-                  const attachUrl = `${axiosConfig.baseUrl}storage/note/${exam.examId}/${item.fileId}`
+                  const attachUrl = `${axiosConfig.baseUrl}storage/note/${exam._id}/${item.fileId}`
                   downloadByHref(attachUrl, item.filename)
                 } else {
                   openModal(<AttachModal attach={item} exam={exam} />)

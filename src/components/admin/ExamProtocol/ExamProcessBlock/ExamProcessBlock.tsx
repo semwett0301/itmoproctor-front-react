@@ -38,7 +38,7 @@ interface IExamProcessBlockProp {
 const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
   const [notes, setNotes] = useState<Array<DateNote>>([])
   const [inputMessage, setInputMessage] = useState<string | null>(null)
-  const attachInputRef = useRef<HTMLInputElement>(null)
+    const attachInputRef = useRef<HTMLInputElement>(null)
 
   const [isShift, setIsShift] = useState<boolean>(false)
   const [files, setFiles] = useState<FileList | null>(null)
