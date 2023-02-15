@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react'
+import React, {FC, useCallback, useEffect, useState} from 'react'
 import {Layout} from '@consta/uikit/Layout'
 import cl from './Admin.module.scss'
 import Sidebar from './Sidebar/Sidebar'
@@ -27,7 +27,7 @@ const Admin: FC = () => {
 
   const [activeTab, setActiveTab] = useState<TabItem | null>(null)
 
-  const [expandSate, setExpandState] = useState<boolean>(true)
+  const [expandState, setExpandState] = useState<boolean>(true)
 
   const navigate = useNavigate()
 
@@ -73,6 +73,7 @@ const Admin: FC = () => {
         type: 'tab'
       })
     }
+
     if (location.pathname === '/admin' && !tabItems.length && !activeTab) {
       openMainTab()
     } else if (location.pathname !== '/admin' && location.pathname.includes('/admin')) {
@@ -125,20 +126,20 @@ const Admin: FC = () => {
     <Layout className={cl.wrapper} direction={'column'}>
       <Layout>
         <CustomHeader
-          leftSide={<HeaderLogoModule />}
-          rightSide={[{ key: 'dateTime', component: HeaderTimeDateModule }]}
+          leftSide={<HeaderLogoModule/>}
+          rightSide={[{key: 'dateTime', component: HeaderTimeDateModule}]}
           contextMenuItems={[
             {
               label: 'Профиль',
               group: 1,
               iconLeft: IconUser,
-              onClick: () => openModal(<EditProfile />)
+              onClick: () => openModal(<EditProfile/>)
             },
             {
               label: 'Настройки',
               group: 1,
               iconLeft: IconSettings,
-              onClick: () => openModal(<SettingsView />)
+              onClick: () => openModal(<SettingsView/>)
             },
             {
               label: 'Выход',
@@ -152,25 +153,27 @@ const Admin: FC = () => {
         />
       </Layout>
 
-      <Layout className={cl.contentWrapper} direction='row'>
+      <Layout className={cl.contentWrapper} direction="row">
         <Layout className={cl.standardLayout}>
-          <Sidebar addTab={openTab} expandState={expandSate} setExpandState={setExpandState} />
+          <Sidebar addTab={openTab} expandState={expandState} setExpandState={value => {
+            setExpandState(value)
+          }}/>
         </Layout>
 
         <Layout className={cl.standardLayout} direction={'column'}>
           <Card
-            className={classWatcher(expandSate, cl.smallContent, cl.wideContent, cl.contentCard)}
+            className={classWatcher(expandState, cl.smallContent, cl.wideContent, cl.contentCard)}
           >
             <NavTabs
               activeTab={activeTab}
               tabItems={tabItems}
-              setActiveTab={({ value }) => {
+              setActiveTab={({value}) => {
                 setActiveTab(value)
               }}
               closeTab={closeTab}
             />
 
-            <Outlet context={{ openTab }} />
+            <Outlet context={{openTab}}/>
           </Card>
         </Layout>
       </Layout>

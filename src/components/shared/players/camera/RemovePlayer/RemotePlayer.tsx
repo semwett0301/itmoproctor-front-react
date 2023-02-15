@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useLayoutEffect, useMemo, useState} from 'react';
+import React, {FC, useCallback, useLayoutEffect, useMemo, useRef, useState} from 'react';
 import {IWebCallSocket} from '../../../../../api/socket/modules/webCall';
 import {socket} from '../../../../../api/socket/socket';
 import {
@@ -15,13 +15,17 @@ const kurentoUtils = require('../../../../../kurentoUtils/kurento-utils')
 
 type RemotePlayerProps = {
   userId: string,
+  dispose: () => void
 }
 
-const RemotePlayer: FC<RemotePlayerProps> = ({userId}) => {
+const RemotePlayer: FC<RemotePlayerProps> = ({userId, dispose}) => {
   const [registerState, setRegisterState] = useState<RegisterState>(RegisterState.IN_PROCESS)
   const [callState, setCallState] = useState<CallState>(CallState.NO_CALL)
   const [remotePeer, setRemotePeer] = useState<WebRtcPeer | null>(null)
   const [localPeer, setLocalPeer] = useState<WebRtcPeer>()
+
+  const input = useRef<HTMLVideoElement | null>(null)
+  const output = useRef<HTMLVideoElement | null>(null)
 
   const registerConnection = useCallback((currentSocket: IWebCallSocket) => {
     setRegisterState(RegisterState.IN_PROCESS)
@@ -113,7 +117,7 @@ const RemotePlayer: FC<RemotePlayerProps> = ({userId}) => {
           }
         ))
       }
-    }, [callState, onError, remotePeer, socketWebCall])
+    }, [callState, localPeer, onError, socketWebCall])
 
   const startCommunication = useCallback<(message: WebCallGetMessage) => void>(message => {
     if (remotePeer) {
@@ -132,6 +136,59 @@ const RemotePlayer: FC<RemotePlayerProps> = ({userId}) => {
     }
   }, [startCommunication, stop])
 
+  const call = useCallback<(peer: WebRtcPeer) => void>(peer => {
+    if (callState === CallState.NO_CALL) {
+      if (input.current || output.current) {
+        setLocalPeer(peer)
+        setCallState(CallState.PROCESSING_CALL);
+
+        const onOffer: (error: string | undefined, sdpOffer: string) => void = (error, sdpOffer) => {
+          if (error) {
+            onError(error);
+          } else {
+            if (callState == CallState.NO_CALL) {
+              dispose();
+            } else {
+              socketWebCall.sendMessage({
+                id: SendMessageType.CALL,
+                from: userId,
+                to: peer,
+                sdpOffer: sdpOffer
+              });
+              // if (self.audio === false) self.toggleAudio(false);
+              // if (self.video === false) self.toggleVideo(false);
+            }
+          }
+
+          if (input && output) {
+            kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv({}, (currentError: string | undefined) => {
+              currentError ? onError(currentError) : localPeer?.generateOffer(onOffer)
+            });
+          }
+          if (input && !output) {
+            kurentoUtils.WebRtcPeer.WebRtcPeerSendonly({}, function (currentError: string | undefined) {
+              currentError ? onError(currentError) : localPeer?.generateOffer(onOffer)
+            });
+          }
+          if (!input && output) {
+            kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly({}, function (currentError: string | undefined) {
+              currentError ? onError(currentError) : localPeer?.generateOffer(onOffer)
+            });
+          }
+        }
+      }
+    }
+  }, [callState, dispose, localPeer, onError, socketWebCall, userId])
+
+  const restart = useCallback<(message: WebCallGetMessage) => void>(() => {
+    stop(false);
+    if (localPeer) {
+      setTimeout(() => {
+        call(localPeer);
+      }, 500);
+    }
+  }, [call, localPeer, stop])
+
   const messageToFunction = useMemo<{
     [key in GetMessageType]: (message: WebCallGetMessage) => void
   }>(() => {
@@ -143,9 +200,7 @@ const RemotePlayer: FC<RemotePlayerProps> = ({userId}) => {
         console.info('Communication ended by remote peer');
         stop(false);
       },
-      [GetMessageType.RESTART_COMMUNICATION]: () => {
-        console.log('restart communication')
-      },
+      [GetMessageType.RESTART_COMMUNICATION]: restart,
       [GetMessageType.INCOMING_CALL]: incomingCall,
       [GetMessageType.ICE_CANDIDATE]: message => {
         if (remotePeer && message.candidate) {
@@ -153,7 +208,7 @@ const RemotePlayer: FC<RemotePlayerProps> = ({userId}) => {
         }
       }
     }
-  }, [callResponse, registerResponse, remotePeer, startCommunication, stop])
+  }, [callResponse, incomingCall, registerResponse, remotePeer, restart, startCommunication, stop])
 
   useLayoutEffect(() => {
     socketWebCall.getMessage(message => {

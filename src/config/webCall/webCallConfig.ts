@@ -1,3 +1,5 @@
+import {WebRtcPeer} from 'kurento-utils';
+
 type WebCallConfig = {
   url: string,
   credential?: string,
@@ -62,6 +64,13 @@ type RegisterMessage = {
   name: string
 }
 
+type CallMessage = {
+  id: SendMessageType.CALL,
+  from: string,
+  to: WebRtcPeer,
+  sdpOffer: string
+}
+
 type IncomingCallResponseMessage = {
   id: SendMessageType.INCOMING_CALL_RESPONSE,
   from: string,
@@ -75,7 +84,7 @@ type StopMessage = {
   unregister: boolean
 }
 
-export type WebCallSendMessage = RegisterMessage | StopMessage | IncomingCallResponseMessage
+export type WebCallSendMessage = RegisterMessage | CallMessage | StopMessage | IncomingCallResponseMessage
 
 // REGISTER_RESPONSE -- вебсокет зарегистрирован (или нет)
 // CALL_RESPONSE -- звонок другим клиентом принят (или нет)
