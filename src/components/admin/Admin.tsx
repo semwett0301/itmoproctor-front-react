@@ -27,7 +27,14 @@ const Admin: FC = () => {
 
   const [activeTab, setActiveTab] = useState<TabItem | null>(null)
 
-  const [expandState, setExpandState] = useState<boolean>(true)
+  const [expandState, setExpandState] = useState<boolean>(JSON.parse(window.localStorage.getItem('expandState') ?? 'true'))
+
+  console.log(expandState)
+
+  const changeExpandState = useCallback<React.Dispatch<React.SetStateAction<boolean>>>(value => {
+    setExpandState(value)
+    window.localStorage.setItem('expandState', String(value))
+  }, [])
 
   const navigate = useNavigate()
 
@@ -155,9 +162,7 @@ const Admin: FC = () => {
 
       <Layout className={cl.contentWrapper} direction="row">
         <Layout className={cl.standardLayout}>
-          <Sidebar addTab={openTab} expandState={expandState} setExpandState={value => {
-            setExpandState(value)
-          }}/>
+          <Sidebar addTab={openTab} expandState={expandState} setExpandState={changeExpandState}/>
         </Layout>
 
         <Layout className={cl.standardLayout} direction={'column'}>
