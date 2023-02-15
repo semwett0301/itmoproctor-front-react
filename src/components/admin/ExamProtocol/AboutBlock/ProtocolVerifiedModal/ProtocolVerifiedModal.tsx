@@ -58,12 +58,16 @@ const ProtocolVerifiedModal: FC<IProtocolVerifiedModalProp> = ({ exam }) => {
               <div className={cn.info}>
                 {getVerifyInfo(verify).map((item) => (
                   <Fragment key={item.title}>
-                    <Text size={'xs'} lineHeight={'xs'} className={cn.infoText}>
-                      {item.title}
-                    </Text>
-                    <Text size={'xs'} lineHeight={'xs'} className={cn.infoText}>
-                      {item.value}
-                    </Text>
+                    <div className={cn.info_row}>
+                      <Text size={'xs'} className={cn.infoText}>
+                        {item.title}
+                      </Text>
+                      <div className={cn.info_value}>
+                        <Text size={'xs'} className={cn.infoText}>
+                          {item.value}
+                        </Text>
+                      </div>
+                    </div>
                   </Fragment>
                 ))}
               </div>

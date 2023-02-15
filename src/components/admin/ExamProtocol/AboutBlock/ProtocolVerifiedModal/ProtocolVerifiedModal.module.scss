@@ -45,7 +45,7 @@
   width: 523px;
   background: rgba(0, 66, 105, 0.52);
   display: inline-flex;
-  column-gap: 12px;
+  column-gap: 6px;
   left: 0;
   transition: all .3s;
 
@@ -55,7 +55,7 @@
 
   .photoWrapper{
     height: inherit;
-    width: 156px;
+    //width: 156px;
     background-color: rgba(0, 65, 102, 0.2);
 
     .photo{
@@ -65,11 +65,37 @@
   }
 
   .info{
-    display: grid;
-    grid-template-rows: repeat(7, 1fr);
-    grid-template-columns: auto auto;
-    align-items: center;
-    column-gap: var(--space-s);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    margin: auto 0;
+
+    width: 60%;
+
+    //grid-template-rows: repeat(7, 1fr);
+    //grid-template-columns: auto auto;
+    //align-items: center;
+    //column-gap: var(--space-s);
+
+    .info_row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      * {
+        line-height: 16px;
+      }
+
+
+      .info_value {
+        display: flex;
+        align-items: center;
+
+        max-width: 61%;
+        min-width: 61%;
+      }
+    }
 
     span{
       white-space: nowrap;
