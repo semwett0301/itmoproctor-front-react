@@ -6,7 +6,6 @@ import { cnMixSpace } from '@consta/uikit/MixSpace'
 import { Button } from '@consta/uikit/Button'
 import { cnMixCard } from '@consta/uikit/MixCard'
 import VideoPlayer from '../../shared/players/VideoPlayer/VideoPlayer'
-import videojs from 'video.js'
 import { useParams } from 'react-router-dom'
 import { request } from '../../../api/axios/request'
 import { IExam } from '../../../ts/interfaces/IExam'
@@ -23,7 +22,8 @@ import { useAppSelector } from '../../../hooks/store/useAppSelector'
 import { classJoiner } from '../../../utils/common/styleClassesUtills'
 import Loading from '../../shared/Loading/Loading'
 import SyncChat from './SyncChat/SyncChat'
-import Player = videojs.Player
+import videojs from 'video.js';
+import Player = videojs.Player;
 
 // TYPES
 

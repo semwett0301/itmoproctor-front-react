@@ -179,8 +179,7 @@ const SyncChat: FC<ISyncChatProp> = ({ exam }) => {
           )
         })}
       </Layout>
-
-      {exam.resolution === null && (
+      {!exam.stopDate && (
         <div className={cn.messageArea}>
           {!att ? (
             <FileField

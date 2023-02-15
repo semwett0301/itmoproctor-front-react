@@ -161,7 +161,7 @@ const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
         })}
       </Layout>
 
-      {exam.resolution === null && (
+      {/* {exam.resolution === null && ( */}
         <div className={cn.messageArea}>
           {!files ? (
             <FileField
@@ -228,7 +228,7 @@ const ExamProcessBlock: FC<IExamProcessBlockProp> = ({ exam }) => {
             onClick={() => onSendMessageHandler()}
           />
         </div>
-      )}
+      {/* )} */}
     </Layout>
   )
 }

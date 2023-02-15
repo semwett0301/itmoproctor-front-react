@@ -81,11 +81,11 @@ export interface IExam {
   duration: number
   leftDate: string
   rightDate: string
-  beginDate: string
-  endDate: string
-  startDate: string
-  stopDate: string
-  planDate: string
+  beginDate?: string
+  endDate?: string
+  startDate?: string
+  stopDate?: string
+  planDate?: string
   verified: IVerified
   resolution: boolean | null
   comment: string
