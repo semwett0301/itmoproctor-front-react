@@ -56,7 +56,7 @@ const CheckingConnection: FC = () => {
         <div className={cl.mainFrame}>
           {
             isCheckingStart ?
-              <RemotePlayer userId={userId}/>
+              <></>
               :
               <div className={cl.emptyMainFrame}>
                 <div>

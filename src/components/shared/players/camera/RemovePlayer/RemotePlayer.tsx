@@ -24,7 +24,6 @@ type Options = {
   }
 }
 
-
 type RemotePlayerProps = {
   userId: string,
   dispose: () => void,
@@ -135,7 +134,7 @@ const RemotePlayer: FC<RemotePlayerProps> = ({userId, dispose, constraints}) => 
         }
       ))
     }
-  }, [callState, localPeer, onError, socketWebCall])
+  }, [callState, getOptions, localPeer, onError, socketWebCall])
 
   const startCommunication = useCallback<(message: WebCallGetMessage) => void>(message => {
     if (remotePeer) {
@@ -196,7 +195,7 @@ const RemotePlayer: FC<RemotePlayerProps> = ({userId, dispose, constraints}) => 
         }
       }
     }
-  }, [callState, dispose, localPeer, onError, socketWebCall, userId])
+  }, [callState, dispose, getOptions, localPeer, onError, socketWebCall, userId])
 
   const restart = useCallback<(message: WebCallGetMessage) => void>(() => {
     stop(false);

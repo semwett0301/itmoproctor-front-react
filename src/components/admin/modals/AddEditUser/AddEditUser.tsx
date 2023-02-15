@@ -136,23 +136,23 @@ const toRequestData = (form: IUserForm, previousUser: IUserApp | null): IProfile
 
   return previousUser
     ? Object.assign(userData, {
-        _id: previousUser._id,
-        attach: previousUser.attach,
-        created: previousUser.created
-      })
+      _id: previousUser._id,
+      attach: previousUser.attach,
+      created: previousUser.created
+    })
     : userData
 }
 
-const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
+const AddEditUser: FC<IAddEditUserProp> = ({userId, onSubmit}) => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const profile = useAppSelector((state) => state.user)
 
   const [user, setUser] = useState<IUserApp | null>(null)
 
-  const { getOrganizations, getOrganization } = useOrganizations()
+  const {getOrganizations, getOrganization} = useOrganizations()
   const [organizationList, setOrganizationList] = useState<IOrganization[]>([])
 
-  const { control, formState, reset, handleSubmit, setValue } = useForm<IUserForm>({
+  const {control, formState, reset, handleSubmit, setValue} = useForm<IUserForm>({
     mode: 'all',
     resolver: yupResolver(userId ? editUserSchema : addUserSchema),
     defaultValues: {
@@ -193,6 +193,7 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
             .then((userProfile) => {
               setUser(userProfile)
 
+
               reset({
                 active: getUserStatusItem(String(userProfile.active)),
                 address: userProfile.address,
@@ -200,8 +201,8 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                 citizenship: getCitizenItem(userProfile.citizenship),
                 description: userProfile.description,
                 documentIssueDate: userProfile.documentIssueDate
-                  ? dayjs(userProfile.documentIssueDate).toDate()
-                  : null,
+                  ? dayjs(userProfile.documentIssueDate, 'DD.MM.YYYY').toDate()
+                  : undefined,
                 documentNumber: userProfile.documentNumber,
                 documentType: getDocumentTypeItem(userProfile.documentType),
                 email: userProfile.email,
@@ -224,10 +225,10 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
 
   const onFormSubmit: SubmitHandler<IUserForm> = (data) => {
     Promise.resolve(
-      user
-        ? request.profile.updateProfile(user._id, toRequestData(data, user))
-        : request.profile.addProfile(toRequestData(data, user))
-    )
+        user
+          ? request.profile.updateProfile(user._id, toRequestData(data, user))
+          : request.profile.addProfile(toRequestData(data, user))
+      )
       .then(() => {
         if (onSubmit) {
           onSubmit()
@@ -239,10 +240,10 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
 
   return (
     <>
-      <ModalTitle title='user' />
-      <div className={classJoiner(cnMixSpace({ pH: '2xs' }), cl.wrapper)}>
+      <ModalTitle title="user"/>
+      <div className={classJoiner(cnMixSpace({pH: '2xs'}), cl.wrapper)}>
         {isLoading ? (
-          <SkeletonText rows={15} />
+          <SkeletonText rows={15}/>
         ) : (
           <form noValidate onSubmit={handleSubmit(onFormSubmit)}>
             <FilterConstructor
@@ -257,17 +258,17 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                         <Controller
                           name={'username'}
                           control={control}
-                          render={({ field, fieldState }) => (
+                          render={({field, fieldState}) => (
                             <TextField
                               id={field.name}
                               name={field.name}
                               label={'Логин'}
                               required
-                              size='s'
-                              width='full'
+                              size="s"
+                              width="full"
                               placeholder={'Логин'}
                               value={field.value}
-                              onChange={({ e }) => field.onChange(e)}
+                              onChange={({e}) => field.onChange(e)}
                               status={fieldState.error ? 'alert' : undefined}
                               caption={fieldState.error?.message}
                             />
@@ -282,19 +283,19 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                         <Controller
                           name={'password'}
                           control={control}
-                          render={({ field, fieldState }) => (
+                          render={({field, fieldState}) => (
                             <TextField
-                              autoComplete='new-password'
+                              autoComplete="new-password"
                               id={field.name}
                               name={field.name}
                               required
                               label={'Пароль'}
-                              size='s'
-                              width='full'
+                              size="s"
+                              width="full"
                               placeholder={'********'}
-                              type='password'
+                              type="password"
                               value={field.value}
-                              onChange={({ e }) => field.onChange(e)}
+                              onChange={({e}) => field.onChange(e)}
                               status={fieldState.error ? 'alert' : undefined}
                               caption={fieldState.error?.message}
                             />
@@ -314,7 +315,7 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                         <Controller
                           name={'provider'}
                           control={control}
-                          render={({ field, fieldState }) => (
+                          render={({field, fieldState}) => (
                             <SmartSelect
                               id={field.name}
                               name={field.name}
@@ -323,7 +324,7 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                               label={'Провайдер'}
                               withLabel
                               value={field.value}
-                              onChange={({ value }) => field.onChange(value)}
+                              onChange={({value}) => field.onChange(value)}
                               status={fieldState.error ? 'alert' : undefined}
                               caption={fieldState.error?.message}
                             />
@@ -338,7 +339,7 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                         <Controller
                           name={'role'}
                           control={control}
-                          render={({ field, fieldState }) => (
+                          render={({field, fieldState}) => (
                             <SmartSelect
                               id={field.name}
                               name={field.name}
@@ -346,7 +347,7 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                               itemsType={'roles'}
                               withLabel
                               value={field.value}
-                              onChange={({ value }) => field.onChange(value)}
+                              onChange={({value}) => field.onChange(value)}
                               status={fieldState.error ? 'alert' : undefined}
                               caption={fieldState.error?.message}
                             />
@@ -361,7 +362,7 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                         <Controller
                           name={'active'}
                           control={control}
-                          render={({ field, fieldState }) => (
+                          render={({field, fieldState}) => (
                             <SmartSelect
                               id={field.name}
                               name={field.name}
@@ -369,7 +370,7 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                               itemsType={'userStatuses'}
                               withLabel
                               value={field.value}
-                              onChange={({ value }) => field.onChange(value)}
+                              onChange={({value}) => field.onChange(value)}
                               status={fieldState.error ? 'alert' : undefined}
                               caption={fieldState.error?.message}
                             />
@@ -389,17 +390,17 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                         <Controller
                           name={'lastname'}
                           control={control}
-                          render={({ field, fieldState }) => (
+                          render={({field, fieldState}) => (
                             <TextField
                               id={field.name}
                               name={field.name}
                               required
                               label={'Полное имя'}
                               placeholder={'Фамилия'}
-                              size='s'
-                              width='full'
+                              size="s"
+                              width="full"
                               value={field.value}
-                              onChange={({ value }) => field.onChange(value)}
+                              onChange={({value}) => field.onChange(value)}
                               status={fieldState.error ? 'alert' : undefined}
                               caption={fieldState.error?.message}
                             />
@@ -414,18 +415,18 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                         <Controller
                           name={'firstname'}
                           control={control}
-                          render={({ field, fieldState }) => (
+                          render={({field, fieldState}) => (
                             <>
-                              <EmptyLabel />
+                              <EmptyLabel/>
                               <TextField
                                 id={field.name}
                                 name={field.name}
                                 placeholder={'Имя'}
                                 required
-                                size='s'
-                                width='full'
+                                size="s"
+                                width="full"
                                 value={field.value}
-                                onChange={({ value }) => field.onChange(value)}
+                                onChange={({value}) => field.onChange(value)}
                                 status={fieldState.error ? 'alert' : undefined}
                                 caption={fieldState.error?.message}
                               />
@@ -441,17 +442,17 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                         <Controller
                           name={'middlename'}
                           control={control}
-                          render={({ field }) => (
+                          render={({field}) => (
                             <>
-                              <EmptyLabel />
+                              <EmptyLabel/>
                               <TextField
                                 id={field.name}
                                 name={field.name}
                                 placeholder={'Отчество'}
-                                size='s'
-                                width='full'
+                                size="s"
+                                width="full"
                                 value={field.value}
-                                onChange={({ value }) => field.onChange(value)}
+                                onChange={({value}) => field.onChange(value)}
                               />
                             </>
                           )}
@@ -470,12 +471,12 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                         <Controller
                           name={'gender'}
                           control={control}
-                          render={({ field, fieldState }) => (
+                          render={({field, fieldState}) => (
                             <SmartSelect
                               withLabel
                               required
                               value={field.value}
-                              onChange={({ value }) => field.onChange(value)}
+                              onChange={({value}) => field.onChange(value)}
                               itemsType={'genders'}
                               status={fieldState.error ? 'alert' : undefined}
                               caption={fieldState.error?.message}
@@ -491,12 +492,12 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                         <Controller
                           name={'birthday'}
                           control={control}
-                          render={({ field, fieldState }) => (
+                          render={({field, fieldState}) => (
                             <DatePicker
-                              size='s'
+                              size="s"
                               label={'Дата рождения'}
                               value={field.value}
-                              onChange={({ value }) => field.onChange(value)}
+                              onChange={({value}) => field.onChange(value)}
                               status={fieldState.error ? 'alert' : undefined}
                               caption={fieldState.error ? 'Укажите дату рождения' : undefined}
                             />
@@ -504,7 +505,7 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                         />
                       )
                     },
-                    { key: 333, flex: 1, component: <></> }
+                    {key: 333, flex: 1, component: <></>}
                   ]
                 },
                 {
@@ -517,16 +518,16 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                         <Controller
                           name={'email'}
                           control={control}
-                          render={({ field, fieldState }) => (
+                          render={({field, fieldState}) => (
                             <TextField
                               id={field.name}
                               name={field.name}
                               required
                               label={'Электронный адрес'}
-                              size='s'
-                              width='full'
+                              size="s"
+                              width="full"
                               value={field.value}
-                              onChange={({ value }) => field.onChange(value)}
+                              onChange={({value}) => field.onChange(value)}
                               status={fieldState.error ? 'alert' : undefined}
                               caption={fieldState.error?.message}
                             />
@@ -546,17 +547,17 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                         <Controller
                           name={'organization'}
                           control={control}
-                          render={({ field, fieldState }) => (
+                          render={({field, fieldState}) => (
                             <Combobox
-                              size='s'
+                              size="s"
                               required
-                              label='Правообладатель'
-                              placeholder='Правообладатель'
+                              label="Правообладатель"
+                              placeholder="Правообладатель"
                               items={organizationList}
                               value={field.value}
                               getItemLabel={(item) => item.shortName ?? item.fullName}
                               getItemKey={(item) => item._id}
-                              onChange={({ value }) => {
+                              onChange={({value}) => {
                                 field.onChange(value)
                               }}
                               status={fieldState.error ? 'alert' : undefined}
@@ -578,15 +579,15 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                         <Controller
                           name={'address'}
                           control={control}
-                          render={({ field }) => (
+                          render={({field}) => (
                             <TextField
                               id={field.name}
                               name={field.name}
                               label={'Почтовый адрес'}
-                              size='s'
-                              width='full'
+                              size="s"
+                              width="full"
                               value={field.value}
-                              onChange={({ value }) => field.onChange(value)}
+                              onChange={({value}) => field.onChange(value)}
                             />
                           )}
                         />
@@ -604,14 +605,14 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                         <Controller
                           name={'citizenship'}
                           control={control}
-                          render={({ field }) => (
+                          render={({field}) => (
                             <SmartSelect
                               id={field.name}
                               name={field.name}
                               withLabel
                               itemsType={'citizenship'}
                               value={field.value}
-                              onChange={({ value }) => field.onChange(value)}
+                              onChange={({value}) => field.onChange(value)}
                             />
                           )}
                         />
@@ -624,14 +625,14 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                         <Controller
                           name={'documentType'}
                           control={control}
-                          render={({ field }) => (
+                          render={({field}) => (
                             <SmartSelect
                               id={field.name}
                               name={field.name}
                               withLabel
                               itemsType={'documents'}
                               value={field.value}
-                              onChange={({ value }) => field.onChange(value)}
+                              onChange={({value}) => field.onChange(value)}
                             />
                           )}
                         />
@@ -649,16 +650,16 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                         <Controller
                           name={'documentNumber'}
                           control={control}
-                          render={({ field }) => (
+                          render={({field}) => (
                             <TextField
                               id={field.name}
                               name={field.name}
                               label={'Серия и номер'}
                               placeholder={'Серия и номер документа'}
-                              size='s'
-                              width='full'
+                              size="s"
+                              width="full"
                               value={field.value}
-                              onChange={({ value }) => field.onChange(value)}
+                              onChange={({value}) => field.onChange(value)}
                             />
                           )}
                         />
@@ -671,15 +672,15 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                         <Controller
                           name={'documentIssueDate'}
                           control={control}
-                          render={({ field }) => (
+                          render={({field}) => (
                             <DatePicker
                               id={field.name}
                               name={field.name}
-                              label='Дата выдачи'
-                              size='s'
+                              label="Дата выдачи"
+                              size="s"
                               rightSide={IconCalendar}
                               value={field.value}
-                              onChange={({ value }) => field.onChange(value)}
+                              onChange={({value}) => field.onChange(value)}
                             />
                           )}
                         />
@@ -697,7 +698,7 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                         <Controller
                           name={'description'}
                           control={control}
-                          render={({ field }) => (
+                          render={({field}) => (
                             <TextField
                               id={field.name}
                               name={field.name}
@@ -708,10 +709,10 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                               type={'textarea'}
                               minRows={2}
                               maxRows={2}
-                              size='s'
-                              width='full'
+                              size="s"
+                              width="full"
                               value={field.value}
-                              onChange={({ value }) => field.onChange(value)}
+                              onChange={({value}) => field.onChange(value)}
                             />
                           )}
                         />
@@ -721,7 +722,7 @@ const AddEditUser: FC<IAddEditUserProp> = ({ userId, onSubmit }) => {
                 }
               ]}
             />
-            <SaveButton valid={formState.isValid} />
+            <SaveButton valid={formState.isValid}/>
           </form>
         )}
       </div>
