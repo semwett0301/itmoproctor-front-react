@@ -1,6 +1,6 @@
 import {WebRtcPeer} from 'kurento-utils';
 
-type WebCallConfig = {
+export type WebCallConfig = {
   url: string,
   credential?: string,
   username?: string
@@ -71,6 +71,11 @@ type CallMessage = {
   sdpOffer: string
 }
 
+type OnIceCandidateMessage = {
+  id: SendMessageType.ON_ICE_CANDIDATE,
+  candidate: RTCIceCandidate
+}
+
 type IncomingCallResponseMessage = {
   id: SendMessageType.INCOMING_CALL_RESPONSE,
   from: string,
@@ -84,7 +89,7 @@ type StopMessage = {
   unregister: boolean
 }
 
-export type WebCallSendMessage = RegisterMessage | CallMessage | StopMessage | IncomingCallResponseMessage
+export type WebCallSendMessage = RegisterMessage | CallMessage | OnIceCandidateMessage | StopMessage | IncomingCallResponseMessage
 
 // REGISTER_RESPONSE -- вебсокет зарегистрирован (или нет)
 // CALL_RESPONSE -- звонок другим клиентом принят (или нет)

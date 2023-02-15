@@ -3,9 +3,10 @@ import {IWebCallSocket} from '../../../../../api/socket/modules/webCall';
 import {socket} from '../../../../../api/socket/socket';
 import {
   CallState,
-  GetMessageType,
+  GetMessageType, iceServers,
   RegisterState,
   SendMessageType,
+  WebCallConfig,
   WebCallGetMessage
 } from '../../../../../config/webCall/webCallConfig';
 import {WebRtcPeer} from 'kurento-utils';
@@ -13,12 +14,24 @@ import {WebRtcPeer} from 'kurento-utils';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const kurentoUtils = require('../../../../../kurentoUtils/kurento-utils')
 
-type RemotePlayerProps = {
-  userId: string,
-  dispose: () => void
+type Options = {
+  localVideo: HTMLVideoElement | null,
+  remoteVideo: HTMLVideoElement | null,
+  onicecandidate: (candidate: RTCIceCandidate) => void,
+  mediaConstraints: object,
+  configuration: {
+    iceServers: WebCallConfig
+  }
 }
 
-const RemotePlayer: FC<RemotePlayerProps> = ({userId, dispose}) => {
+
+type RemotePlayerProps = {
+  userId: string,
+  dispose: () => void,
+  constraints: () => object | object
+}
+
+const RemotePlayer: FC<RemotePlayerProps> = ({userId, dispose, constraints}) => {
   const [registerState, setRegisterState] = useState<RegisterState>(RegisterState.IN_PROCESS)
   const [callState, setCallState] = useState<CallState>(CallState.NO_CALL)
   const [remotePeer, setRemotePeer] = useState<WebRtcPeer | null>(null)
@@ -55,6 +68,21 @@ const RemotePlayer: FC<RemotePlayerProps> = ({userId, dispose}) => {
     }
   }, [])
 
+  const getOptions = useCallback<() => Options>(() => {
+    return {
+      localVideo: input.current,
+      remoteVideo: output.current,
+      onicecandidate: candidate => socketWebCall.sendMessage({
+        id: SendMessageType.ON_ICE_CANDIDATE,
+        candidate: candidate
+      }),
+      mediaConstraints: typeof constraints === 'function' ? constraints() : constraints,
+      configuration: {
+        iceServers: iceServers
+      }
+    };
+  }, [constraints, socketWebCall])
+
   const stop = useCallback<(flag: boolean) => void>((flag) => {
     setCallState(CallState.NO_CALL);
     if (remotePeer) {
@@ -67,16 +95,6 @@ const RemotePlayer: FC<RemotePlayerProps> = ({userId, dispose}) => {
     });
   }, [socketWebCall, remotePeer])
 
-  // const restart = useCallback<(message: WebCallGetMessage) => void>(() => {
-  //   stop(false);
-  //
-  //   if (localePeer) {
-  //     setTimeout(function() {
-  //       call(localePeer);
-  //     }, 500);
-  //   }
-  // }, [])
-
   const onError = useCallback<(error?: string) => void>(error => {
     if (error) {
       console.error(error);
@@ -85,39 +103,39 @@ const RemotePlayer: FC<RemotePlayerProps> = ({userId, dispose}) => {
   }, [stop])
 
   const incomingCall = useCallback<(message: WebCallGetMessage) => void>(message => {
-      // If busy, just reject without disturbing the user
-      if (callState != 'NO_CALL') {
-        socketWebCall.sendMessage({
-          id: SendMessageType.INCOMING_CALL_RESPONSE,
-          from: message.from ?? '',
-          callResponse: 'reject',
-          message: 'busy'
-        })
-      } else {
-        setCallState(CallState.PROCESSING_CALL);
+    // If busy, just reject without disturbing the user
+    if (callState != 'NO_CALL') {
+      socketWebCall.sendMessage({
+        id: SendMessageType.INCOMING_CALL_RESPONSE,
+        from: message.from ?? '',
+        callResponse: 'reject',
+        message: 'busy'
+      })
+    } else {
+      setCallState(CallState.PROCESSING_CALL);
 
-        setRemotePeer(kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv({},
-          function (error: string | undefined) {
-            if (error) {
-              onError(error);
-            } else {
-              localPeer?.generateOffer(function (offerError, sdpOffer) {
-                if (offerError) {
-                  onError(offerError)
-                } else {
-                  socketWebCall.sendMessage({
-                    id: SendMessageType.INCOMING_CALL_RESPONSE,
-                    from: message.from ?? '',
-                    callResponse: 'accept',
-                    sdpOffer: sdpOffer
-                  })
-                }
-              });
-            }
+      setRemotePeer(kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv(getOptions(),
+        function (error: string | undefined) {
+          if (error) {
+            onError(error);
+          } else {
+            localPeer?.generateOffer(function (offerError, sdpOffer) {
+              if (offerError) {
+                onError(offerError)
+              } else {
+                socketWebCall.sendMessage({
+                  id: SendMessageType.INCOMING_CALL_RESPONSE,
+                  from: message.from ?? '',
+                  callResponse: 'accept',
+                  sdpOffer: sdpOffer
+                })
+              }
+            });
           }
-        ))
-      }
-    }, [callState, localPeer, onError, socketWebCall])
+        }
+      ))
+    }
+  }, [callState, localPeer, onError, socketWebCall])
 
   const startCommunication = useCallback<(message: WebCallGetMessage) => void>(message => {
     if (remotePeer) {
@@ -161,17 +179,17 @@ const RemotePlayer: FC<RemotePlayerProps> = ({userId, dispose}) => {
           }
 
           if (input && output) {
-            kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv({}, (currentError: string | undefined) => {
+            kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv(getOptions(), (currentError: string | undefined) => {
               currentError ? onError(currentError) : localPeer?.generateOffer(onOffer)
             });
           }
           if (input && !output) {
-            kurentoUtils.WebRtcPeer.WebRtcPeerSendonly({}, function (currentError: string | undefined) {
+            kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(getOptions(), function (currentError: string | undefined) {
               currentError ? onError(currentError) : localPeer?.generateOffer(onOffer)
             });
           }
           if (!input && output) {
-            kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly({}, function (currentError: string | undefined) {
+            kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(getOptions(), function (currentError: string | undefined) {
               currentError ? onError(currentError) : localPeer?.generateOffer(onOffer)
             });
           }
