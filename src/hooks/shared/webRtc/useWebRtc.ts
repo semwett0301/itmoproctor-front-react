@@ -286,6 +286,7 @@ export function useWebRtc(userId: string, constrains: {
       })
 
       return () => {
+        stop(true)
         socket.current && socket.current.disconnect()
       }
   }, [])
