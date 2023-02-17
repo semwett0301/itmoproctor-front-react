@@ -69,43 +69,6 @@ export function useWebRtc(userId: string, constrains: {
   const input = useRef<HTMLVideoElement | null>(null)
   const output = useRef<HTMLVideoElement | null>(null)
 
-  // const registerConnection = useCallback((currentSocket: IWebCallSocket) => {
-  //   registerState.current = RegisterState.IN_PROCESS
-  //
-  //   console.log(currentSocket);
-  //
-  //   currentSocket.sendMessage({
-  //     id: SendMessageType.REGISTER,
-  //     name: userId
-  //   })
-  // }, [userId])
-  //
-  // const socketWebCall = useMemo<IWebCallSocket>(() => {
-  //   const instance = io(`${socketConfig.baseUrl}webcall`)
-  //
-  //   instance.on('connect', () => {
-  //     if (registerState.current !== RegisterState.IN_PROCESS) {
-  //       registerConnection(socketWebCall)
-  //     }
-  //   })
-  //
-  //   instance.connect()
-  //
-  //   return {
-  //     sendMessage(message) {
-  //       console.log(message);
-  //       instance.send(JSON.stringify(message))
-  //     },
-  //     getMessage(messageCallback) {
-  //       // instance.on('message', messageCallback)
-  //     },
-  //     disconnect() {
-  //       // instance.removeListener('message');
-  //       // instance.disconnect();
-  //     }
-  //   }
-  // }, [registerState, registerConnection])
-
   const sendMessage = useCallback<(message: WebCallSendMessage) => void>(message => {
     if (socket.current) {
       socket.current.send(JSON.stringify(message))
@@ -266,7 +229,7 @@ export function useWebRtc(userId: string, constrains: {
     }
   }, [onError, sendMessage, userId, getOptions])
 
-  const restart = useCallback<(message: WebCallGetMessage) => void>(() => {
+  const restart = useCallback<() => void>(() => {
     stop(false);
     if (receiver.current) {
       setTimeout(() => {
@@ -298,10 +261,9 @@ export function useWebRtc(userId: string, constrains: {
 
   useEffect(() => {
     if (callState.current === CallState.IN_CALL) {
-      stop(false)
-      call(userId)
+      restart()
     }
-  }, [call, stop, userId])
+  }, [restart])
 
   useEffect(() => {
       socket.current = io(`${socketConfig.baseUrl}webcall`)
