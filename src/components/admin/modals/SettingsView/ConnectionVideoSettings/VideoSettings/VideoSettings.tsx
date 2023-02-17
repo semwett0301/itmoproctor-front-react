@@ -3,11 +3,12 @@ import React, {FC} from 'react'
 import {Select} from '@consta/uikit/Select'
 import {TextField} from '@consta/uikit/TextField'
 import cl from '../ConnectionVideoSettings.module.scss'
-import CheckingConnection from '../../CheckingConnection/CheckingConnection'
+import CheckingConnection from '../../../../../shared/CheckingConnection/CheckingConnection'
 import {IResolutionItem} from '../../../../../../ts/interfaces/IResolutionItem'
 import {defaultResolution} from '../../../../../../store/reducers/deviceSettings/deviceSettingsReducer';
 import {useDevices} from '../../../../../../hooks/shared/webRtc/useDevices';
 import {useDeviceSettings} from '../../../../../../hooks/shared/webRtc/useDeviceSettings';
+import {useAppSelector} from '../../../../../../hooks/store/useAppSelector';
 
 const resolutions: IResolutionItem[] = [
   {
@@ -44,10 +45,12 @@ const VideoSettings: FC = () => {
     updateCurrentInputAudio
   } = useDeviceSettings()
 
+  const userId = useAppSelector(state => state.user._id)
+
   return (
     <Layout className={cl.wrapper} direction={'column'}>
       <Layout flex={6} className={cl.video}>
-        <CheckingConnection/>
+        <CheckingConnection userId={userId} examId={'loopback'}/>
       </Layout>
       <Layout flex={1}>
         <Select

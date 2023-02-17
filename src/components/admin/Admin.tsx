@@ -29,8 +29,6 @@ const Admin: FC = () => {
 
   const [expandState, setExpandState] = useState<boolean>(JSON.parse(window.localStorage.getItem('expandState') ?? 'true'))
 
-  console.log(expandState)
-
   const changeExpandState = useCallback<React.Dispatch<React.SetStateAction<boolean>>>(value => {
     setExpandState(value)
     window.localStorage.setItem('expandState', String(value))

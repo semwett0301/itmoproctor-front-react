@@ -3,15 +3,18 @@ import {WebCallSendMessage, WebCallGetMessage} from '../../../config/webCall/web
 
 export type IWebCallSocket = {
   sendMessage(message: WebCallSendMessage): void,
-  getMessage(messageCallback: (message: WebCallGetMessage) => void): void,
+  getMessage(messageCallback: (message: string) => void): void,
   disconnect(): void,
 }
 
 
 export function webCall(instance: Socket): IWebCallSocket {
+
+  instance.connect()
+
   return {
     sendMessage(message) {
-      console.log(message)
+      console.log(message);
       instance.send(JSON.stringify(message))
     },
     getMessage(messageCallback) {

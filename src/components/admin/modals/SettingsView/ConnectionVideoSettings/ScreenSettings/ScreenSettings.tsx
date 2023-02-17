@@ -1,10 +1,11 @@
 import React, {FC, useState} from 'react'
 import cl from '../ConnectionVideoSettings.module.scss'
 import {Layout} from '@consta/uikit/Layout'
-import CheckingConnection from '../../CheckingConnection/CheckingConnection'
+import CheckingConnection from '../../../../../shared/CheckingConnection/CheckingConnection'
 import {Select} from '@consta/uikit/Select'
 import {TextField} from '@consta/uikit/TextField'
 import {Item} from '../../../../../../ts/types/Item'
+import {useAppSelector} from '../../../../../../hooks/store/useAppSelector';
 
 const items: Item[] = [
   {
@@ -27,10 +28,12 @@ const ScreenSettings: FC = () => {
     if (Number(value)) setFrequency(value)
   }
 
+  const userId = useAppSelector(state => state.user._id)
+
   return (
     <Layout className={cl.wrapper} direction={'column'}>
       <Layout flex={3} className={cl.video}>
-        <CheckingConnection />
+        <CheckingConnection userId={userId} examId={'loopback'}/>
       </Layout>
       <Layout flex={2}>
         <Select

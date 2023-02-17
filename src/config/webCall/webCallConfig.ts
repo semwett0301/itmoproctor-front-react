@@ -1,5 +1,3 @@
-import {WebRtcPeer} from 'kurento-utils';
-
 export type WebCallConfig = {
   url: string,
   credential?: string,
@@ -67,7 +65,7 @@ type RegisterMessage = {
 type CallMessage = {
   id: SendMessageType.CALL,
   from: string,
-  to: WebRtcPeer,
+  to: string,
   sdpOffer: string
 }
 

@@ -69,6 +69,7 @@ const AuthPage: FC = () => {
                   {t('unauthorized.auth.login')}
                 </Text>
                 <Controller
+
                   rules={{ required: 'Заполните поле' }}
                   control={control}
                   name={'login'}
