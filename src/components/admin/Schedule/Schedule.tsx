@@ -24,6 +24,7 @@ import AddEditSchedule from '../modals/AddEditSchedule/AddEditSchedule'
 import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
 import { adminButtonChecker } from '../../../utils/admin/adminButtonChecker'
 import { addNotification } from '../../shared/NotificationList/NotificationList'
+import DeleteOrDivideSubmit from '../modals/DeleteOrDivideSubmit/DeleteOrDivideSubmit'
 
 // DEFAULT FUNCTIONS
 // const deleteSelected = async (selected: string[]): Promise<AxiosResponse[]> =>
@@ -94,12 +95,19 @@ const Schedule: FC = () => {
                         iconLeft: IconTrash,
                         onClick: () =>
                           openModal(
-                            <DeleteSubmit
+                            <DeleteOrDivideSubmit
                               onSubmit={() => {
                                 request.schedule
                                   .deleteSchedule(item._id)
-                                  .then(closeModal)
                                   .then(update)
+                                  .then(closeModal)
+                                  .catch(createDeleteProblemNotification)
+                              }}
+                              onDivide={() => {
+                                request.schedule
+                                  .deleteSchedule(item._id, false)
+                                  .then(update)
+                                  .then(closeModal)
                                   .catch(createDeleteProblemNotification)
                               }}
                               onCancel={() => closeModal()}
@@ -163,11 +171,20 @@ const Schedule: FC = () => {
                       {
                         label: 'Удалить', iconLeft: IconTrash, onClick: () => {
                           openModal(
-                            <DeleteSubmit
+                            <DeleteOrDivideSubmit
                               onSubmit={() => {
                                 rows.filter(row => selectedRowsId.includes(row.id)).forEach(row => {
                                   request.schedule
                                     .deleteSchedule(row.id)
+                                    .then(update)
+                                    .then(closeModal)
+                                    .catch(createDeleteProblemNotification)
+                                })
+                              }}
+                              onDivide={() => {
+                                rows.filter(row => selectedRowsId.includes(row.id)).forEach(row => {
+                                  request.schedule
+                                    .deleteSchedule(row.id, false)
                                     .then(update)
                                     .then(closeModal)
                                     .catch(createDeleteProblemNotification)

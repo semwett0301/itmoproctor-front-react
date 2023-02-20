@@ -1,0 +1,24 @@
+.wrapper {
+  display: inline-flex;
+  flex-direction: column;
+  max-width: 411px;
+
+  .buttonWrapper {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+
+    .buttonBlock {
+      width: 92%;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+
+  .alert {
+    margin: 0;
+    padding: 0;
+  }
+}

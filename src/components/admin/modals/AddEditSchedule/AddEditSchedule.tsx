@@ -322,13 +322,6 @@ const AddEditSchedule: FC<IAddEditScheduleProp> = ({ scheduleId, onSubmit }) => 
               className={cnMixSpace({ pH: 'm', mB: 's' })}
             >
               <Button
-                label={'ghfhj'}
-                iconLeft={IconCheck}
-                size={'s'}
-                onClick={() => resetField('inspector')}
-              />
-
-              <Button
                 type={'submit'}
                 label={'Сохранить'}
                 iconLeft={IconCheck}
