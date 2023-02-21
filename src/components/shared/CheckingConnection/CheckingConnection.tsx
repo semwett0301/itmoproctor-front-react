@@ -1,21 +1,22 @@
-import {Button} from '@consta/uikit/Button'
-import {Text} from '@consta/uikit/Text'
-import React, {FC, useEffect, useRef, useState} from 'react'
-import {IconPlay} from '@consta/icons/IconPlay'
+import { Button } from '@consta/uikit/Button'
+import { Text, TextPropView } from '@consta/uikit/Text'
+import React, { FC, useEffect, useMemo, useRef, useState } from 'react'
+import { IconPlay } from '@consta/icons/IconPlay'
 import cl from './CheckingConnection.module.scss'
 import Draggable from 'react-draggable'
-import {IconPause} from '@consta/icons/IconPause';
-import {useDeviceSettings} from '../../../hooks/shared/webRtc/useDeviceSettings';
-import {classJoiner} from '../../../utils/common/styleClassesUtills';
-import {useWebRtc} from '../../../hooks/shared/webRtc/useWebRtc';
-import StandardPlayer from '../players/StandardPlayer/StandardPlayer';
+import { IconPause } from '@consta/icons/IconPause'
+import { useDeviceSettings } from '../../../hooks/shared/webRtc/useDeviceSettings'
+import { classJoiner } from '../../../utils/common/styleClassesUtills'
+import { useWebRtc } from '../../../hooks/shared/webRtc/useWebRtc'
+import StandardPlayer from '../players/StandardPlayer/StandardPlayer'
+import { CallState } from '../../../config/webCall/webCallConfig'
 
 type CheckingConnectionProps = {
   userId: string,
   examId: string
 }
 
-const CheckingConnection: FC<CheckingConnectionProps> = ({userId, examId}) => {
+const CheckingConnection: FC<CheckingConnectionProps> = ({ userId, examId }) => {
   const videoRef = useRef<HTMLDivElement | null>(null)
 
   const [leftBound, setLeftBound] = useState<number>(0)
@@ -30,7 +31,7 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({userId, examId}) => {
     currentResolution
   } = useDeviceSettings()
 
-  const {call, stop, input, output} = useWebRtc(userId, {
+  const { call, stop, input, output, callState } = useWebRtc(userId, {
     cameraId: currentCamera?.device.deviceId,
     microId: currentInputAudio?.device.deviceId,
     maxWidth: currentResolution.width,
@@ -38,6 +39,22 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({userId, examId}) => {
     maxFrameRate: currentFrequency,
     minFrameRate: 1
   })
+
+  const status = useMemo<{
+    text: string,
+    view: TextPropView
+  } | null>(() => {
+    if (callState.current) {
+      return {
+        text: callState.current === CallState.PROCESSING_CALL ? 'Установка соединения' :
+          callState.current === CallState.IN_CALL ? 'Соединение установлено' :
+            callState.current === CallState.NO_CALL ? 'Текст ошибки' : '',
+        view: callState.current === CallState.IN_CALL ? 'success' :
+          callState.current === CallState.PROCESSING_CALL ? 'warning' : 'alert'
+      }
+    }
+    return null
+  }, [callState.current])
 
   useEffect(() => {
     if (videoRef.current?.offsetWidth && videoRef.current?.offsetHeight) {
@@ -56,6 +73,8 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({userId, examId}) => {
     }
   }, [isCheckingStart])
 
+  console.log(callState.current)
+
   return (
     <div className={cl.wrapper}>
       <div ref={videoRef} className={cl.video}>
@@ -71,14 +90,14 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({userId, examId}) => {
           <div className={classJoiner(cl.extraFrame, !isCheckingStart ? cl.extraFrameDisabled : '')}>
             {
               isCheckingStart &&
-                <StandardPlayer videoRef={input} muted={true} wait={false}/>
+              <StandardPlayer videoRef={input} muted={true} wait={false} />
             }
           </div>
         </Draggable>
         <div className={cl.mainFrame}>
           {
             isCheckingStart ?
-              <StandardPlayer videoRef={output} muted={false} wait={false}/>
+              <StandardPlayer videoRef={output} muted={false} wait={false} />
               :
               <div className={cl.emptyMainFrame}>
                 <div>
@@ -96,10 +115,12 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({userId, examId}) => {
                 iconLeft={isCheckingStart ? IconPause : IconPlay} view={'secondary'} size={'s'}
                 onClick={() => {
                   setIsCheckingStart(!isCheckingStart)
-                }}/>
-        <Text as={'div'} size={'s'} view={'warning'}>
-          Установка соединения
+                }} />
+        <Text as={'div'} size={'s'}
+              view={status?.view}>
+          {status?.text}
         </Text>
+        {callState.current}
       </div>
     </div>
   )
