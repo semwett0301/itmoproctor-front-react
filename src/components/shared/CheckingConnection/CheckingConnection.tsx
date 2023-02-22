@@ -10,6 +10,8 @@ import { classJoiner } from '../../../utils/common/styleClassesUtills'
 import { useWebRtc } from '../../../hooks/shared/webRtc/useWebRtc'
 import StandardPlayer from '../players/StandardPlayer/StandardPlayer'
 import { CallState } from '../../../config/webCall/webCallConfig'
+import { IconSound } from '../../../customIcons/IconSound/IconSound'
+import { IconSoundOff } from '../../../customIcons/IconSoundOff/IconSoundOff'
 
 type CheckingConnectionProps = {
   userId: string,
@@ -21,6 +23,7 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({ userId, examId }) => 
 
   const [leftBound, setLeftBound] = useState<number>(0)
   const [bottomBound, setBottomBound] = useState<number>(0)
+  const [muted, setMuted] = useState<boolean>(false)
 
   const [isCheckingStart, setIsCheckingStart] = useState<boolean | null>(null)
 
@@ -31,7 +34,7 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({ userId, examId }) => 
     currentResolution
   } = useDeviceSettings()
 
-  const { call, stop, input, output, callState } = useWebRtc(userId, {
+  const { call, stop, input, output } = useWebRtc(userId, {
     cameraId: currentCamera?.device.deviceId,
     microId: currentInputAudio?.device.deviceId,
     maxWidth: currentResolution.width,
@@ -40,21 +43,21 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({ userId, examId }) => 
     minFrameRate: 1
   })
 
-  const status = useMemo<{
-    text: string,
-    view: TextPropView
-  } | null>(() => {
-    if (callState.current) {
-      return {
-        text: callState.current === CallState.PROCESSING_CALL ? 'Установка соединения' :
-          callState.current === CallState.IN_CALL ? 'Соединение установлено' :
-            callState.current === CallState.NO_CALL ? 'Текст ошибки' : '',
-        view: callState.current === CallState.IN_CALL ? 'success' :
-          callState.current === CallState.PROCESSING_CALL ? 'warning' : 'alert'
-      }
-    }
-    return null
-  }, [callState.current])
+  // const status = useMemo<{
+  //   text: string,
+  //   view: TextPropView
+  // } | null>(() => {
+  //   if (callState.current) {
+  //     return {
+  //       text: callState.current === CallState.PROCESSING_CALL ? 'Установка соединения' :
+  //         callState.current === CallState.IN_CALL ? 'Соединение установлено' :
+  //           callState.current === CallState.NO_CALL ? 'Текст ошибки' : '',
+  //       view: callState.current === CallState.IN_CALL ? 'success' :
+  //         callState.current === CallState.PROCESSING_CALL ? 'warning' : 'alert'
+  //     }
+  //   }
+  //   return null
+  // }, [callState.current])
 
   useEffect(() => {
     if (videoRef.current?.offsetWidth && videoRef.current?.offsetHeight) {
@@ -73,7 +76,7 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({ userId, examId }) => 
     }
   }, [isCheckingStart])
 
-  console.log(callState.current)
+  // console.log(callState.current)
 
   return (
     <div className={cl.wrapper}>
@@ -97,7 +100,7 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({ userId, examId }) => 
         <div className={cl.mainFrame}>
           {
             isCheckingStart ?
-              <StandardPlayer videoRef={output} muted={false} wait={false} />
+              <StandardPlayer videoRef={output} muted={muted} wait={false} />
               :
               <div className={cl.emptyMainFrame}>
                 <div>
@@ -111,16 +114,22 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({ userId, examId }) => 
         </div>
       </div>
       <div className={cl.downPanel}>
-        <Button label={isCheckingStart ? 'Остановить' : 'Запустить'} disabled={!currentCamera || !currentInputAudio}
-                iconLeft={isCheckingStart ? IconPause : IconPlay} view={'secondary'} size={'s'}
-                onClick={() => {
-                  setIsCheckingStart(!isCheckingStart)
-                }} />
-        <Text as={'div'} size={'s'}
-              view={status?.view}>
-          {status?.text}
-        </Text>
-        {callState.current}
+        <div>
+          <Button label={isCheckingStart ? 'Остановить' : 'Запустить'} disabled={!currentCamera || !currentInputAudio}
+                  iconLeft={isCheckingStart ? IconPause : IconPlay} view={'secondary'} size={'s'} iconSize={'s'}
+                  onClick={() => {
+                    setIsCheckingStart(!isCheckingStart)
+                  }} />
+          <Button className={cl.soundButton} view={'secondary'} iconSize={'s'} size={'s'}
+                  iconLeft={muted ? IconSoundOff : IconSound}
+                  onClick={() => {
+                    setMuted(!muted)
+                  }} />
+        </div>
+        {/* <Text as={'div'} size={'s'}*/}
+        {/*      view={status?.view}>*/}
+        {/*  {status?.text}*/}
+        {/* </Text>*/}
       </div>
     </div>
   )

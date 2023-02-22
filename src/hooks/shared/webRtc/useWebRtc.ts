@@ -57,12 +57,11 @@ export function useWebRtc(userId: string, constrains: {
   output: MutableRefObject<HTMLVideoElement | null>
   call: (receiver: string) => void
   stop: () => void
-  callState: MutableRefObject<CallState | null>
 } {
   const socket = useRef<Socket | null>(null)
 
   const registerState = useRef<RegisterState>(RegisterState.NOT_REGISTERED)
-  const callState = useRef<CallState | null>(null)
+  const callState = useRef<CallState>(CallState.NO_CALL)
 
   const receiver = useRef<string>('')
   const peer = useRef<WebRtcPeer | null>(null)
@@ -121,10 +120,8 @@ export function useWebRtc(userId: string, constrains: {
 
   const stop = useCallback<(flag: boolean) => void>((flag) => {
     callState.current = CallState.NO_CALL
-    if (peer.current) {
-      peer.current.dispose()
-      peer.current = null
-    }
+    peer.current?.dispose()
+    peer.current = null
     sendMessage({
       id: SendMessageType.STOP,
       unregister: flag
@@ -140,7 +137,7 @@ export function useWebRtc(userId: string, constrains: {
 
   const incomingCall = useCallback<(message: WebCallGetMessage) => void>(message => {
     // If busy, just reject without disturbing the user
-    if (callState.current != CallState.NO_CALL || callState.current != null) {
+    if (callState.current != CallState.NO_CALL) {
       sendMessage({
         id: SendMessageType.INCOMING_CALL_RESPONSE,
         from: message.from ?? '',
@@ -195,7 +192,7 @@ export function useWebRtc(userId: string, constrains: {
       if (error) {
         onError(error)
       } else {
-        if (callState.current === CallState.NO_CALL || callState.current === null) {
+        if (callState.current == CallState.NO_CALL) {
           peer.current?.dispose()
         } else {
           sendMessage({
@@ -208,7 +205,7 @@ export function useWebRtc(userId: string, constrains: {
       }
     }
 
-    if (callState.current === CallState.NO_CALL || callState.current === null) {
+    if (callState.current === CallState.NO_CALL) {
       if (input.current || output.current) {
         receiver.current = currentReceiver
         callState.current = CallState.PROCESSING_CALL
@@ -287,15 +284,16 @@ export function useWebRtc(userId: string, constrains: {
     })
 
     return () => {
-      stop(true)
       socket.current && socket.current.disconnect()
+      console.log("DEMOUNTING")
+      stop(true)
     }
   }, [])
 
   return {
     input, output, call, stop: () => {
+      console.log("OUT_STOP")
       stop(false)
-    },
-    callState
+    }
   }
 }
