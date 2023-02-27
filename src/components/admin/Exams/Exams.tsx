@@ -1,5 +1,3 @@
-// noinspection DuplicatedCode
-
 import React, { FC, useEffect, useState } from 'react'
 import cl from './Exams.module.scss'
 import { useOpenTab } from '../Admin'
@@ -48,6 +46,9 @@ import { examsColumn, IExamsTableModel } from './examsTableModel'
 import { adminButtonChecker } from '../../../utils/admin/adminButtonChecker'
 import { deleteSelected } from '../../../utils/admin/deleteSelected'
 import { useAppSelector } from '../../../hooks/store/useAppSelector'
+import downloadExams from '../../../utils/admin/exams/downloadExams'
+import { useTranslation } from 'react-i18next'
+import { IExam } from '../../../ts/interfaces/IExam'
 
 const Exams: FC = () => {
   const { openTab } = useOpenTab()
@@ -55,6 +56,8 @@ const Exams: FC = () => {
   const [organizationsIds, setOrganizationsIds] = useState<string[]>([])
 
   const system = useAppSelector<boolean>((state) => state.user.system ?? false)
+
+  const { t } = useTranslation('translation', { keyPrefix: 'shared' })
 
   // const [sortSetting, setSortSetting] = useState<SortByProps<IExamsTableModel> | null>(null)
 
@@ -354,7 +357,10 @@ const Exams: FC = () => {
                         {
                           label: 'Скачать (csv)',
                           iconLeft: IconDocExport,
-                          disabled: true
+                          onClick: async () => {
+                            const exams = await request.exam.getListOfExams().then(r => r.data.rows) as IExam[]
+                            downloadExams(exams, t)
+                          }
                         },
                         {
                           label: 'Импорт',

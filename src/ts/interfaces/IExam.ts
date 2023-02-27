@@ -63,10 +63,9 @@ export interface IReport {
   }
 }
 export interface IExam {
-  name?: string
-
-  examCode: string
   _id: string
+  examCode: string
+  name?: string
   examId: string
   organization: IOrganization
   course?: ICourse
