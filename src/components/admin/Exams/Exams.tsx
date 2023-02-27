@@ -358,7 +358,16 @@ const Exams: FC = () => {
                           label: 'Скачать (csv)',
                           iconLeft: IconDocExport,
                           onClick: async () => {
-                            const exams = await request.exam.getListOfExams().then(r => r.data.rows) as IExam[]
+                            const exams = await request.exam.getListOfExams({
+                              from: filter.date[0].toISOString(),
+                              to: filter.date[1].toISOString(),
+                              text: filter.searchQuery,
+                              status: statusFormat(filter.status),
+                              reset: resetFormat(filter.status),
+                              organization: organizationsFormat(filter.organizations),
+                              myStudents: false,
+                              async: filter.type ? filter.type.flag : null,
+                            }).then(r => r.data.rows) as IExam[]
                             downloadExams(exams, t)
                           }
                         },

@@ -16,8 +16,8 @@ export interface filterInterface {
   organization: string | null
   myStudents: boolean
   async: boolean | null
-  page: number
-  rows: number
+  page?: number
+  rows?: number
 }
 
 export interface IUserFilter {
