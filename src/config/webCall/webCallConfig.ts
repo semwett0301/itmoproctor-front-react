@@ -89,6 +89,46 @@ type StopMessage = {
 
 export type WebCallSendMessage = RegisterMessage | CallMessage | OnIceCandidateMessage | StopMessage | IncomingCallResponseMessage
 
+export enum CallError {
+  InvalidStateError = 'InvalidStateError: Failed to execute \'addStream\' on \'RTCPeerConnection\': The RTCPeerConnection\'s signalingState is \'closed\'.',
+  NotAllowedError= 'NotAllowedError',
+  NotAllowedErrorState = 'NotAllowedError: Invalid state',
+  NotAllowedErrorPermission = 'NotAllowedError: Permission denied',
+  NotAllowedErrorPermissionSystem = 'NotAllowedError: Permission denied by system',
+  NotAllowedErrorRequest = 'NotAllowedError: The request is not allowed by the user agent or the platform in the current context.',
+  NotFoundError = 'NotFoundError',
+  NotFoundErrorDevice = 'NotFoundError: Requested device not found',
+  NotFoundErrorObjectNotFound = 'NotFoundError: The object can not be found here.',
+  NotReadableError = 'NotReadableError',
+  NotReadableErrorStartVideo = 'NotReadableError: Could not start video source',
+  NotReadableErrorAllocateVideo = 'NotReadableError: Failed to allocate videosource',
+  OverconstrainedError = 'OverconstrainedError',
+  TypeError = 'TypeError: Failed to execute \'getUserMedia\' on \'MediaDevices\': At least one of audio and video must be requested',
+  Default = 'Default'
+}
+
+const baseErrorPath = 'shared.settings.errors'
+
+export const callErrorToMessageConfig: {
+  [key in CallError]: string
+} = {
+  [CallError.InvalidStateError]: `${baseErrorPath}.InvalidStateError`,
+  [CallError.NotAllowedError]: `${baseErrorPath}.NotAllowedError`,
+  [CallError.NotAllowedErrorState]: `${baseErrorPath}.NotAllowedErrorState`,
+  [CallError.NotAllowedErrorPermission]: `${baseErrorPath}.NotAllowedErrorPermission`,
+  [CallError.NotAllowedErrorPermissionSystem]: `${baseErrorPath}.NotAllowedErrorPermissionSystem`,
+  [CallError.NotAllowedErrorRequest]: `${baseErrorPath}.NotAllowedErrorRequest`,
+  [CallError.NotFoundError]: `${baseErrorPath}.NotFoundError`,
+  [CallError.NotFoundErrorDevice]: `${baseErrorPath}.NotFoundErrorDevice`,
+  [CallError.NotFoundErrorObjectNotFound]: `${baseErrorPath}.NotFoundErrorObjectNotFound`,
+  [CallError.NotReadableError]: `${baseErrorPath}.NotReadableError`,
+  [CallError.NotReadableErrorStartVideo]: `${baseErrorPath}.NotReadableErrorStartVideo`,
+  [CallError.NotReadableErrorAllocateVideo]: `${baseErrorPath}.NotReadableErrorAllocateVideo`,
+  [CallError.OverconstrainedError]: `${baseErrorPath}.OverconstrainedError`,
+  [CallError.TypeError]: `${baseErrorPath}.TypeError`,
+  [CallError.Default]: `${baseErrorPath}.Default`,
+}
+
 // REGISTER_RESPONSE -- вебсокет зарегистрирован (или нет)
 // CALL_RESPONSE -- звонок другим клиентом принят (или нет)
 // INCOMING_CALL -- пришел звонок

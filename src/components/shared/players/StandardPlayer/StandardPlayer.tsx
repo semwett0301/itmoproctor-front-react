@@ -7,14 +7,16 @@ type StandardPlayerProps = {
   wait: boolean,
   muted: boolean,
   videoRef: MutableRefObject<HTMLVideoElement | null>
+  onLoadedMetadata?:  React.ReactEventHandler<HTMLVideoElement>
 }
 
-const StandardPlayer: FC<StandardPlayerProps> = ({wait, muted, videoRef}) => {
+const StandardPlayer: FC<StandardPlayerProps> = ({wait, muted, videoRef, onLoadedMetadata}) => {
   return (
     <div className={cl.wrapper}>
       <video
         ref={videoRef}
         className={classJoiner(cl.video, wait ? cl.disable_video : '')}
+        onLoadedMetadata={onLoadedMetadata}
         autoPlay
         playsInline
         muted={muted}

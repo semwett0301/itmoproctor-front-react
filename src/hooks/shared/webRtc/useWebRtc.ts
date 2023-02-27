@@ -1,5 +1,7 @@
 import {MutableRefObject, useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {
+  CallError,
+  callErrorToMessageConfig,
   CallState,
   GetMessageType,
   iceServers,
@@ -13,6 +15,7 @@ import {WebRtcPeer} from 'kurento-utils'
 import socketConfig from '../../../config/api/socketConfig'
 import {io, Socket} from 'socket.io-client'
 import {TextPropView} from '@consta/uikit/Text';
+import {useTranslation} from 'react-i18next';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const kurentoUtils = require('../../../kurentoUtils/kurento-utils')
@@ -54,6 +57,7 @@ type CallStatusDescription = {
 export function useWebRtc(userId: string, constrains: {
   cameraId?: string,
   microId?: string,
+  videoWaiting?: boolean,
   maxWidth: number,
   maxHeight: number,
   maxFrameRate: number,
@@ -76,12 +80,15 @@ export function useWebRtc(userId: string, constrains: {
     view: 'warning',
     text: ''
   })
+  const errorMessage = useRef<string | null>(null)
 
   const receiver = useRef<string>('')
   const peer = useRef<WebRtcPeer | null>(null)
 
   const input = useRef<HTMLVideoElement | null>(null)
   const output = useRef<HTMLVideoElement | null>(null)
+
+  const {t} = useTranslation()
 
   const sendMessage = useCallback<(message: WebCallSendMessage) => void>(message => {
     if (socket.current) {
@@ -134,10 +141,7 @@ export function useWebRtc(userId: string, constrains: {
 
   const stop = useCallback<(flag: boolean) => void>((flag) => {
     callState.current = CallState.NO_CALL
-    setStatusCallState(null)
-    setCallStatusDescription({
-      text: ''
-    })
+    errorMessage.current ? setStatusCallState(CallState.NO_CALL) : setStatusCallState(null)
 
     peer.current?.dispose()
     peer.current = null
@@ -150,6 +154,7 @@ export function useWebRtc(userId: string, constrains: {
   const onError = useCallback<(error?: string) => void>(error => {
     if (error) {
       console.error(error)
+      errorMessage.current = error
       stop(false)
     }
   }, [stop])
@@ -166,6 +171,7 @@ export function useWebRtc(userId: string, constrains: {
     } else {
       callState.current = CallState.PROCESSING_CALL
       setStatusCallState(CallState.PROCESSING_CALL)
+      errorMessage.current = null
 
       peer.current = kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv(getOptions(),
         function (error: string | undefined) {
@@ -194,6 +200,7 @@ export function useWebRtc(userId: string, constrains: {
     if (peer.current) {
       callState.current = CallState.IN_CALL
       setStatusCallState(CallState.IN_CALL)
+      errorMessage.current = null
       message.sdpAnswer ? peer.current.processAnswer(message.sdpAnswer) : console.error('Empty sdp answer')
     }
   }, [])
@@ -231,6 +238,7 @@ export function useWebRtc(userId: string, constrains: {
         receiver.current = currentReceiver
         callState.current = CallState.PROCESSING_CALL
         setStatusCallState(CallState.PROCESSING_CALL)
+        errorMessage.current = null
 
         if (input.current && output.current) {
           peer.current = kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv(getOptions(), function (currentError: string | undefined) {
@@ -321,7 +329,7 @@ export function useWebRtc(userId: string, constrains: {
         })
         break
       case CallState.IN_CALL:
-        setCallStatusDescription({
+        constrains.videoWaiting === undefined || constrains.videoWaiting && setCallStatusDescription({
           view: 'success',
           text: 'Соединение установлено'
         })
@@ -329,15 +337,20 @@ export function useWebRtc(userId: string, constrains: {
       case CallState.NO_CALL:
         setCallStatusDescription({
           view: 'alert',
-          text: 'PROBLEMA SUKA'
+          text: t(`${errorMessage.current ? 
+            callErrorToMessageConfig[errorMessage.current as CallError] !== undefined ? 
+              callErrorToMessageConfig[errorMessage.current as CallError] : 
+              callErrorToMessageConfig[CallError.Default] 
+            : ''}`)
         })
+        errorMessage.current = null
         break
       case null:
         setCallStatusDescription({
           text: ''
         })
     }
-  }, [statusCallState])
+  }, [constrains.videoWaiting, statusCallState])
 
   return {
     input, output, call, stop: () => {

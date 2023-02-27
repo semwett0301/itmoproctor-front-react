@@ -18,13 +18,17 @@ type CheckingConnectionProps = {
   examId: string
 }
 
-const CheckingConnection: FC<CheckingConnectionProps> = ({ userId, examId }) => {
+const CheckingConnection: FC<CheckingConnectionProps> = ({userId, examId}) => {
   const videoRef = useRef<HTMLDivElement | null>(null)
 
   const [leftBound, setLeftBound] = useState<number>(0)
   const [bottomBound, setBottomBound] = useState<number>(0)
 
   const [isCheckingStart, setIsCheckingStart] = useState<boolean | null>(null)
+
+  const [mainWait, setMainWait] = useState<boolean>(true)
+  const [extraWait, setExtraWait] = useState<boolean>(true)
+
 
   const {
     currentCamera,
@@ -35,18 +39,15 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({ userId, examId }) => 
     updateMuted
   } = useDeviceSettings()
 
-  const { call, stop, input, output, statusCallState, callStatusDescription } = useWebRtc(userId, {
+  const {call, stop, input, output, statusCallState, callStatusDescription} = useWebRtc(userId, {
     cameraId: currentCamera?.device.deviceId,
     microId: currentInputAudio?.device.deviceId,
     maxWidth: currentResolution.width,
     maxHeight: currentResolution.height,
     maxFrameRate: currentFrequency,
-    minFrameRate: 1
+    minFrameRate: 1,
+    videoWaiting: !(mainWait || extraWait)
   })
-
-  useEffect(() => {
-    console.log(statusCallState);
-  }, [statusCallState])
 
   // const status = useMemo<{
   //   text: string,
@@ -65,6 +66,12 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({ userId, examId }) => 
   // }, [callState.current])
 
   useEffect(() => {
+    if (statusCallState === CallState.NO_CALL) {
+      setIsCheckingStart(null)
+    }
+  }, [statusCallState])
+
+  useEffect(() => {
     if (videoRef.current?.offsetWidth && videoRef.current?.offsetHeight) {
       setLeftBound((-videoRef.current.offsetWidth * 2) / 3 + 8)
       setBottomBound((videoRef.current.offsetHeight * 2) / 3 + 8)
@@ -73,6 +80,8 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({ userId, examId }) => 
 
   useEffect(() => {
     if (isCheckingStart !== null) {
+      setMainWait(true)
+      setExtraWait(true)
       if (isCheckingStart) {
         call(userId)
       } else {
@@ -98,14 +107,20 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({ userId, examId }) => 
           <div className={classJoiner(cl.extraFrame, !isCheckingStart ? cl.extraFrameDisabled : '')}>
             {
               isCheckingStart &&
-              <StandardPlayer videoRef={input} muted={true} wait={statusCallState !== CallState.IN_CALL} />
+                <StandardPlayer videoRef={input} muted={true} wait={extraWait} onLoadedMetadata={() => {
+                  setExtraWait(false)
+                }
+                }/>
             }
           </div>
         </Draggable>
         <div className={cl.mainFrame}>
           {
             isCheckingStart ?
-              <StandardPlayer videoRef={output} muted={currentMuted} wait={statusCallState !== CallState.IN_CALL} />
+              <StandardPlayer videoRef={output} muted={currentMuted} wait={mainWait} onLoadedMetadata={() => {
+                setMainWait(false)
+              }
+              }/>
               :
               <div className={cl.emptyMainFrame}>
                 <div>
@@ -124,16 +139,18 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({ userId, examId }) => 
                   iconLeft={isCheckingStart ? IconPause : IconPlay} view={'secondary'} size={'s'} iconSize={'s'}
                   onClick={() => {
                     setIsCheckingStart(!isCheckingStart)
-                  }} />
+                  }}/>
           <Button className={cl.soundButton} view={'secondary'} iconSize={'s'} size={'s'}
+                  disabled={!currentCamera || !currentInputAudio}
                   iconLeft={currentMuted ? IconSoundOff : IconSound}
                   onClick={() => {
                     updateMuted(!currentMuted)
-                  }} />
+                  }}/>
         </div>
         <Text as={'div'} size={'s'}
-             view={callStatusDescription.view}>
-         {callStatusDescription.text}
+              view={callStatusDescription.view}
+              className={cl.status}>
+          {callStatusDescription.text}
         </Text>
       </div>
     </div>
