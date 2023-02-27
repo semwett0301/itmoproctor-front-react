@@ -6,7 +6,7 @@ import {useCallback, useEffect} from 'react';
 import {
   setCameraInDeviceSettings,
   setFrequencyInDeviceSettings,
-  setInputAudioInDeviceSettings,
+  setInputAudioInDeviceSettings, setMutedInDeviceSettings,
   setResolutionInDeviceSettings
 } from '../../../store/reducers/deviceSettings/deviceSettingsActionCreators';
 import {useDevices} from './useDevices';
@@ -16,11 +16,13 @@ export function useDeviceSettings(): {
   currentInputAudio: IDeviceItem | null
   currentResolution: IResolutionItem
   currentFrequency: number
+  currentMuted: boolean
 
   updateCurrentCamera: (inputAudio: IDeviceItem | null) => void
   updateCurrentInputAudio: (inputAudio: IDeviceItem | null) => void
   updateResolution: (resolution: IResolutionItem) => void
   updateFrequency: (frequency: number) => void
+  updateMuted: (muted: boolean) => void
 } {
   const dispatch = useAppDispatch()
 
@@ -28,6 +30,7 @@ export function useDeviceSettings(): {
   const currentInputAudio: IDeviceItem | null = useAppSelector(state => state.deviceSettings.inputAudio)
   const currentResolution: IResolutionItem = useAppSelector(state => state.deviceSettings.resolution)
   const currentFrequency: number = useAppSelector(state => state.deviceSettings.frequency)
+  const currentMuted: boolean = useAppSelector(state => state.deviceSettings.muted)
 
   const updateCurrentCamera = useCallback((camera: IDeviceItem | null) => {
     dispatch(setCameraInDeviceSettings(camera))
@@ -43,6 +46,10 @@ export function useDeviceSettings(): {
 
   const updateFrequency = useCallback((frequency: number) => {
     dispatch(setFrequencyInDeviceSettings(frequency))
+  }, [])
+
+  const updateMuted = useCallback((muted: boolean) => {
+    dispatch(setMutedInDeviceSettings(muted))
   }, [])
 
   const {waitDevices, videoDevices, inputAudioDevices} = useDevices()
@@ -64,9 +71,11 @@ export function useDeviceSettings(): {
     currentInputAudio,
     currentResolution,
     currentFrequency,
+    currentMuted,
     updateCurrentCamera,
     updateResolution,
     updateCurrentInputAudio,
-    updateFrequency
+    updateFrequency,
+    updateMuted
   }
 }

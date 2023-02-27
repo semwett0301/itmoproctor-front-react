@@ -1,4 +1,4 @@
-import { MutableRefObject, useCallback, useEffect, useMemo, useRef } from 'react'
+import {MutableRefObject, useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {
   CallState,
   GetMessageType,
@@ -9,9 +9,10 @@ import {
   WebCallGetMessage,
   WebCallSendMessage
 } from '../../../config/webCall/webCallConfig'
-import { WebRtcPeer } from 'kurento-utils'
+import {WebRtcPeer} from 'kurento-utils'
 import socketConfig from '../../../config/api/socketConfig'
-import { io, Socket } from 'socket.io-client'
+import {io, Socket} from 'socket.io-client'
+import {TextPropView} from '@consta/uikit/Text';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const kurentoUtils = require('../../../kurentoUtils/kurento-utils')
@@ -45,6 +46,11 @@ type Options = {
   }
 }
 
+type CallStatusDescription = {
+  view?: TextPropView,
+  text: string
+}
+
 export function useWebRtc(userId: string, constrains: {
   cameraId?: string,
   microId?: string,
@@ -57,11 +63,19 @@ export function useWebRtc(userId: string, constrains: {
   output: MutableRefObject<HTMLVideoElement | null>
   call: (receiver: string) => void
   stop: () => void
+  statusCallState: CallState | null
+  callStatusDescription: CallStatusDescription
 } {
   const socket = useRef<Socket | null>(null)
 
   const registerState = useRef<RegisterState>(RegisterState.NOT_REGISTERED)
   const callState = useRef<CallState>(CallState.NO_CALL)
+
+  const [statusCallState, setStatusCallState] = useState<CallState | null>(null)
+  const [callStatusDescription, setCallStatusDescription] = useState<CallStatusDescription>({
+    view: 'warning',
+    text: ''
+  })
 
   const receiver = useRef<string>('')
   const peer = useRef<WebRtcPeer | null>(null)
@@ -120,6 +134,11 @@ export function useWebRtc(userId: string, constrains: {
 
   const stop = useCallback<(flag: boolean) => void>((flag) => {
     callState.current = CallState.NO_CALL
+    setStatusCallState(null)
+    setCallStatusDescription({
+      text: ''
+    })
+
     peer.current?.dispose()
     peer.current = null
     sendMessage({
@@ -146,13 +165,14 @@ export function useWebRtc(userId: string, constrains: {
       })
     } else {
       callState.current = CallState.PROCESSING_CALL
+      setStatusCallState(CallState.PROCESSING_CALL)
 
       peer.current = kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv(getOptions(),
-        function(error: string | undefined) {
+        function (error: string | undefined) {
           if (error) {
             onError(error)
           } else {
-            peer.current?.generateOffer(function(offerError, sdpOffer) {
+            peer.current?.generateOffer(function (offerError, sdpOffer) {
               if (offerError) {
                 onError(offerError)
               } else {
@@ -173,6 +193,7 @@ export function useWebRtc(userId: string, constrains: {
   const startCommunication = useCallback<(message: WebCallGetMessage) => void>(message => {
     if (peer.current) {
       callState.current = CallState.IN_CALL
+      setStatusCallState(CallState.IN_CALL)
       message.sdpAnswer ? peer.current.processAnswer(message.sdpAnswer) : console.error('Empty sdp answer')
     }
   }, [])
@@ -209,9 +230,10 @@ export function useWebRtc(userId: string, constrains: {
       if (input.current || output.current) {
         receiver.current = currentReceiver
         callState.current = CallState.PROCESSING_CALL
+        setStatusCallState(CallState.PROCESSING_CALL)
 
         if (input.current && output.current) {
-          peer.current = kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv(getOptions(), function(currentError: string | undefined) {
+          peer.current = kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv(getOptions(), function (currentError: string | undefined) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             currentError ? onError(currentError) : this.generateOffer(onOffer)
@@ -266,7 +288,7 @@ export function useWebRtc(userId: string, constrains: {
   useEffect(() => {
     socket.current = io(`${socketConfig.baseUrl}webcall`)
 
-    socket.current.on('connect', function() {
+    socket.current.on('connect', function () {
       if (registerState.current !== RegisterState.IN_PROCESS) {
 
         registerState.current = RegisterState.IN_PROCESS
@@ -285,15 +307,42 @@ export function useWebRtc(userId: string, constrains: {
 
     return () => {
       socket.current && socket.current.disconnect()
-      console.log("DEMOUNTING")
+      console.log('DEMOUNTING')
       stop(true)
     }
   }, [])
 
+  useEffect(() => {
+    switch (statusCallState) {
+      case CallState.PROCESSING_CALL:
+        setCallStatusDescription({
+          view: 'warning',
+          text: 'Установка соединения'
+        })
+        break
+      case CallState.IN_CALL:
+        setCallStatusDescription({
+          view: 'success',
+          text: 'Соединение установлено'
+        })
+        break
+      case CallState.NO_CALL:
+        setCallStatusDescription({
+          view: 'alert',
+          text: 'PROBLEMA SUKA'
+        })
+        break
+      case null:
+        setCallStatusDescription({
+          text: ''
+        })
+    }
+  }, [statusCallState])
+
   return {
     input, output, call, stop: () => {
-      console.log("OUT_STOP")
+      console.log('OUT_STOP')
       stop(false)
-    }
+    }, statusCallState, callStatusDescription
   }
 }

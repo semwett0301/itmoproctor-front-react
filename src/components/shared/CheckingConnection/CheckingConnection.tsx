@@ -1,17 +1,17 @@
-import { Button } from '@consta/uikit/Button'
-import { Text, TextPropView } from '@consta/uikit/Text'
-import React, { FC, useEffect, useMemo, useRef, useState } from 'react'
-import { IconPlay } from '@consta/icons/IconPlay'
+import {Button} from '@consta/uikit/Button'
+import React, {FC, useEffect, useRef, useState} from 'react'
+import {IconPlay} from '@consta/icons/IconPlay'
 import cl from './CheckingConnection.module.scss'
 import Draggable from 'react-draggable'
-import { IconPause } from '@consta/icons/IconPause'
-import { useDeviceSettings } from '../../../hooks/shared/webRtc/useDeviceSettings'
-import { classJoiner } from '../../../utils/common/styleClassesUtills'
-import { useWebRtc } from '../../../hooks/shared/webRtc/useWebRtc'
+import {IconPause} from '@consta/icons/IconPause'
+import {useDeviceSettings} from '../../../hooks/shared/webRtc/useDeviceSettings'
+import {classJoiner} from '../../../utils/common/styleClassesUtills'
+import {useWebRtc} from '../../../hooks/shared/webRtc/useWebRtc'
 import StandardPlayer from '../players/StandardPlayer/StandardPlayer'
-import { CallState } from '../../../config/webCall/webCallConfig'
-import { IconSound } from '../../../customIcons/IconSound/IconSound'
-import { IconSoundOff } from '../../../customIcons/IconSoundOff/IconSoundOff'
+import {IconSound} from '../../../customIcons/IconSound/IconSound'
+import {IconSoundOff} from '../../../customIcons/IconSoundOff/IconSoundOff'
+import {CallState} from '../../../config/webCall/webCallConfig';
+import {Text} from '@consta/uikit/Text';
 
 type CheckingConnectionProps = {
   userId: string,
@@ -23,7 +23,6 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({ userId, examId }) => 
 
   const [leftBound, setLeftBound] = useState<number>(0)
   const [bottomBound, setBottomBound] = useState<number>(0)
-  const [muted, setMuted] = useState<boolean>(false)
 
   const [isCheckingStart, setIsCheckingStart] = useState<boolean | null>(null)
 
@@ -31,10 +30,12 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({ userId, examId }) => 
     currentCamera,
     currentInputAudio,
     currentFrequency,
-    currentResolution
+    currentResolution,
+    currentMuted,
+    updateMuted
   } = useDeviceSettings()
 
-  const { call, stop, input, output } = useWebRtc(userId, {
+  const { call, stop, input, output, statusCallState, callStatusDescription } = useWebRtc(userId, {
     cameraId: currentCamera?.device.deviceId,
     microId: currentInputAudio?.device.deviceId,
     maxWidth: currentResolution.width,
@@ -42,6 +43,10 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({ userId, examId }) => 
     maxFrameRate: currentFrequency,
     minFrameRate: 1
   })
+
+  useEffect(() => {
+    console.log(statusCallState);
+  }, [statusCallState])
 
   // const status = useMemo<{
   //   text: string,
@@ -93,14 +98,14 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({ userId, examId }) => 
           <div className={classJoiner(cl.extraFrame, !isCheckingStart ? cl.extraFrameDisabled : '')}>
             {
               isCheckingStart &&
-              <StandardPlayer videoRef={input} muted={true} wait={false} />
+              <StandardPlayer videoRef={input} muted={true} wait={statusCallState !== CallState.IN_CALL} />
             }
           </div>
         </Draggable>
         <div className={cl.mainFrame}>
           {
             isCheckingStart ?
-              <StandardPlayer videoRef={output} muted={muted} wait={false} />
+              <StandardPlayer videoRef={output} muted={currentMuted} wait={statusCallState !== CallState.IN_CALL} />
               :
               <div className={cl.emptyMainFrame}>
                 <div>
@@ -121,15 +126,15 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({ userId, examId }) => 
                     setIsCheckingStart(!isCheckingStart)
                   }} />
           <Button className={cl.soundButton} view={'secondary'} iconSize={'s'} size={'s'}
-                  iconLeft={muted ? IconSoundOff : IconSound}
+                  iconLeft={currentMuted ? IconSoundOff : IconSound}
                   onClick={() => {
-                    setMuted(!muted)
+                    updateMuted(!currentMuted)
                   }} />
         </div>
-        {/* <Text as={'div'} size={'s'}*/}
-        {/*      view={status?.view}>*/}
-        {/*  {status?.text}*/}
-        {/* </Text>*/}
+        <Text as={'div'} size={'s'}
+             view={callStatusDescription.view}>
+         {callStatusDescription.text}
+        </Text>
       </div>
     </div>
   )

@@ -8,6 +8,7 @@ type DeviceSettings = {
   inputAudio: IDeviceItem | null,
   resolution: IResolutionItem
   frequency: number
+  muted: boolean
 }
 
 export const defaultResolution = {
@@ -21,10 +22,11 @@ export const defaultDeviceSettings = {
   video: null,
   inputAudio: null,
   resolution: defaultResolution,
-  frequency: 15
+  frequency: 15,
+  muted: false
 }
 
-export const deviceSettingsReducer = (state: DeviceSettings = defaultDeviceSettings, action: IAction<DeviceSettingsActionTypes, IDeviceItem | IResolutionItem | number>): DeviceSettings => {
+export const deviceSettingsReducer = (state: DeviceSettings = defaultDeviceSettings, action: IAction<DeviceSettingsActionTypes, IDeviceItem | IResolutionItem | number | boolean>): DeviceSettings => {
   switch (action.type) {
     case DeviceSettingsActionTypes.SET_CAMERA:
       return {
@@ -45,6 +47,11 @@ export const deviceSettingsReducer = (state: DeviceSettings = defaultDeviceSetti
       return {
         ...state,
         frequency: action.payload as number
+      }
+    case DeviceSettingsActionTypes.SET_MUTED:
+      return {
+        ...state,
+        muted: action.payload as boolean
       }
     default:
       return state

@@ -31,3 +31,10 @@ export function setFrequencyInDeviceSettings(frequency: number): IAction<DeviceS
   }
 }
 
+export function setMutedInDeviceSettings(muted: boolean): IAction<DeviceSettingsActionTypes, boolean> {
+  return {
+    type: DeviceSettingsActionTypes.SET_MUTED,
+    payload: muted
+  }
+}
+
