@@ -43,7 +43,7 @@ const ScreenSettings: FC = () => {
   return (
     <Layout className={cl.wrapper} direction={'column'}>
       <Layout flex={3} className={cl.video}>
-        <CheckingConnection userId={userId} type={'screen'} hasMuted={false}/>
+        <CheckingConnection userId={userId} type={'screen'}/>
       </Layout>
       <Layout flex={2}>
         <Select

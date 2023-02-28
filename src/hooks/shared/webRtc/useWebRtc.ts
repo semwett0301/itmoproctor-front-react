@@ -16,6 +16,7 @@ import socketConfig from '../../../config/api/socketConfig'
 import {io, Socket} from 'socket.io-client'
 import {TextPropView} from '@consta/uikit/Text';
 import {useTranslation} from 'react-i18next';
+import {DeviceMode} from './useDeviceSettings';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const kurentoUtils = require('../../../kurentoUtils/kurento-utils')
@@ -25,7 +26,7 @@ type MediaConstrains = {
     optional: [{
       sourceId?: string
     }]
-  },
+  } | boolean,
   video: {
     mandatory: {
       maxWidth: number,
@@ -36,12 +37,15 @@ type MediaConstrains = {
     optional: [{
       sourceId?: string
     }]
+  } | {
+    displaySurface: 'monitor'
   }
 }
 
 type Options = {
   localVideo: HTMLVideoElement | null,
   remoteVideo: HTMLVideoElement | null,
+  sendSource: DeviceMode,
   onicecandidate: (candidate: RTCIceCandidate) => void,
   mediaConstraints: MediaConstrains,
   configuration: {
@@ -54,7 +58,7 @@ type CallStatusDescription = {
   text: string
 }
 
-export function useWebRtc(userId: string, constrains: {
+export function useWebRtc(userId: string, type: DeviceMode, constrains: {
   maxWidth: number,
   maxHeight: number,
   maxFrameRate: number,
@@ -110,6 +114,7 @@ export function useWebRtc(userId: string, constrains: {
     return {
       localVideo: input.current,
       remoteVideo: output.current,
+      sendSource: type,
       onicecandidate: candidate => {
         sendMessage({
           id: SendMessageType.ON_ICE_CANDIDATE,
@@ -117,12 +122,12 @@ export function useWebRtc(userId: string, constrains: {
         })
       },
       mediaConstraints: {
-        audio: {
+        audio: type === 'webcam' ? {
           optional: [{
             sourceId: constrains.microId
           }]
-        },
-        video: {
+        } : false,
+        video: type === 'webcam' ? {
           mandatory: {
             maxWidth: constrains.maxWidth,
             maxHeight: constrains.maxHeight,
@@ -132,13 +137,15 @@ export function useWebRtc(userId: string, constrains: {
           optional: [{
             sourceId: constrains.cameraId
           }]
+        } : {
+          displaySurface: 'monitor'
         }
       },
       configuration: {
         iceServers: iceServers
       }
     }
-  }, [constrains.cameraId, constrains.maxFrameRate, constrains.maxHeight, constrains.maxWidth, constrains.microId, constrains.minFrameRate, sendMessage])
+  }, [constrains.cameraId, constrains.maxFrameRate, constrains.maxHeight, constrains.maxWidth, constrains.microId, constrains.minFrameRate, sendMessage, type])
 
   const stop = useCallback<(flag: boolean) => void>((flag) => {
     callState.current = CallState.NO_CALL

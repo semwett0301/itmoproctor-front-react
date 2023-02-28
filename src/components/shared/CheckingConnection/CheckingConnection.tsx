@@ -4,7 +4,7 @@ import {IconPlay} from '@consta/icons/IconPlay'
 import cl from './CheckingConnection.module.scss'
 import Draggable from 'react-draggable'
 import {IconPause} from '@consta/icons/IconPause'
-import {useDeviceSettings} from '../../../hooks/shared/webRtc/useDeviceSettings'
+import {DeviceMode, useDeviceSettings} from '../../../hooks/shared/webRtc/useDeviceSettings'
 import {classJoiner} from '../../../utils/common/styleClassesUtills'
 import {useWebRtc} from '../../../hooks/shared/webRtc/useWebRtc'
 import StandardPlayer from '../players/StandardPlayer/StandardPlayer'
@@ -15,11 +15,10 @@ import {Text} from '@consta/uikit/Text';
 
 type CheckingConnectionProps = {
   userId: string,
-  type: 'video' | 'screen'
-  hasMuted: boolean
+  type: DeviceMode
 }
 
-const CheckingConnection: FC<CheckingConnectionProps> = ({userId, type, hasMuted}) => {
+const CheckingConnection: FC<CheckingConnectionProps> = ({userId, type}) => {
   const videoRef = useRef<HTMLDivElement | null>(null)
 
   const [leftBound, setLeftBound] = useState<number>(0)
@@ -35,16 +34,16 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({userId, type, hasMuted
     setExtraWait(true)
   }, [])
 
-  const videoSettings = useDeviceSettings('video')
+  const videoSettings = useDeviceSettings('webcam')
 
   const screenSettings = useDeviceSettings('screen')
 
-  const {call, stop, input, output, statusCallState, callStatusDescription} = useWebRtc(userId, {
-    cameraId: videoSettings.currentCamera?.device.deviceId,
-    microId: videoSettings.currentInputAudio?.device.deviceId,
-    maxWidth: videoSettings.currentResolution.width,
-    maxHeight: videoSettings.currentResolution.height,
-    maxFrameRate: videoSettings.currentFrequency,
+  const {call, stop, input, output, statusCallState, callStatusDescription} = useWebRtc(userId, type,{
+    cameraId: type === 'webcam' ? videoSettings.currentCamera?.device.deviceId : undefined,
+    microId: type === 'webcam' ? videoSettings.currentInputAudio?.device.deviceId : undefined,
+    maxWidth: type === 'webcam' ? videoSettings.currentResolution.width : screenSettings.currentResolution.width,
+    maxHeight: type === 'webcam' ? videoSettings.currentResolution.height : screenSettings.currentResolution.height,
+    maxFrameRate: type === 'webcam' ? videoSettings.currentFrequency : screenSettings.currentFrequency,
     minFrameRate: 1,
     videoWaiting: !(mainWait || extraWait),
     dropWaiting: dropWaiting
@@ -116,7 +115,7 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({userId, type, hasMuted
         <div className={cl.mainFrame}>
           {
             isCheckingStart ?
-              <StandardPlayer videoRef={output} muted={videoSettings.currentMuted} wait={mainWait} onLoadedMetadata={() => {
+              <StandardPlayer videoRef={output} muted={type === 'screen' || videoSettings.currentMuted} wait={mainWait} onLoadedMetadata={() => {
                 setMainWait(false)
               }
               }/>
@@ -139,7 +138,7 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({userId, type, hasMuted
                   onClick={() => {
                     setIsCheckingStart(!isCheckingStart)
                   }}/>
-          {hasMuted &&
+          {type === 'webcam' &&
               <Button className={cl.soundButton} view={'secondary'} iconSize={'s'} size={'s'}
                       disabled={!videoSettings.currentCamera || !videoSettings.currentInputAudio}
                       iconLeft={videoSettings.currentMuted ? IconSoundOff : IconSound}

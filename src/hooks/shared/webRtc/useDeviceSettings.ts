@@ -36,9 +36,11 @@ type ScreenSettingsReturn = {
   updateFrequency: (frequency: number) => void
 }
 
+export type DeviceMode = 'webcam' | 'screen'
+
 export function useDeviceSettings(type: 'screen'): ScreenSettingsReturn;
-export function useDeviceSettings(type: 'video'): VideoSettingsReturn
-export function useDeviceSettings(type: 'video' | 'screen'): ScreenSettingsReturn | VideoSettingsReturn {
+export function useDeviceSettings(type: 'webcam'): VideoSettingsReturn
+export function useDeviceSettings(type: DeviceMode): ScreenSettingsReturn | VideoSettingsReturn {
   const dispatch = useAppDispatch()
 
   const currentCamera: IDeviceItem | null = useAppSelector(state => state.deviceSettings.videoSettings.video)
@@ -97,7 +99,7 @@ export function useDeviceSettings(type: 'video' | 'screen'): ScreenSettingsRetur
     }
   }, [waitDevices, currentCamera, currentInputAudio])
 
-  if (type === 'video') {
+  if (type === 'webcam') {
     return {
       currentCamera,
       currentInputAudio,

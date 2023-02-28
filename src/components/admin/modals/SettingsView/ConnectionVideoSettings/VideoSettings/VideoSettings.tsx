@@ -43,14 +43,14 @@ const VideoSettings: FC = () => {
     updateCurrentCamera,
     updateFrequency,
     updateCurrentInputAudio
-  } = useDeviceSettings('video')
+  } = useDeviceSettings('webcam')
 
   const userId = useAppSelector(state => state.user._id)
 
   return (
     <Layout className={cl.wrapper} direction={'column'}>
       <Layout flex={6} className={cl.video}>
-        <CheckingConnection userId={userId} type={'video'} hasMuted={true}/>
+        <CheckingConnection userId={userId} type={'webcam'}/>
       </Layout>
       <Layout flex={1}>
         <Select
