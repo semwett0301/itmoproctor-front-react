@@ -6,59 +6,69 @@ import {Select} from '@consta/uikit/Select'
 import {TextField} from '@consta/uikit/TextField'
 import {Item} from '../../../../../../ts/types/Item'
 import {useAppSelector} from '../../../../../../hooks/store/useAppSelector';
+import {IResolutionItem} from '../../../../../../ts/interfaces/IResolutionItem';
+import {useDeviceSettings} from '../../../../../../hooks/shared/webRtc/useDeviceSettings';
+import {defaultResolution} from '../../../../../../store/reducers/deviceSettings/deviceSettingsReducer';
+import {useDevices} from '../../../../../../hooks/shared/webRtc/useDevices';
 
-const items: Item[] = [
+const resolutions: IResolutionItem[] = [
   {
-    label: 'Первый',
-    id: '1'
+    label: '1280 x 720',
+    id: '1',
+    width: 1280,
+    height: 720
   },
   {
-    label: 'Второй',
-    id: '2'
-  },
-  {
-    label: 'Третий',
-    id: '3'
+    label: '960 x 720',
+    id: '2',
+    width: 960,
+    height: 720
   }
 ]
 
 const ScreenSettings: FC = () => {
-  const [frequency, setFrequency] = useState<string | null>('15')
-  const changeFrequency = ({ value }: { value: string | null }): void => {
-    if (Number(value)) setFrequency(value)
-  }
+  const { screenDevices } = useDevices()
 
   const userId = useAppSelector(state => state.user._id)
+
+  const {
+    currentScreen,
+    currentResolution,
+    currentFrequency,
+    updateCurrentScreen,
+    updateFrequency,
+    updateResolution
+  } = useDeviceSettings('screen')
 
   return (
     <Layout className={cl.wrapper} direction={'column'}>
       <Layout flex={3} className={cl.video}>
-        <CheckingConnection userId={userId} examId={'loopback'}/>
+        <CheckingConnection userId={userId} type={'screen'} hasMuted={false}/>
       </Layout>
       <Layout flex={2}>
         <Select
           size={'s'}
           label={'Номер экрана'}
-          items={items}
-          onChange={() => {
-            console.log('')
-          }}
+          value={currentScreen}
+          items={screenDevices}
+          onChange={({value}) => updateCurrentScreen(value)}
         />
       </Layout>
       <Layout className={cl.resolution} flex={4.5}>
         <Select
           size={'s'}
           label={'Разрешение'}
-          items={items}
-          onChange={() => {
-            null
-          }}
+          items={resolutions}
+          value={currentResolution}
+          onChange={({value}) => updateResolution(value ?? defaultResolution)}
         />
         <TextField
           size={'s'}
           label={'Частота кадров'}
-          value={frequency}
-          onChange={changeFrequency}
+          value={currentFrequency.toString()}
+          onChange={({value}) => {
+            if (Number(value) && Number(value) >= 5 && Number(value) <= 30) updateFrequency(Number(value))
+          }}
           type='number'
           step={'1'}
           min='5'

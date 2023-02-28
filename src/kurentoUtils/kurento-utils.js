@@ -10,16 +10,6 @@ var EventEmitter = require('events').EventEmitter;
 var recursive = require('merge').recursive.bind(undefined, true);
 var sdpTranslator = require('sdp-translator');
 var logger = typeof window === 'undefined' ? console : window.Logger || console;
-try {
-    require('kurento-browser-extensions');
-} catch (error) {
-    if (typeof getScreenConstraints === 'undefined') {
-        logger.warn('screen sharing is not available');
-        getScreenConstraints = function getScreenConstraints(sendSource, callback) {
-            callback(new Error('This library is not enabled for screen sharing'));
-        };
-    }
-}
 var MEDIA_CONSTRAINTS = {
         audio: true,
         video: {
@@ -498,16 +488,19 @@ function WebRtcPeer(mode, options, callback) {
                 }).catch(callback);
             }
         }
+        function getScreenMedia(constraints) {
+            if (constraints === undefined) {
+                constraints = MEDIA_CONSTRAINTS;
+            }
+            navigator.mediaDevices.getDisplayMedia(constraints).then(function (stream) {
+                videoStream = stream;
+                start();
+            }).catch(callback);
+        }
         if (sendSource === 'webcam') {
             getMedia(mediaConstraints);
         } else {
-            getScreenConstraints(sendSource, function (error, constraints_) {
-                if (error)
-                    return callback(error);
-                constraints = [mediaConstraints];
-                constraints.unshift(constraints_);
-                getMedia(recursive.apply(undefined, constraints));
-            }, guid);
+            getScreenMedia(mediaConstraints);
         }
     } else {
         setTimeout(start, 0);

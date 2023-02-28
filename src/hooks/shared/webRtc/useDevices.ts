@@ -3,11 +3,13 @@ import {useEffect, useState} from 'react';
 
 export function useDevices(): {
   waitDevices: boolean,
-  videoDevices: IDeviceItem[]
-  inputAudioDevices: IDeviceItem[]
+  videoDevices: IDeviceItem[],
+  inputAudioDevices: IDeviceItem[],
+  screenDevices: IDeviceItem[]
 } {
   const [videoDevices, updateVideoDevices] = useState<IDeviceItem[]>([])
   const [inputAudioDevices, updateInputAudioDevices] = useState<IDeviceItem[]>([])
+  const [screenDevices, updateScreenDevices] = useState<IDeviceItem[]>([])
   const [waitDevices, setWaitDevices] = useState<boolean>(true)
 
   useEffect(() => {
@@ -36,7 +38,8 @@ export function useDevices(): {
   return {
     waitDevices,
     videoDevices,
-    inputAudioDevices
+    inputAudioDevices,
+    screenDevices
   }
 }
 

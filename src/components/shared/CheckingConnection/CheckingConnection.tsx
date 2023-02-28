@@ -15,10 +15,11 @@ import {Text} from '@consta/uikit/Text';
 
 type CheckingConnectionProps = {
   userId: string,
-  examId: string
+  type: 'video' | 'screen'
+  hasMuted: boolean
 }
 
-const CheckingConnection: FC<CheckingConnectionProps> = ({userId, examId}) => {
+const CheckingConnection: FC<CheckingConnectionProps> = ({userId, type, hasMuted}) => {
   const videoRef = useRef<HTMLDivElement | null>(null)
 
   const [leftBound, setLeftBound] = useState<number>(0)
@@ -34,21 +35,16 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({userId, examId}) => {
     setExtraWait(true)
   }, [])
 
-  const {
-    currentCamera,
-    currentInputAudio,
-    currentFrequency,
-    currentResolution,
-    currentMuted,
-    updateMuted
-  } = useDeviceSettings()
+  const videoSettings = useDeviceSettings('video')
+
+  const screenSettings = useDeviceSettings('screen')
 
   const {call, stop, input, output, statusCallState, callStatusDescription} = useWebRtc(userId, {
-    cameraId: currentCamera?.device.deviceId,
-    microId: currentInputAudio?.device.deviceId,
-    maxWidth: currentResolution.width,
-    maxHeight: currentResolution.height,
-    maxFrameRate: currentFrequency,
+    cameraId: videoSettings.currentCamera?.device.deviceId,
+    microId: videoSettings.currentInputAudio?.device.deviceId,
+    maxWidth: videoSettings.currentResolution.width,
+    maxHeight: videoSettings.currentResolution.height,
+    maxFrameRate: videoSettings.currentFrequency,
     minFrameRate: 1,
     videoWaiting: !(mainWait || extraWait),
     dropWaiting: dropWaiting
@@ -120,7 +116,7 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({userId, examId}) => {
         <div className={cl.mainFrame}>
           {
             isCheckingStart ?
-              <StandardPlayer videoRef={output} muted={currentMuted} wait={mainWait} onLoadedMetadata={() => {
+              <StandardPlayer videoRef={output} muted={videoSettings.currentMuted} wait={mainWait} onLoadedMetadata={() => {
                 setMainWait(false)
               }
               }/>
@@ -138,17 +134,18 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({userId, examId}) => {
       </div>
       <div className={cl.downPanel}>
         <div>
-          <Button label={isCheckingStart ? 'Остановить' : 'Запустить'} disabled={!currentCamera || !currentInputAudio}
+          <Button label={isCheckingStart ? 'Остановить' : 'Запустить'} disabled={!videoSettings.currentCamera || !videoSettings.currentInputAudio}
                   iconLeft={isCheckingStart ? IconPause : IconPlay} view={'secondary'} size={'s'} iconSize={'s'}
                   onClick={() => {
                     setIsCheckingStart(!isCheckingStart)
                   }}/>
-          <Button className={cl.soundButton} view={'secondary'} iconSize={'s'} size={'s'}
-                  disabled={!currentCamera || !currentInputAudio}
-                  iconLeft={currentMuted ? IconSoundOff : IconSound}
-                  onClick={() => {
-                    updateMuted(!currentMuted)
-                  }}/>
+          {hasMuted &&
+              <Button className={cl.soundButton} view={'secondary'} iconSize={'s'} size={'s'}
+                      disabled={!videoSettings.currentCamera || !videoSettings.currentInputAudio}
+                      iconLeft={videoSettings.currentMuted ? IconSoundOff : IconSound}
+                      onClick={() => {
+                        videoSettings.updateMuted(!videoSettings.currentMuted)
+                      }}/>}
         </div>
         <Text as={'div'} size={'s'}
               view={callStatusDescription.view}
