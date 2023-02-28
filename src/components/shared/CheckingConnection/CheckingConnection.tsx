@@ -1,5 +1,5 @@
 import {Button} from '@consta/uikit/Button'
-import React, {FC, useEffect, useRef, useState} from 'react'
+import React, {FC, useCallback, useEffect, useRef, useState} from 'react'
 import {IconPlay} from '@consta/icons/IconPlay'
 import cl from './CheckingConnection.module.scss'
 import Draggable from 'react-draggable'
@@ -29,6 +29,10 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({userId, examId}) => {
   const [mainWait, setMainWait] = useState<boolean>(true)
   const [extraWait, setExtraWait] = useState<boolean>(true)
 
+  const dropWaiting = useCallback<() => void>(() => {
+    setMainWait(true)
+    setExtraWait(true)
+  }, [])
 
   const {
     currentCamera,
@@ -46,7 +50,8 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({userId, examId}) => {
     maxHeight: currentResolution.height,
     maxFrameRate: currentFrequency,
     minFrameRate: 1,
-    videoWaiting: !(mainWait || extraWait)
+    videoWaiting: !(mainWait || extraWait),
+    dropWaiting: dropWaiting
   })
 
   // const status = useMemo<{
@@ -80,8 +85,6 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({userId, examId}) => {
 
   useEffect(() => {
     if (isCheckingStart !== null) {
-      setMainWait(true)
-      setExtraWait(true)
       if (isCheckingStart) {
         call(userId)
       } else {

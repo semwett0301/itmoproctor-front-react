@@ -55,13 +55,14 @@ type CallStatusDescription = {
 }
 
 export function useWebRtc(userId: string, constrains: {
-  cameraId?: string,
-  microId?: string,
-  videoWaiting?: boolean,
   maxWidth: number,
   maxHeight: number,
   maxFrameRate: number,
-  minFrameRate: number
+  minFrameRate: number,
+  cameraId?: string,
+  microId?: string,
+  videoWaiting?: boolean,
+  dropWaiting?: () => void
 }): {
   input: MutableRefObject<HTMLVideoElement | null>
   output: MutableRefObject<HTMLVideoElement | null>
@@ -142,6 +143,8 @@ export function useWebRtc(userId: string, constrains: {
   const stop = useCallback<(flag: boolean) => void>((flag) => {
     callState.current = CallState.NO_CALL
     errorMessage.current ? setStatusCallState(CallState.NO_CALL) : setStatusCallState(null)
+
+    constrains.dropWaiting && constrains.dropWaiting()
 
     peer.current?.dispose()
     peer.current = null
@@ -260,9 +263,7 @@ export function useWebRtc(userId: string, constrains: {
   const restart = useCallback<() => void>(() => {
     stop(false)
     if (receiver.current) {
-      setTimeout(() => {
-        call(receiver.current)
-      }, 500)
+      call(receiver.current)
     }
   }, [call, stop])
 
@@ -337,10 +338,10 @@ export function useWebRtc(userId: string, constrains: {
       case CallState.NO_CALL:
         setCallStatusDescription({
           view: 'alert',
-          text: t(`${errorMessage.current ? 
-            callErrorToMessageConfig[errorMessage.current as CallError] !== undefined ? 
-              callErrorToMessageConfig[errorMessage.current as CallError] : 
-              callErrorToMessageConfig[CallError.Default] 
+          text: t(`${errorMessage.current ?
+            callErrorToMessageConfig[errorMessage.current as CallError] !== undefined ?
+              callErrorToMessageConfig[errorMessage.current as CallError] :
+              callErrorToMessageConfig[CallError.Default]
             : ''}`)
         })
         errorMessage.current = null
