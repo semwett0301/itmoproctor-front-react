@@ -22,6 +22,50 @@ import {DeviceMode} from './useDeviceSettings';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const kurentoUtils = require('../../../kurentoUtils/kurento-utils')
 
+declare global {
+  interface Window {
+    // app?: any
+    app?: {
+      // macOS
+      askForMediaAccess: () => Promise<{
+        camera: boolean | undefined,
+        microphone: boolean | undefined
+      }>
+      // Windows, macOS
+      getMediaAccessStatus: () => Promise<{
+        camera: boolean | undefined,
+        microphone: boolean | undefined,
+        screen: boolean | undefined
+      }>
+      getScreenSources: () => Promise<[{
+        name: string,
+        id: string,
+        thumbnail?: string
+      }]>
+      getVersion: () => Promise<{
+        os: string, // windows, macOS, linux
+        arch: string, // x32, x64
+        version: string,
+        engine: string,
+        release: string,
+        osVersion: string,
+        osRelease: string
+      }>
+    }
+  }
+}
+const isApp = !!window.app
+
+if (isApp) { // for debug
+  (async() => {
+      console.log(window.app)
+      console.log(await window.app?.getVersion())
+      window.app?.getScreenSources().then(sources => {
+        console.log(sources);
+      })
+  })()
+}
+
 type MediaConstrains = {
   audio: {
     optional: [{
@@ -38,6 +82,11 @@ type MediaConstrains = {
     optional: [{
       sourceId?: string
     }]
+  } | {
+    mandatory: {
+      chromeMediaSource: string,
+      chromeMediaSourceId: string
+    }
   } | {
     displaySurface: 'monitor'
   }
@@ -116,7 +165,7 @@ export function useWebRtc(userId: string, type: DeviceMode, constrains: {
     return {
       localVideo: input.current,
       remoteVideo: output.current,
-      sendSource: type,
+      sendSource: isApp ? 'webcam' : type,
       onicecandidate: candidate => {
         sendMessage({
           id: SendMessageType.ON_ICE_CANDIDATE,
@@ -139,6 +188,11 @@ export function useWebRtc(userId: string, type: DeviceMode, constrains: {
           optional: [{
             sourceId: constrains.cameraId
           }]
+        } : isApp ? {
+          mandatory: {
+            chromeMediaSource: 'desktop',
+            chromeMediaSourceId: 'screen:0:0' // TODO: сменить на выбранный экран
+          }
         } : {
           displaySurface: 'monitor'
         }
