@@ -38,7 +38,7 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({userId, type}) => {
 
   const screenSettings = useDeviceSettings('screen')
 
-  const {call, stop, input, output, statusCallState, callStatusDescription} = useWebRtc(userId, type,{
+  const {call, stop, input, output, statusCallState, callStatusDescription} = useWebRtc(userId, type, {
     cameraId: type === 'webcam' ? videoSettings.currentCamera?.device.deviceId : undefined,
     microId: type === 'webcam' ? videoSettings.currentInputAudio?.device.deviceId : undefined,
     maxWidth: type === 'webcam' ? videoSettings.currentResolution.width : screenSettings.currentResolution.width,
@@ -115,25 +115,38 @@ const CheckingConnection: FC<CheckingConnectionProps> = ({userId, type}) => {
         <div className={cl.mainFrame}>
           {
             isCheckingStart ?
-              <StandardPlayer videoRef={output} muted={type === 'screen' || videoSettings.currentMuted} wait={mainWait} onLoadedMetadata={() => {
-                setMainWait(false)
-              }
-              }/>
+              <StandardPlayer videoRef={output} muted={type === 'screen' || videoSettings.currentMuted} wait={mainWait}
+                              onLoadedMetadata={() => {
+                                setMainWait(false)
+                              }
+                              }/>
               :
               <div className={cl.emptyMainFrame}>
-                <div>
-                  Трансляция не запущена.
-                </div>
-                <div>
-                  Для проверки связи нажмите кнопку «Запустить».
-                </div>
+                {
+                  statusCallState === CallState.NO_CALL ?
+                    <Text as={'div'} size={'s'}
+                          view={'alert'}
+                          align={'center'}
+                          className={cl.alertDescription}>
+                      {callStatusDescription.description}
+                    </Text>
+                    : <div className={cl.baseDescription}>
+                      <div>
+                        Трансляция не запущена.
+                      </div>
+                      <div>
+                        Для проверки связи нажмите кнопку «Запустить».
+                      </div>
+                    </div>
+                }
               </div>
           }
         </div>
       </div>
       <div className={cl.downPanel}>
         <div>
-          <Button label={isCheckingStart ? 'Остановить' : 'Запустить'} disabled={!videoSettings.currentCamera || !videoSettings.currentInputAudio}
+          <Button label={isCheckingStart ? 'Остановить' : 'Запустить'}
+                  disabled={!videoSettings.currentCamera || !videoSettings.currentInputAudio}
                   iconLeft={isCheckingStart ? IconPause : IconPlay} view={'secondary'} size={'s'} iconSize={'s'}
                   onClick={() => {
                     setIsCheckingStart(!isCheckingStart)

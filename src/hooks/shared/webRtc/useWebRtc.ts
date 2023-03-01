@@ -55,6 +55,7 @@ type Options = {
 
 type CallStatusDescription = {
   view?: TextPropView,
+  description?: string,
   text: string
 }
 
@@ -345,11 +346,12 @@ export function useWebRtc(userId: string, type: DeviceMode, constrains: {
       case CallState.NO_CALL:
         setCallStatusDescription({
           view: 'alert',
-          text: t(`${errorMessage.current ?
+          description: t(`${errorMessage.current ?
             callErrorToMessageConfig[errorMessage.current as CallError] !== undefined ?
               callErrorToMessageConfig[errorMessage.current as CallError] :
               callErrorToMessageConfig[CallError.Default]
-            : ''}`)
+            : ''}`),
+          text: 'Соединение не установлено'
         })
         errorMessage.current = null
         break
