@@ -35,9 +35,10 @@ import {AxiosResponse} from 'axios'
 import {IResponseArray} from '../../ts/interfaces/IResponseInterfaces'
 import {IExamRow} from '../../ts/interfaces/IExams'
 import {useLogout} from '../../hooks/auth/useLogout';
+import SettingsView from '../shared/modals/SettingsView/SettingsView';
 
 const Student: FC = () => {
-  const { t } = useTranslation()
+  const {t} = useTranslation()
   const outHandler = useLogout()
   const [withHistory, setWithHistory] = useFlag(false)
   const [rows, setRows] = useState<IStudentExamModel[]>([])
@@ -57,12 +58,12 @@ const Student: FC = () => {
             firstRow={row.subject}
             secondRow={row.assignment}
             tooltipText={'Карточка экзамена – ' + row.subject}
-            onClick={() => openModal(<ExamView examId={row._id} />)}
+            onClick={() => openModal(<ExamView examId={row._id}/>)}
           />
         ),
-        duration: t('shared.minutesPlurals.counter', { count: row.duration }),
-        status: <StatusBadge status={customBadgePropStatus[getExamStatus(row)]} />,
-        start: <DateCell date={row.startDate} />
+        duration: t('shared.minutesPlurals.counter', {count: row.duration}),
+        status: <StatusBadge status={customBadgePropStatus[getExamStatus(row)]}/>,
+        start: <DateCell date={row.startDate}/>
       }))
       setRows(tableRows)
     })
@@ -71,26 +72,20 @@ const Student: FC = () => {
   return (
     <Layout direction={'column'} className={cn.wrapper}>
       <CustomHeader
-        leftSide={<HeaderLogoModule />}
-        rightSide={[{ key: 'dateTime', component: HeaderTimeDateModule }]}
+        leftSide={<HeaderLogoModule/>}
+        rightSide={[{key: 'dateTime', component: HeaderTimeDateModule}]}
         contextMenuItems={[
           {
             label: 'Профиль',
             group: 1,
             iconLeft: IconUser,
-            onClick: () => openModal(<EditProfile />)
+            onClick: () => openModal(<EditProfile/>)
           },
           {
             label: 'Настройки',
             group: 1,
             iconLeft: IconSettings,
-            onClick: () => openModal(<Text>Настройки</Text>)
-          },
-          {
-            label: 'Проверка',
-            group: 1,
-            iconLeft: IconScreen,
-            onClick: () => openModal(<Text>Настройки</Text>)
+            onClick: () => openModal(<SettingsView/>)
           },
           {
             label: 'Выход',
@@ -104,39 +99,39 @@ const Student: FC = () => {
       />
       <Layout
         flex={1}
-        direction='column'
+        direction="column"
         className={classJoiner(
           cnMixCard({
             form: 'round',
             shadow: false,
             border: true
           }),
-          cnMixSpace({ m: 's' }),
+          cnMixSpace({m: 's'}),
           cn.content
         )}
       >
-        <div className={classJoiner(cn.buttonBlock, cnMixSpace({ m: 's' }))}>
+        <div className={classJoiner(cn.buttonBlock, cnMixSpace({m: 's'}))}>
           <Button
             size={'xs'}
             view={'secondary'}
-            label='Все экзамены'
+            label="Все экзамены"
             onClick={setWithHistory.toogle}
             iconLeft={withHistory ? IconCheck : IconSelect}
           />
           <Button
             size={'xs'}
             view={'secondary'}
-            label='Обновить'
+            label="Обновить"
             onClick={() => requestExams()}
             iconLeft={IconRestart}
           />
-          <Button size={'xs'} view={'secondary'} label='Помощь' iconLeft={IconQuestion} />
+          <Button size={'xs'} view={'secondary'} label="Помощь" iconLeft={IconQuestion}/>
         </div>
 
         <Table
           stickyHeader={true}
           getCellWrap={() => 'truncate'}
-          size='s'
+          size="s"
           rows={rows}
           columns={studentExamColumns}
           zebraStriped={'odd'}
@@ -146,7 +141,7 @@ const Student: FC = () => {
           emptyRowsPlaceholder={
             withHistory ? (
               <div>
-                <Loader size={'m'} className={cl.loader} />
+                <Loader size={'m'} className={cl.loader}/>
               </div>
             ) : (
               <ResponsesNothingFound

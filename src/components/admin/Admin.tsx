@@ -14,10 +14,10 @@ import NavTabs, {TabItem} from '../shared/NavTabs/NavTabs'
 import {classWatcher} from '../../utils/common/styleClassesUtills'
 import {openModal} from '../shared/ModalView/ModalView'
 import EditProfile from './modals/EditProfile/EditProfile'
-import SettingsView from './modals/SettingsView/SettingsView'
 import {userRoutes} from '../../utils/common/userRoutes'
 import {tabPathToTableConfig} from '../../config/admin/tabPathToTableConfig';
 import {useLogout} from '../../hooks/auth/useLogout';
+import SettingsView from '../shared/modals/SettingsView/SettingsView';
 
 type AdminOutletContextType = { openTab: (item: TabItem) => void }
 

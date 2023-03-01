@@ -5,7 +5,7 @@ import React, {FC} from 'react'
 
 // DEFAULT FUNCTIONS
 
-// TODO: Change all TextFields which wrapped in <Control/> tag (in modal forms) to this smart component
+// TODO: Change all TextFields which wrapped in <Control/> tag (in modals forms) to this smart component
 
 interface IControlTextFieldProp {
   // You should declare props like this, delete this if you don't need props
