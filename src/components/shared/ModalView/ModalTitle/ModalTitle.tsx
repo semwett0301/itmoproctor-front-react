@@ -17,7 +17,8 @@ const ModalTitles = {
   user: 'Профиль пользователя',
   verify: 'Идентификация личности',
   settings: 'Настройки',
-  attach: 'Вложение'
+  attach: 'Вложение',
+  importUser: 'Импорт пользователей'
 }
 
 export type ModalTitlesList = keyof typeof ModalTitles

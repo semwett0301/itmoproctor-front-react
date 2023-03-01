@@ -34,6 +34,7 @@ import DeleteSubmit from '../modals/DeleteSubmit/DeleteSubmit'
 import {adminButtonChecker} from '../../../utils/admin/adminButtonChecker';
 import {deleteSelected} from '../../../utils/admin/deleteSelected';
 import {useAppSelector} from '../../../hooks/store/useAppSelector';
+import ImportUser from '../modals/ImportUser/ImportUser';
 
 
 const Users: FC = () => {
@@ -211,7 +212,7 @@ const Users: FC = () => {
                       {
                         label: 'Импорт',
                         iconLeft: IconUpload,
-                        disabled: true
+                        onClick: () => openModal(<ImportUser/>)
                       },
                       {
                         label: 'Удалить',
