@@ -1,7 +1,8 @@
 import {MutableRefObject, useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {
   CallError,
-  callErrorToMessageConfig,
+  videoCallErrorToMessageConfig,
+  screenCallErrorToMessageConfig,
   CallState,
   GetMessageType,
   iceServers,
@@ -347,9 +348,13 @@ export function useWebRtc(userId: string, type: DeviceMode, constrains: {
         setCallStatusDescription({
           view: 'alert',
           description: t(`${errorMessage.current ?
-            callErrorToMessageConfig[errorMessage.current as CallError] !== undefined ?
-              callErrorToMessageConfig[errorMessage.current as CallError] :
-              callErrorToMessageConfig[CallError.Default]
+            type === 'webcam' ?
+              videoCallErrorToMessageConfig[errorMessage.current as CallError] !== undefined ?
+                videoCallErrorToMessageConfig[errorMessage.current as CallError] :
+                videoCallErrorToMessageConfig[CallError.Default]
+              : screenCallErrorToMessageConfig[errorMessage.current as CallError] !== undefined ?
+                screenCallErrorToMessageConfig[errorMessage.current as CallError] :
+                screenCallErrorToMessageConfig[CallError.Default] 
             : ''}`),
           text: 'Соединение не установлено'
         })

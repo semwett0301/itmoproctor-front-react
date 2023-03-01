@@ -107,26 +107,35 @@ export enum CallError {
   Default = 'Default'
 }
 
-const baseErrorPath = 'shared.settings.errors'
+const baseVideoErrorPath = 'shared.settings.errors.webcam'
 
-export const callErrorToMessageConfig: {
+export const videoCallErrorToMessageConfig: {
   [key in CallError]: string
 } = {
-  [CallError.InvalidStateError]: `${baseErrorPath}.InvalidStateError`,
-  [CallError.NotAllowedError]: `${baseErrorPath}.NotAllowedError`,
-  [CallError.NotAllowedErrorState]: `${baseErrorPath}.NotAllowedErrorState`,
-  [CallError.NotAllowedErrorPermission]: `${baseErrorPath}.NotAllowedErrorPermission`,
-  [CallError.NotAllowedErrorPermissionSystem]: `${baseErrorPath}.NotAllowedErrorPermissionSystem`,
-  [CallError.NotAllowedErrorRequest]: `${baseErrorPath}.NotAllowedErrorRequest`,
-  [CallError.NotFoundError]: `${baseErrorPath}.NotFoundError`,
-  [CallError.NotFoundErrorDevice]: `${baseErrorPath}.NotFoundErrorDevice`,
-  [CallError.NotFoundErrorObjectNotFound]: `${baseErrorPath}.NotFoundErrorObjectNotFound`,
-  [CallError.NotReadableError]: `${baseErrorPath}.NotReadableError`,
-  [CallError.NotReadableErrorStartVideo]: `${baseErrorPath}.NotReadableErrorStartVideo`,
-  [CallError.NotReadableErrorAllocateVideo]: `${baseErrorPath}.NotReadableErrorAllocateVideo`,
-  [CallError.OverconstrainedError]: `${baseErrorPath}.OverconstrainedError`,
-  [CallError.TypeError]: `${baseErrorPath}.TypeError`,
-  [CallError.Default]: `${baseErrorPath}.Default`,
+  [CallError.InvalidStateError]: `${baseVideoErrorPath}.InvalidStateError`,
+  [CallError.NotAllowedError]: `${baseVideoErrorPath}.NotAllowedError`,
+  [CallError.NotAllowedErrorState]: `${baseVideoErrorPath}.NotAllowedErrorState`,
+  [CallError.NotAllowedErrorPermission]: `${baseVideoErrorPath}.NotAllowedErrorPermission`,
+  [CallError.NotAllowedErrorPermissionSystem]: `${baseVideoErrorPath}.NotAllowedErrorPermissionSystem`,
+  [CallError.NotAllowedErrorRequest]: `${baseVideoErrorPath}.NotAllowedErrorRequest`,
+  [CallError.NotFoundError]: `${baseVideoErrorPath}.NotFoundError`,
+  [CallError.NotFoundErrorDevice]: `${baseVideoErrorPath}.NotFoundErrorDevice`,
+  [CallError.NotFoundErrorObjectNotFound]: `${baseVideoErrorPath}.NotFoundErrorObjectNotFound`,
+  [CallError.NotReadableError]: `${baseVideoErrorPath}.NotReadableError`,
+  [CallError.NotReadableErrorStartVideo]: `${baseVideoErrorPath}.NotReadableErrorStartVideo`,
+  [CallError.NotReadableErrorAllocateVideo]: `${baseVideoErrorPath}.NotReadableErrorAllocateVideo`,
+  [CallError.OverconstrainedError]: `${baseVideoErrorPath}.OverconstrainedError`,
+  [CallError.TypeError]: `${baseVideoErrorPath}.TypeError`,
+  [CallError.Default]: `${baseVideoErrorPath}.Default`,
+}
+
+const baseScreenErrorPath = 'shared.settings.errors.screen'
+
+export const screenCallErrorToMessageConfig: {
+  [key in CallError]?: string
+} = {
+  [CallError.NotAllowedErrorPermission]: `${baseScreenErrorPath}.NotAllowedErrorPermission`,
+  [CallError.NotAllowedErrorRequest]: `${baseScreenErrorPath}.NotAllowedErrorRequest`
 }
 
 // REGISTER_RESPONSE -- вебсокет зарегистрирован (или нет)
