@@ -480,7 +480,7 @@ function WebRtcPeer(mode, options, callback) {
             if (typeof AdapterJS !== 'undefined' && AdapterJS.webrtcDetectedBrowser === 'IE' && AdapterJS.webrtcDetectedVersion >= 9) {
                 navigator.getUserMedia(constraints, function (stream) {
                     if (pc.signalingState === 'closed') {
-                        self.dispose();
+                        streamStop(stream);
                         return;
                     }
                     videoStream = stream;
@@ -489,7 +489,7 @@ function WebRtcPeer(mode, options, callback) {
             } else {
                 navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
                     if (pc.signalingState === 'closed') {
-                        self.dispose();
+                        streamStop(stream);
                         return;
                     }
                     videoStream = stream;
@@ -503,7 +503,7 @@ function WebRtcPeer(mode, options, callback) {
             }
             navigator.mediaDevices.getDisplayMedia(constraints).then(function (stream) {
                 if (pc.signalingState === 'closed') {
-                    self.dispose();
+                    streamStop(stream);
                     return;
                 }
                 videoStream = stream;
