@@ -1,3 +1,20 @@
 .wrapper {
   width: 508px;
+
+  .inputFileBlock {
+    margin-bottom: 8px;
+  }
+
+  .outputFileBlock {
+    margin-bottom: 8px;
+  }
+
+  .outputFileBlock > * {
+    width: 100%;
+  }
+
+  .uploadButtonWrapper {
+    display: flex;
+    justify-content: end;
+  }
 }

@@ -1,21 +1,23 @@
-import React, {FC, useEffect, useState} from 'react';
-import ModalTitle from '../../../shared/ModalView/ModalTitle/ModalTitle';
-import {classJoiner} from '../../../../utils/common/styleClassesUtills';
-import {cnMixSpace} from '@consta/uikit/MixSpace';
+import React, { FC, useEffect, useState } from 'react'
+import ModalTitle from '../../../shared/ModalView/ModalTitle/ModalTitle'
+import { classJoiner } from '../../../../utils/common/styleClassesUtills'
+import { cnMixSpace } from '@consta/uikit/MixSpace'
 import cl from './ImportUser.module.scss'
-import FilterConstructor from '../../../shared/Filter/FilterConstructor';
-import SmartSelect from '../../../shared/SmartSelect/SmartSelect';
-import {Controller, useForm} from 'react-hook-form';
-import {DefaultItem} from '@consta/uikit/Select';
-import {IOrganization} from '../../../../ts/interfaces/IOrganizations';
-import {Combobox} from '@consta/uikit/Combobox';
-import {useOrganizations} from '../../../../hooks/admin/useOrganizations';
-import {RoleEnum} from '../../../../config/router/authСonfig';
-import {useAppSelector} from '../../../../hooks/store/useAppSelector';
-import {SkeletonText} from '@consta/uikit/Skeleton';
-import SmartFileField from '../../../shared/SmartFileField/SmartFileField';
-import {IconSave} from '@consta/icons/IconSave';
-import downloadImportExample from '../../../../utils/admin/users/downloadImportExample';
+import FilterConstructor from '../../../shared/Filter/FilterConstructor'
+import SmartSelect from '../../../shared/SmartSelect/SmartSelect'
+import { Controller, useForm } from 'react-hook-form'
+import { DefaultItem } from '@consta/uikit/Select'
+import { IOrganization } from '../../../../ts/interfaces/IOrganizations'
+import { Combobox } from '@consta/uikit/Combobox'
+import { useOrganizations } from '../../../../hooks/admin/useOrganizations'
+import { RoleEnum } from '../../../../config/router/authСonfig'
+import { useAppSelector } from '../../../../hooks/store/useAppSelector'
+import { SkeletonText } from '@consta/uikit/Skeleton'
+import { Button } from '@consta/uikit/Button'
+import SmartFileField from '../../../shared/SmartFileField/SmartFileField'
+import { IconSave } from '@consta/icons/IconSave'
+import downloadImportExample from '../../../../utils/admin/users/downloadImportExample'
+import { IconUpload } from '@consta/icons/IconUpload'
 
 interface IImportUserForm {
   provider: DefaultItem,
@@ -24,13 +26,13 @@ interface IImportUserForm {
 }
 
 const ImportUser: FC = () => {
-  const {control, formState, reset, handleSubmit, setValue} = useForm<IImportUserForm>()
+  const { control, formState, reset, handleSubmit, setValue } = useForm<IImportUserForm>()
 
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
   const profile = useAppSelector((state) => state.user)
 
-  const {getOrganizations, getOrganization} = useOrganizations()
+  const { getOrganizations, getOrganization } = useOrganizations()
   const [organizationList, setOrganizationList] = useState<IOrganization[]>([])
 
   useEffect(() => {
@@ -58,9 +60,9 @@ const ImportUser: FC = () => {
 
   return (
     <>
-      <ModalTitle title={'importUser'}/>
-      <div className={classJoiner(cnMixSpace({pH: '2xs'}), cl.wrapper)}>
-        {isLoading ? <SkeletonText rows={15}/> :
+      <ModalTitle title={'importUser'} />
+      <div className={classJoiner(cnMixSpace({ pH: '2xs' }), cl.wrapper)}>
+        {isLoading ? <SkeletonText rows={15} /> :
           <form noValidate>
             <FilterConstructor items={[
               {
@@ -73,7 +75,7 @@ const ImportUser: FC = () => {
                       <Controller
                         name={'provider'}
                         control={control}
-                        render={({field, fieldState}) => (
+                        render={({ field, fieldState }) => (
                           <SmartSelect
                             id={field.name}
                             name={field.name}
@@ -82,7 +84,7 @@ const ImportUser: FC = () => {
                             label={'Провайдер'}
                             withLabel
                             value={field.value}
-                            onChange={({value}) => field.onChange(value)}
+                            onChange={({ value }) => field.onChange(value)}
                             status={fieldState.error ? 'alert' : undefined}
                             caption={fieldState.error?.message}
                           />
@@ -102,17 +104,17 @@ const ImportUser: FC = () => {
                       <Controller
                         name={'organization'}
                         control={control}
-                        render={({field, fieldState}) => (
+                        render={({ field, fieldState }) => (
                           <Combobox
-                            size="s"
+                            size='s'
                             required
-                            label="Правообладатель"
-                            placeholder="Правообладатель"
+                            label='Правообладатель'
+                            placeholder='Правообладатель'
                             items={organizationList}
                             value={field.value}
                             getItemLabel={(item) => item.shortName ?? item.fullName}
                             getItemKey={(item) => item._id}
-                            onChange={({value}) => {
+                            onChange={({ value }) => {
                               field.onChange(value)
                             }}
                             status={fieldState.error ? 'alert' : undefined}
@@ -134,9 +136,10 @@ const ImportUser: FC = () => {
                       <Controller
                         name={'file'}
                         control={control}
-                        render={({field, fieldState}) => (
-                          <SmartFileField type={'input'} label={'Файл'} fileName={field.value?.name}
-                                          fileNamePlaceholder={'CSV файл (с заголовком)'} buttonLabel={'Выбрать'}/>
+                        render={({ field, fieldState }) => (
+                          <SmartFileField className={cl.inputFileBlock} type={'input'} label={'Файл'}
+                                          fileName={field.value?.name}
+                                          fileNamePlaceholder={'CSV файл (с заголовком)'} buttonLabel={'Выбрать'} />
                         )}
                       />
                     )
@@ -150,18 +153,34 @@ const ImportUser: FC = () => {
                     key: 41,
                     flex: 1,
                     component: (
-                      <SmartFileField type={'output'} label={'Пример файла'} iconLeft={IconSave} buttonLabel={'Загрузить'}
-                                      downloadFunction={downloadImportExample}/>
+                      <SmartFileField className={cl.outputFileBlock} type={'output'} label={'Пример файла'}
+                                      iconLeft={IconSave}
+                                      buttonLabel={'Загрузить'}
+                                      downloadFunction={downloadImportExample} />
+                    )
+                  }
+                ]
+              },
+              {
+                key: 5,
+                components: [
+                  {
+                    key: 51,
+                    flex: 1,
+                    component: (
+                      <div className={cl.uploadButtonWrapper}>
+                        <Button size={'s'} label={'Импорт'} iconLeft={IconUpload} />
+                      </div>
                     )
                   }
                 ]
               }
-            ]}/>
+            ]} />
           </form>
         }
       </div>
     </>
-  );
-};
+  )
+}
 
-export default ImportUser;
+export default ImportUser
