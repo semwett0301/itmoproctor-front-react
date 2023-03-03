@@ -455,6 +455,7 @@ function WebRtcPeer(mode, options, callback) {
     function start() {
         if (pc.signalingState === 'closed') {
             callback('The peer connection object is in "closed" state. This is most likely due to an invocation of the dispose method before accepting in the dialogue');
+            return;
         }
         if (videoStream && localVideo) {
             self.showLocalVideo();
@@ -478,11 +479,19 @@ function WebRtcPeer(mode, options, callback) {
             }
             if (typeof AdapterJS !== 'undefined' && AdapterJS.webrtcDetectedBrowser === 'IE' && AdapterJS.webrtcDetectedVersion >= 9) {
                 navigator.getUserMedia(constraints, function (stream) {
+                    if (pc.signalingState === 'closed') {
+                        streamStop(stream);
+                        return;
+                    }
                     videoStream = stream;
                     start();
                 }, callback);
             } else {
                 navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
+                    if (pc.signalingState === 'closed') {
+                        streamStop(stream);
+                        return;
+                    }
                     videoStream = stream;
                     start();
                 }).catch(callback);
@@ -493,6 +502,10 @@ function WebRtcPeer(mode, options, callback) {
                 constraints = MEDIA_CONSTRAINTS;
             }
             navigator.mediaDevices.getDisplayMedia(constraints).then(function (stream) {
+                if (pc.signalingState === 'closed') {
+                    streamStop(stream);
+                    return;
+                }
                 videoStream = stream;
                 start();
             }).catch(callback);
@@ -580,7 +593,6 @@ WebRtcPeer.prototype.getRemoteStream = function (index) {
     }
 };
 WebRtcPeer.prototype.dispose = function () {
-    logger.debug('Disposing WebRtcPeer');
     var pc = this.peerConnection;
     var dc = this.dataChannel;
     try {
@@ -590,8 +602,8 @@ WebRtcPeer.prototype.dispose = function () {
             dc.close();
         }
         if (pc) {
-            if (pc.signalingState === 'closed')
-                return;
+            // if (pc.signalingState === 'closed')
+            //     return;
             pc.getLocalStreams().forEach(streamStop);
             pc.close();
         }
