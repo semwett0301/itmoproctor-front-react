@@ -22,6 +22,7 @@ import {IconCustomSave} from '../../../../customIcons/IconCustomDownload/IconCus
 import {request} from '../../../../api/axios/request';
 import {useTranslation} from 'react-i18next';
 import i18n from 'i18next';
+import {closeModal} from '../../../shared/ModalView/ModalView';
 
 interface IImportUserForm {
   provider: DefaultItem,
@@ -71,13 +72,7 @@ const ImportUser: FC = () => {
     await request.users.importUsers({
       organization: data.organization,
       fileData: fileData
-    }).then(response => {
-      console.log(i18n.t('admin.usersImport.successText', response.data.success))
-      setNotificationList([
-        ...notificationList,
-        i18n.t('admin.usersImport.successText', response.data.success)
-      ])
-    })
+    }).then(() => closeModal())
   }, [])
 
   return (
