@@ -19,6 +19,7 @@ type SmartFileFieldBaseProps = {
 interface SmartFileFieldInputProps extends SmartFileFieldBaseProps {
   type: 'input'
   id: string
+  required?: boolean
   onInputFile?: (e: DragEvent | React.ChangeEvent) => void;
   fileName?: string
   fileNamePlaceholder?: string
@@ -36,7 +37,7 @@ const SmartFileField: FC<SmartFileFieldProps> = (props) => {
     <div className={classJoiner(cl.wrapper, props.className ?? '')}>
       {props.type === 'input' ?
         <>
-          <TextField className={cl.fileNameField} label={props.label} size={props.size ?? 's'} value={props.fileName}
+          <TextField className={cl.fileNameField} label={props.label} required={props.required} size={props.size ?? 's'} value={props.fileName}
                      placeholder={props.fileNamePlaceholder} />
           <FileField id={props.id} className={cl.fileButtonWrapper} onChange={props.onInputFile}>
             <Button className={cl.fileButton} size={'s'} as={'div'} view={'secondary'} label={props.buttonLabel}

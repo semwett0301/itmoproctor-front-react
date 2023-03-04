@@ -45,6 +45,11 @@ export const SmartSelectProps = {
     label: 'Провайдер',
     selectItems: providers
   },
+  localProvider: {
+    placeholder: 'Провайдер авторизации',
+    label: 'Провайдер',
+    selectItems: providers.filter(e => e.id === 'local')
+  },
   examTypes: {
     placeholder: 'Тип экзамена',
     label: 'Тип',

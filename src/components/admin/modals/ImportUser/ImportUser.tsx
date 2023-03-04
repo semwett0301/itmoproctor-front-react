@@ -97,7 +97,7 @@ const ImportUser: FC = () => {
                             id={field.name}
                             name={field.name}
                             required
-                            itemsType={'providers'}
+                            itemsType={'localProvider'}
                             label={'Провайдер'}
                             withLabel
                             value={field.value}
@@ -156,6 +156,7 @@ const ImportUser: FC = () => {
                         render={({field, fieldState}) => (
                           <SmartFileField className={cl.inputFileBlock} type={'input'} id={'UsersImportFile'}
                                           label={'Файл'}
+                                          required={true}
                                           fileName={field.value?.name}
                                           fileNamePlaceholder={'CSV файл (с заголовком)'}
                                           buttonLabel={'Выбрать'}
