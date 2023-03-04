@@ -38,6 +38,7 @@ export default function (instance: AxiosInstance): IUsersAxios {
     },
     deleteUser(userId) {
       return instance.delete(`${axiosConfig.baseUrl}user/${userId}`)
-    }
+    },
+
   }
 }

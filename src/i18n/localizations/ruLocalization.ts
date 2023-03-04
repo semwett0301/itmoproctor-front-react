@@ -26,7 +26,45 @@ export const ruLocalization: ILocalization = {
     },
     proctor: {},
     admin: {
-      users: {}
+      usersImport: {
+        "title": "Импорт пользователей",
+        "importButton": "Импорт",
+        "closeButton": "Закрыть",
+        "filebox": "Файл",
+        "fileboxButton": "Выбрать",
+        "fileboxPrompt": "CSV файл (с заголовком)",
+        "exampleFile": "Пример файла",
+        "exampleFileButton": "Загрузить",
+        "fields": {
+          "lastname": "Фамилия",
+          "firstname": "Имя",
+          "middlename": "Отчество",
+          "role": "Роль (\"слушатель\", \"проктор\", \"эксперт\")",
+          "gender": "Пол (\"м\", \"ж\")",
+          "birthday": "Дата рождения (\"DD.MM.YYYY\")",
+          "email": "Электронный адрес",
+          "citizenship": "Гражданство (трехбуквенный код)",
+          "address": "Почтовый адрес",
+          "documentType": "Тип документа",
+          "documentNumber": "Номер документа",
+          "documentIssueDate": "Дата выдачи документа (\"DD.MM.YYYY\")",
+          "username": "Логин",
+          "password": "Пароль"
+        },
+        "successText": "Загружено %{actual} из %{expected} пользователей",
+        "errorTitle": "Ошибки",
+        "errors": {
+          "unknown": "Неизвестная ошибка",
+          "requestTooLarge": "Файл слишком большой",
+          "incorrectRowCount": "Некорректное число строк: %{actual} вместо %{expected}",
+          "incorrectColumnCount": "Строка %{rowNumber}: Некорректное число столбцов: %{actual} вместо %{expected}",
+          "incorrectField": "Строка %{rowNumber}: Поле «<i>%{field}</i>» некорректное: «<i>%{value}</i>». Причина: %{reason}"
+        },
+        "errorReasons": {
+          "required": "Обязательное поле",
+          "incorrectFormat": "Некорректный формат"
+        }
+      }
     },
     shared: {
       examTypes: {

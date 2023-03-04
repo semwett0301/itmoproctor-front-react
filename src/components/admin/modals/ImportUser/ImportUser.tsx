@@ -18,6 +18,7 @@ import SmartFileField from '../../../shared/SmartFileField/SmartFileField'
 import { IconSave } from '@consta/icons/IconSave'
 import downloadImportExample from '../../../../utils/admin/users/downloadImportExample'
 import { IconUpload } from '@consta/icons/IconUpload'
+import { IconCustomSave } from '../../../../customIcons/IconCustomDownload/IconCustomSave'
 
 interface IImportUserForm {
   provider: DefaultItem,
@@ -63,7 +64,7 @@ const ImportUser: FC = () => {
       <ModalTitle title={'importUser'} />
       <div className={classJoiner(cnMixSpace({ pH: '2xs' }), cl.wrapper)}>
         {isLoading ? <SkeletonText rows={15} /> :
-          <form noValidate>
+          <form noValidate onSubmit={e => e.preventDefault()}>
             <FilterConstructor items={[
               {
                 key: 1,
@@ -137,9 +138,17 @@ const ImportUser: FC = () => {
                         name={'file'}
                         control={control}
                         render={({ field, fieldState }) => (
-                          <SmartFileField className={cl.inputFileBlock} type={'input'} label={'Файл'}
+                          <SmartFileField className={cl.inputFileBlock} type={'input'} id={'UsersImportFile'} label={'Файл'}
                                           fileName={field.value?.name}
-                                          fileNamePlaceholder={'CSV файл (с заголовком)'} buttonLabel={'Выбрать'} />
+                                          fileNamePlaceholder={'CSV файл (с заголовком)'}
+                                          buttonLabel={'Выбрать'}
+                                          onInputFile={e => {
+                                            const inputFile = document.getElementById('UsersImportFile') as HTMLInputElement
+                                            if (inputFile.files) {
+                                              console.log(inputFile.files)
+                                              setValue('file', inputFile.files[0])
+                                            }
+                                          }} />
                         )}
                       />
                     )
@@ -154,7 +163,7 @@ const ImportUser: FC = () => {
                     flex: 1,
                     component: (
                       <SmartFileField className={cl.outputFileBlock} type={'output'} label={'Пример файла'}
-                                      iconLeft={IconSave}
+                                      iconLeft={IconCustomSave}
                                       buttonLabel={'Загрузить'}
                                       downloadFunction={downloadImportExample} />
                     )

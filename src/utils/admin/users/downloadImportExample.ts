@@ -19,6 +19,7 @@ export default function (): void {
   }
 
   link.style.display = 'none'
+  // link.onclick = e => e.preventDefault()
   link.href = url ?? ''
   link.download = 'users_template.csv'
 

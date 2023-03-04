@@ -33,7 +33,47 @@ export const engLocalization: ILocalization = {
       name: 'Username'
     },
     proctor: {},
-    admin: {},
+    admin: {
+      usersImport: {
+        "title": "User import",
+        "importButton": "Import",
+        "closeButton": "Close",
+        "filebox": "File",
+        "fileboxButton": "Select",
+        "fileboxPrompt": "CSV file (with header)",
+        "exampleFile": "Example file",
+        "exampleFileButton": "Download",
+        "fields": {
+          "lastname": "Lastname",
+          "firstname": "Firstname",
+          "middlename": "Middlename",
+          "role": "Role (\"student\", \"proctor\", \"expert\")",
+          "gender": "Gender (\"m\", \"f\")",
+          "birthday": "Date of Birth (\"DD.MM.YYYY\")",
+          "email": "Email",
+          "citizenship": "Citizenship (a three-letter code)",
+          "address": "Address",
+          "documentType": "Document type",
+          "documentNumber": "Document number",
+          "documentIssueDate": "Date of issue (\"DD.MM.YYYY\")",
+          "username": "Login",
+          "password": "Password"
+        },
+        "successText": "Imported %{actual} of %{expected} users",
+        "errorTitle": "Errors",
+        "errors": {
+          "unknown": "Unknown error",
+          "requestTooLarge": "File is too large",
+          "incorrectRowCount": "Incorrect row count: %{actual} instead of %{expected}",
+          "incorrectColumnCount": "Row %{rowNumber}: Incorrect number of columns: %{actual} instead of %{expected}",
+          "incorrectField": "Row %{rowNumber}: Field \"<i>%{field}</i>\" is incorrect: \"<i>%{value}</i>\". Reason: %{reason}"
+        },
+        "errorReasons": {
+          "required": "Required field",
+          "incorrectFormat": "Incorrect format"
+        }
+      }
+    },
     shared: {
       settings: {
         errors: {
