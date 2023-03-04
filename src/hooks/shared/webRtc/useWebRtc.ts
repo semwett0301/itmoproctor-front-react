@@ -207,6 +207,8 @@ export function useWebRtc(userId: string, type: DeviceMode, constrains: {
     callState.current = CallState.NO_CALL
     errorMessage.current ? setStatusCallState(CallState.NO_CALL) : setStatusCallState(null)
 
+    console.log('STOP')
+
     constrains.dropWaiting && constrains.dropWaiting()
 
     peer.current?.dispose()

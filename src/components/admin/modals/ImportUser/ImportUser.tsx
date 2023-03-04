@@ -1,24 +1,27 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, {FC, useCallback, useEffect, useState} from 'react'
 import ModalTitle from '../../../shared/ModalView/ModalTitle/ModalTitle'
-import { classJoiner } from '../../../../utils/common/styleClassesUtills'
-import { cnMixSpace } from '@consta/uikit/MixSpace'
+import {classJoiner} from '../../../../utils/common/styleClassesUtills'
+import {cnMixSpace} from '@consta/uikit/MixSpace'
 import cl from './ImportUser.module.scss'
 import FilterConstructor from '../../../shared/Filter/FilterConstructor'
 import SmartSelect from '../../../shared/SmartSelect/SmartSelect'
-import { Controller, useForm } from 'react-hook-form'
-import { DefaultItem } from '@consta/uikit/Select'
-import { IOrganization } from '../../../../ts/interfaces/IOrganizations'
-import { Combobox } from '@consta/uikit/Combobox'
-import { useOrganizations } from '../../../../hooks/admin/useOrganizations'
-import { RoleEnum } from '../../../../config/router/authСonfig'
-import { useAppSelector } from '../../../../hooks/store/useAppSelector'
-import { SkeletonText } from '@consta/uikit/Skeleton'
-import { Button } from '@consta/uikit/Button'
+import {Controller, SubmitHandler, useForm} from 'react-hook-form'
+import {DefaultItem} from '@consta/uikit/Select'
+import {IOrganization} from '../../../../ts/interfaces/IOrganizations'
+import {Combobox} from '@consta/uikit/Combobox'
+import {useOrganizations} from '../../../../hooks/admin/useOrganizations'
+import {RoleEnum} from '../../../../config/router/authСonfig'
+import {useAppSelector} from '../../../../hooks/store/useAppSelector'
+import {SkeletonText} from '@consta/uikit/Skeleton'
+import {Button} from '@consta/uikit/Button'
+import {Text} from '@consta/uikit/Text'
 import SmartFileField from '../../../shared/SmartFileField/SmartFileField'
-import { IconSave } from '@consta/icons/IconSave'
 import downloadImportExample from '../../../../utils/admin/users/downloadImportExample'
-import { IconUpload } from '@consta/icons/IconUpload'
-import { IconCustomSave } from '../../../../customIcons/IconCustomDownload/IconCustomSave'
+import {IconUpload} from '@consta/icons/IconUpload'
+import {IconCustomSave} from '../../../../customIcons/IconCustomDownload/IconCustomSave'
+import {request} from '../../../../api/axios/request';
+import {useTranslation} from 'react-i18next';
+import i18n from 'i18next';
 
 interface IImportUserForm {
   provider: DefaultItem,
@@ -27,14 +30,15 @@ interface IImportUserForm {
 }
 
 const ImportUser: FC = () => {
-  const { control, formState, reset, handleSubmit, setValue } = useForm<IImportUserForm>()
+  const {control, formState, reset, handleSubmit, setValue} = useForm<IImportUserForm>()
 
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
   const profile = useAppSelector((state) => state.user)
 
-  const { getOrganizations, getOrganization } = useOrganizations()
+  const {getOrganizations, getOrganization} = useOrganizations()
   const [organizationList, setOrganizationList] = useState<IOrganization[]>([])
+  const [notificationList, setNotificationList] = useState<string[]>([])
 
   useEffect(() => {
     setIsLoading(true)
@@ -59,12 +63,29 @@ const ImportUser: FC = () => {
       .then(() => setIsLoading(false))
   }, [])
 
+  const onFormSubmit = useCallback<SubmitHandler<IImportUserForm>>(async (data) => {
+    const fileData: string = await data.file?.text() ?? ''
+
+    setNotificationList([])
+
+    await request.users.importUsers({
+      organization: data.organization,
+      fileData: fileData
+    }).then(response => {
+      console.log(i18n.t('admin.usersImport.successText', response.data.success))
+      setNotificationList([
+        ...notificationList,
+        i18n.t('admin.usersImport.successText', response.data.success)
+      ])
+    })
+  }, [])
+
   return (
     <>
-      <ModalTitle title={'importUser'} />
-      <div className={classJoiner(cnMixSpace({ pH: '2xs' }), cl.wrapper)}>
-        {isLoading ? <SkeletonText rows={15} /> :
-          <form noValidate onSubmit={e => e.preventDefault()}>
+      <ModalTitle title={'importUser'}/>
+      <div className={classJoiner(cnMixSpace({pH: '2xs'}), cl.wrapper)}>
+        {isLoading ? <SkeletonText rows={15}/> :
+          <form noValidate onSubmit={handleSubmit(onFormSubmit)}>
             <FilterConstructor items={[
               {
                 key: 1,
@@ -76,7 +97,7 @@ const ImportUser: FC = () => {
                       <Controller
                         name={'provider'}
                         control={control}
-                        render={({ field, fieldState }) => (
+                        render={({field, fieldState}) => (
                           <SmartSelect
                             id={field.name}
                             name={field.name}
@@ -85,7 +106,7 @@ const ImportUser: FC = () => {
                             label={'Провайдер'}
                             withLabel
                             value={field.value}
-                            onChange={({ value }) => field.onChange(value)}
+                            onChange={({value}) => field.onChange(value)}
                             status={fieldState.error ? 'alert' : undefined}
                             caption={fieldState.error?.message}
                           />
@@ -105,17 +126,17 @@ const ImportUser: FC = () => {
                       <Controller
                         name={'organization'}
                         control={control}
-                        render={({ field, fieldState }) => (
+                        render={({field, fieldState}) => (
                           <Combobox
-                            size='s'
+                            size="s"
                             required
-                            label='Правообладатель'
-                            placeholder='Правообладатель'
+                            label="Правообладатель"
+                            placeholder="Правообладатель"
                             items={organizationList}
                             value={field.value}
                             getItemLabel={(item) => item.shortName ?? item.fullName}
                             getItemKey={(item) => item._id}
-                            onChange={({ value }) => {
+                            onChange={({value}) => {
                               field.onChange(value)
                             }}
                             status={fieldState.error ? 'alert' : undefined}
@@ -137,18 +158,18 @@ const ImportUser: FC = () => {
                       <Controller
                         name={'file'}
                         control={control}
-                        render={({ field, fieldState }) => (
-                          <SmartFileField className={cl.inputFileBlock} type={'input'} id={'UsersImportFile'} label={'Файл'}
+                        render={({field, fieldState}) => (
+                          <SmartFileField className={cl.inputFileBlock} type={'input'} id={'UsersImportFile'}
+                                          label={'Файл'}
                                           fileName={field.value?.name}
                                           fileNamePlaceholder={'CSV файл (с заголовком)'}
                                           buttonLabel={'Выбрать'}
                                           onInputFile={e => {
                                             const inputFile = document.getElementById('UsersImportFile') as HTMLInputElement
                                             if (inputFile.files) {
-                                              console.log(inputFile.files)
                                               setValue('file', inputFile.files[0])
                                             }
-                                          }} />
+                                          }}/>
                         )}
                       />
                     )
@@ -165,7 +186,7 @@ const ImportUser: FC = () => {
                       <SmartFileField className={cl.outputFileBlock} type={'output'} label={'Пример файла'}
                                       iconLeft={IconCustomSave}
                                       buttonLabel={'Загрузить'}
-                                      downloadFunction={downloadImportExample} />
+                                      downloadFunction={downloadImportExample}/>
                     )
                   }
                 ]
@@ -178,14 +199,19 @@ const ImportUser: FC = () => {
                     flex: 1,
                     component: (
                       <div className={cl.uploadButtonWrapper}>
-                        <Button size={'s'} label={'Импорт'} iconLeft={IconUpload} />
+                        <Button size={'s'} label={'Импорт'} iconLeft={IconUpload}/>
                       </div>
                     )
                   }
                 ]
               }
-            ]} />
+            ]}/>
           </form>
+        }
+        {
+          notificationList.map(text => (
+            <Text key={text}>{text}</Text>
+          ))
         }
       </div>
     </>

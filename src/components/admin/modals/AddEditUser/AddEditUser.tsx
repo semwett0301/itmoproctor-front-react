@@ -497,6 +497,7 @@ const AddEditUser: FC<IAddEditUserProp> = ({userId, onSubmit}) => {
                               size="s"
                               label={'Дата рождения'}
                               value={field.value}
+                              required={true}
                               onChange={({value}) => field.onChange(value)}
                               status={fieldState.error ? 'alert' : undefined}
                               caption={fieldState.error ? 'Укажите дату рождения' : undefined}
