@@ -17,7 +17,7 @@ export const studentExamColumns: TableColumn<IStudentExamModel>[] = [
     align: 'center'
   },
   {
-    title: <HeaderCell title={'Экзмен'} />,
+    title: <HeaderCell title={'Экзамен'} />,
     accessor: 'exam',
     align: 'left'
   },
