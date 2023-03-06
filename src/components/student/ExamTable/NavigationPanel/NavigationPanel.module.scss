@@ -1,0 +1,14 @@
+.buttonBlock{
+  display: flex;
+  justify-content: space-between;
+
+  padding-bottom: 3px;
+
+  .extraButtons {
+    display: flex;
+
+    .firstButton {
+      margin-right: 4px;
+    }
+  }
+}
