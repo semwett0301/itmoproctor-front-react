@@ -1,0 +1,21 @@
+.content{
+  background-color: white;
+  overflow-y: auto;
+}
+
+.buttonBlock{
+  display: inline-flex;
+  column-gap: 16px;
+}
+
+.tableWrapper{
+  width: 100%;
+}
+
+.table{
+  //962-4=958
+  //
+  width: 100%;
+  height: min-content;
+  --table-grid-template-columns: 40px 2fr 1fr 1.5fr 1.5fr !important;
+}

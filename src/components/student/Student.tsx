@@ -13,7 +13,7 @@ import {IconExit} from '@consta/uikit/IconExit'
 import {cnMixSpace} from '@consta/uikit/MixSpace'
 import {cnMixCard} from '@consta/uikit/MixCard'
 import {classJoiner} from '../../utils/common/styleClassesUtills'
-import {IStudentExamModel, studentExamColumns} from './StudentExamModel'
+import {IStudentExamModel, studentExamColumns} from './ExamTable/ExamTableModel'
 import cl from '../shared/SharedTable/SharedTable.module.scss'
 import {Loader} from '@consta/uikit/Loader'
 import {ResponsesNothingFound} from '@consta/uikit/ResponsesNothingFound'
@@ -36,38 +36,10 @@ import {IResponseArray} from '../../ts/interfaces/IResponseInterfaces'
 import {IExamRow} from '../../ts/interfaces/IExams'
 import {useLogout} from '../../hooks/auth/useLogout';
 import SettingsView from '../shared/modals/SettingsView/SettingsView';
+import ExamTable from './ExamTable/ExamTable';
 
 const Student: FC = () => {
-  const {t} = useTranslation()
   const outHandler = useLogout()
-  const [withHistory, setWithHistory] = useFlag(false)
-  const [rows, setRows] = useState<IStudentExamModel[]>([])
-
-  const requestExams = (history = true): Promise<AxiosResponse<IResponseArray<IExamRow>>> => {
-    return Promise.resolve(
-      history ? request.student.exams.getExamWithHistory() : request.student.exams.getExams()
-    )
-  }
-
-  useEffect(() => {
-    requestExams(withHistory).then((r) => {
-      const tableRows: IStudentExamModel[] = r.data.rows.map((row, index) => ({
-        id: (index + 1).toString(),
-        exam: (
-          <TwoRowCell
-            firstRow={row.subject}
-            secondRow={row.assignment}
-            tooltipText={'Карточка экзамена – ' + row.subject}
-            onClick={() => openModal(<ExamView examId={row._id}/>)}
-          />
-        ),
-        duration: t('shared.minutesPlurals.counter', {count: row.duration}),
-        status: <StatusBadge status={customBadgePropStatus[getExamStatus(row)]}/>,
-        start: <DateCell date={row.startDate}/>
-      }))
-      setRows(tableRows)
-    })
-  }, [t, withHistory])
 
   return (
     <Layout direction={'column'} className={cn.wrapper}>
@@ -97,62 +69,9 @@ const Student: FC = () => {
           }
         ]}
       />
-      <Layout
-        flex={1}
-        direction="column"
-        className={classJoiner(
-          cnMixCard({
-            form: 'round',
-            shadow: false,
-            border: true
-          }),
-          cnMixSpace({m: 's'}),
-          cn.content
-        )}
-      >
-        <div className={classJoiner(cn.buttonBlock, cnMixSpace({m: 's'}))}>
-          <Button
-            size={'xs'}
-            view={'secondary'}
-            label="Все экзамены"
-            onClick={setWithHistory.toogle}
-            iconLeft={withHistory ? IconCheck : IconSelect}
-          />
-          <Button
-            size={'xs'}
-            view={'secondary'}
-            label="Обновить"
-            onClick={() => requestExams()}
-            iconLeft={IconRestart}
-          />
-          <Button size={'xs'} view={'secondary'} label="Помощь" iconLeft={IconQuestion}/>
-        </div>
 
-        <Table
-          stickyHeader={true}
-          getCellWrap={() => 'truncate'}
-          size="s"
-          rows={rows}
-          columns={studentExamColumns}
-          zebraStriped={'odd'}
-          borderBetweenColumns
-          borderBetweenRows
-          className={cn.table}
-          emptyRowsPlaceholder={
-            withHistory ? (
-              <div>
-                <Loader size={'m'} className={cl.loader}/>
-              </div>
-            ) : (
-              <ResponsesNothingFound
-                actions={<></>}
-                description={'Попробуйте изменить критерии поиска'}
-              />
-            )
-          }
-          // onSortBy={onSortByProps}
-        />
-      </Layout>
+      <ExamTable/>
+
     </Layout>
   )
 }

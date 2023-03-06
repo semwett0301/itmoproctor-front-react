@@ -1,6 +1,6 @@
 import React, {ReactNode} from 'react'
 import {TableColumn} from '@consta/uikit/Table'
-import HeaderCell from '../shared/SharedTable/HeaderCell/HeaderCell'
+import HeaderCell from '../../shared/SharedTable/HeaderCell/HeaderCell'
 
 export interface IStudentExamModel {
   id: string
