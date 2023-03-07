@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useEffect, useState} from 'react';
+import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
 import {classJoiner} from '../../../utils/common/styleClassesUtills';
 import {cnMixCard} from '@consta/uikit/MixCard';
 import {cnMixSpace} from '@consta/uikit/MixSpace';
@@ -15,6 +15,9 @@ import NavigationPanel from './NavigationPanel/NavigationPanel';
 import {Button} from '@consta/uikit/Button';
 import SharedTable from '../../shared/SharedTable/SharedTable';
 import dayjs from 'dayjs';
+import {AxiosResponse} from 'axios';
+import {IResponseArray} from '../../../ts/interfaces/IResponseInterfaces';
+import {IExamRow} from '../../../ts/interfaces/IExams';
 
 const StudentExams: FC = () => {
   const [withHistory, setWithHistory] = useFlag(false)
@@ -23,18 +26,21 @@ const StudentExams: FC = () => {
 
   const {t} = useTranslation()
 
-  const requestExams = useCallback<() => Promise<void>>(async () => {
+  const requestExamsFunction = useMemo<() => Promise<AxiosResponse<IResponseArray<IExamRow>>>>(() => {
+    return withHistory ? request.student.exams.getExamWithHistory : request.student.exams.getExams
+  }, [withHistory])
+
+  const getExams = useCallback<() => Promise<void>>(async () => {
     setIsLoading(true)
     setRows([])
 
-    const requestFunction = withHistory ? request.student.exams.getExamWithHistory : request.student.exams.getExams
-
-    await requestFunction().then((r) => {
+    await requestExamsFunction().then((r) => {
+      console.log(r)
       const tableRows: IStudentExamModel[] = r.data.rows.map((row, index) => ({
         id: index.toString(),
         exam: {
           _id: row._id,
-          courseName: row.course.name ?? '-',
+          courseName: row.course?.name ?? '-',
           examName: row.subject
         },
         deadline: {
@@ -49,13 +55,15 @@ const StudentExams: FC = () => {
         action: <Button label={'ABC'}/>
       }))
       setRows(tableRows)
-      setIsLoading(true)
+      setIsLoading(false)
     })
-  }, [t, withHistory])
+  }, [requestExamsFunction])
 
   useEffect(() => {
-    requestExams().catch(() => setIsLoading(false))
-  }, [requestExams])
+    getExams().catch(() =>
+      setIsLoading(false)
+    )
+  }, [getExams])
 
 
   return (
@@ -73,9 +81,9 @@ const StudentExams: FC = () => {
       )}
     >
 
-      <NavigationPanel setWithHistory={setWithHistory} update={requestExams}/>
+      <NavigationPanel setWithHistory={setWithHistory} update={getExams}/>
 
-      <SharedTable rows={rows} columns={studentExamsColumns} isLoading={isLoading} className={cl.table} />
+      <SharedTable rows={rows} columns={studentExamsColumns} isLoading={isLoading} className={cl.table}/>
 
     </Layout>
   );
