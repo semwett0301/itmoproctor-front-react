@@ -7,15 +7,15 @@ import {classJoiner} from '../../../utils/common/styleClassesUtills'
 
 export interface ITableRow {
   id: string
-  selected: boolean
+  selected?: boolean
 }
 
 interface ISharedTableProps<T extends ITableRow> {
   rows: T[]
-  onRowSelect: (rowId: string) => void
   columns: TableColumn<T>[]
   isLoading: boolean
   className: string
+  onRowSelect?: (rowId: string) => void
   // onSortByProps?: onSortBy<T>
   // sortingFunction?: (rows: T[]) => T[]
 }
@@ -43,7 +43,7 @@ ISharedTableProps<T>): JSX.Element {
         className={className ? classJoiner(cl.table, className) : cl.table}
         onCellClick={({ rowId, columnIdx }) => {
           if (columnIdx === 0) {
-            if (rowId) {
+            if (rowId && onRowSelect) {
               onRowSelect(rowId)
             }
           }

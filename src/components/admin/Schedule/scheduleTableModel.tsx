@@ -38,6 +38,7 @@ export const scheduleColumns: TableColumn<IScheduleTableModel>[] = [
     renderCell: ({ proctor }) => (
       <TextWithTooltip
         text={getFullName(proctor.firstname, proctor.middlename, proctor.lastname)}
+        isLinkable
         tooltipText={'Профиль проктора'}
         onClick={() => openModal(<ProctorView profileId={proctor.id} />)}
       />

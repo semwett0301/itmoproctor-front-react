@@ -5,7 +5,7 @@ import { IExamRow } from '../../../../ts/interfaces/IExams'
 import { IconRevert } from '@consta/uikit/IconRevert'
 import dayjs from 'dayjs'
 
-export const getExamStatus = (data: IExamRow): number => {
+export const getExamStatus = (data: IExamRow, isStudent = false): number => {
   if (!data) return 0
   const now = dayjs()
 
@@ -21,11 +21,15 @@ export const getExamStatus = (data: IExamRow): number => {
     if (endDate <= now) status = 8
     if (beginDate <= now && endDate > now) status = 2
     if (data.startDate) status = 3
-    if (data.inspectorConnected === true) status = 7
+    if (data.inspectorConnected) status = 7
     if (data.startDate && data.async) status = 9
-    if (data.stopDate) status = 11
+    if (data.stopDate) {
+      isStudent ? status = 10 : status = 11
+    }
     if (data.videoAvailable) status = 10
-    if (data.inCheck) status = 12
+    if (data.inCheck) {
+      isStudent ? status = 10 : status = 12
+    }
     if (data.resolution === true) status = 4
     if (data.resolution === false) status = 5
   }

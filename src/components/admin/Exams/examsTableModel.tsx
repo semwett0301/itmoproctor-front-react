@@ -9,9 +9,14 @@ import ExamView from '../modals/ExamView/ExamView'
 import {proctor} from '../../../utils/common/nameHelper'
 import TextWithTooltip from '../../shared/SharedTable/TextWithTooltip/TextWithTooltip'
 import dayjs from 'dayjs'
+import ProctorView from '../modals/ProctorView/ProctorView';
+import ListenerView from '../modals/ListenerView/ListenerView';
 
 export interface IExamsTableModel extends ITableRow {
-  listener: string
+  listener: {
+    _id: string,
+    name: string
+  }
   proctor: proctor
   exam: {
     _id: string
@@ -44,7 +49,7 @@ export const examsColumn: TableColumn<IExamsTableModel>[] = [
     accessor: 'listener',
     align: 'left',
     renderCell: (row) => (
-      <TextWithTooltip text={row.listener} tooltipText={'Профиль слушателя – ' + row.listener} />
+      <TextWithTooltip text={row.listener.name} isLinkable tooltipText={'Профиль слушателя – ' + row.listener.name} onClick={() => openModal(<ListenerView profileId={row.listener._id}/>)}/>
     ),
     sortable: true
   },
@@ -55,12 +60,13 @@ export const examsColumn: TableColumn<IExamsTableModel>[] = [
     renderCell: (row) => (
       <TextWithTooltip
         text={row.proctor.shortName}
+        isLinkable
         tooltipText={
           row.proctor.exists
             ? 'Профиль проктора – ' + row.proctor.fullName
             : 'Проктор на экзамен не назначен'
         }
-        onClick={() => console.log(row.proctor)}
+        onClick={() => openModal(<ProctorView profileId={row.proctor.id}/>)}
       />
     ),
     sortable: true
@@ -75,6 +81,7 @@ export const examsColumn: TableColumn<IExamsTableModel>[] = [
           firstRow={row.exam.subject}
           secondRow={row.exam.assigment}
           tooltipText={'Карточка экзамена – ' + row.exam.subject}
+          isLinkable={true}
           onClick={() => openModal(<ExamView examId={row.exam._id} />)}
         />
       )

@@ -1,6 +1,7 @@
 .text{
   cursor: pointer;
-  &:hover{
-    color: var(--color-typo-brand);
-  }
+}
+
+.linkText:hover {
+  color: var(--color-typo-brand);
 }

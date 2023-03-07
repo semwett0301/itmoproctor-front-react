@@ -1,6 +1,6 @@
 import React, {FC, useRef, useState} from 'react'
 import cl from './TwoRowCell.module.scss'
-import {Text} from '@consta/uikit/Text'
+import {Text, TextPropView} from '@consta/uikit/Text'
 import {Tooltip} from '@consta/uikit/Tooltip'
 import {classJoiner} from '../../../../utils/common/styleClassesUtills'
 
@@ -12,12 +12,15 @@ import {classJoiner} from '../../../../utils/common/styleClassesUtills'
 
 interface ITwoRowCellProp {
   firstRow?: string
+  firstView?: TextPropView
   secondRow?: string
+  secondView?: TextPropView
   tooltipText?: string
+  isLinkable?: boolean
   onClick?: React.MouseEventHandler<HTMLDivElement>
 }
 
-const TwoRowCell: FC<ITwoRowCellProp> = ({ firstRow, secondRow, tooltipText, onClick }) => {
+const TwoRowCell: FC<ITwoRowCellProp> = ({ firstRow, firstView, secondRow, secondView, tooltipText, isLinkable, onClick }) => {
   const [isTooltipVisible, setIsTooltipVisible] = useState(false)
   const anchorRef = useRef<HTMLDivElement>(null)
 
@@ -32,16 +35,16 @@ const TwoRowCell: FC<ITwoRowCellProp> = ({ firstRow, secondRow, tooltipText, onC
   return (
     <>
       <div
-        className={classJoiner(cl.TwoRowCell, tooltipText && cl.linkText)}
+        className={classJoiner(cl.TwoRowCell, isLinkable && cl.linkText)}
         ref={anchorRef}
         onMouseEnter={onEnter}
         onMouseLeave={onLeave}
         onClick={onClick}
       >
-        <Text size={'s'} truncate={true}>
+        <Text size={'s'} truncate={true} view={firstView}>
           {firstRow}
         </Text>
-        <Text size={'2xs'} truncate={true} view={'secondary'}>
+        <Text size={'2xs'} truncate={true} view={secondView ?? 'secondary'}>
           {secondRow}
         </Text>
       </div>

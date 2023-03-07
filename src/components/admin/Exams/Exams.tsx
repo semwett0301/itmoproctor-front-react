@@ -89,7 +89,10 @@ const Exams: FC = () => {
       async: item.async,
       id: item._id,
       selected: false,
-      listener: studentName,
+      listener: {
+        _id: item.student._id,
+        name: studentName
+      },
       proctor: proctor,
       exam: {
         _id: item._id,

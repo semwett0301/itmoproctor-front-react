@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react'
+import React, {FC} from 'react'
 import cn from './Student.module.scss'
 import {Layout} from '@consta/uikit/Layout'
 import CustomHeader from '../shared/CustomHeader/CustomHeader'
@@ -8,35 +8,10 @@ import {IconUser} from '@consta/uikit/IconUser'
 import {openModal} from '../shared/ModalView/ModalView'
 import EditProfile from '../admin/modals/EditProfile/EditProfile'
 import {IconSettings} from '@consta/uikit/IconSettings'
-import {IconScreen} from '@consta/uikit/IconScreen'
 import {IconExit} from '@consta/uikit/IconExit'
-import {cnMixSpace} from '@consta/uikit/MixSpace'
-import {cnMixCard} from '@consta/uikit/MixCard'
-import {classJoiner} from '../../utils/common/styleClassesUtills'
-import {IStudentExamModel, studentExamColumns} from './ExamTable/ExamTableModel'
-import cl from '../shared/SharedTable/SharedTable.module.scss'
-import {Loader} from '@consta/uikit/Loader'
-import {ResponsesNothingFound} from '@consta/uikit/ResponsesNothingFound'
-import {Table} from '@consta/uikit/Table'
-import {Button} from '@consta/uikit/Button'
-import {IconCheck} from '@consta/uikit/IconCheck'
-import {IconRestart} from '@consta/uikit/IconRestart'
-import {IconQuestion} from '@consta/uikit/IconQuestion'
-import {request} from '../../api/axios/request'
-import {useFlag} from '@consta/uikit/useFlag'
-import {IconSelect} from '@consta/uikit/IconSelect'
-import StatusBadge, {customBadgePropStatus, getExamStatus} from '../shared/SharedTable/StatusBadge/StatusBadge'
-import DateCell from '../shared/SharedTable/DateCell/DateCell'
-import {useTranslation} from 'react-i18next'
-import ExamView from '../admin/modals/ExamView/ExamView'
-import TwoRowCell from '../shared/SharedTable/TwoRowCell/TwoRowCell'
-import {Text} from '@consta/uikit/Text'
-import {AxiosResponse} from 'axios'
-import {IResponseArray} from '../../ts/interfaces/IResponseInterfaces'
-import {IExamRow} from '../../ts/interfaces/IExams'
 import {useLogout} from '../../hooks/auth/useLogout';
 import SettingsView from '../shared/modals/SettingsView/SettingsView';
-import ExamTable from './ExamTable/ExamTable';
+import StudentExams from './StudentExams/StudentExams';
 
 const Student: FC = () => {
   const outHandler = useLogout()
@@ -70,7 +45,7 @@ const Student: FC = () => {
         ]}
       />
 
-      <ExamTable/>
+      <StudentExams />
 
     </Layout>
   )

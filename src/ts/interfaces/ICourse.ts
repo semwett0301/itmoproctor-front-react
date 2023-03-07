@@ -1,8 +1,8 @@
 export interface ICourse {
   _id: string
   accessAllowed?: string[]
-  courseCode: string
-  sessionCode: string
+  courseCode?: string
+  sessionCode?: string
   name?: string
 }
 

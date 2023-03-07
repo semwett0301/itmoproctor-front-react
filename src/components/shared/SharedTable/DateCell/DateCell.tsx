@@ -10,8 +10,8 @@ interface IDateCellProp {
 
 const DateCell: FC<IDateCellProp> = ({ date, noSecondRow = false }) => {
   return (
-    <TwoRowCell firstRow={date ? dayjs(date).format('DD.MM.YYYY') : 'Дата'}
-                secondRow={!noSecondRow && date ? dayjs(date).format('hh:mm') : 'не назначена'} />
+    <TwoRowCell firstRow={date ? dayjs(date).format('DD.MM.YYYY') : ''}
+                secondRow={!noSecondRow && date ? dayjs(date).format('hh:mm') : ''} />
   );
 };
 

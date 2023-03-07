@@ -201,9 +201,9 @@ const AddEditDuplicateExam: FC<IAddEditExamProp> = ({ examId, onSubmit, isDuplic
     })
   }
 
-  const getSessionCodes = (courseCode: string): void => {
+  const getSessionCodes = (courseCode: string | undefined): void => {
     const organizationId = getValues('organization')._id
-    request.courses.getSessionCodes(organizationId, courseCode).then((r) => {
+    courseCode && request.courses.getSessionCodes(organizationId, courseCode).then((r) => {
       setSessionCodes(r.data.rows)
     })
   }

@@ -7,8 +7,7 @@
 
 .linkText{
   cursor: pointer;
-  &:hover{
-
+  & *:hover{
+    color: var(--color-typo-brand);
   }
 }
-
