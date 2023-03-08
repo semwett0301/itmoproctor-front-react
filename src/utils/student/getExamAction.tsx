@@ -4,14 +4,13 @@ import { customBadgePropStatus, getExamStatus } from '../../components/shared/Sh
 import { openModal } from '../../components/shared/ModalView/ModalView'
 import ExamView from '../../components/admin/modals/ExamView/ExamView'
 import dayjs from 'dayjs'
-import { router } from '../../App'
 
 export const getExamAction: (row: IExamRow) => ActionButtonProps | undefined = row => {
   const currentStatus = customBadgePropStatus[getExamStatus(row, true)]
 
   let result: ActionButtonProps | undefined = undefined
 
-  if (['success', 'reject'].includes(currentStatus)) {
+  if (['success', 'rejected'].includes(currentStatus)) {
     result = {
       mode: 'view',
       onClick: () => {
