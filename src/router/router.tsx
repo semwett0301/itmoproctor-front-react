@@ -1,8 +1,13 @@
 import {IHocConfig} from '../ts/interfaces/IHocConfig'
 import {IRoute} from '../ts/interfaces/IRoute'
-import {Route} from 'react-router-dom'
+import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom'
 import React from 'react'
 import {HocParameter} from '../ts/types/HocParameter'
+import store from '../store'
+import { request } from '../api/axios/request'
+import { setUserActionCreator } from '../store/reducers/userReducer/userActionCreators'
+import { userLoadedActionCreator } from '../store/reducers/userLoaded/userLoadedActionCreators'
+import routerHocConfig from '../config/router/routerHocConfig'
 
 const routeHelper: (
   hoc: HocParameter,
@@ -42,7 +47,7 @@ const routeHelper: (
   return hocHelper()
 }
 
-export const createRouter: (config: IHocConfig<any>) => JSX.Element = (config) => {
+const createRouter: (config: IHocConfig<any>) => JSX.Element = (config) => {
   const data = config.data
   const hocs = config.value
 
@@ -54,3 +59,29 @@ export const createRouter: (config: IHocConfig<any>) => JSX.Element = (config) =
     </Route>
   )
 }
+
+const checkAuth: () => void = async () => {
+  if (!store.getState().userLoaded) {
+    await request.profile
+      .getProfileBySession()
+      .then((r) => {
+        store.dispatch(setUserActionCreator(r.data))
+        store.dispatch(userLoadedActionCreator())
+      })
+      .catch(() => {
+        return store.dispatch(userLoadedActionCreator())
+      })
+  }
+}
+
+export const router = createBrowserRouter(
+  createRoutesFromElements(
+    // TODO убрать error элемент и дабавить в конфиг для каждого роута собственный, чтобы отлавливать ошибки
+    <Route
+      loader={checkAuth}
+      // errorElement={<NotFound />}
+    >
+      {routerHocConfig.map((elem) => createRouter(elem))}
+    </Route>
+  )
+)

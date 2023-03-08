@@ -1,23 +1,25 @@
-import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
-import {classJoiner} from '../../../utils/common/styleClassesUtills';
-import {cnMixCard} from '@consta/uikit/MixCard';
-import {cnMixSpace} from '@consta/uikit/MixSpace';
-import cn from './StudentExams.module.scss';
-import {IStudentExamModel, studentExamsColumns} from './StudentExamsModel';
-import cl from '../../shared/SharedTable/SharedTable.module.scss';
-import {Layout} from '@consta/uikit/Layout';
-import {useFlag} from '@consta/uikit/useFlag';
-import {request} from '../../../api/axios/request';
-import StatusBadge, {customBadgePropStatus, getExamStatus} from '../../shared/SharedTable/StatusBadge/StatusBadge';
-import DateCell from '../../shared/SharedTable/DateCell/DateCell';
-import {useTranslation} from 'react-i18next';
-import NavigationPanel from './NavigationPanel/NavigationPanel';
-import {Button} from '@consta/uikit/Button';
-import SharedTable from '../../shared/SharedTable/SharedTable';
-import dayjs from 'dayjs';
-import {AxiosResponse} from 'axios';
-import {IResponseArray} from '../../../ts/interfaces/IResponseInterfaces';
-import {IExamRow} from '../../../ts/interfaces/IExams';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
+import { classJoiner } from '../../../utils/common/styleClassesUtills'
+import { cnMixCard } from '@consta/uikit/MixCard'
+import { cnMixSpace } from '@consta/uikit/MixSpace'
+import cn from './StudentExams.module.scss'
+import { IStudentExamModel, studentExamsColumns } from './StudentExamsModel'
+import { Layout } from '@consta/uikit/Layout'
+import { useFlag } from '@consta/uikit/useFlag'
+import { request } from '../../../api/axios/request'
+import StatusBadge, { customBadgePropStatus, getExamStatus } from '../../shared/SharedTable/StatusBadge/StatusBadge'
+import DateCell from '../../shared/SharedTable/DateCell/DateCell'
+import { useTranslation } from 'react-i18next'
+import NavigationPanel from './NavigationPanel/NavigationPanel'
+import SharedTable from '../../shared/SharedTable/SharedTable'
+import dayjs from 'dayjs'
+import { AxiosResponse } from 'axios'
+import { IResponseArray } from '../../../ts/interfaces/IResponseInterfaces'
+import { IExamRow } from '../../../ts/interfaces/IExams'
+import { openModal } from '../../shared/ModalView/ModalView'
+import ExamView from '../../admin/modals/ExamView/ExamView'
+import { ActionButtonProps } from './ActionButton/ActionButton'
+import { getExamAction } from '../../../utils/student/getExamAction'
 
 const StudentExams: FC = () => {
   const [withHistory, setWithHistory] = useFlag(false)
@@ -31,11 +33,11 @@ const StudentExams: FC = () => {
   }, [withHistory])
 
   const getExams = useCallback<() => Promise<void>>(async () => {
+
     setIsLoading(true)
     setRows([])
 
     await requestExamsFunction().then((r) => {
-      console.log(r)
       const tableRows: IStudentExamModel[] = r.data.rows.map((row, index) => ({
         id: index.toString(),
         exam: {
@@ -51,8 +53,8 @@ const StudentExams: FC = () => {
           view: dayjs(row.rightDate).diff(dayjs(), 'day') == 0 ? 'alert' : undefined
         },
         status: <StatusBadge status={customBadgePropStatus[getExamStatus(row, true)]}/>,
-        start: <DateCell date={row.startDate}/>,
-        action: <Button label={'ABC'}/>
+        start: <DateCell date={row.startDate} dateFormat={'DD.MM.YY'}/>,
+        action: getExamAction(row)
       }))
       setRows(tableRows)
       setIsLoading(false)
@@ -83,7 +85,7 @@ const StudentExams: FC = () => {
 
       <NavigationPanel setWithHistory={setWithHistory} update={getExams}/>
 
-      <SharedTable rows={rows} columns={studentExamsColumns} isLoading={isLoading} className={cl.table}/>
+      <SharedTable rows={rows} columns={studentExamsColumns} isLoading={isLoading} className={cn.table}/>
 
     </Layout>
   );

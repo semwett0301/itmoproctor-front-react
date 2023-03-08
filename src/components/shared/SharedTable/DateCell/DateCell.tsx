@@ -6,12 +6,14 @@ import TwoRowCell from '../TwoRowCell/TwoRowCell';
 interface IDateCellProp {
   date?: string;
   noSecondRow?: boolean;
+  dateFormat?: string
+  timeFormat?: string
 }
 
-const DateCell: FC<IDateCellProp> = ({ date, noSecondRow = false }) => {
+const DateCell: FC<IDateCellProp> = ({ date,dateFormat, timeFormat, noSecondRow = false }) => {
   return (
-    <TwoRowCell firstRow={date ? dayjs(date).format('DD.MM.YYYY') : ''}
-                secondRow={!noSecondRow && date ? dayjs(date).format('hh:mm') : ''} />
+    <TwoRowCell firstRow={date ? dateFormat ? dayjs(date).format(dateFormat) : dayjs(date).format('DD.MM.YYYY') : ''}
+                secondRow={!noSecondRow && date ? timeFormat ? dayjs(date).format(timeFormat) : dayjs(date).format('hh:mm') : ''} />
   );
 };
 

@@ -1,8 +1,8 @@
-import React, {FC, useRef, useState} from 'react'
+import React, { FC, useRef, useState } from 'react'
 import cl from './TwoRowCell.module.scss'
-import {Text, TextPropView} from '@consta/uikit/Text'
-import {Tooltip} from '@consta/uikit/Tooltip'
-import {classJoiner} from '../../../../utils/common/styleClassesUtills'
+import { Text, TextPropView } from '@consta/uikit/Text'
+import { Tooltip } from '@consta/uikit/Tooltip'
+import { classJoiner } from '../../../../utils/common/styleClassesUtills'
 
 // CONSTANTS
 
@@ -20,7 +20,15 @@ interface ITwoRowCellProp {
   onClick?: React.MouseEventHandler<HTMLDivElement>
 }
 
-const TwoRowCell: FC<ITwoRowCellProp> = ({ firstRow, firstView, secondRow, secondView, tooltipText, isLinkable, onClick }) => {
+const TwoRowCell: FC<ITwoRowCellProp> = ({
+                                           firstRow,
+                                           firstView,
+                                           secondRow,
+                                           secondView,
+                                           tooltipText,
+                                           isLinkable,
+                                           onClick
+                                         }) => {
   const [isTooltipVisible, setIsTooltipVisible] = useState(false)
   const anchorRef = useRef<HTMLDivElement>(null)
 

@@ -27,6 +27,7 @@ export interface IExamRow {
   note: string
   resolution?: boolean
   resolutionDate?: string
+  reset?: boolean
   inCheck?: boolean
   videoAvailable?: boolean
   reportReady?: boolean

@@ -7,6 +7,7 @@ import {openModal} from '../../shared/ModalView/ModalView';
 import ExamView from '../../admin/modals/ExamView/ExamView';
 import dayjs from 'dayjs';
 import {TextPropView} from '@consta/uikit/Text';
+import ActionButton, { ActionButtonProps } from './ActionButton/ActionButton'
 
 export interface IStudentExamModel extends ITableRow{
   id: string
@@ -22,7 +23,7 @@ export interface IStudentExamModel extends ITableRow{
   }
   status: ReactNode
   start: ReactNode,
-  action: ReactNode
+  action?: ActionButtonProps
 }
 
 export const studentExamsColumns: TableColumn<IStudentExamModel>[] = [
@@ -66,6 +67,7 @@ export const studentExamsColumns: TableColumn<IStudentExamModel>[] = [
   {
     title: <HeaderCell title={''} />,
     accessor: 'action',
-    align: 'left'
+    align: 'left',
+    renderCell: row => row.action ? <ActionButton {...row.action}/> : row.action
   }
 ]
