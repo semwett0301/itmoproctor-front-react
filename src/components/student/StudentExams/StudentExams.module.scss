@@ -1,6 +1,8 @@
 .content{
   background-color: white;
   overflow-y: auto;
+
+  position: relative;
 }
 
 .tableWrapper{
@@ -14,4 +16,24 @@
   height: min-content;
   border-bottom: 0 !important;
   --table-grid-template-columns: 4.851fr 2.022fr 2.059fr 1.067fr 155px !important;
+}
+
+.switchLanguageWrapper {
+  width: 100%;
+
+  align-items: end;
+
+  .switchLanguage {
+    padding-left: 7px;
+    margin-right: 0;
+
+    height: 45px;
+
+    align-items: center;
+
+    border: var(--color-control-bg-border-default) solid 1px;
+    border-right: 0;
+    border-left: 0;
+    border-bottom: 0;
+  }
 }

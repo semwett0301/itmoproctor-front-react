@@ -20,6 +20,7 @@ import { openModal } from '../../shared/ModalView/ModalView'
 import ExamView from '../../admin/modals/ExamView/ExamView'
 import { ActionButtonProps } from './ActionButton/ActionButton'
 import { getExamAction } from '../../../utils/student/getExamAction'
+import SwitchLanguage from '../../shared/SwitchLanguage/SwitchLanguage'
 
 const StudentExams: FC = () => {
   const [withHistory, setWithHistory] = useFlag(false)
@@ -83,10 +84,16 @@ const StudentExams: FC = () => {
       )}
     >
 
-      <NavigationPanel setWithHistory={setWithHistory} update={getExams}/>
+      <Layout flex={1} direction={'column'}>
+        <NavigationPanel setWithHistory={setWithHistory} update={getExams}/>
 
-      <SharedTable rows={rows} columns={studentExamsColumns} isLoading={isLoading} className={cn.table}/>
+        <SharedTable rows={rows} columns={studentExamsColumns} isLoading={isLoading} className={cn.table}/>
+      </Layout>
 
+
+      <Layout flex={1} className={cn.switchLanguageWrapper} verticalAlign={'bottom'} fixed>
+        <SwitchLanguage className={cn.switchLanguage}/>
+      </Layout>
     </Layout>
   );
 };

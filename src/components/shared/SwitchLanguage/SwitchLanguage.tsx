@@ -4,8 +4,13 @@ import {findLang, languages} from '../../../utils/i18n/findItem';
 import {Button} from '@consta/uikit/Button';
 import i18n from 'i18next';
 import classes from './SwitchLanguage.module.scss'
+import { classJoiner } from '../../../utils/common/styleClassesUtills'
 
-const SwitchLanguage: FC = () => {
+type SwitchLanguageProps = {
+  className?: string
+}
+
+const SwitchLanguage: FC<SwitchLanguageProps> = ({ className }) => {
 
   const [lang, setLang] = useState<Item>(findLang(i18n.language))
 
@@ -22,7 +27,7 @@ const SwitchLanguage: FC = () => {
 
 
   return (
-    <div className={classes.wrap}>
+    <div className={classJoiner(classes.wrap, className ?? '')}>
       <Button
         size='s'
         view='clear'
