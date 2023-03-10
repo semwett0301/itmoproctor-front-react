@@ -1,5 +1,5 @@
-import React, { FC } from 'react'
-import { TextField, TextFieldPropSize } from '@consta/uikit/TextField'
+import React, {FC, Ref} from 'react'
+import {TextField, TextFieldPropSize, TextFieldPropStatus} from '@consta/uikit/TextField'
 import { FileField } from '@consta/uikit/FileField'
 import { Text } from '@consta/uikit/Text'
 import { Button, ButtonPropSize } from '@consta/uikit/Button'
@@ -20,9 +20,12 @@ interface SmartFileFieldInputProps extends SmartFileFieldBaseProps {
   type: 'input'
   id: string
   required?: boolean
+  inputRef?: Ref<HTMLInputElement>
   onInputFile?: (e: DragEvent | React.ChangeEvent) => void;
   fileName?: string
   fileNamePlaceholder?: string
+  status?: TextFieldPropStatus,
+  caption?: string
 }
 
 interface SmartFileFieldOutputProps extends SmartFileFieldBaseProps {
@@ -38,8 +41,8 @@ const SmartFileField: FC<SmartFileFieldProps> = (props) => {
       {props.type === 'input' ?
         <>
           <TextField className={cl.fileNameField} label={props.label} required={props.required} size={props.size ?? 's'} value={props.fileName}
-                     placeholder={props.fileNamePlaceholder} />
-          <FileField id={props.id} className={cl.fileButtonWrapper} onChange={props.onInputFile}>
+                     placeholder={props.fileNamePlaceholder} status={props.status} caption={props.caption} />
+          <FileField id={props.id} className={cl.fileButtonWrapper} onChange={props.onInputFile} inputRef={props.inputRef}>
             <Button className={cl.fileButton} size={'s'} as={'div'} view={'secondary'} label={props.buttonLabel}
                     iconLeft={props.iconLeft} iconRight={props.iconRight} />
           </FileField>

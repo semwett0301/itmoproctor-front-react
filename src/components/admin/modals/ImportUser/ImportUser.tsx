@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useEffect, useState} from 'react'
+import React, {FC, MutableRefObject, Ref, useCallback, useEffect, useRef, useState} from 'react'
 import ModalTitle from '../../../shared/ModalView/ModalTitle/ModalTitle'
 import {classJoiner} from '../../../../utils/common/styleClassesUtills'
 import {cnMixSpace} from '@consta/uikit/MixSpace'
@@ -20,9 +20,9 @@ import downloadImportExample from '../../../../utils/admin/users/downloadImportE
 import {IconUpload} from '@consta/icons/IconUpload'
 import {IconCustomSave} from '../../../../customIcons/IconCustomDownload/IconCustomSave'
 import {request} from '../../../../api/axios/request';
-import {useTranslation} from 'react-i18next';
-import i18n from 'i18next';
 import {closeModal} from '../../../shared/ModalView/ModalView';
+import {object} from 'yup';
+import {yupResolver} from '@hookform/resolvers/yup';
 
 interface IImportUserForm {
   provider: DefaultItem,
@@ -30,16 +30,30 @@ interface IImportUserForm {
   file: File | undefined
 }
 
+// CONSTANTS
+const importUserSchema = object({
+  provider: object().nullable().required('Укажите провайдера'),
+  organization: object().nullable().required('Укажите организацию'),
+  file: object().nullable().required('Добавьте файл')
+})
+
+
 const ImportUser: FC = () => {
-  const {control, formState, reset, handleSubmit, setValue} = useForm<IImportUserForm>()
+  const {control, formState, handleSubmit, setValue} = useForm<IImportUserForm>({
+    mode: 'all',
+    resolver: yupResolver(importUserSchema)
+  })
 
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
   const profile = useAppSelector((state) => state.user)
 
-  const {getOrganizations, getOrganization} = useOrganizations()
+  const fileInput = useRef<HTMLInputElement>() as MutableRefObject<HTMLInputElement>
+
+  const {getOrganizations} = useOrganizations()
   const [organizationList, setOrganizationList] = useState<IOrganization[]>([])
   const [notificationList, setNotificationList] = useState<string[]>([])
+
 
   useEffect(() => {
     setIsLoading(true)
@@ -160,12 +174,14 @@ const ImportUser: FC = () => {
                                           fileName={field.value?.name}
                                           fileNamePlaceholder={'CSV файл (с заголовком)'}
                                           buttonLabel={'Выбрать'}
-                                          onInputFile={e => {
-                                            const inputFile = document.getElementById('UsersImportFile') as HTMLInputElement
-                                            if (inputFile.files) {
-                                              setValue('file', inputFile.files[0])
+                                          inputRef={fileInput}
+                                          onInputFile={() => {
+                                            if (fileInput.current?.files) {
+                                              field.onChange(fileInput.current.files[0])
                                             }
-                                          }}/>
+                                          }}
+                                          status={fieldState.error ? 'alert' : undefined}
+                                          caption={fieldState.error?.message}/>
                         )}
                       />
                     )
@@ -195,7 +211,7 @@ const ImportUser: FC = () => {
                     flex: 1,
                     component: (
                       <div className={cl.uploadButtonWrapper}>
-                        <Button size={'s'} label={'Импорт'} iconLeft={IconUpload}/>
+                        <Button disabled={!formState.isValid} size={'s'} label={'Импорт'} iconLeft={IconUpload}/>
                       </div>
                     )
                   }
