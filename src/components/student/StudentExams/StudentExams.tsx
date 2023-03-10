@@ -39,7 +39,6 @@ const StudentExams: FC = () => {
     setRows([])
 
     await requestExamsFunction().then((r) => {
-      console.log(r);
       const tableRows: IStudentExamModel[] = r.data.rows.map((row, index) => ({
         id: index.toString(),
         exam: {
@@ -48,7 +47,7 @@ const StudentExams: FC = () => {
           examName: row.subject
         },
         deadline: {
-          date: dayjs(row.rightDate).format('DD.MM.YYYY hh:mm'),
+          date: dayjs(row.rightDate).toString(),
           description: dayjs(row.rightDate).diff(dayjs(), 'millisecond') <= 0 ? 'дедлайн прошел' :
             dayjs(row.rightDate).diff(dayjs(), 'day') == 0 ? 'осталось меньше 1 дня' :
               dayjs(row.rightDate).diff(dayjs(), 'day') <= 60 ? `осталось ${dayjs(row.rightDate).diff(dayjs(), 'day')} дней` : 'осталось больше 2 месяцев',
